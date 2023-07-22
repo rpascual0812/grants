@@ -13,6 +13,7 @@ import * as moment from 'moment';
 export class LoginComponent implements OnInit {
     form: FormGroup;
     isSubmitted: boolean = false;
+    year: any;
 
     constructor(
         private router: Router,
@@ -27,6 +28,8 @@ export class LoginComponent implements OnInit {
             password: ['', [Validators.required, Validators.minLength(6)]],
             remember: [false]
         });
+
+        this.year = moment().year();
     }
 
     // convenience getter for easy access to form fields
