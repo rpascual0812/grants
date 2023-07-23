@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
+import { SidebarService } from 'src/app/services/sidebar.service';
 
 @Component({
     selector: 'app-navbar',
@@ -10,6 +11,8 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class NavbarComponent implements OnInit {
     user: any;
+
+    sidebarService = inject(SidebarService);
 
     constructor(
         private router: Router,
@@ -22,6 +25,10 @@ export class NavbarComponent implements OnInit {
             picture: 'assets/img/default-profile.png',
             name: 'Rafael'
         }
+    }
+
+    toggle() {
+        this.sidebarService.show.set(!this.sidebarService.show());
     }
 
     logout() {
