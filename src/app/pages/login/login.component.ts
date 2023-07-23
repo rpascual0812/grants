@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
         this.form = this.formBuilder.group({
             username: ['', [Validators.required]],
             password: ['', [Validators.required, Validators.minLength(6)]],
+            remember: [false]
         });
 
         this.year = moment().year();
