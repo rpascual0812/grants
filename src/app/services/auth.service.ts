@@ -27,6 +27,7 @@ export class AuthService {
     }
 
     unsetSession() {
+        this.logout();
         localStorage.removeItem("o__token");
     }
 
