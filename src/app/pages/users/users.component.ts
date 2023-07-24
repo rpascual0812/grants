@@ -51,12 +51,8 @@ export class UsersComponent {
                         user.last_name = data.last_name;
                     });
             } catch (error: any) {
-                console.log(error);
+                _.errorMessage("This is a test error alert");
             }
         });
-
-
-        // _.errorMessage("This is a test error alert");
-        // 
     }
 }

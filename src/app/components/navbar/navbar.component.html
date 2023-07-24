@@ -17,7 +17,7 @@
                 <li class="nav-item dropdown pe-2 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-bell cursor-pointer"></i>
+                        <i class="fa fa-bell cursor-pointer" style="font-size: 20px;"></i>
                     </a>
                     <ul style="top: 0 !important;" class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
                         aria-labelledby="dropdownMenuButton">
@@ -100,10 +100,64 @@
                 <li class="nav-item dropdown pe-2 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuProfile"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-user me-sm-1"></i>
-                        <span class="d-sm-inline d-none">{{ user.name }}</span>
+                        <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="30"
+                            alt="Black and White Portrait of a Man" loading="lazy" />
+                        <!-- <span class="d-sm-inline d-none">{{ user.name }}</span> -->
                     </a>
-                    <ul style="top: 0 !important;" class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
+                    <div class="card dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
+                        style="width: 18rem; top: 0 !important;" aria-labelledby="dropdownMenuProfile">
+
+                        <div class="card-body">
+                            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                                class="rounded-circle card-img-top" height="222" alt="Black and White Portrait of a Man"
+                                loading="lazy" />
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <a class="dropdown-item border-radius-md" href="javascript:;">
+                                    <div class="d-flex py-1">
+                                        <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="text-sm font-weight-normal mb-1">
+                                                <span class="text-sm font-weight-normal mb-1">Profile</span>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="dropdown-item border-radius-md" href="javascript:;">
+                                    <div class="d-flex py-1">
+                                        <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
+                                            <i class="fa fa-cog"></i>
+                                        </div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="text-sm font-weight-normal mb-1">
+                                                Settings
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="dropdown-item border-radius-md" href="javascript:;" (click)="logout()">
+                                    <div class="d-flex py-1">
+                                        <div class="avatar avatar-sm bg-gradient-danger  me-3  my-auto">
+                                            <i class="material-icons opacity-10">logout</i>
+                                        </div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="text-sm font-weight-normal mb-1">
+                                                Logout
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- <ul style="top: 0 !important;" class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
                         aria-labelledby="dropdownMenuProfile">
                         <li class="mb-2">
                             <a class="dropdown-item border-radius-md" href="javascript:;">
@@ -147,7 +201,7 @@
                                 </div>
                             </a>
                         </li>
-                    </ul>
+                    </ul> -->
                 </li>
             </ul>
         </div>
