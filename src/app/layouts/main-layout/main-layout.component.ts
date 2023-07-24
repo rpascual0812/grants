@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, Renderer2, RendererFactory2, inject } from '@angular/core';
 import { SidebarService } from 'src/app/services/sidebar.service';
 
 @Component({

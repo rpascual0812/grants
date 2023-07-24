@@ -1,0 +1,110 @@
+<div>
+    <div class="modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">{{title}}</h4>
+                <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <img class="direct-chat-img" style="width: 200px !important; height: 200px !important;"
+                            src="{{profilePicture}}" alt="">
+                    </div>
+                    <div class="col-md-12">
+                        <form [formGroup]="form" (ngSubmit)="submit()">
+                            <div class="form-group">
+                                <label for="example-email-input" class="form-control-label">Role</label>
+                                <select class="form-control">
+                                    <option value="end-user">User</option>
+                                    <!-- <option value="{{role.pk}}" *ngFor="let role of roles; let i = index">
+                                        {{role.name}}
+                                    </option> -->
+                                </select>
+                                <div *ngIf="submitted && f['email_address'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['email_address'].errors['required']">Role is required</div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">First Name</label>
+                                        <input class="form-control" type="text" placeholder="First Name"
+                                            formControlName="first_name"
+                                            [ngClass]="{ 'is-invalid': submitted && f['first_name'].errors }">
+                                        <div *ngIf="submitted && f['first_name'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['first_name'].errors['required']">First Name is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Last Name</label>
+                                        <input class="form-control" type="text" placeholder="Last Name"
+                                            formControlName="last_name"
+                                            [ngClass]="{ 'is-invalid': submitted && f['last_name'].errors }">
+                                        <div *ngIf="submitted && f['last_name'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['last_name'].errors['required']">Last Name is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="example-email-input" class="form-control-label">Email Address</label>
+                                <input class="form-control" type="email" placeholder="Email Address"
+                                    formControlName="email_address"
+                                    [ngClass]="{ 'is-invalid': submitted && f['email_address'].errors }">
+                                <div *ngIf="submitted && f['email_address'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['email_address'].errors['required']">Email Address is required</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="example-text-input" class="form-control-label">Mobile Number</label>
+                                <input class="form-control" type="text" placeholder="Mobile Number"
+                                    formControlName="mobile"
+                                    [ngClass]="{ 'is-invalid': submitted && f['mobile'].errors }">
+                                <div *ngIf="submitted && f['mobile'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['mobile'].errors['required']">Mobile Number is required</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="example-tel-input" class="form-control-label">Birth Date</label>
+                                <input #date="bsDatepicker" class="form-control datepicker" bsDatepicker
+                                    placeholder="Birth Date" type="text" autocomplete="off" formControlName="birthdate"
+                                    [ngClass]="{ 'is-invalid': submitted && f['birthdate'].errors }"
+                                    [bsConfig]="dateConfig" [autocomplete]="false" />
+                                <div *ngIf="submitted && f['birthdate'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['birthdate'].errors['required']">Birth Date is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="example-email-input" class="form-control-label">Gender</label>
+                                <select class="form-control" formControlName="gender">
+                                    <option value="{{gender.pk}}" *ngFor="let gender of genders; let i = index">
+                                        {{gender.name}}
+                                    </option>
+                                </select>
+                                <div *ngIf="submitted && f['email_address'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['email_address'].errors['required']">Gender is required</div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="user.archived" type="button" class="btn btn-danger"
+                    (click)="activate()">{{activateBtnName}}</button>
+                <button *ngIf="!user.archived" type="button" class="btn btn-primary"
+                    (click)="submit()">{{saveBtnName}}</button>
+                <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">{{closeBtnName}}</button>
+            </div>
+        </div>
+    </div>
+</div>
