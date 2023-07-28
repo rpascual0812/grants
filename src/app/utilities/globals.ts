@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 
 export const PRODUCTION: boolean = environment.production;
 export const BASE_URL: string = `${environment.api}`;
+export const TABLE_SIZES = [10, 20, 30, 40, 50, 100];
 
 export function numbersOnly(event: any) {
     const pattern = /^[0-9\-]*$/;

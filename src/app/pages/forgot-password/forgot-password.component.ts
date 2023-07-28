@@ -2,15 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 import * as moment from 'moment';
+import * as _ from '../../utilities/globals';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss']
+    selector: 'app-forgot-password',
+    templateUrl: './forgot-password.component.html',
+    styleUrls: ['./forgot-password.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class ForgotPasswordComponent {
     form: FormGroup;
     isSubmitted: boolean = false;
     year: any;
@@ -18,15 +19,12 @@ export class LoginComponent implements OnInit {
     constructor(
         private router: Router,
         private formBuilder: FormBuilder,
-        private authService: AuthService,
-        private toastr: ToastrService,
+        private authService: AuthService
     ) { }
 
     ngOnInit(): void {
         this.form = this.formBuilder.group({
-            username: ['', [Validators.required]],
-            password: ['', [Validators.required, Validators.minLength(6)]],
-            remember: [false]
+            email: ['', [Validators.required]],
         });
 
         this.year = moment().year();
@@ -37,24 +35,19 @@ export class LoginComponent implements OnInit {
 
     onSubmit() {
         this.isSubmitted = true;
-        console.log('submitted', this.form.value);
+        // stop here if form is invalid
         if (this.form.invalid) {
             console.log('form is invalid');
-            this.isSubmitted = false;
             return;
         }
 
-        this.authService.login(this.form.value)
+        this.authService.forgot({ email: this.form.value.email, url: window.location.origin, device: 'web' })
             .subscribe({
                 next: (data: any) => {
-                    const exp = (JSON.parse(atob(data.user.access_token.split('.')[1]))).exp;
-                    console.log(moment((exp * 1000)).format('YYYY-MM-DD'));
-
-                    this.authService.setSession(data);
-                    this.router.navigateByUrl('/');
+                    _.successMessage('An email has been sent to ' + this.form.value.email + '!');
                 },
                 error: (error: any) => {
-                    this.toastr.error('An error occurred while fetching your account. Please try again', 'ERROR!');
+                    _.errorMessage('The email address you provided was not found!');
                     setTimeout(() => { this.isSubmitted = false; }, 500);
                 },
                 complete: () => {
@@ -62,9 +55,5 @@ export class LoginComponent implements OnInit {
                     setTimeout(() => { this.isSubmitted = false; }, 500);
                 }
             });
-    }
-
-    submit() {
-        this.router.navigateByUrl('forgot-password');
     }
 }

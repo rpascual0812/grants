@@ -5,6 +5,7 @@ import { UsersComponent } from './users.component';
 import { UsersModalComponent } from './users-modal/users-modal.component';
 
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
     declarations: [
@@ -16,6 +17,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
         ReactiveFormsModule,
         CommonModule,
         BsDatepickerModule.forRoot(),
+        NgxPaginationModule
     ]
 })
 export class UsersModule { }

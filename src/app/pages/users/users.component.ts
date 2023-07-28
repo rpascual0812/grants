@@ -12,7 +12,27 @@ import { UsersModalComponent } from './users-modal/users-modal.component';
 export class UsersComponent {
     bsModalRef?: BsModalRef;
 
-    users: any = [];
+    users: any = [
+        {
+            username: 'admin',
+            fullname: 'Rafael Pascual',
+            email: 'rpascual0812@gmail.com',
+            roles: {}
+        },
+        {
+            username: 'rpascual',
+            fullname: 'Rafael A. Pascual',
+            email: 'rpascual0812@gmail.com',
+            roles: {}
+        }
+    ];
+
+    pagination: any = {
+        page: 1,
+        count: 0,
+        tableSize: 10
+    };
+    tableSizes = _.TABLE_SIZES;
 
     constructor(
         private formBuilder: FormBuilder,
