@@ -35,3 +35,7 @@
 .navbar-vertical .navbar-nav .nav-link.active {
     margin-top: 0px !important;
 }
+
+.main-body {
+    height: calc(100vh - 126px);
+}
