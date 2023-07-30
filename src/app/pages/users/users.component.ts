@@ -5,6 +5,8 @@ import * as _ from '../../utilities/globals';
 import { UsersModalComponent } from './users-modal/users-modal.component';
 import { UserService } from 'src/app/services/user.service';
 import { RoleService } from 'src/app/services/roles.service';
+import { ResetPasswordComponent } from '../reset-password/reset-password.component';
+import { ResetPasswordModalComponent } from './reset-password-modal/reset-password-modal.component';
 
 @Component({
     selector: 'app-users',
@@ -157,5 +159,35 @@ export class UsersComponent implements OnInit {
             });
         })
         return count;
+    }
+
+    resetPasswordModal(user: any) {
+        const title = 'Reset Password';
+
+        const initialState: ModalOptions = {
+            class: 'modal-md',
+            initialState: {
+                title: title,
+                user: user,
+            }
+        };
+        this.bsModalRef = this.modalService.show(ResetPasswordModalComponent, initialState);
+        this.bsModalRef.content.saveBtnName = 'Save';
+        this.bsModalRef.content.closeBtnName = 'Close';
+
+        this.bsModalRef.content.callback.subscribe((res: any) => {
+            try {
+                const data = res.data.data;
+                _.successMessage("This is a test success alert");
+
+                this.users.filter((user: any) => user.pk == data.pk)
+                    .forEach((user: any) => {
+                        user.first_name = data.first_name;
+                        user.last_name = data.last_name;
+                    });
+            } catch (error: any) {
+                _.errorMessage("This is a test error alert");
+            }
+        });
     }
 }

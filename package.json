@@ -24,6 +24,7 @@
         "material-dashboard": "^3.0.9",
         "moment": "^2.29.4",
         "ngx-bootstrap": "^10.2.0",
+        "ngx-clipboard": "^16.0.0",
         "ngx-pagination": "^6.0.3",
         "ngx-sortable": "^2.1.0",
         "ngx-toastr": "^17.0.2",

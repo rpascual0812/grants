@@ -39,3 +39,24 @@
 .main-body {
     height: calc(100vh - 126px);
 }
+
+.modal-header .modal-title {
+    font-size: 1rem !important;
+}
+
+.modal-header button {
+    font-size: 0.6rem !important;
+}
+
+// overriding css from node_modules/material-dashboard/assets/css/material-dashboard.min.css
+.btn {
+    margin-bottom: 0px !important;
+}
+
+.input-group.has-validation>.dropdown-toggle:nth-last-child(n+4),
+.input-group.has-validation>:nth-last-child(n+3):not(.dropdown-toggle):not(.dropdown-menu),
+.input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3),
+.input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}

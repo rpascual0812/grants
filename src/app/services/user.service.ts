@@ -26,4 +26,8 @@ export class UserService {
     uploadPhoto(object: any) {
         return this.http.post(`${_.BASE_URL}/users/photo`, object);
     }
+
+    sendUserResetPassword(user: any) {
+        return this.http.post(`${_.BASE_URL}/users/${user.pk}/reset-password`, { url: window.location.origin });
+    }
 }
