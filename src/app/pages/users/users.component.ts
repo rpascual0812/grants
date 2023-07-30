@@ -1,31 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import * as _ from '../../utilities/globals';
 import { UsersModalComponent } from './users-modal/users-modal.component';
+import { UserService } from 'src/app/services/user.service';
+import { RoleService } from 'src/app/services/roles.service';
 
 @Component({
     selector: 'app-users',
     templateUrl: './users.component.html',
     styleUrls: ['./users.component.scss']
 })
-export class UsersComponent {
+export class UsersComponent implements OnInit {
     bsModalRef?: BsModalRef;
 
-    users: any = [
-        {
-            username: 'admin',
-            fullname: 'Rafael Pascual',
-            email: 'rpascual0812@gmail.com',
-            roles: {}
-        },
-        {
-            username: 'rpascual',
-            fullname: 'Rafael A. Pascual',
-            email: 'rpascual0812@gmail.com',
-            roles: {}
-        }
-    ];
+    loading: boolean = false;
+    roles: any = [];
+    users: any = [];
+    filters: any = {};
+    url: String = _.BASE_URL;
 
     pagination: any = {
         page: 1,
@@ -35,17 +28,65 @@ export class UsersComponent {
     tableSizes = _.TABLE_SIZES;
 
     constructor(
+        private userService: UserService,
         private formBuilder: FormBuilder,
-        private modalService: BsModalService
+        private modalService: BsModalService,
+        private roleService: RoleService
     ) {
 
     }
 
-    fetch() {
+    ngOnInit(): void {
+        this.filters = {
+            keyword: '',
+            archived: false,
+            skip: 0,
+            take: this.pagination.tableSize
+        };
 
+        this.fetchRoles();
+        this.fetch();
     }
 
-    addNewModal(user: any) {
+    fetchRoles() {
+        this.roleService
+            .fetchAll(this.filters)
+            .subscribe({
+                next: (data: any) => {
+                    this.roles = data.data;
+                },
+                error: (error: any) => {
+                    console.log(error);
+                },
+                complete: () => {
+                    console.log('Complete');
+                }
+            });
+    }
+
+    fetch() {
+        this.filters.skip = (this.pagination.page * this.pagination.tableSize) - this.pagination.tableSize;
+        this.filters.take = this.pagination.tableSize;
+
+        this.userService
+            .fetchAll(this.filters)
+            .subscribe({
+                next: (data: any) => {
+                    this.users = data.data;
+                    this.pagination.count = data.total;
+                },
+                error: (error: any) => {
+                    console.log(error);
+                    setTimeout(() => { this.loading = false; }, 500);
+                },
+                complete: () => {
+                    console.log('Complete');
+                    setTimeout(() => { this.loading = false; }, 500);
+                }
+            });
+    }
+
+    userModal(user: any) {
         const title = user ? 'Edit ' + user.first_name : 'Add user';
 
         const initialState: ModalOptions = {
@@ -74,5 +115,47 @@ export class UsersComponent {
                 _.errorMessage("This is a test error alert");
             }
         });
+    }
+
+    checkRoles(user_role: any, role: any) {
+        // check if the role can be found inside the user_role
+        return user_role.filter((user_role: any) => user_role.role_pk == role.pk).length > 0 ? true : false;
+    }
+
+    updateRole(role: any, user: any, evt: any) {
+        role.checked = evt.target.checked;
+        this.roleService
+            .save(role, user)
+            .subscribe({
+                next: (data: any) => {
+                    if (evt.target.checked) {
+                        console.log(data.raw[0]);
+                    }
+                    else {
+
+                    }
+                },
+                error: (error: any) => {
+                    console.log(error);
+                },
+                complete: () => {
+                    console.log('Complete');
+                }
+            });
+
+
+        evt.stopPropagation();
+    }
+
+    getActiveRoles(user_role: any) {
+        let count = 0;
+        user_role.forEach((_user_role: any) => {
+            this.roles.forEach((role: any) => {
+                if (_user_role.role_pk == role.pk) {
+                    count++;
+                }
+            });
+        })
+        return count;
     }
 }
