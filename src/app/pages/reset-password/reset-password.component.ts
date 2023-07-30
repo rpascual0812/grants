@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import * as _ from '../../utilities/globals';
 
 import { MustMatch, MustValid } from '../../utilities/form.validators';
@@ -38,7 +38,7 @@ export class ResetPasswordComponent {
             validator: [MustMatch('password', 'confirm_password')]
         });
 
-        this.year = moment().year();
+        this.year = DateTime.now().year;
     }
 
     // convenience getter for easy access to form fields

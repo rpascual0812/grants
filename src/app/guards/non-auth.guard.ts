@@ -1,6 +1,6 @@
 import { inject } from "@angular/core";
 import { CanActivateFn, Router } from "@angular/router";
-import * as moment from "moment";
+import { DateTime } from 'luxon';
 
 export const nonAuthGuard: CanActivateFn = (route, state) => {
     const token = localStorage.getItem('o__token');
@@ -9,7 +9,7 @@ export const nonAuthGuard: CanActivateFn = (route, state) => {
     if (token) {
         const exp = (JSON.parse(atob(token.split('.')[1]))).exp;
 
-        if ((exp * 1000) > moment.now()) {
+        if ((exp * 1000) > DateTime.now().toMillis()) {
             router.navigate(['/dashboard']);
             return false;
         }

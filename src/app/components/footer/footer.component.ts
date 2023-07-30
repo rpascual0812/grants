@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 @Component({
     selector: 'app-footer',
     templateUrl: './footer.component.html',
@@ -9,6 +9,6 @@ export class FooterComponent {
     year: any;
 
     ngOnInit(): void {
-        this.year = moment().year();
+        this.year = DateTime.now().year;
     }
 }

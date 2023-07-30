@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 
 @Component({
     selector: 'app-login',
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
             remember: [false]
         });
 
-        this.year = moment().year();
+        this.year = DateTime.now().year;
     }
 
     // convenience getter for easy access to form fields
@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
 
     onSubmit() {
         this.isSubmitted = true;
-        console.log('submitted', this.form.value);
         if (this.form.invalid) {
             console.log('form is invalid');
             this.isSubmitted = false;
@@ -48,7 +47,6 @@ export class LoginComponent implements OnInit {
             .subscribe({
                 next: (data: any) => {
                     const exp = (JSON.parse(atob(data.user.access_token.split('.')[1]))).exp;
-                    console.log(moment((exp * 1000)).format('YYYY-MM-DD'));
 
                     this.authService.setSession(data);
                     this.router.navigateByUrl('/');

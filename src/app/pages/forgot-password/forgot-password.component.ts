@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import * as _ from '../../utilities/globals';
 
 @Component({
@@ -27,7 +27,7 @@ export class ForgotPasswordComponent {
             email: ['', [Validators.required]],
         });
 
-        this.year = moment().year();
+        this.year = DateTime.now().year;
     }
 
     // convenience getter for easy access to form fields
