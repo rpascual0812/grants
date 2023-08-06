@@ -55,6 +55,13 @@
     border-color: #1e8ee9;
 }
 
+.navbar-vertical .navbar-nav .nav-link {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-weight: bold !important;
+    color: #fff;
+}
+
 .navbar-vertical .navbar-nav .nav-link.active {
     margin-top: 0px !important;
 }
