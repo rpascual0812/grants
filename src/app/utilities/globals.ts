@@ -30,3 +30,21 @@ export function errorMessage(message: any) {
 export function successMessage(message: any) {
     Swal.fire('SUCCESS', message, 'success');
 }
+
+export function confirmMessage(data: any, callback: Function) {
+    Swal.fire({
+        title: data.title,
+        icon: data.icon,
+        showCloseButton: data.buttons.showClose,
+        showCancelButton: data.buttons.showCancel,
+        focusConfirm: data.buttons.focusConfirm,
+        confirmButtonText:
+            data.confirmButtonText,
+        cancelButtonText:
+            data.cancelButtonText,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            callback();
+        }
+    })
+}

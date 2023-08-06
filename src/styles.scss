@@ -27,13 +27,40 @@
     background: #b30000;
 }
 
+.btn-primary,
+.btn.bg-gradient-primary {
+    box-shadow: 0 3px 3px 0 rgba(30, 77, 233, 0.15),
+        0 3px 1px -2px rgba(30, 77, 233, 0.2),
+        0 1px 5px 0 rgba(30, 50, 233, 0.15);
+}
+
+.btn-primary:hover,
+.btn.bg-gradient-primary:hover {
+    background-color: #1e98e9;
+    border-color: #1e8ee9;
+    box-shadow: 0 14px 26px -12px rgba(30, 33, 233, 0.4), 0 4px 23px 0 rgba(30, 67, 233, 0.15), 0 8px 10px -5px rgba(30, 50, 233, 0.2)
+}
+
 .bg-grant-primary {
     --bs-bg-opacity: 1;
     background-color: rgba(33, 69, 129, var(--bs-bg-opacity)) !important;
 }
 
+.form-check:not(.form-switch) .form-check-input[type=checkbox]:checked {
+    background: #1e76e9;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=checkbox]:checked,
+.form-check:not(.form-switch) .form-check-input[type=radio]:checked {
+    border-color: #1e8ee9;
+}
+
 .navbar-vertical .navbar-nav .nav-link.active {
     margin-top: 0px !important;
+}
+
+.navbar-vertical .navbar-nav .nav-link.active {
+    font-weight: bold !important;
 }
 
 .main-body {
@@ -59,4 +86,13 @@
 .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
     border-top-right-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
+}
+
+input:focus,
+input.form-control:focus {
+    outline: none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
 }

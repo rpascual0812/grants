@@ -7,6 +7,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FooterComponent } from './footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PasswordGeneratorComponent } from './password-generator/password-generator.component';
 
 @NgModule({
     imports: [
@@ -20,11 +21,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         NavbarComponent,
         SidebarComponent,
         FooterComponent,
+        PasswordGeneratorComponent
     ],
     exports: [
         NavbarComponent,
         SidebarComponent,
         FooterComponent,
+        PasswordGeneratorComponent
     ],
     providers: [
 

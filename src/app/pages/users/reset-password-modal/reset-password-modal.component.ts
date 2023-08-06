@@ -28,19 +28,7 @@ export class ResetPasswordModalComponent {
     submitted: boolean = false;
     form: FormGroup;
 
-    letters: any = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
-    numbers: any = "0123456789";
-    ilo: any = "iloIO";
-    special: any = "!@#$%^&*()_+~\`|}{[]:;?><,./-=";
 
-    range: any = 6;
-    checkboxes: any = {
-        letters: true,
-        numbers: true,
-        ilo: true,
-        special: true
-    }
-    copied: boolean = false;
 
 
     dateConfig: any = { isAnimated: true, containerClass: 'theme-dark-blue', dateInputFormat: 'YYYY/MM/DD' };
@@ -61,7 +49,6 @@ export class ResetPasswordModalComponent {
         };
 
         this.setForm();
-        this.generatePassword();
     }
 
     setForm() {
@@ -77,69 +64,31 @@ export class ResetPasswordModalComponent {
         this.bsModalRef.hide();
     }
 
-    generatePassword() {
-        this.copied = false;
-        var chars = "";
-
-        Object.keys(this.checkboxes).forEach((checkbox: any) => {
-            switch (checkbox) {
-                case 'letters':
-                    if (this.checkboxes[checkbox]) {
-                        chars += this.letters;
-                    }
-                    break;
-                case 'numbers':
-                    if (this.checkboxes[checkbox]) {
-                        chars += this.numbers;
-                    }
-                    break;
-                case 'ilo':
-                    if (this.checkboxes[checkbox]) {
-                        chars += this.ilo;
-                    }
-                    break;
-                case 'special':
-                    if (this.checkboxes[checkbox]) {
-                        chars += this.special;
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        });
-
-        var passwordLength = this.range;
-        var password = "";
-
-        for (var i = 0; i <= passwordLength; i++) {
-            var randomNumber = Math.floor(Math.random() * chars.length);
-            password += chars.substring(randomNumber, randomNumber + 1);
-        }
-
-        this.form.patchValue({ password });
-    }
-
-    copyPassword() {
-        this.copied = true;
-        this.clipboardService.copyFromContent(this.form.value.password);
-    }
-
     sendPasswordResetEmail(user: any) {
-        this.userService
-            .sendUserResetPassword(user)
-            .subscribe({
-                next: (data: any) => {
+        _.confirmMessage({
+            title: '<strong>Are you sure you want to send a password reset email? This will invalidate the current password of ' + this.user.first_name + ' </strong>',
+            icon: 'question',
+            buttons: {
+                showClose: true,
+                showCancel: true,
+                focusConfirm: false
+            },
+            confirmButtonText: '<i class="fa fa-thumbs-up"></i> Send',
+            cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel'
+        }, () => {
+            this.userService
+                .sendUserResetPassword(user)
+                .subscribe({
+                    next: (data: any) => {
 
-                },
-                error: (error: any) => {
-                    console.log(error);
-                },
-                complete: () => {
-                    this.bsModalRef.hide();
-                }
-            });
-
-
+                    },
+                    error: (error: any) => {
+                        console.log(error);
+                    },
+                    complete: () => {
+                        this.bsModalRef.hide();
+                    }
+                });
+        });
     }
 }

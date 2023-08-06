@@ -4,9 +4,9 @@
     </nav>
     <div class="row mb-4">
         <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
-            <div>
+            <div class="mb-2">
                 <div class="row">
-                    <div class="col-lg-4 col-7">
+                    <div class="col-lg-4 col-7 ">
                         <div class="col-auto">
                             <input [(ngModel)]="filters.keyword" type="text" class="form-control"
                                 placeholder="Search..." (keyup)="fetch()">
@@ -48,15 +48,15 @@
                                     *ngFor="let user of users| paginate : { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.count }; let i = index">
                                     <td scope="row">
                                         <div class="d-flex px-2 py-1">
-                                            <h6 class="mb-0 text-sm">{{user.account.username}}</h6>
+                                            <span class="mb-0 text-sm">{{user.account.username}}</span>
                                         </div>
                                     </td>
                                     <td class="w-30 align-middle text-sm">
-                                        <span class="text-xs font-weight-bold">{{user.first_name}}
+                                        <span class="text-xs">{{user.first_name}}
                                             {{user.last_name}}</span>
                                     </td>
                                     <td class="w-25 align-middle text-center text-sm">
-                                        <span class="text-xs font-weight-bold">{{user.email_address}}</span>
+                                        <span class="text-xs">{{user.email_address}}</span>
                                     </td>
                                     <td class="w-10 align-middle text-center text-sm">
                                         <div class="shadow-sm p-2 bg-white rounded w-100 cursor-pointer"

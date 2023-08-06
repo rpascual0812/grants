@@ -10,6 +10,7 @@ import { UsersModalComponent } from './users-modal/users-modal.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ResetPasswordModalComponent } from './reset-password-modal/reset-password-modal.component';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import { ResetPasswordModalComponent } from './reset-password-modal/reset-passwo
         CommonModule,
         BsDatepickerModule.forRoot(),
         NgxPaginationModule,
-        ClipboardModule
+        ClipboardModule,
+        ComponentsModule
     ]
 })
 export class UsersModule { }
