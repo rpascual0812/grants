@@ -69,7 +69,6 @@ export class UsersModalComponent {
         };
 
         this.user.birthdate = new Date(this.user.birthdate ? this.user.birthdate : DateTime.now());
-        console.log('user', this.user);
         this.form = this.formBuilder.group({
             pk: [''],
             first_name: [this.user ? this.user.first_name : '', Validators.required],
@@ -91,7 +90,6 @@ export class UsersModalComponent {
             .subscribe({
                 next: (data: any) => {
                     this.genders = data.data;
-                    console.log(this.genders);
                 },
                 error: (error: any) => {
                     console.log(error);
@@ -115,24 +113,18 @@ export class UsersModalComponent {
     }
 
     submit() {
-
-
         this.callback.emit({});
         this.bsModalRef.hide();
     }
 
     uploadFiles() {
-        // console.log('icon', this.icon);
-        // console.log('background', this.background);
         const initialState: ModalOptions = {
             class: 'modal-lg'
         };
         this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
 
         this.documentUploaderRef.content.document.subscribe((res: any) => {
-
             this.user.user_document = res.file;
-            console.log('user', this.user);
             this.profilePicture = this.url + '/' + this.user.user_document.path;
 
             this.cdr.detectChanges();
