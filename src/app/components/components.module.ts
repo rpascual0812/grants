@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FooterComponent } from './footer/footer.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { PasswordGeneratorComponent } from './password-generator/password-generator.component';
+import { FileUploaderComponent } from './file-uploader/file-uploader.component';
 
 @NgModule({
     imports: [
@@ -21,7 +22,9 @@ import { PasswordGeneratorComponent } from './password-generator/password-genera
         NavbarComponent,
         SidebarComponent,
         FooterComponent,
-        PasswordGeneratorComponent
+
+        PasswordGeneratorComponent,
+        FileUploaderComponent
     ],
     exports: [
         NavbarComponent,

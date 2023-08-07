@@ -13,16 +13,35 @@
                         <img class="direct-chat-img" style="width: 200px !important; height: 200px !important;"
                             src="{{profilePicture}}" alt="">
                     </div>
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <button type="button" class="btn btn-outline-dark mt-2" style="width: 200px;"
+                            (click)="uploadFiles()">
+                            Upload new image
+                        </button>
+                    </div>
                     <div class="col-md-12">
                         <form [formGroup]="form" (ngSubmit)="submit()">
                             <div class="form-group">
                                 <label for="example-email-input" class="form-control-label">Role</label>
-                                <select class="form-control">
-                                    <option value="end-user">User</option>
-                                    <!-- <option value="{{role.pk}}" *ngFor="let role of roles; let i = index">
-                                        {{role.name}}
-                                    </option> -->
-                                </select>
+                                <div class="shadow-sm p-2 bg-white rounded w-20 cursor-pointer"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="badge rounded-pill bg-grant-primary"
+                                        style="padding-top: 6px; padding-left: 7px; padding-right: 7px;">{{getActiveRoles()}}</span>
+                                    <span class="p-2">Roles</span>
+                                    <i class="fa fa-caret-down"></i>
+                                </div>
+                                <ul class="dropdown-menu  dropdown-menu-end px-3 py-3 me-sm-n4"
+                                    aria-labelledby="dropdownMenuButton">
+                                    <li class="form-check form-switch" *ngFor="let role of roles; let i = index"
+                                        (click)="$event.stopPropagation()">
+                                        <input class="form-check-input" type="checkbox" id="{{role.pk}}"
+                                            (click)="updateRole(i, $event)" [checked]="role.checked">
+                                        <label class="form-check-label" for="{{role.pk}}"
+                                            (click)="$event.stopPropagation()">
+                                            {{role.name}}
+                                        </label>
+                                    </li>
+                                </ul>
                                 <div *ngIf="submitted && f['email_address'].errors" class="invalid-feedback">
                                     <div *ngIf="f['email_address'].errors['required']">Role is required</div>
                                 </div>
@@ -100,7 +119,7 @@
             </div>
             <div class="modal-footer">
                 <button *ngIf="user.archived" type="button" class="btn btn-danger"
-                    (click)="activate()">{{activateBtnName}}</button>
+                    (click)="submit()">{{activateBtnName}}</button>
                 <button *ngIf="!user.archived" type="button" class="btn btn-primary"
                     (click)="submit()">{{saveBtnName}}</button>
                 <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">{{closeBtnName}}</button>

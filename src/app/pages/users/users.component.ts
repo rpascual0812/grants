@@ -22,12 +22,8 @@ export class UsersComponent implements OnInit {
     filters: any = {};
     url: String = _.BASE_URL;
 
-    pagination: any = {
-        page: 1,
-        count: 0,
-        tableSize: 10
-    };
-    tableSizes = _.TABLE_SIZES;
+    pagination: any = _.PAGINATION;
+    tableSizes: any = _.TABLE_SIZES;
 
     constructor(
         private userService: UserService,
@@ -96,6 +92,7 @@ export class UsersComponent implements OnInit {
             initialState: {
                 title: title,
                 user: user,
+                roles: this.roles
             }
         };
         this.bsModalRef = this.modalService.show(UsersModalComponent, initialState);
