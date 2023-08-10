@@ -16,7 +16,7 @@ export class UserService {
     }
 
     save(user: any) {
-        return this.http.post(`${_.BASE_URL}/users/update`, user);
+        return this.http.post(`${_.BASE_URL}/users`, user);
     }
 
     fetchAll(filters: any) {

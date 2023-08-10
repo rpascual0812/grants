@@ -1,12 +1,14 @@
 import { Component, EventEmitter, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { DateTime } from 'luxon';
+import { formatDate } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 
 import * as _ from '../../../utilities/globals';
-import { DateTime } from 'luxon';
 import { GenderService } from 'src/app/services/gender.service';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
     selector: 'app-users-modal',
@@ -46,8 +48,9 @@ export class UsersModalComponent {
         public documentUploaderRef: BsModalRef,
         private modalService: BsModalService,
         private toastr: ToastrService,
-        private genderService: GenderService,
         private cdr: ChangeDetectorRef,
+        private genderService: GenderService,
+        private userService: UserService
     ) { }
 
     ngOnInit(): void {
@@ -62,11 +65,19 @@ export class UsersModalComponent {
     }
 
     setForm() {
-        this.profilePicture = this.user ? this.user + '/' + this.user.user_document.document.path : './assets/images/default-profile.png';
+        this.profilePicture = this.user && this.user.user_document ? this.url + '/' + this.user.user_document.document.path : './assets/images/default-profile.png';
 
         this.user = this.user ? this.user : {
             user_role: []
         };
+
+        this.user.user_role.forEach((user_role: any) => {
+            this.roles.filter((role: any) => {
+                if (role.pk == user_role.role_pk) {
+                    role.checked = true;
+                }
+            });
+        });
 
         this.user.birthdate = new Date(this.user.birthdate ? this.user.birthdate : DateTime.now());
         this.form = this.formBuilder.group({
@@ -79,7 +90,10 @@ export class UsersModalComponent {
             gender: [this.user ? this.user.gender_pk : '', Validators.required],
             archived: [false],
             image: [''],
+            roles: ['']
         });
+
+        // console.log('init user', this.user, this.profilePicture);
     }
 
     get f() { return this.form.controls; }
@@ -113,8 +127,39 @@ export class UsersModalComponent {
     }
 
     submit() {
-        this.callback.emit({});
-        this.bsModalRef.hide();
+        this.loading = true;
+        this.submitted = true;
+
+        if (this.form.invalid) {
+            return;
+        }
+
+        const activeRoles = this.roles.filter((role: any) => role.checked == true);
+
+        let formattedDate = formatDate(this.form.value.birthdate, 'yyyy-MM-dd', "en-US");
+        this.form.get('birthdate')?.patchValue(formattedDate);
+        this.form.get('pk')?.patchValue(this.user.pk);
+        this.form.get('image')?.patchValue(this.user.user_document);
+        this.form.get('roles')?.patchValue(activeRoles);
+
+        this.userService
+            .save(this.form.value)
+            .subscribe({
+                next: (data: any) => {
+                    this.callback.emit({ data });
+                    this.toastr.success('The user has been successfully ' + (this.user.pk ? 'updated' : 'added'), 'SUCCESS!');
+                },
+                error: (error: any) => {
+                    console.log(error);
+                    this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
+                    setTimeout(() => { this.loading = false; }, 500);
+                },
+                complete: () => {
+                    console.log('Complete');
+                    setTimeout(() => { this.loading = false; }, 500);
+                    this.bsModalRef.hide();
+                }
+            });
     }
 
     uploadFiles() {

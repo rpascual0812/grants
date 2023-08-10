@@ -1,0 +1,18 @@
+.hover-container {
+    height: 200px;
+    width: 200px;
+    position: relative;
+}
+
+.hover-container:hover>.hover-btn {
+    display: block;
+}
+
+.hover-btn {
+    display: none;
+    position: absolute;
+    top: 90px;
+    right: 85px;
+    color: white;
+    cursor: pointer;
+}

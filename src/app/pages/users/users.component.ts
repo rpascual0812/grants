@@ -72,6 +72,7 @@ export class UsersComponent implements OnInit {
                 next: (data: any) => {
                     this.users = data.data;
                     this.pagination.count = data.total;
+                    // console.log('users', this.users);
                 },
                 error: (error: any) => {
                     console.log(error);
@@ -102,14 +103,17 @@ export class UsersComponent implements OnInit {
 
         this.bsModalRef.content.callback.subscribe((res: any) => {
             try {
-                const data = res.data.data;
-                _.successMessage("This is a test success alert");
+                // const data = res.data.data;
+                // console.log('updated user', data);
+                this.fetch();
+                // this.users.filter((user: any) => user.pk == data.pk)
+                //     .forEach((user: any) => {
+                //         user.first_name = data.first_name;
+                //         user.last_name = data.last_name;
+                //         user.user_role = data.user_role;
+                //     });
 
-                this.users.filter((user: any) => user.pk == data.pk)
-                    .forEach((user: any) => {
-                        user.first_name = data.first_name;
-                        user.last_name = data.last_name;
-                    });
+                // console.log(this.users);
             } catch (error: any) {
                 _.errorMessage("This is a test error alert");
             }
