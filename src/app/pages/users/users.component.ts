@@ -127,22 +127,17 @@ export class UsersComponent implements OnInit {
 
     updateRole(role: any, user: any, evt: any) {
         role.checked = evt.target.checked;
+
         this.roleService
             .save(role, user)
             .subscribe({
                 next: (data: any) => {
-                    if (evt.target.checked) {
-                        console.log(data.raw[0]);
-                    }
-                    else {
-
-                    }
+                    evt.target.checked ?
+                        user.user_role.push(data.raw[0]) :
+                        user.user_role = user.user_role.filter((user_role: any) => user_role.role_pk != role.pk);
                 },
                 error: (error: any) => {
                     console.log(error);
-                },
-                complete: () => {
-                    console.log('Complete');
                 }
             });
 
