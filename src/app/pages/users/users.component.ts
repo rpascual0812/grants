@@ -186,4 +186,60 @@ export class UsersComponent implements OnInit {
             }
         });
     }
+
+    suspend(user: any) {
+        _.confirmMessage({
+            title: '<strong>Are you sure you want to ' + (user.account.active ? 'lock' : 'unlock') + ' this account? ' + user.first_name + (user.account.active ? ' will no longer be able to log in' : ' will now be able to login') + '.</strong>',
+            icon: 'question',
+            buttons: {
+                showClose: true,
+                showCancel: true,
+                focusConfirm: false
+            },
+            confirmButtonText: '<i class="fa fa-' + (user.account.active ? 'lock' : 'unlock') + '"></i> ' + (user.account.active ? 'Lock' : 'Unlock'),
+            cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel'
+        }, () => {
+            this.userService
+                .suspend(user.pk, { active: !user.account.active })
+                .subscribe({
+                    next: (data: any) => {
+                        user.account.active = !user.account.active;
+                    },
+                    error: (error: any) => {
+                        console.log(error);
+                    },
+                    complete: () => {
+
+                    }
+                });
+        });
+    }
+
+    deactivate(user: any) {
+        _.confirmMessage({
+            title: '<strong>Are you sure you want to ' + (user.account.archived ? 'activate' : 'deactivate') + ' this account?</strong>',
+            icon: 'question',
+            buttons: {
+                showClose: true,
+                showCancel: true,
+                focusConfirm: false
+            },
+            confirmButtonText: '<i class="fa fa-' + (user.account.archived ? 'undo' : 'trash') + '"></i> ' + (user.account.archived ? 'Activate' : 'Deactivate'),
+            cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel'
+        }, () => {
+            this.userService
+                .suspend(user.pk, { archived: !user.account.archived })
+                .subscribe({
+                    next: (data: any) => {
+                        user.account.archived = !user.account.archived;
+                    },
+                    error: (error: any) => {
+                        console.log(error);
+                    },
+                    complete: () => {
+
+                    }
+                });
+        });
+    }
 }

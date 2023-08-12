@@ -87,17 +87,22 @@
                                                 href="javascript:;" (click)="userModal(user)">
                                                 <i class="material-icons text-sm me-2">edit</i>Edit
                                             </a>
-                                            <a class="btn btn-link text-info text-gradient px-3 mb-0 text-xs"
+                                            <a class="btn btn-link text-dark text-gradient px-3 mb-0 text-xs"
                                                 href="javascript:;" (click)="resetPasswordModal(user)">
                                                 <i class="material-icons text-sm me-2">key</i>Reset Password
                                             </a>
-                                            <a class="btn btn-link text-warning text-gradient px-3 mb-0 text-xs"
-                                                href="javascript:;">
-                                                <i class="material-icons text-sm me-2">lock</i>Suspend
+                                            <a class="btn btn-link {{ user.account.active ? 'text-warning' : 'text-primary' }} text-gradient px-2 mb-0 text-xs"
+                                                href="javascript:;" (click)="suspend(user)" tooltip="Test tooltip"
+                                                placement="top">
+                                                <i class="material-icons text-lg me-2">{{ user.account.active ?
+                                                    'lock_open' : 'lock' }}</i>
                                             </a>
-                                            <a class="btn btn-link text-danger text-gradient px-3 mb-0 text-xs"
-                                                href="javascript:;">
-                                                <i class="material-icons text-sm me-2">delete</i>Deactivate
+                                            <a class="btn btn-link {{ user.account.archived ? 'text-primary' : 'text-danger' }} text-gradient px-2 mb-0 text-xs"
+                                                href="javascript:;" (click)="deactivate(user)"
+                                                [title]="user.account.archived ? 'Activate account' : 'Deactivate Account'">
+                                                <i class="fa fa-{{ user.account.archived ?
+                                                    'undo'
+                                                    : 'trash' }}"></i>
                                             </a>
                                         </div>
                                     </td>

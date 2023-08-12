@@ -19,6 +19,10 @@ export class UserService {
         return this.http.post(`${_.BASE_URL}/users`, user);
     }
 
+    suspend(pk: any, data: any) {
+        return this.http.post(`${_.BASE_URL}/accounts/${pk}`, data);
+    }
+
     fetchAll(filters: any) {
         return this.http.get(`${_.BASE_URL}/users`, { params: filters });
     }

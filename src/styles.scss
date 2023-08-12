@@ -106,3 +106,10 @@ input.form-control:focus {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
 }
+
+.text-gradient.text-primary {
+    background-image: linear-gradient(195deg, #0d6efd, #08459e);
+}
+
+/* Importing Bootstrap SCSS file. */
+@import "./node_modules/bootstrap/scss/bootstrap";

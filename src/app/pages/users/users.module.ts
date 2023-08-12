@@ -16,7 +16,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
     declarations: [
         UsersComponent,
         UsersModalComponent,
-        ResetPasswordModalComponent
+        ResetPasswordModalComponent,
     ],
     imports: [
         FormsModule,
@@ -25,7 +25,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
         BsDatepickerModule.forRoot(),
         NgxPaginationModule,
         ClipboardModule,
-        ComponentsModule
+        ComponentsModule,
     ]
 })
 export class UsersModule { }
