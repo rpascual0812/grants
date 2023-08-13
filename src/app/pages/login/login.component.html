@@ -55,9 +55,15 @@
                                                 characters
                                             </div>
                                         </div>
+
+                                        <div *ngIf="user && !user.active"
+                                            class="alert alert-danger my-2 text-white ms-auto text-center">
+                                            Your account is locked. Please contact your Administrator
+                                        </div>
                                     </div>
                                     <div class="form-check form-switch d-flex align-items-center mb-3">
-                                        <input class="form-check-input" type="checkbox" formControlName="remember">
+                                        <input class="form-check-input" type="checkbox" formControlName="remember"
+                                            id="rememberMe">
                                         <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
                                     </div>
                                     <div class="text-center">

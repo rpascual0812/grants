@@ -7,6 +7,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { MainLayoutRoutes } from './main-layout.routing';
 import { UsersModule } from 'src/app/pages/users/users.module';
+import { RolesModule } from 'src/app/pages/settings/roles/roles.module';
 
 @NgModule({
     imports: [
@@ -15,8 +16,10 @@ import { UsersModule } from 'src/app/pages/users/users.module';
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
+        ModalModule.forRoot(),
+
         UsersModule,
-        ModalModule.forRoot()
+        RolesModule
     ],
     declarations: [
 

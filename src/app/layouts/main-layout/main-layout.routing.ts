@@ -5,7 +5,7 @@ import { DashboardComponent } from 'src/app/pages/dashboard/dashboard.component'
 import { GrantsComponent } from 'src/app/pages/grants/grants.component';
 import { PartnersComponent } from 'src/app/pages/partners/partners.component';
 import { ReportsComponent } from 'src/app/pages/reports/reports.component';
-import { SettingsComponent } from 'src/app/pages/settings/settings.component';
+import { RolesComponent } from 'src/app/pages/settings/roles/roles.component';
 import { UsersComponent } from 'src/app/pages/users/users.component';
 
 export const MainLayoutRoutes: Routes = [
@@ -15,5 +15,5 @@ export const MainLayoutRoutes: Routes = [
     { path: 'partners', component: PartnersComponent, canActivate: [authGuard] },
     { path: 'reports', component: ReportsComponent, canActivate: [authGuard] },
     { path: 'users', component: UsersComponent, canActivate: [authGuard] },
-    { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
+    { path: 'settings/roles', component: RolesComponent, canActivate: [authGuard] },
 ];

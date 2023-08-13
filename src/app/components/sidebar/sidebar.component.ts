@@ -39,11 +39,6 @@ export class SidebarComponent {
             label: 'Users & Roles',
             icon: 'groups'
         },
-        {
-            name: 'settings',
-            label: 'Settings',
-            icon: 'settings'
-        },
     ];
 
     constructor(

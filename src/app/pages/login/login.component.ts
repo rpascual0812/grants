@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
     form: FormGroup;
     isSubmitted: boolean = false;
     year: any;
+    user: any;
 
     constructor(
         private router: Router,
@@ -46,10 +47,13 @@ export class LoginComponent implements OnInit {
         this.authService.login(this.form.value)
             .subscribe({
                 next: (data: any) => {
+                    this.user = data.user;
                     const exp = (JSON.parse(atob(data.user.access_token.split('.')[1]))).exp;
 
-                    this.authService.setSession(data);
-                    this.router.navigateByUrl('/');
+                    if (this.user.active) {
+                        this.authService.setSession(data);
+                        this.router.navigateByUrl('/');
+                    }
                 },
                 error: (error: any) => {
                     this.toastr.error('An error occurred while fetching your account. Please try again', 'ERROR!');

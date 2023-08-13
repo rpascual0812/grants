@@ -1,0 +1,78 @@
+<div class="main-body container-fluid mb-3">
+    <nav aria-label="breadcrumb">
+        <h4 class="font-weight-bolder mb-0 mb-5">Settings > Roles</h4>
+    </nav>
+    <div class="row mb-4">
+        <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
+            <div class="mb-2">
+                <div class="row">
+                    <div class="col-lg-4 col-7 ">
+                        <div class="col-auto">
+                            <input [(ngModel)]="filters.keyword" type="text" class="form-control"
+                                placeholder="Search..." (keyup)="fetch()">
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-5 my-auto text-end">
+                        <button class="btn btn-md bg-grant-primary text-sm text-white">
+                            <i class="material-icons text-sm">add_circle</i>
+                            Add Role
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+
+                <div class="card-body px-0 pb-2">
+                    <div class="table-responsive">
+                        <table class="table align-items-center mb-0" style="overflow: hidden;">
+                            <thead>
+                                <tr>
+                                    <th class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Name</th>
+                                    <th
+                                        class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Details</th>
+                                    <th
+                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Date Updated</th>
+                                    <th
+                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Last Updated By</th>
+                                    <th
+                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Logs</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container
+                                    *ngFor="let role of roles| paginate : { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.count }; let i = index">
+                                    <tr>
+                                        <th data-bs-toggle="collapse" [attr.data-bs-target]="'#role-' + role.pk"><i
+                                                class="fa fa-caret-down mx-2"></i> {{role.name}}</th>
+                                        <td>{{role.details}}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <div class="ms-auto text-center">
+                                                <a class="btn btn-link text-dark text-gradient px-3 mb-0 text-xs"
+                                                    href="javascript:;" (click)="showLogs()">
+                                                    <i class="material-icons text-sm me-2">open_in_new</i>Show Logs
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="collapse accordion-collapse" [id]="'role-' + role.pk"
+                                        data-bs-parent=".table">
+                                        <td colspan="5">
+                                            <app-permissions></app-permissions>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

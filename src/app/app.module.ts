@@ -32,7 +32,6 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
         ReactiveFormsModule,
         HttpClientModule,
         RouterModule,
-        AppRoutingModule,
         ComponentsModule,
         ToastrModule.forRoot({
             timeOut: 3000,
