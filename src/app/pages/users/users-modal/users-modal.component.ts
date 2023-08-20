@@ -33,7 +33,6 @@ export class UsersModalComponent {
     areas: any = [];
     url: String = _.BASE_URL;
     filters: any = {};
-    isProducer: boolean = false;
     profilePicture: String = _.BASE_URL + '/assets/images/user.png';
 
     submitted: boolean = false;

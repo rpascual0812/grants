@@ -27,10 +27,10 @@
                 </div>
                 <span class="nav-link-text ms-1">Settings</span>
             </a>
-            <div class="collapse" id="settings">
+            <div class="collapse {{isShow('roles')}}" id="settings">
                 <ul class="nav ">
                     <li class="nav-item ">
-                        <a class="nav-link text-white" [routerLink]="['/settings/roles']">
+                        <a class="nav-link text-white {{isActive('roles')}}" [routerLink]="['/settings/roles']">
                             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center"
                                 style="margin-left: 20px;">
                                 <i class="material-icons opacity-10">groups</i>

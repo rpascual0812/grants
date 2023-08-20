@@ -34,4 +34,8 @@ export class UserService {
     sendUserResetPassword(user: any) {
         return this.http.post(`${_.BASE_URL}/users/${user.pk}/reset-password`, { url: window.location.origin });
     }
+
+    resetPassword(account: any) {
+        return this.http.post(`${_.BASE_URL}/users/password/update`, account);
+    }
 }

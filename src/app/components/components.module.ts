@@ -10,6 +10,7 @@ import { FooterComponent } from './footer/footer.component';
 import { PasswordGeneratorComponent } from './password-generator/password-generator.component';
 import { FileUploaderComponent } from './file-uploader/file-uploader.component';
 import { PermissionsComponent } from './permissions/permissions.component';
+import { LogsComponent } from './logs/logs.component';
 
 @NgModule({
     imports: [
@@ -26,14 +27,16 @@ import { PermissionsComponent } from './permissions/permissions.component';
 
         PasswordGeneratorComponent,
         FileUploaderComponent,
-        PermissionsComponent
+        PermissionsComponent,
+        LogsComponent
     ],
     exports: [
         NavbarComponent,
         SidebarComponent,
         FooterComponent,
         PasswordGeneratorComponent,
-        PermissionsComponent
+        PermissionsComponent,
+        LogsComponent
     ],
     providers: [
 

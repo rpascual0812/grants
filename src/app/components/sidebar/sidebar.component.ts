@@ -51,4 +51,11 @@ export class SidebarComponent {
         }
         return '';
     }
+
+    isShow(type: any) {
+        if (this.router.url.includes(type)) {
+            return 'show';
+        }
+        return '';
+    }
 }

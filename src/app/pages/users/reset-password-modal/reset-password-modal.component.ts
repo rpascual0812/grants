@@ -25,10 +25,7 @@ export class ResetPasswordModalComponent {
     isProducer: boolean = false;
     profilePicture: String = _.BASE_URL + '/assets/images/user.png';
 
-    submitted: boolean = false;
-    form: FormGroup;
-
-
+    isValid: boolean = false;
 
 
     dateConfig: any = { isAnimated: true, containerClass: 'theme-dark-blue', dateInputFormat: 'YYYY/MM/DD' };
@@ -47,21 +44,30 @@ export class ResetPasswordModalComponent {
             skip: 0,
             take: 10
         };
-
-        this.setForm();
     }
-
-    setForm() {
-        this.form = this.formBuilder.group({
-            password: ['', Validators.required],
-        });
-    }
-
-    get f() { return this.form.controls; }
 
     submit() {
-        this.callback.emit({});
-        this.bsModalRef.hide();
+        // this.callback.emit({});
+        // this.bsModalRef.hide();
+        this.user.account.new_password = this.password;
+        this.userService
+            .resetPassword(this.user.account)
+            .subscribe({
+                next: (data: any) => {
+                    this.callback.emit({ data });
+                    this.toastr.success('The user has been successfully ' + (this.user.pk ? 'updated' : 'added'), 'SUCCESS!');
+                },
+                error: (error: any) => {
+                    console.log(error);
+                    this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
+                    setTimeout(() => { this.loading = false; }, 500);
+                },
+                complete: () => {
+                    console.log('Complete');
+                    setTimeout(() => { this.loading = false; }, 500);
+                    this.bsModalRef.hide();
+                }
+            });
     }
 
     sendPasswordResetEmail(user: any) {
@@ -80,7 +86,7 @@ export class ResetPasswordModalComponent {
                 .sendUserResetPassword(user)
                 .subscribe({
                     next: (data: any) => {
-
+                        this.toastr.success('An email has been successfully sent to ' + this.user.first_name, 'SUCCESS!');
                     },
                     error: (error: any) => {
                         console.log(error);
@@ -90,5 +96,14 @@ export class ResetPasswordModalComponent {
                     }
                 });
         });
+    }
+
+    setPassword(evt: any) {
+        this.isValid = true;
+        if (evt.password.replace(/\s/g, '') === "") {
+            this.isValid = false;
+        }
+
+        this.password = evt.password;
     }
 }

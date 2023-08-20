@@ -34,7 +34,7 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
         RouterModule,
         ComponentsModule,
         ToastrModule.forRoot({
-            timeOut: 3000,
+            timeOut: 5000,
             positionClass: 'toast-top-right',
             preventDuplicates: true
         }),
