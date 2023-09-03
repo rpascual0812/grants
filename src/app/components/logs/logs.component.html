@@ -1,1 +1,77 @@
-<p>logs works!</p>
+<div>
+    <div class="modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">{{title}}</h4>
+                <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th
+                                    class="col w-60 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    Log</th>
+                                <th
+                                    class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                    Author</th>
+                                <th
+                                    class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                    Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let log of logs | paginate : { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.count }; let i = index">
+                                <td scope="row">
+                                    <div class="row">
+                                        <div class="col-md-12 mb-0 text-sm">From: {{log.details[0].from}}</div>
+                                        <div class="col-md-12 mb-0 text-sm">To: {{log.details[0].to}}</div>
+                                    </div>
+                                </td>
+                                <td scope="row" class="text-sm">
+                                    {{log.user.first_name}} {{log.user.last_name}}
+                                </td>
+                                <td scope="row" class="text-sm">
+                                    {{log.date_formatted}}
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="logs.length == 0">
+                                <td colspan="3" class="text-center">
+                                    <div class="text-muted text-sm">
+                                        No logs found
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="100%">
+                                    <div class="d-flex flex-row-reverse mt-2" *ngIf="pagination.count>0">
+                                        <pagination-controls [responsive]="true" previousLabel="Prev" nextLabel="Next"
+                                            (pageChange)="onTableDataChange($event)"></pagination-controls>
+                                        <div>
+                                            <select (change)="onTableSizeChange($event)"
+                                                class="form-control form-control-sm">
+                                                <option *ngFor="let size of tableSizes" [ngValue]="size">
+                                                    {{ size }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">{{closeBtnName}}</button>
+            </div>
+        </div>
+    </div>
+</div>

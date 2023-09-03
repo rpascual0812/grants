@@ -84,12 +84,13 @@ export class RolesComponent {
     }
 
     showLogs(role: any) {
-        const title = role && role.pk ? 'Edit ' + role.first_name : 'Add role';
+        const title = role.name + ' logs';
+        role.entity = 'roles';
         const initialState: ModalOptions = {
             class: 'modal-lg',
             initialState: {
                 title: title,
-                role: role
+                module: role
             }
         };
         this.bsModalRef = this.modalService.show(LogsComponent, initialState);

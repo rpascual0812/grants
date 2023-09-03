@@ -40,12 +40,6 @@
                                         Details</th>
                                     <th
                                         class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Date Updated</th>
-                                    <th
-                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Last Updated By</th>
-                                    <th
-                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                     </th>
                                 </tr>
                             </thead>
@@ -58,8 +52,6 @@
                                                 class="fa fa-caret-{{role.show?'up':'down'}} mx-2"></i>
                                             {{role.name}}</th>
                                         <td>{{role.details}}</td>
-                                        <td></td>
-                                        <td></td>
                                         <td>
                                             <div class="ms-auto text-center">
                                                 <a class="btn btn-link text-dark text-gradient px-3 mb-0 text-xs"
@@ -69,7 +61,7 @@
 
                                                 <a class="btn btn-link text-dark text-gradient px-3 mb-0 text-xs"
                                                     href="javascript:;" (click)="showLogs(role)">
-                                                    <i class="material-icons text-sm me-2">open_in_new</i>Show Logs
+                                                    <i class="material-icons text-sm me-2">history</i>Logs
                                                 </a>
                                             </div>
                                         </td>

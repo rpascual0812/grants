@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -19,6 +20,7 @@ import { LogsComponent } from './logs/logs.component';
         RouterModule,
         FormsModule,
         ReactiveFormsModule,
+        NgxPaginationModule
     ],
     declarations: [
         NavbarComponent,

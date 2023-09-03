@@ -7,6 +7,7 @@ import { UserService } from 'src/app/services/user.service';
 import { RoleService } from 'src/app/services/roles.service';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 import { ResetPasswordModalComponent } from './reset-password-modal/reset-password-modal.component';
+import { LogsComponent } from 'src/app/components/logs/logs.component';
 
 @Component({
     selector: 'app-users',
@@ -241,5 +242,40 @@ export class UsersComponent implements OnInit {
                     }
                 });
         });
+    }
+
+    showLogs(user: any) {
+        const title = 'User logs';
+        user.entity = 'users';
+        const initialState: ModalOptions = {
+            class: 'modal-lg',
+            initialState: {
+                title: title,
+                module: user
+            }
+        };
+        this.bsModalRef = this.modalService.show(LogsComponent, initialState);
+        this.bsModalRef.content.saveBtnName = 'Save';
+        this.bsModalRef.content.closeBtnName = 'Close';
+        this.bsModalRef.content.activateBtnName = 'Activate';
+
+        this.bsModalRef.content.callback.subscribe((res: any) => {
+            try {
+                this.fetch();
+            } catch (error: any) {
+                _.errorMessage("This is a test error alert");
+            }
+        });
+    }
+
+    onTableDataChange(event: any) {
+        this.pagination.page = event;
+        this.fetch();
+    }
+
+    onTableSizeChange(event: any): void {
+        this.pagination.tableSize = event.target.value;
+        this.pagination.page = 1;
+        this.fetch();
     }
 }

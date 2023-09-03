@@ -6,6 +6,9 @@
 @import '~material-dashboard/assets/css/material-dashboard.min.css';
 @import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
 
+/* Importing Bootstrap SCSS file. */
+@import "./node_modules/bootstrap/scss/bootstrap";
+
 // @import '~ngx-toastr/toastr';
 
 /* width */
@@ -111,5 +114,6 @@ input.form-control:focus {
     background-image: linear-gradient(195deg, #0d6efd, #08459e);
 }
 
-/* Importing Bootstrap SCSS file. */
-@import "./node_modules/bootstrap/scss/bootstrap";
+.table>:not(:first-child) {
+    border-top: 1px solid #f0f2f5;
+}

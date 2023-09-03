@@ -31,6 +31,9 @@
                                         Username</th>
                                     <th
                                         class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Unique ID</th>
+                                    <th
+                                        class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Full Name</th>
                                     <th
                                         class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -51,7 +54,12 @@
                                             <span class="mb-0 text-sm">{{user.account.username}}</span>
                                         </div>
                                     </td>
-                                    <td class="w-30 align-middle text-sm">
+                                    <td scope="row">
+                                        <div class="d-flex px-2 py-1">
+                                            <span class="mb-0 text-sm">{{user.unique_id}}</span>
+                                        </div>
+                                    </td>
+                                    <td class="w-25 align-middle text-sm">
                                         <span class="text-xs">{{user.first_name}}
                                             {{user.last_name}}</span>
                                     </td>
@@ -91,15 +99,19 @@
                                                 href="javascript:;" (click)="resetPasswordModal(user)">
                                                 <i class="material-icons text-sm me-2">key</i>Reset Password
                                             </a>
+                                            <a class="btn btn-link text-dark text-gradient px-3 mb-0 text-xs"
+                                                href="javascript:;" (click)="showLogs(user)" title="Show Logs">
+                                                <i class="material-icons text-sm me-2">history</i>
+                                            </a>
                                             <a class="btn btn-link {{ user.account.active ? 'text-warning' : 'text-primary' }} text-gradient px-2 mb-0 text-xs"
-                                                href="javascript:;" (click)="suspend(user)" tooltip="Test tooltip"
-                                                placement="top">
+                                                href="javascript:;" (click)="suspend(user)"
+                                                [title]="user.account.active ? 'Lock account' : 'Unlock account'">
                                                 <i class="material-icons text-lg me-2">{{ user.account.active ?
                                                     'lock_open' : 'lock' }}</i>
                                             </a>
                                             <a class="btn btn-link {{ user.account.archived ? 'text-primary' : 'text-danger' }} text-gradient px-2 mb-0 text-xs"
                                                 href="javascript:;" (click)="deactivate(user)"
-                                                [title]="user.account.archived ? 'Activate account' : 'Deactivate Account'">
+                                                [title]="user.account.archived ? 'Activate account' : 'Deactivate account'">
                                                 <i class="fa fa-{{ user.account.archived ?
                                                     'undo'
                                                     : 'trash' }}"></i>
@@ -108,6 +120,25 @@
                                     </td>
                                 </tr>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="100%">
+                                        <div class="d-flex flex-row-reverse mt-2" *ngIf="pagination.count>0">
+                                            <pagination-controls [responsive]="true" previousLabel="Prev"
+                                                nextLabel="Next"
+                                                (pageChange)="onTableDataChange($event)"></pagination-controls>
+                                            <div>
+                                                <select (change)="onTableSizeChange($event)"
+                                                    class="form-control form-control-sm">
+                                                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                                                        {{ size }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
