@@ -8,8 +8,6 @@ import { RolesComponent } from './roles.component';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { RolesModalComponent } from './roles-modal/roles-modal.component';
 
-
-
 @NgModule({
     declarations: [
         RolesComponent,

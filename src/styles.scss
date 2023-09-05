@@ -1,15 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~bootstrap/dist/css/bootstrap.css";
+// @import "~bootstrap/dist/css/bootstrap.css";
 @import "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700";
 @import "https://fonts.googleapis.com/icon?family=Material+Icons+Round";
 
-@import '~material-dashboard/assets/css/material-dashboard.min.css';
+@import 'src/assets/css/material-dashboard.min.css';
 @import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
 
 /* Importing Bootstrap SCSS file. */
-@import "./node_modules/bootstrap/scss/bootstrap";
+// @import "./node_modules/bootstrap/scss/bootstrap";
 
 // @import '~ngx-toastr/toastr';
+
+* {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 
 /* width */
 ::-webkit-scrollbar {

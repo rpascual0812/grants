@@ -49,6 +49,7 @@ export class RolesComponent {
             .subscribe({
                 next: (data: any) => {
                     this.roles = data.data;
+                    this.pagination.count = data.total;
                 },
                 error: (error: any) => {
                     console.log(error);
@@ -105,5 +106,21 @@ export class RolesComponent {
                 _.errorMessage("This is a test error alert");
             }
         });
+    }
+
+    showRoles(role: any) {
+        this.roles.forEach((_role: any) => role.pk != _role.pk ? _role.show = false : '');
+        role.show = !role.show;
+    }
+
+    onTableDataChange(event: any) {
+        this.pagination.page = event;
+        this.fetch();
+    }
+
+    onTableSizeChange(event: any): void {
+        this.pagination.tableSize = event.target.value;
+        this.pagination.page = 1;
+        this.fetch();
     }
 }

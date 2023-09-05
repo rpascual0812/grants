@@ -10,8 +10,7 @@
 <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
     <ul class="navbar-nav">
         <li class="nav-item" *ngFor="let setting of settings; let i = index">
-            <a class="nav-link text-white bg-gradient-primary {{isActive(setting.name)}} collapsed"
-                routerLink="/{{setting.name}}">
+            <a class="nav-link text-white {{isActive(setting.name)}} collapsed" routerLink="/{{setting.name}}">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="material-icons opacity-10">{{setting.icon}}</i>
                 </div>
@@ -19,8 +18,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a data-bs-toggle="collapse" href="#settings"
-                class="nav-link text-white bg-gradient-primary {{isActive('settings')}} collapsed"
+            <a data-bs-toggle="collapse" href="#settings" class="nav-link text-white {{isActive('settings')}} collapsed"
                 aria-controls="settings" role="button" aria-expanded="false">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="material-icons opacity-10">settings</i>

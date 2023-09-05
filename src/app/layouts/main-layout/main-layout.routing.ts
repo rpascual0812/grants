@@ -7,6 +7,7 @@ import { PartnersComponent } from 'src/app/pages/partners/partners.component';
 import { ReportsComponent } from 'src/app/pages/reports/reports.component';
 import { RolesComponent } from 'src/app/pages/settings/roles/roles.component';
 import { UsersComponent } from 'src/app/pages/users/users.component';
+import { ProfileComponent } from 'src/app/pages/profile/profile.component';
 
 export const MainLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
@@ -15,5 +16,6 @@ export const MainLayoutRoutes: Routes = [
     { path: 'partners', component: PartnersComponent, canActivate: [authGuard] },
     { path: 'reports', component: ReportsComponent, canActivate: [authGuard] },
     { path: 'users', component: UsersComponent, canActivate: [authGuard] },
+    { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
     { path: 'settings/roles', component: RolesComponent, canActivate: [authGuard] },
 ];

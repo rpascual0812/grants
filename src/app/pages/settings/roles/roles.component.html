@@ -48,7 +48,7 @@
                                     *ngFor="let role of roles| paginate : { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.count }; let i = index">
                                     <tr>
                                         <th data-bs-toggle="collapse" [attr.data-bs-target]="'#role-' + role.pk"
-                                            (click)="role.show=!role.show"><i
+                                            (click)="showRoles(role)"><i
                                                 class="fa fa-caret-{{role.show?'up':'down'}} mx-2"></i>
                                             {{role.name}}</th>
                                         <td>{{role.details}}</td>
@@ -74,6 +74,25 @@
                                     </tr>
                                 </ng-container>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="100%">
+                                        <div class="d-flex flex-row-reverse mt-2" *ngIf="pagination.count>0">
+                                            <pagination-controls [responsive]="true" previousLabel="Prev"
+                                                nextLabel="Next"
+                                                (pageChange)="onTableDataChange($event)"></pagination-controls>
+                                            <div>
+                                                <select (change)="onTableSizeChange($event)"
+                                                    class="form-control form-control-sm">
+                                                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                                                        {{ size }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
