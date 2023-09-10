@@ -3,18 +3,16 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-2">
-                    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle card-img-top"
+                    <img src="{{url}}/{{user.user_document.document.path}}" class="rounded-circle card-img-top"
                         height="222" alt="Black and White Portrait of a Man" loading="lazy" />
                 </div>
                 <div class="col-md-10">
                     <div class="clearfix py-4">
                         <div>
-                            <h2 class="">Rafael Aurelio Pascual</h2>
-                            <p class="mute">
-                                Senior Full-Stack Developer
-                                <br>
-                                Quoterite
-                            </p>
+                            <h2 class="">{{user.first_name}} {{user.middle_name}} {{user.last_name}}</h2>
+                            <span class="mute">Senior Full-Stack Developer</span>
+                            <br>
+                            <span class="mute">Dev Team</span>
                         </div>
                     </div>
                 </div>
@@ -29,31 +27,34 @@
                 <div class="nav-wrapper position-relative end-0">
                     <ul class="nav nav-pills nav-fill p-1" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="javascript:;"
-                                role="tab" aria-selected="true">
+                            <a class="nav-link mb-0 px-0 py-1 {{ menu == 'profile' ? 'active' : '' }} transition: all 0.5s ease 0s;"
+                                (click)="setActiveMenu('profile')" data-bs-toggle="tab" href="javascript:;" role="tab"
+                                [attr.aria-selected]="menu == 'profile' ? true : false" tabindex="-1">
                                 <i class="material-icons text-lg position-relative">person</i>
                                 <span class="ms-1">Profile</span>
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:;" role="tab"
-                                aria-selected="false" tabindex="-1">
+                            <a class="nav-link mb-0 px-0 py-1 {{ menu == 'conversations' ? 'active' : '' }} transition: all 0.5s ease 0s;"
+                                (click)="setActiveMenu('conversations')" data-bs-toggle="tab" href="javascript:;"
+                                role="tab" [attr.aria-selected]="menu == 'conversations' ? true : false">
                                 <i class="material-icons text-lg position-relative">email</i>
                                 <span class="ms-1">Conversations</span>
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:;" role="tab"
-                                aria-selected="false" tabindex="-1">
+                            <a class="nav-link mb-0 px-0 py-1 {{ menu == 'settings' ? 'active' : '' }} transition: all 0.5s ease 0s;"
+                                (click)="setActiveMenu('settings')" data-bs-toggle="tab" href="javascript:;" role="tab"
+                                [attr.aria-selected]="menu == 'settings' ? true : false" tabindex="-1">
                                 <i class="material-icons text-lg position-relative">settings</i>
                                 <span class="ms-1">Settings</span>
                             </a>
                         </li>
-                        <div class="moving-tab position-absolute nav-link"
-                            style="padding: 0px; width: 111px; transform: translate3d(0px, 0px, 0px); transition: all 0.5s ease 0s;">
+                        <!-- <div class="moving-tab position-absolute nav-link"
+                            [style]="'padding: 0px; transition: all 0.5s ease 0s; width: ' + activeWidth + 'px; transform: ' + activeMenuPosition">
                             <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="javascript:;"
                                 role="tab" aria-selected="true">-</a>
-                        </div>
+                        </div> -->
                     </ul>
                 </div>
             </div>

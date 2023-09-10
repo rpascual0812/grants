@@ -67,7 +67,7 @@
                                         <span class="text-xs">{{user.email_address}}</span>
                                     </td>
                                     <td class="w-10 align-middle text-center text-sm">
-                                        <div class="shadow-sm p-2 bg-white rounded w-100 cursor-pointer"
+                                        <div class="shadow-x p-2 bg-white rounded w-100 cursor-pointer"
                                             data-bs-toggle="dropdown" aria-expanded="false">
                                             <span class="badge rounded-pill bg-grant-primary"
                                                 style="padding-top: 6px; padding-left: 7px; padding-right: 7px;">{{getActiveRoles(user.user_role)}}</span>
@@ -129,7 +129,7 @@
                                                 (pageChange)="onTableDataChange($event)"></pagination-controls>
                                             <div>
                                                 <select (change)="onTableSizeChange($event)"
-                                                    class="form-control form-control-sm">
+                                                    class="form-control form-control-sm pagination-select">
                                                     <option *ngFor="let size of tableSizes" [ngValue]="size">
                                                         {{ size }}
                                                     </option>

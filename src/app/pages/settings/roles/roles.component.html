@@ -83,7 +83,7 @@
                                                 (pageChange)="onTableDataChange($event)"></pagination-controls>
                                             <div>
                                                 <select (change)="onTableSizeChange($event)"
-                                                    class="form-control form-control-sm">
+                                                    class="form-control form-control-sm pagination-select">
                                                     <option *ngFor="let size of tableSizes" [ngValue]="size">
                                                         {{ size }}
                                                     </option>

@@ -97,6 +97,10 @@
     margin-bottom: 0px !important;
 }
 
+.sidenav {
+    z-index: 1000 !important;
+}
+
 .input-group.has-validation>.dropdown-toggle:nth-last-child(n+4),
 .input-group.has-validation>:nth-last-child(n+3):not(.dropdown-toggle):not(.dropdown-menu),
 .input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3),
@@ -120,4 +124,23 @@ input.form-control:focus {
 
 .table>:not(:first-child) {
     border-top: 1px solid #f0f2f5;
+}
+
+// Pagination
+.pagination-select,
+.pagination-select:active,
+.pagination-select:focus {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+// Dropdown Menu
+.dropdown-menu {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+// Custom Shadow
+.shadow-x {
+    box-shadow: 0 .0525rem .125rem 0 rgba(0, 0, 0, .10) !important
 }
