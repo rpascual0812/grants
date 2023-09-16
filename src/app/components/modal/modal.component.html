@@ -1,0 +1,45 @@
+<div class="modal-container">
+    <div style="
+      width: 500px;
+      height: auto;
+      border: olive 1px solid;
+      background-color: white;
+      border-radius: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    ">
+        <h1 class="title">{{ title }}</h1>
+        <p class="body">{{ body }}</p>
+
+        <form role="form" class="text-start" [formGroup]="form">
+            <div class="input-group input-group-outline my-3">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control shadow-none" formControlName="username" (focus)="onEnter(this)"
+                    (blur)="onExit(this)">
+
+            </div>
+            <div class="input-group input-group-outline mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control shadow-none" formControlName="password">
+
+
+            </div>
+            <div class="form-check form-switch d-flex align-items-center mb-3">
+                <input class="form-check-input" type="checkbox" formControlName="remember" id="rememberMe">
+                <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember
+                    me</label>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Sign
+                    in</button>
+            </div>
+        </form>
+
+        <div class="btn-container">
+            <button (click)="closeMe()">close</button>
+            <button (click)="confirm()">Confirm</button>
+        </div>
+    </div>
+</div>

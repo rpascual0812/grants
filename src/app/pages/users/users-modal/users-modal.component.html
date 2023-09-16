@@ -3,13 +3,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title pull-left">{{title}}</h4>
-                <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
-                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                <button type="button" style="font-size: 20px !important; line-height: normal !important;"
+                    class="btn-close close btn-close-white" aria-label="Close" (click)="bsModalRef.hide()">
+                    <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="row">
-
                     <div class="col-md-12 d-flex justify-content-center ">
                         <div class="hover-container">
                             <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuProfile"
@@ -28,9 +28,9 @@
                         </button>
                     </div> -->
                     <div class="col-md-12">
-                        <form [formGroup]="form" (ngSubmit)="submit()">
+                        <form [formGroup]="form" class="text-start" (ngSubmit)="submit()">
                             <div class="form-group">
-                                <label for="example-email-input" class="form-control-label">Role</label>
+                                <!-- <label for="example-email-input" class="form-control-label">Role</label> -->
                                 <div class="shadow-sm p-2 bg-white rounded w-20 cursor-pointer"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="badge rounded-pill bg-grant-primary"
@@ -57,10 +57,11 @@
 
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="example-text-input" class="form-control-label">First Name</label>
-                                        <input class="form-control" type="text" placeholder="First Name"
-                                            formControlName="first_name"
+                                    <div class="form-group input-group input-group-outline my-3"
+                                        [class]="{ 'is-filled' : form.value.first_name !== null }">
+                                        <label class="form-label">First Name</label>
+                                        <input class="form-control shadow-none" type="text" formControlName="first_name"
+                                            on-focus="onFocus($event.target)" on-blur="onExit($event.target)"
                                             [ngClass]="{ 'is-invalid': submitted && f['first_name'].errors }">
                                         <div *ngIf="submitted && f['first_name'].errors" class="invalid-feedback">
                                             <div *ngIf="f['first_name'].errors['required']">First Name is required</div>
@@ -68,10 +69,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="example-text-input" class="form-control-label">Last Name</label>
-                                        <input class="form-control" type="text" placeholder="Last Name"
-                                            formControlName="last_name"
+                                    <div class="form-group input-group input-group-outline my-3"
+                                        [class]="{ 'is-filled' : form.value.last_name !== null }">
+                                        <label for="example-text-input" class="form-label">Last Name</label>
+                                        <input class="form-control shadow-none" type="text" formControlName="last_name"
+                                            on-focus="onFocus($event.target)" on-blur="onExit($event.target)"
                                             [ngClass]="{ 'is-invalid': submitted && f['last_name'].errors }">
                                         <div *ngIf="submitted && f['last_name'].errors" class="invalid-feedback">
                                             <div *ngIf="f['last_name'].errors['required']">Last Name is required</div>
@@ -80,45 +82,51 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="example-email-input" class="form-control-label">Email Address</label>
-                                <input class="form-control" type="email" placeholder="Email Address"
-                                    formControlName="email_address"
+                            <div class="form-group input-group input-group-outline my-3"
+                                [class]="{ 'is-filled' : form.value.email_address !== null }">
+                                <label for="example-email-input" class="form-label">Email Address</label>
+                                <input class="form-control shadow-none" type="email" formControlName="email_address"
+                                    on-focus="onFocus($event.target)" on-blur="onExit($event.target)"
                                     [ngClass]="{ 'is-invalid': submitted && f['email_address'].errors }">
                                 <div *ngIf="submitted && f['email_address'].errors" class="invalid-feedback">
                                     <div *ngIf="f['email_address'].errors['required']">Email Address is required</div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">Mobile Number</label>
-                                <input class="form-control" type="text" placeholder="Mobile Number"
-                                    formControlName="mobile"
+                            <div class="form-group input-group input-group-outline my-3"
+                                [class]="{ 'is-filled' : form.value.mobile !== null }">
+                                <label for="example-text-input" class="form-label">Mobile Number</label>
+                                <input class="form-control" type="text" formControlName="mobile"
+                                    on-focus="onFocus($event.target)" on-blur="onExit($event.target)"
                                     [ngClass]="{ 'is-invalid': submitted && f['mobile'].errors }">
                                 <div *ngIf="submitted && f['mobile'].errors" class="invalid-feedback">
                                     <div *ngIf="f['mobile'].errors['required']">Mobile Number is required</div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="example-tel-input" class="form-control-label">Birth Date</label>
-                                <input #date="bsDatepicker" class="form-control datepicker" bsDatepicker
-                                    placeholder="Birth Date" type="text" autocomplete="off" formControlName="birthdate"
+                            <div class="form-group input-group input-group-outline my-3 "
+                                [class]="{ 'is-filled' : form.value.birthdate !== null }">
+                                <label for="example-tel-input" class="form-label">Birth Date</label>
+                                <input #date="bsDatepicker" class="form-control datepicker" bsDatepicker type="text"
+                                    autocomplete="off" formControlName="birthdate" on-focus="onFocus($event.target)"
+                                    on-blur="onExit($event.target)"
                                     [ngClass]="{ 'is-invalid': submitted && f['birthdate'].errors }"
                                     [bsConfig]="dateConfig" [autocomplete]="false" />
                                 <div *ngIf="submitted && f['birthdate'].errors" class="invalid-feedback">
                                     <div *ngIf="f['birthdate'].errors['required']">Birth Date is required</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="example-email-input" class="form-control-label">Gender</label>
-                                <select class="form-control" formControlName="gender">
+                            <div class="form-group input-group input-group-outline my-3"
+                                [class]="{ 'is-filled' : form.value.gender !== null }">
+                                <label for="example-email-input" class="form-label">Gender</label>
+                                <select class="form-control" formControlName="gender" on-focus="onFocus($event.target)"
+                                    on-blur="onExit($event.target)">
                                     <option value="{{gender.pk}}" *ngFor="let gender of genders; let i = index">
                                         {{gender.name}}
                                     </option>
                                 </select>
-                                <div *ngIf="submitted && f['email_address'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['email_address'].errors['required']">Gender is required</div>
+                                <div *ngIf="submitted && f['gender'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['gender'].errors['required']">Gender is required</div>
                                 </div>
                             </div>
                         </form>

@@ -53,3 +53,15 @@ export function confirmMessage(data: any, callback: Function) {
         }
     })
 }
+
+// This is inputs inside a modal
+export function onFocus(element: any) {
+    element.parentNode.classList.add("is-focused");
+}
+
+export function onExit(element: any) {
+    element.parentNode.classList.remove("is-focused");
+    if (element.value !== '') {
+        element.parentNode.classList.add("is-filled");
+    }
+}

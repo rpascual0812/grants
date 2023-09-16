@@ -13,10 +13,11 @@
                         <form [formGroup]="form" (ngSubmit)="submit()">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="example-text-input" class="form-control-label">Name</label>
-                                        <input class="form-control" type="text" placeholder="Name"
-                                            formControlName="name"
+                                    <div class="form-group input-group input-group-outline my-3"
+                                        [class]="{ 'is-filled' : form.value.name !== null }">
+                                        <label for="example-text-input" class="form-label">Name</label>
+                                        <input class="form-control shadow-none" type="text" formControlName="name"
+                                            on-focus="onFocus($event.target)" on-blur="onExit($event.target)"
                                             [ngClass]="{ 'is-invalid': submitted && f['name'].errors }">
                                         <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
                                             <div *ngIf="f['name'].errors['required']">Name is required</div>
@@ -24,11 +25,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="example-text-input" class="form-control-label">Details</label>
+                                    <div class="form-group input-group input-group-outline my-3"
+                                        [class]="{ 'is-filled' : form.value.details !== null }">
+                                        <label for="example-text-input" class="form-label">Details</label>
                                         <textarea class="form-control" cols="30" rows="5" formControlName="details"
-                                            [ngClass]="{ 'is-invalid': submitted && f['details'].errors }"
-                                            placeholder="Details"></textarea>
+                                            on-focus="onFocus($event.target)" on-blur="onExit($event.target)"
+                                            [ngClass]="{ 'is-invalid': submitted && f['details'].errors }"></textarea>
                                         <div *ngIf="submitted && f['details'].errors" class="invalid-feedback">
                                             <div *ngIf="f['details'].errors['required']">Details is required</div>
                                         </div>

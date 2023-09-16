@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as _ from '../../utilities/globals';
 
 import { ClipboardService } from 'ngx-clipboard';
 
@@ -10,6 +11,9 @@ import { ClipboardService } from 'ngx-clipboard';
 })
 export class PasswordGeneratorComponent implements OnInit {
     @Output() data = new EventEmitter();
+
+    onFocus: Function = _.onFocus;
+    onExit: Function = _.onExit;
 
     form: FormGroup;
     letters: any = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"

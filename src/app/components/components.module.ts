@@ -12,6 +12,7 @@ import { PasswordGeneratorComponent } from './password-generator/password-genera
 import { FileUploaderComponent } from './file-uploader/file-uploader.component';
 import { PermissionsComponent } from './permissions/permissions.component';
 import { LogsComponent } from './logs/logs.component';
+import { InputComponent } from './input/input.component';
 
 @NgModule({
     imports: [
@@ -20,7 +21,7 @@ import { LogsComponent } from './logs/logs.component';
         RouterModule,
         FormsModule,
         ReactiveFormsModule,
-        NgxPaginationModule
+        NgxPaginationModule,
     ],
     declarations: [
         NavbarComponent,
@@ -30,7 +31,8 @@ import { LogsComponent } from './logs/logs.component';
         PasswordGeneratorComponent,
         FileUploaderComponent,
         PermissionsComponent,
-        LogsComponent
+        LogsComponent,
+        InputComponent,
     ],
     exports: [
         NavbarComponent,
@@ -38,7 +40,8 @@ import { LogsComponent } from './logs/logs.component';
         FooterComponent,
         PasswordGeneratorComponent,
         PermissionsComponent,
-        LogsComponent
+        LogsComponent,
+        InputComponent
     ],
     providers: [
 

@@ -8,6 +8,7 @@ import { ReportsComponent } from 'src/app/pages/reports/reports.component';
 import { RolesComponent } from 'src/app/pages/settings/roles/roles.component';
 import { UsersComponent } from 'src/app/pages/users/users.component';
 import { ProfileComponent } from 'src/app/pages/profile/profile.component';
+import { ModalComponent } from 'src/app/components/modal/modal.component';
 
 export const MainLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
@@ -17,5 +18,5 @@ export const MainLayoutRoutes: Routes = [
     { path: 'reports', component: ReportsComponent, canActivate: [authGuard] },
     { path: 'users', component: UsersComponent, canActivate: [authGuard] },
     { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
-    { path: 'settings/roles', component: RolesComponent, canActivate: [authGuard] },
+    { path: 'settings/roles', component: RolesComponent, canActivate: [authGuard] }
 ];

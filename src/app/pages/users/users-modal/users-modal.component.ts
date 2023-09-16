@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, OnInit, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { FormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { DateTime } from 'luxon';
@@ -18,6 +18,9 @@ import { UserService } from 'src/app/services/user.service';
 export class UsersModalComponent {
 
     public callback: EventEmitter<any> = new EventEmitter();
+
+    onFocus: Function = _.onFocus;
+    onExit: Function = _.onExit;
 
     title?: string;
     user: any = {};
@@ -42,6 +45,7 @@ export class UsersModalComponent {
     dateConfig: any = { isAnimated: true, containerClass: 'theme-dark-blue', dateInputFormat: 'YYYY/MM/DD' };
 
     constructor(
+        private elRef: ElementRef,
         public bsModalRef: BsModalRef,
         private formBuilder: FormBuilder,
         public documentUploaderRef: BsModalRef,
@@ -62,6 +66,8 @@ export class UsersModalComponent {
         this.setForm();
         this.getGenders();
     }
+
+
 
     setForm() {
         this.profilePicture = this.user && this.user.user_document ? this.url + '/' + this.user.user_document.document.path : './assets/images/default-profile.png';

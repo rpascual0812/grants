@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import * as _ from '../../utilities/globals';
@@ -8,6 +8,9 @@ import { RoleService } from 'src/app/services/roles.service';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 import { ResetPasswordModalComponent } from './reset-password-modal/reset-password-modal.component';
 import { LogsComponent } from 'src/app/components/logs/logs.component';
+
+import { Subscription } from 'rxjs';
+import { ModalService } from '../../components/modal/modal.service';
 
 @Component({
     selector: 'app-users',
@@ -26,11 +29,16 @@ export class UsersComponent implements OnInit {
     pagination: any = _.PAGINATION;
     tableSizes: any = _.TABLE_SIZES;
 
+    @ViewChild('modal', { read: ViewContainerRef })
+    entry!: ViewContainerRef;
+    sub!: Subscription;
+
     constructor(
         private userService: UserService,
         private formBuilder: FormBuilder,
         private modalService: BsModalService,
-        private roleService: RoleService
+        private roleService: RoleService,
+        // private modalService: ModalService
     ) {
 
     }
@@ -254,18 +262,18 @@ export class UsersComponent implements OnInit {
                 module: user
             }
         };
-        this.bsModalRef = this.modalService.show(LogsComponent, initialState);
-        this.bsModalRef.content.saveBtnName = 'Save';
-        this.bsModalRef.content.closeBtnName = 'Close';
-        this.bsModalRef.content.activateBtnName = 'Activate';
+        // this.bsModalRef = this.modalService.show(LogsComponent, initialState);
+        // this.bsModalRef.content.saveBtnName = 'Save';
+        // this.bsModalRef.content.closeBtnName = 'Close';
+        // this.bsModalRef.content.activateBtnName = 'Activate';
 
-        this.bsModalRef.content.callback.subscribe((res: any) => {
-            try {
-                this.fetch();
-            } catch (error: any) {
-                _.errorMessage("This is a test error alert");
-            }
-        });
+        // this.bsModalRef.content.callback.subscribe((res: any) => {
+        //     try {
+        //         this.fetch();
+        //     } catch (error: any) {
+        //         _.errorMessage("This is a test error alert");
+        //     }
+        // });
     }
 
     onTableDataChange(event: any) {
@@ -278,4 +286,21 @@ export class UsersComponent implements OnInit {
         this.pagination.page = 1;
         this.fetch();
     }
+
+    openModal() {
+        // this.sub = this.modalService
+        //     .openModal(this.entry, 'Are you sure ?', 'click confirm or close')
+        //     .subscribe((v) => {
+        //         //your logic
+        //     });
+    }
+
+    rolesChanged(event: any) {
+        console.log('changed', event);
+    }
+
+    rolesData(event: any) {
+        console.log('data', event);
+    }
+
 }

@@ -5,6 +5,8 @@ import { DateTime } from 'luxon';
 import { formatDate } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 
+import * as _ from '../../../../utilities/globals';
+
 @Component({
     selector: 'app-roles-modal',
     templateUrl: './roles-modal.component.html',
@@ -12,6 +14,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RolesModalComponent {
     public callback: EventEmitter<any> = new EventEmitter();
+
+    onFocus: Function = _.onFocus;
+    onExit: Function = _.onExit;
 
     title?: string;
     role: any = {};
