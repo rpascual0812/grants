@@ -1,0 +1,208 @@
+<div class="row">
+  <div class="col-12 col-lg-6 mb-3">
+    <div class="card bg-gray-100">
+      <div class="card-body">
+        <h5 class="card-title">Project Information</h5>
+        <form class="my-3">
+          <div class="row">
+            <div class="col-12 col-lg-8">
+              <div class="form-group my-3">
+                <label class="font-weight-bold text-dark">Project title*</label>
+                <input type="text" class="form-control border rounded-1 p-1" required />
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="form-group my-3">
+                <label class="font-weight-bold text-dark">Duration*</label>
+                <app-select class="shadow-none" [arr]="durationOpts"></app-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group my-3">
+            <label class="font-weight-bold text-dark">Background/What is the problem to be addresssed?*</label>
+            <textarea
+              type="text"
+              rows="5"
+              class="form-control border rounded-1 p-2"
+              style="resize: none"
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-group my-3">
+            <label class="font-weight-bold text-dark">Objectives*</label>
+            <textarea
+              type="text"
+              rows="5"
+              class="form-control border rounded-1 p-2"
+              style="resize: none"
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-group my-3">
+            <label class="font-weight-bold text-dark"
+              >Expected outputs/How will the proposed project activities improve?</label
+            >
+            <textarea
+              type="text"
+              rows="5"
+              class="form-control border rounded-1 p-2"
+              style="resize: none"
+              required
+            ></textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-6">
+    <app-attach-documents></app-attach-documents>
+    <button class="btn bg-info text-white w-100 text-capitalize my-2">Reset Form</button>
+  </div>
+
+  <div class="col-12 col-lg-6 my-2">
+    <div class="card bg-gray-100">
+      <div class="card-body">
+        <form class="my-3">
+          <p class="text-dark font-weight-bold p-0 m-0">How many will benefit from the project*</p>
+          <p class="text-dark font-weight-bold p-0 m-0">Direct:</p>
+
+          <div class="border-top border-2"></div>
+          <div class="row">
+            <div class="col-12 col-lg-6">
+              <div class="form-group row my-1">
+                <label class="col-7 font-weight-bold text-dark">Women:</label>
+                <div class="col-3">
+                  <input type="number" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+              <div class="form-group row my-1">
+                <label class="col-7 font-weight-bold text-dark">Diffable women:</label>
+                <div class="col-3">
+                  <input type="number" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+              <div class="form-group row my-1">
+                <label class="col-7 font-weight-bold text-dark">Other vulnerable sector:</label>
+                <div class="col-3">
+                  <input type="number" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+              <div class="form-group row my-1">
+                <label class="col-7 font-weight-bold text-dark">Men:</label>
+                <div class="col-3">
+                  <input type="number" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+              <div class="form-group row my-1">
+                <label class="col-7 font-weight-bold text-dark">Diffable women:</label>
+                <div class="col-3">
+                  <input type="number" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+              <div class="form-group row my-1">
+                <label class="col-7 font-weight-bold text-dark">Other vulnerable sector:</label>
+                <div class="col-3">
+                  <input type="number" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="border-top border-2"></div>
+          <div class="row">
+            <div class="col-12 col-lg-6">
+              <div class="form-group row my-1">
+                <label class="col-7 font-weight-bold text-dark">Young Women:</label>
+                <div class="col-3">
+                  <input type="number" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+              <div class="form-group row my-1">
+                <label class="col-7 font-weight-bold text-dark">Diffable women:</label>
+                <div class="col-3">
+                  <input type="number" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+              <div class="form-group row my-1">
+                <label class="col-7 font-weight-bold text-dark">Other vulnerable sector:</label>
+                <div class="col-3">
+                  <input type="number" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+              <div class="form-group row my-1">
+                <label class="col-7 font-weight-bold text-dark">Young Men:</label>
+                <div class="col-3">
+                  <input type="number" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+              <div class="form-group row my-1">
+                <label class="col-7 font-weight-bold text-dark">Diffable women:</label>
+                <div class="col-3">
+                  <input type="number" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+              <div class="form-group row my-1">
+                <label class="col-7 font-weight-bold text-dark">Other vulnerable sector:</label>
+                <div class="col-3">
+                  <input type="number" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group my-3">
+            <label class="font-weight-bold text-dark"
+              >How will women and children be involved in the project? How will the benefit or be affected by the other
+              project*</label
+            >
+            <textarea
+              type="text"
+              rows="5"
+              class="form-control border rounded-1 p-2"
+              style="resize: none"
+              required
+            ></textarea>
+          </div>
+
+          
+          <div class="container">
+            <p class="text-dark font-weight-bold p-0">Project Location*</p>
+            <div *ngFor="let item of projectLoc; index as i" class="row align-items-center my-2">
+              <div class="col-12 col-md-2 my-1">
+                <p class="font-weight-bold text-dark text-sm p-0 m-0">Location {{ i + 1 }}</p>
+              </div>
+              <div class="col-12 col-md-4 my-1">
+                <app-select class="shadow-none" [arr]="countriesOpt"></app-select>
+              </div>
+              <div class="col-12 col-md-4 my-1">
+                <app-select class="shadow-none" [arr]="['Province 1', 'Province 2']"></app-select>
+              </div>
+              <div class="col-12 col-md-2 my-1">
+                <button class="btn btn-danger" type="button" (click)="onRemoveProjectLoc(item.id)">
+                    <i class="material-icons">delete</i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-dark-blue my-3" type="button" (click)="onAddProjectLoc()">
+            <span class="icon icon-sm position-relative" style="bottom: 2px">
+              <i class="material-icons">add</i>
+            </span>
+            Add
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
