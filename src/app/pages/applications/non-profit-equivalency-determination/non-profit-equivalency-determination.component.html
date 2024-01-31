@@ -133,6 +133,100 @@
               <input class="form-check-input" type="checkbox" />
               <label class="form-check-label">scientific</label>
             </div>
+            <div class="form-group my-2">
+              <label class="font-weight-bold text-dark">Others please indicate</label>
+              <input type="text" class="form-control border rounded-1 p-1" required />
+            </div>
+
+            <div class="form-group my-3">
+              <div class="row">
+                <div class="col-12 col-md-10">
+                  <label class="font-weight-bold text-dark"
+                    >Does any part of the assets of your organization, now or planned for the future, inure to the
+                    benefit of private individuals, other than in the form of services which your organization is
+                    authorized to provide?*</label
+                  >
+                </div>
+                <div class="col-12 col-md-2">
+                  <app-select [arr]="['Yes', 'No']"></app-select>
+                </div>
+              </div>
+
+              <label class="font-weight-bold text-dark">If yes please explain</label>
+              <textarea
+                type="text"
+                rows="5"
+                class="form-control border rounded-1 p-2"
+                style="resize: none"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group my-3">
+              <div class="row">
+                <div class="col-12 col-md-10">
+                  <label class="font-weight-bold text-dark"
+                    >Does your organization make any payments to any of its officers or members of its Board of
+                    Directors or other governing body, other than reasonable compensation for services to the
+                    organization?*</label
+                  >
+                </div>
+                <div class="col-12 col-md-2">
+                  <app-select [arr]="['Yes', 'No']"></app-select>
+                </div>
+              </div>
+
+              <label class="font-weight-bold text-dark">If yes please explain</label>
+              <textarea
+                type="text"
+                rows="5"
+                class="form-control border rounded-1 p-2"
+                style="resize: none"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group my-3">
+              <div class="row">
+                <div class="col-12 col-md-10">
+                  <label class="font-weight-bold text-dark"
+                    >Does your organization make any payments to any of its officers or members of its Board of
+                    Directors or other governing body, other than reasonable compensation for services to the
+                    organization?*</label
+                  >
+                </div>
+                <div class="col-12 col-md-2">
+                  <app-select [arr]="['Yes', 'No']"></app-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group my-3">
+              <div class="row">
+                <div class="col-12 col-md-10">
+                  <label class="font-weight-bold text-dark"
+                    >Upon dissolution, are the assets of the organization required to be distributed for charitable,
+                    educational, scientific, religious, medical or literary purposes?*</label
+                  >
+                </div>
+                <div class="col-12 col-md-2">
+                  <app-select [arr]="['Yes', 'No']"></app-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group my-3">
+              <div class="row">
+                <div class="col-12 col-md-10">
+                  <label class="font-weight-bold text-dark"
+                    >Is your organization controlled by or operated in connection with any other organization?*
+                  </label>
+                </div>
+                <div class="col-12 col-md-2">
+                  <app-select [arr]="['Yes', 'No']"></app-select>
+                </div>
+              </div>
+            </div>
           </div>
         </form>
       </div>

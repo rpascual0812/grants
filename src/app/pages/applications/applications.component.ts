@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./applications.component.scss'],
 })
 export class ApplicationsComponent {
-  MAX_STEP = 5;
+  MAX_STEP = 7;
   INITIAL_STEP = 1;
   step = this.INITIAL_STEP;
 
