@@ -1,18 +1,21 @@
 <main class="main-content mt-0">
-  <div class="container">
-    <app-proponent-information *ngIf="step === 1"></app-proponent-information>
-    <app-organization-profile *ngIf="step === 2"></app-organization-profile>
-    <app-project-information *ngIf="step === 3"></app-project-information>
-    <app-proposed-activities-timelines *ngIf="step === 4"></app-proposed-activities-timelines>
-    <app-non-profit-equivalency-determination *ngIf="step === 5"></app-non-profit-equivalency-determination>
-    <app-fiscal-sponsor-information *ngIf="step === 6"></app-fiscal-sponsor-information>
-    <app-contact-info-references *ngIf="step === 7"></app-contact-info-references>
-    <div class="container my-2">
-      <div class="d-flex justify-content-center">
-        <button class="btn btn-white text-capitalize m-1" (click)="onBack()" *ngIf="step !== INITIAL_STEP">Back</button>
-        <button class="btn btn-dark-blue text-capitalize m-1" (click)="onNext()" *ngIf="step !== MAX_STEP">Next</button>
-        <button class="btn btn-dark-blue text-capitalize m-1" (click)="onNext()" *ngIf="step === MAX_STEP">Save</button>
-      </div>
+    <div class="container">
+        <app-proponent-information *ngIf="step === 1"></app-proponent-information>
+        <app-organization-profile *ngIf="step === 2"></app-organization-profile>
+        <app-project-information *ngIf="step === 3"></app-project-information>
+        <app-proposed-activities-timelines *ngIf="step === 4"></app-proposed-activities-timelines>
+        <app-non-profit-equivalency-determination *ngIf="step === 5"></app-non-profit-equivalency-determination>
+        <app-fiscal-sponsor-information *ngIf="step === 6"></app-fiscal-sponsor-information>
+        <app-contact-info-references *ngIf="step === 7"></app-contact-info-references>
+        <div class="container my-2">
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-white text-capitalize m-1" (click)="onBack()"
+                    *ngIf="step !== INITIAL_STEP">Back</button>
+                <button class="btn btn-dark-blue text-capitalize m-1" (click)="onNext()"
+                    *ngIf="step !== MAX_STEP">Next</button>
+                <button class="btn btn-dark-blue text-capitalize m-1" (click)="onNext()"
+                    *ngIf="step === MAX_STEP">Save</button>
+            </div>
+        </div>
     </div>
-  </div>
 </main>

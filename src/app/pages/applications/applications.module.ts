@@ -10,18 +10,18 @@ import { ProjectInformationModule } from './project-information/project-informat
 import { ProposedActivitiesTimelinesModule } from './proposed-activities-timelines/proposed-activities-timelines.module';
 import { ContactInfoReferencesModule } from './contact-info-references/contact-info-references.module';
 @NgModule({
-  declarations: [
-    ApplicationsComponent,
-  ],
-  imports: [
-    CommonModule,
-    ProponentInformationModule,
-    OrganizationProfileModule,
-    ProjectInformationModule,
-    ProposedActivitiesTimelinesModule,
-    NonProfitEquivalencyDeterminationModule,
-    FiscalSponsorInformationModule,
-    ContactInfoReferencesModule
-  ]
+    declarations: [
+        ApplicationsComponent,
+    ],
+    imports: [
+        CommonModule,
+        ProponentInformationModule,
+        OrganizationProfileModule,
+        ProjectInformationModule,
+        ProposedActivitiesTimelinesModule,
+        NonProfitEquivalencyDeterminationModule,
+        FiscalSponsorInformationModule,
+        ContactInfoReferencesModule
+    ]
 })
 export class ApplicationsModule { }
