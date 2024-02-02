@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 import { GlobalService } from "../../services/global.service";
@@ -15,6 +15,8 @@ export class SelectComponent {
     @Input() multiple: boolean = false;
     @Input() limitSelection: any = -1;
     @Input() itemsShowLimit: any = 1;
+
+    @Output() onSelectEvent = new EventEmitter<string | string[]>();
 
     loading: boolean = false;
     dropdownList: any = [];
@@ -40,14 +42,20 @@ export class SelectComponent {
             clearSearchFilter: true,
             limitSelection: this.limitSelection
         };
-
-        this.fetch();
+        if (this.url.trim() !== '') {
+            this.fetch();
+        } else {
+            this.dropdownList=this.arr
+        }
+        
     }
     onItemSelect(item: any) {
         console.log(item);
+        this.onSelectEvent.emit(item)
     }
     onSelectAll(items: any) {
         console.log(items);
+        this.onSelectEvent.emit(items)
     }
 
     fetch() {

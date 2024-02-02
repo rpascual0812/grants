@@ -1,0 +1,16 @@
+<div class="input-group">
+  <input type="number" class="form-control border rounded-1 p-1" [(ngModel)]="inputValue" (ngModelChange)="onChange($event)"/>
+  <button class="btn border rounded-1 p-0 px-1 font-weight-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    {{ selectedItem }}
+    <i class="material-icons">arrow_drop_down</i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end rounded-1">
+    <li
+      *ngFor="let item of data"
+      class="dropdown-item btn rounded-1 border-bottom border-light font-weight-light"
+      (click)="onSelectDropdownItem(item.key)"
+    >
+      {{ item.key }} - {{ item.label }}
+    </li>
+  </ul>
+</div>

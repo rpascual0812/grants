@@ -1,0 +1,89 @@
+<div class="row">
+    <div class="col-12 col-lg-6 mb-3">
+      <div class="card bg-gray-100">
+        <div class="card-body">
+          <h5 class="card-title">Fiscal Sponsor Information</h5>
+          <form class="my-3">
+            <div class="form-group my-3">
+              <label class="font-weight-bold text-dark">Complete Name of Fiscal Sponsor</label>
+              <input type="text" class="form-control border rounded-1 p-1"  />
+            </div>
+  
+            <div class="form-group my-3">
+              <label class="font-weight-bold text-dark">Address of Fiscal Sponsor</label>
+              <input type="text" class="form-control border rounded-1 p-1"  />
+            </div>
+
+            <div class="form-group my-3">
+              <label class="font-weight-bold text-dark">Head of Organization</label>
+              <input type="text" class="form-control border rounded-1 p-1" />
+            </div>
+
+            <div class="form-group my-3">
+              <label class="font-weight-bold text-dark">Person-in-Charge</label>
+              <input type="text" class="form-control border rounded-1 p-1" />
+            </div>
+  
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <div class="form-group my-3">
+                  <label class="font-weight-bold text-dark">Contact number</label>
+                  <input type="number" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+  
+              <div class="col-12 col-md-6">
+                <div class="form-group my-3">
+                  <label class="font-weight-bold text-dark">Email Address</label>
+                  <input type="email" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group my-3">
+              <label class="font-weight-bold text-dark">Bank Account Name</label>
+              <input type="text" class="form-control border rounded-1 p-1" />
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <div class="form-group my-3">
+                  <label class="font-weight-bold text-dark">Account Number</label>
+                  <input type="number" class="form-control border rounded-1 p-1"/>
+                </div>
+              </div>
+  
+              <div class="col-12 col-md-6">
+                <div class="form-group my-3">
+                  <label class="font-weight-bold text-dark">Name of Bank</label>
+                  <input type="email" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <div class="form-group my-3">
+                  <label class="font-weight-bold text-dark">Bank Branch</label>
+                  <app-select [arr]="['New Era', 'Panapaan', 'Bulacan']"></app-select>
+                </div>
+              </div>
+  
+              <div class="col-12 col-md-6">
+                <div class="form-group my-3">
+                  <label class="font-weight-bold text-dark">Bank Address</label>
+                  <input type="email" class="form-control border rounded-1 p-1" />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-12 col-lg-6">
+      <app-attach-documents></app-attach-documents>
+      <button class="btn bg-info text-white w-100 text-capitalize my-2">Reset Form</button>
+    </div>
+  </div>
+  
