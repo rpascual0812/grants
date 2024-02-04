@@ -9,11 +9,13 @@ import { RolesComponent } from 'src/app/pages/settings/roles/roles.component';
 import { UsersComponent } from 'src/app/pages/users/users.component';
 import { ProfileComponent } from 'src/app/pages/profile/profile.component';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
+import { ApplicationReviewComponent } from 'src/app/pages/applications/application-review/application-review.component';
 
 export const MainLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
     { path: 'grants', component: GrantsComponent, canActivate: [authGuard] },
     { path: 'applications', component: ApplicationsComponent, canActivate: [authGuard] },
+    { path: 'application/:pk/review', component: ApplicationReviewComponent, canActivate: [authGuard] },
     { path: 'partners', component: PartnersComponent, canActivate: [authGuard] },
     { path: 'reports', component: ReportsComponent, canActivate: [authGuard] },
     { path: 'users', component: UsersComponent, canActivate: [authGuard] },
