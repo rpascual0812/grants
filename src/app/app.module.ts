@@ -15,6 +15,8 @@ import { ComponentsModule } from './components/components.module';
 
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -42,7 +44,8 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptor,
             multi: true
-        }
+        },
+        BsModalService
     ],
     bootstrap: [AppComponent]
 })

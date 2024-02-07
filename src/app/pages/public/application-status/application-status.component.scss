@@ -1,0 +1,44 @@
+ul.timeline {
+    list-style-type: none;
+    position: relative;
+    li {
+        padding-left: 2rem;
+        .timeline-vertical-line {
+            left: -8px;
+            top: 5px;
+            .vertical-line {
+                border: 5px solid #1a73e8;
+            }
+        }
+
+        .timeline-badge {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            font-size: 1.4em;
+            text-align: center;
+            position: relative;
+            top: 0;
+            right: 60px;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        }
+        .timeline-content {
+            margin: 0;
+            position: relative;
+            top: -40px;
+            ul.timeline-content-list-group {
+                list-style: none;
+                li.timeline-content-list-item {
+                    .fill-bullet {
+                        width: 18px;
+                        height: 18px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+ul.timeline:before {
+    border: 0;
+}
