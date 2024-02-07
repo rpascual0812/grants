@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left text-dark">Contract Finalization</h4>
+    <button type="button" class="btn btn-default pull-right" aria-label="Close" (click)="this.bsModalRef.hide()">
+        <i class="material-icons">close</i>
+    </button>
+</div>
+<div class="modal-body">
+    <p class="text-dark">Kindly attach your signed documents for approval of your application</p>
+    <label class="font-weight-bold text-dark">Date</label>
+    <div class="input-group w-35">
+        <input
+            class="form-control border rounded-1 p-1"
+            #datepickerFull="bsDatepicker"
+            bsDatepicker
+            formControlName="dateFull"
+            [bsConfig]="{ dateInputFormat: 'MMMM DD, YYYY' }"
+        />
+        <div class="input-group-append p-0">
+            <i class="input-group-text material-icons p-0 p-2">calendar_month</i>
+        </div>
+    </div>
+    <label class="font-weight-bold text-dark">Attachment</label>
+    <div class="container">
+        <button class="btn p-2 text-dark-blue">
+            <span class="icon icon-sm"><i class="material-icons">add</i></span>
+            Attach File
+        </button>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-dark-blue" (click)="this.bsModalRef.hide()">Upload Documents</button>
+</div>

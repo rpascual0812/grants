@@ -1,0 +1,91 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title text-dark">Application Status</h5>
+        <div class="container">
+            <ul class="timeline">
+                <li class="position-relative" *ngFor="let appStatusData of data; index as i">
+                    <div
+                        *ngIf="appStatusData?.showVerticalLine"
+                        class="timeline-vertical-line d-flex h-100 position-absolute"
+                    >
+                        <div class="vertical-line"></div>
+                    </div>
+
+                    <div
+                        [ngClass]="{
+                            'bg-secondary': appStatusData?.status === 'inprogress',
+                            'bg-info': appStatusData?.status === 'complete',
+                            'bg-danger': appStatusData?.status === 'notApproved',
+                            'bg-success': appStatusData?.status === 'approved'
+                        }"
+                        class="timeline-badge border border-5 rounded-circle border-white"
+                    >
+                        <div class="position-relative bottom-3">
+                            <i
+                                *ngIf="appStatusData.status !== 'inprogress'"
+                                class="material-icons icon-sm text-white"
+                                >{{ getStatusIcon(appStatusData.status) }}</i
+                            >
+                        </div>
+                    </div>
+
+                    <div class="timeline-content w-100">
+                        <div class="timeline-content-title d-flex flex-wrap gap-2 align-items-center">
+                            <h5 class="text-dark">{{ appStatusData?.title }}</h5>
+                            <button
+                                *ngIf="appStatusData?.button"
+                                class="btn btn-info btn-sm text-capitalize text-xs"
+                                (click)="handleOnButtonEvent(appStatusData?.button?.eventKey)"
+                            >
+                                {{ appStatusData?.button?.label }}
+                            </button>
+                            <h6 class="text-dark font-weight-light">
+                                {{ appStatusData?.label }}
+                            </h6>
+                        </div>
+
+                        <ul class="timeline-content-list-group m-0 p-0 my-1">
+                            <li
+                                *ngFor="let item of appStatusData?.items"
+                                class="timeline-content-list-item d-flex flex-wrap gap-2 align-items-center m-0 my-2 p-0"
+                            >
+                                <span
+                                    *ngIf="['approved', 'complete', 'inprogress'].includes(item?.status ?? '')"
+                                    [ngClass]="{
+                                        'bg-info': item?.status === 'complete',
+                                        'bg-secondary': item?.status === 'inprogress',
+                                        'bg-success': item?.status === 'approved'
+                                    }"
+                                    class="fill-bullet border border-0 rounded-circle"
+                                ></span>
+                                <p
+                                    [ngClass]="{
+                                        'text-danger': item?.status === 'notApproved',
+                                        'text-dark': item?.status !== 'notApproved'
+                                    }"
+                                    class="m-0 text-sm"
+                                >
+                                    {{ item?.label }}
+                                </p>
+                                <button
+                                    [ngClass]="{
+                                        'btn-info': item?.button?.type === 'info',
+                                        'btn-link': item?.button?.buttonType === 'link',
+                                        'text-danger':
+                                            item?.button?.type === 'danger' && item?.button?.buttonType === 'link',
+                                        'p-0': item?.button?.type === 'danger' && item?.button?.buttonType === 'link'
+                                    }"
+                                    class="btn btn-sm text-lowercase text-xs font-weight-light"
+                                    (click)="handleOnButtonEvent(item?.button?.eventKey)"
+                                >
+                                    {{ item?.button?.label }}
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <button class="btn btn-info text-capitalize">Edit Application</button>
+        </div>
+    </div>
+</div>

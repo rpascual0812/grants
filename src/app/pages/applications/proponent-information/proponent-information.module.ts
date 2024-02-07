@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ProponentInformationComponent } from './proponent-information.component';
 
 @NgModule({
-  declarations: [ProponentInformationComponent],
-  exports: [ProponentInformationComponent],
-  imports: [CommonModule],
+    declarations: [ProponentInformationComponent],
+    exports: [ProponentInformationComponent],
+    imports: [CommonModule],
 })
 export class ProponentInformationModule {}

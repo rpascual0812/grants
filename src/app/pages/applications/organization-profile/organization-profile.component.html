@@ -1,79 +1,172 @@
 <div class="row">
-  <div class="col-12 col-lg-6 mb-3">
-    <div class="card bg-gray-100">
-      <div class="card-body">
-        <h5 class="card-title">Organization Profile</h5>
-        <form class="my-3">
-          <div class="form-group my-3">
-            <label class="font-weight-bold text-dark">Kind of Organization*</label>
-            <app-select [arr]="kindOfOrgOpts" (onSelectEvent)="onSelectItem($event)"></app-select>
-          </div>
+    <div class="col-12 col-lg-6 mb-3">
+        <div class="card bg-gray-100">
+            <div class="card-body">
+                <h5 class="card-title">Organization Profile</h5>
+                <form class="my-3">
+                    <div class="form-group my-3">
+                        <label class="font-weight-bold text-dark">Kind of Organization*</label>
+                        <app-select [arr]="kindOfOrgOpts" (onSelectEvent)="onSelectItem($event)"></app-select>
+                    </div>
 
-          <div class="form-group my-3">
-            <label class="font-weight-bold text-dark">If indigenous/ethnic, please indicate tribe</label>
-            <input type="text" class="form-control border rounded-1 p-1" />
-          </div>
+                    <ng-container *ngIf="selectedItem === 'Community/informal'">
+                        <div class="form-group my-3">
+                            <label class="font-weight-bold text-dark"
+                                >If indigenous/ethnic, please indicate tribe</label
+                            >
+                            <input type="text" class="form-control border rounded-1 p-1" />
+                        </div>
 
-          <div class="d-flex flex-wrap justify-content-between my-3">
-            <div>
-              <label class="font-weight-bold text-dark">Women's organization?</label>
+                        <div class="d-flex flex-wrap justify-content-between my-3">
+                            <div>
+                                <label class="font-weight-bold text-dark">Women's organization?</label>
+                            </div>
+
+                            <div>
+                                <div class="bool-opt-container">
+                                    <app-select [arr]="boolOpts"></app-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap justify-content-between my-3">
+                            <div>
+                                <label class="font-weight-bold text-dark">Differently-abled organization?</label>
+                            </div>
+
+                            <div>
+                                <div class="bool-opt-container">
+                                    <app-select [arr]="boolOpts"></app-select>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            selectedItem === 'Non-Government organization' ||
+                            selectedItem === 'Local organization/People\'s organization'
+                        "
+                    >
+                        <div class="form-group my-3">
+                            <label class="font-weight-bold text-dark"
+                                >If indigenous/ethnic, please indicate tribe</label
+                            >
+                            <input type="text" class="form-control border rounded-1 p-1" />
+                        </div>
+
+                        <div class="d-flex flex-wrap justify-content-between my-3">
+                            <div>
+                                <label class="font-weight-bold text-dark">Women's organization?</label>
+                            </div>
+
+                            <div>
+                                <div class="bool-opt-container">
+                                    <app-select [arr]="boolOpts"></app-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap justify-content-between my-3">
+                            <div>
+                                <label class="font-weight-bold text-dark">Differently-abled organization?</label>
+                            </div>
+
+                            <div>
+                                <div class="bool-opt-container">
+                                    <app-select [arr]="boolOpts"></app-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap justify-content-between my-3">
+                            <div>
+                                <label class="font-weight-bold text-dark">Farmers group?</label>
+                            </div>
+
+                            <div>
+                                <div class="bool-opt-container">
+                                    <app-select [arr]="boolOpts"></app-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap justify-content-between my-3">
+                            <div>
+                                <label class="font-weight-bold text-dark">Fisherfolks?</label>
+                            </div>
+
+                            <div>
+                                <div class="bool-opt-container">
+                                    <app-select [arr]="boolOpts"></app-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group my-3">
+                            <label class="font-weight-bold text-dark">Other secotoral group, please indicate:</label>
+                            <input type="text" class="form-control border rounded-1 p-1" />
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="selectedItem === 'Other organizations'">
+                        <div class="form-group my-3">
+                            <label class="font-weight-bold text-dark">Kind of Organization*</label>
+                            <input type="text" class="form-control border rounded-1 p-1" required />
+                        </div>
+
+                        <div class="form-group my-3">
+                            <label class="font-weight-bold text-dark">Please Indicate:</label>
+                            <input type="text" class="form-control border rounded-1 p-1" />
+                        </div>
+                    </ng-container>
+
+                    <div class="form-group my-3">
+                        <label class="font-weight-bold text-dark">Mission</label>
+                        <textarea
+                            type="text"
+                            rows="5"
+                            class="form-control border rounded-1 p-2"
+                            style="resize: none"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group my-3">
+                        <label class="font-weight-bold text-dark">Vision</label>
+                        <textarea
+                            type="text"
+                            rows="5"
+                            class="form-control border rounded-1 p-2"
+                            style="resize: none"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group my-3">
+                        <label class="font-weight-bold text-dark">What does your community/organization do?*</label>
+                        <textarea
+                            type="text"
+                            rows="5"
+                            class="form-control border rounded-1 p-2"
+                            style="resize: none"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group my-3">
+                        <label class="font-weight-bold text-dark">Country*</label>
+                        <app-select [arr]="countryOpts" (onSelectEvent)="onSelectItem($event)"></app-select>
+                    </div>
+
+                    <div class="form-group my-3">
+                        <label class="font-weight-bold text-dark">Website of Project/Organization</label>
+                        <input type="text" class="form-control border rounded-1 p-1" />
+                    </div>
+                </form>
             </div>
-
-            <div>
-              <div class="bool-opt-container">
-                <app-select [arr]="boolOpts" (onSelectEvent)="onSelectItem($event)"></app-select>
-              </div>
-            </div>
-          </div>
-
-          <div class="d-flex flex-wrap justify-content-between my-3">
-            <div>
-              <label class="font-weight-bold text-dark">Differently-abled organization?</label>
-            </div>
-
-            <div>
-              <div class="bool-opt-container">
-                <app-select [arr]="boolOpts" (onSelectEvent)="onSelectItem($event)"></app-select>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group my-3">
-            <label class="font-weight-bold text-dark">Mission</label>
-            <textarea type="text" rows="5" class="form-control border rounded-1 p-2" style="resize: none"></textarea>
-          </div>
-
-          <div class="form-group my-3">
-            <label class="font-weight-bold text-dark">Vision</label>
-            <textarea type="text" rows="5" class="form-control border rounded-1 p-2" style="resize: none"></textarea>
-          </div>
-
-          <div class="form-group my-3">
-            <label class="font-weight-bold text-dark">What does your community/organization do?*</label>
-            <textarea
-              type="text"
-              rows="5"
-              class="form-control border rounded-1 p-2"
-              style="resize: none"
-              required
-            ></textarea>
-          </div>
-
-          <div class="form-group my-3">
-            <label class="font-weight-bold text-dark">Country*</label>
-            <app-select [arr]="countryOpts" (onSelectEvent)="onSelectItem($event)"></app-select>
-          </div>
-
-          <div class="form-group my-3">
-            <label class="font-weight-bold text-dark">Website of Project/Organization</label>
-            <input type="text" class="form-control border rounded-1 p-1" />
-          </div>
-        </form>
-      </div>
+        </div>
     </div>
-  </div>
-  <div class="col-12 col-lg-6">
-    <app-attach-documents></app-attach-documents>
-    <button class="btn bg-info text-white w-100 text-capitalize my-2">Reset Form</button>
-  </div>
+    <div class="col-12 col-lg-6">
+        <app-attach-documents></app-attach-documents>
+        <button class="btn bg-info text-white w-100 text-capitalize my-2">Reset Form</button>
+    </div>
 </div>

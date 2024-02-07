@@ -6,13 +6,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AttachDocumentsModule } from '../attach-documents/attach-documents.module';
 
 @NgModule({
-  declarations: [OrganizationProfileComponent],
-  exports: [OrganizationProfileComponent],
-  imports: [
-    CommonModule,
-    SelectModule,
-    AttachDocumentsModule,
-    NgSelectModule
-  ]
+    declarations: [OrganizationProfileComponent],
+    exports: [OrganizationProfileComponent],
+    imports: [CommonModule, SelectModule, AttachDocumentsModule, NgSelectModule],
 })
-export class OrganizationProfileModule { }
+export class OrganizationProfileModule {}
