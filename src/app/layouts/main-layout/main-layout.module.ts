@@ -9,6 +9,8 @@ import { MainLayoutRoutes } from './main-layout.routing';
 import { UsersModule } from 'src/app/pages/users/users.module';
 import { RolesModule } from 'src/app/pages/settings/roles/roles.module';
 import { ApplicationsModule } from 'src/app/pages/applications/applications.module';
+import { PartnersModule } from 'src/app/pages/partners/partners.module';
+import { PartnerViewModule } from 'src/app/pages/partners/partner-view/partner-view.module';
 
 @NgModule({
     imports: [
@@ -19,6 +21,8 @@ import { ApplicationsModule } from 'src/app/pages/applications/applications.modu
         HttpClientModule,
         ModalModule.forRoot(),
         ApplicationsModule,
+        PartnersModule,
+        PartnerViewModule,
         UsersModule,
         RolesModule
     ],

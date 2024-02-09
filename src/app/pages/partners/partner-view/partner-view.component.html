@@ -1,0 +1,174 @@
+<main>
+    <div class="container">
+        <div aria-label="breadcrumb" class="breadcrumb-container">
+            <ol class="breadcrumb p-0 m-0">
+                <li class="breadcrumb-item">
+                    <a class="link-opacity-100-hover text-secondary" [routerLink]="['/partners']">Partners</a>
+                </li>
+                <li class="breadcrumb-item text-dark font-weight-bold">Information</li>
+            </ol>
+        </div>
+        <h4 class="text-dark">Information</h4>
+
+        <div class="my-5">
+            <accordion [isAnimated]="true">
+                <accordion-group
+                    (isOpenChange)="handleIsOpenChange($event, 'partnerInformation')"
+                    [panelClass]="
+                        currentExpanded.has('partnerInformation')
+                            ? 'custom-accordion-expanded w-100'
+                            : 'custom-accordion-collapsed w-100'
+                    "
+                    class="my-3"
+                >
+                    <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
+                        <div class="pull-left float-left">
+                            <p class="text-dark text-sm font-weight-bold m-0 p-0">Partner's Information</p>
+                        </div>
+
+                        <div class="pull-right float-right">
+                            <div class="d-flex flex flex-row">
+                                <button class="btn btn-icon-only" (click)="handleOnEdit($event, 'partnerInformation')">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn btn-icon-only">
+                                    <i class="material-icons">{{
+                                        currentExpanded.has('partnerInformation') ? 'expand_less' : 'expand_more'
+                                    }}</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <app-partner-information></app-partner-information>
+                </accordion-group>
+
+                <accordion-group
+                    (isOpenChange)="handleIsOpenChange($event, 'organizationProfile')"
+                    [panelClass]="
+                        currentExpanded.has('organizationProfile')
+                            ? 'custom-accordion-expanded w-100'
+                            : 'custom-accordion-collapsed w-100'
+                    "
+                    class="my-3"
+                >
+                    <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
+                        <div class="pull-left float-left">
+                            <p class="text-dark text-sm font-weight-bold m-0 p-0">Organization Profile</p>
+                        </div>
+
+                        <div class="pull-right float-right">
+                            <div class="d-flex flex flex-row">
+                                <button class="btn btn-icon-only" (click)="handleOnEdit($event, 'organizationProfile')">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn btn-icon-only">
+                                    <i class="material-icons">{{
+                                        currentExpanded.has('organizationProfile') ? 'expand_less' : 'expand_more'
+                                    }}</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <app-organization-profile></app-organization-profile>
+                </accordion-group>
+
+                <accordion-group
+                    (isOpenChange)="handleIsOpenChange($event, 'projects')"
+                    [panelClass]="
+                        currentExpanded.has('projects')
+                            ? 'custom-accordion-expanded w-100'
+                            : 'custom-accordion-collapsed w-100'
+                    "
+                    class="my-3"
+                >
+                    <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
+                        <div class="pull-left float-left">
+                            <p class="text-dark text-sm font-weight-bold m-0 p-0">Projects</p>
+                        </div>
+
+                        <div class="pull-right float-right">
+                            <div class="d-flex flex flex-row">
+                                <button class="btn btn-icon-only" (click)="handleOnEdit($event, 'projects')">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn btn-icon-only">
+                                    <i class="material-icons">{{
+                                        currentExpanded.has('projects') ? 'expand_less' : 'expand_more'
+                                    }}</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <app-projects></app-projects>
+                </accordion-group>
+
+                <accordion-group
+                    (isOpenChange)="handleIsOpenChange($event, 'evaluation')"
+                    [panelClass]="
+                        currentExpanded.has('evaluation')
+                            ? 'custom-accordion-expanded w-100'
+                            : 'custom-accordion-collapsed w-100'
+                    "
+                    class="my-3"
+                >
+                    <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
+                        <div class="pull-left float-left">
+                            <p class="text-dark text-sm font-weight-bold m-0 p-0">Evaluations</p>
+                        </div>
+
+                        <div class="pull-right float-right">
+                            <div class="d-flex flex flex-row">
+                                <button class="btn btn-icon-only" (click)="handleOnEdit($event, 'evaluation')">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn btn-icon-only">
+                                    <i class="material-icons">{{
+                                        currentExpanded.has('evaluation') ? 'expand_less' : 'expand_more'
+                                    }}</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <app-evaluations></app-evaluations>
+                </accordion-group>
+
+                <accordion-group
+                    (isOpenChange)="handleIsOpenChange($event, 'nonProfitEquivalencyDetermination')"
+                    [panelClass]="
+                        currentExpanded.has('nonProfitEquivalencyDetermination')
+                            ? 'custom-accordion-expanded w-100'
+                            : 'custom-accordion-collapsed w-100'
+                    "
+                    class="my-3"
+                >
+                    <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
+                        <div class="pull-left float-left">
+                            <p class="text-dark text-sm font-weight-bold m-0 p-0">
+                                Non Profit Equivalency Determination
+                            </p>
+                        </div>
+
+                        <div class="pull-right float-right">
+                            <div class="d-flex flex flex-row">
+                                <button
+                                    class="btn btn-icon-only"
+                                    (click)="handleOnEdit($event, 'nonProfitEquivalencyDetermination')"
+                                >
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn btn-icon-only">
+                                    <i class="material-icons">{{
+                                        currentExpanded.has('nonProfitEquivalencyDetermination')
+                                            ? 'expand_less'
+                                            : 'expand_more'
+                                    }}</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <app-non-profit-equivalency-determination></app-non-profit-equivalency-determination>
+                </accordion-group>
+            </accordion>
+        </div>
+    </div>
+</main>

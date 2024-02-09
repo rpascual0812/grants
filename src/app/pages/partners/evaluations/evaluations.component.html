@@ -1,0 +1,28 @@
+<div>
+    <h4 class="text-dark">Evaluations</h4>
+    <div *ngFor="let evaluation of evaluations" class="card my-2">
+        <div class="card-header bg-dark-blue">
+            <div class="d-flex flex-row justify-content-between align-items-center">
+                <h4 class="text-white">{{ evaluation?.['date'] }} - {{ evaluation?.['user'] }}</h4>
+                <button
+                    class="btn btn-icon-only btn-danger rounded-circle"
+                    (click)="handleDeleteEvaluation(evaluation?.['id'] ?? '')"
+                >
+                    <span class="position-relative bottom-10 end-10"><i class="material-icons">delete</i></span>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <p>{{ evaluation?.['content'] }}</p>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end mt-5">
+        <div class="d-flex flex-wrap flex-row gap-1 align-items-center">
+            <p class="text-dark font-weight-bold p-0 m-0">Add Evaluation</p>
+            <button class="btn btn-icon-only btn-info rounded-circle" (click)="handleAddEvaluation()">
+                <span class="position-relative bottom-10 end-10"><i class="material-icons">add</i></span>
+            </button>
+        </div>
+    </div>
+</div>
