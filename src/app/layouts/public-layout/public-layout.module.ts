@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { PublicLayoutComponent } from './public-layout.component';
-import { PublicModule } from 'src/app/pages/public/public.module';
+import { PublicLayoutRoutes } from './public-layout.routing';
 
 @NgModule({
-    declarations: [PublicLayoutComponent],
-    imports: [CommonModule, PublicModule],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(PublicLayoutRoutes),
+    ],
+    declarations: [],
 })
-export class PublicLayoutModule {}
+export class PublicLayoutModule { }
