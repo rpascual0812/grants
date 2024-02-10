@@ -168,6 +168,39 @@
                     </div>
                     <app-non-profit-equivalency-determination></app-non-profit-equivalency-determination>
                 </accordion-group>
+
+                <accordion-group
+                    (isOpenChange)="handleIsOpenChange($event, 'otherInfo')"
+                    [panelClass]="
+                        currentExpanded.has('otherInfo')
+                            ? 'custom-accordion-expanded w-100'
+                            : 'custom-accordion-collapsed w-100'
+                    "
+                    class="my-3"
+                >
+                    <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
+                        <div class="pull-left float-left">
+                            <p class="text-dark text-sm font-weight-bold m-0 p-0">
+                                Organizational Bank Account Information | Fiscal Sponsor Bank Details | Other
+                                Information
+                            </p>
+                        </div>
+
+                        <div class="pull-right float-right">
+                            <div class="d-flex flex flex-row">
+                                <button class="btn btn-icon-only" (click)="handleOnEdit($event, 'otherInfo')">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn btn-icon-only">
+                                    <i class="material-icons">{{
+                                        currentExpanded.has('otherInfo') ? 'expand_less' : 'expand_more'
+                                    }}</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <app-other-info></app-other-info>
+                </accordion-group>
             </accordion>
         </div>
     </div>
