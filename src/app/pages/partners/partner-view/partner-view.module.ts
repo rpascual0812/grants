@@ -8,6 +8,8 @@ import { OrganizationProfileModule } from '../organization-profile/organization-
 import { ProjectsModule } from '../projects/projects.module';
 import { EvaluationsModule } from '../evaluations/evaluations.module';
 import { NonProfitEquivalencyDeterminationModule } from '../non-profit-equivalency-determination/non-profit-equivalency-determination.module';
+import { OtherInfoModule } from '../other-info/other-info.module';
+
 
 @NgModule({
     declarations: [PartnerViewComponent],
@@ -20,6 +22,7 @@ import { NonProfitEquivalencyDeterminationModule } from '../non-profit-equivalen
         ProjectsModule,
         EvaluationsModule,
         NonProfitEquivalencyDeterminationModule,
+        OtherInfoModule,
         AccordionModule.forRoot(),
     ],
 })
