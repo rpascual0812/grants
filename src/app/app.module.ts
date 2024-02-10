@@ -39,7 +39,6 @@ import { PublicLayoutComponent } from './layouts/public-layout/public-layout.com
             positionClass: 'toast-top-right',
             preventDuplicates: true
         }),
-        AccordionModule.forRoot()
     ],
     providers: [
         {
