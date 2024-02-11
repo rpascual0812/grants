@@ -1,0 +1,9 @@
+@use '../custom-accordion.scss';
+
+.breadcrumb-container {
+    .breadcrumb {
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: '> ';
+        }
+    }
+}
