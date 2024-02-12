@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CURRENCIES_MOCK } from '../mocks/currencies.mock';
+import { CURRENCIES_MOCK } from '../../../mocks/currencies.mock';
 
 @Component({
   selector: 'app-non-profit-equivalency-determination',
