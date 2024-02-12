@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { COUNTRIES_MOCK } from '../mocks/countries.mock';
+import { COUNTRIES_MOCK } from '../../../mocks/countries.mock';
 
 @Component({
     selector: 'app-organization-profile',
