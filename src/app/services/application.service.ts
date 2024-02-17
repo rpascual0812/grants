@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as _ from '../utilities/globals';
 
@@ -6,6 +6,9 @@ import * as _ from '../utilities/globals';
     providedIn: 'root'
 })
 export class ApplicationService {
+
+    public navigate_next = signal(false);
+    public navigate_back = signal(false);
 
     constructor(
         public http: HttpClient,
