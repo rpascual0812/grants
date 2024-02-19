@@ -1,7 +1,6 @@
 import { Component, effect, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, map } from 'rxjs';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 
