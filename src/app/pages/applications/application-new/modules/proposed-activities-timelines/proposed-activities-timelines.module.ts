@@ -4,10 +4,11 @@ import { ProposedActivitiesTimelinesComponent } from './proposed-activities-time
 import { SelectModule } from 'src/app/components/select/select.module';
 import { AttachDocumentsModule } from '../attach-documents/attach-documents.module';
 import { InputDropdownModule } from '../input-dropdown/input-dropdown.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ProposedActivitiesTimelinesComponent],
   exports: [ProposedActivitiesTimelinesComponent],
-  imports: [CommonModule, SelectModule, AttachDocumentsModule, InputDropdownModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, SelectModule, AttachDocumentsModule, InputDropdownModule],
 })
 export class ProposedActivitiesTimelinesModule {}

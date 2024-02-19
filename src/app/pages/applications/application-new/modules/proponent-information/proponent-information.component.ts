@@ -1,8 +1,5 @@
-import { Component, effect, inject } from '@angular/core';
-import { FormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { ApplicationService } from 'src/app/services/application.service';
-
-import { ToastrService } from 'ngx-toastr';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 
 @Component({
@@ -14,52 +11,47 @@ export class ProponentInformationComponent {
     form: FormGroup;
     submitted: boolean = false;
     loading: boolean = false;
-
     applicationSignalService = inject(ApplicationSignalService);
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private applicationService: ApplicationService,
-        private toastr: ToastrService
-    ) {
-        effect(() => {
-            if (this.applicationSignalService.navigateNext() == true) {
-                this.submit();
-            }
-        });
-    }
+    constructor(private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
         this.setForm();
     }
 
-    get f() { return this.form.controls; }
+    get f() {
+        return this.form.controls;
+    }
 
     setForm() {
+        const currentApplication = this.applicationSignalService.application();
         this.form = this.formBuilder.group({
-            pk: [''],
-            name: ['', Validators.required],
-            archived: [false]
+            name: [currentApplication?.proponent?.name ?? '', Validators.required],
+            address: [currentApplication?.proponent?.address ?? '', Validators.required],
+            contact_number: [currentApplication?.proponent?.contact_number ?? '', Validators.required],
+            email_address: [currentApplication?.proponent?.email_address ?? '', Validators.email],
+            website: [currentApplication?.proponent?.website ?? ''],
+            archived: [false],
         });
     }
 
-    submit() {
-        console.log('submitted', this.form.value);
-        this.applicationService
-            .store(this.form.value)
-            .subscribe({
-                next: (data: any) => {
-                    this.toastr.success('The application has been successfully updated', 'SUCCESS!');
-                },
-                error: (error: any) => {
-                    console.log(error);
-                    this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
-                    setTimeout(() => { this.loading = false; }, 500);
-                },
-                complete: () => {
-                    console.log('Complete');
-                    setTimeout(() => { this.loading = false; }, 500);
-                }
-            });
+    saveFormValue() {
+        const { value } = this.form;
+        const currentApplication = this.applicationSignalService.application();
+        this.applicationSignalService.application.set({
+            ...currentApplication,
+            proponent: {
+                ...value,
+            },
+        });
+    }
+
+    handleNext() {
+        this.submitted = true;
+        const { status } = this.form;
+        if (status === 'VALID') {
+            this.saveFormValue();
+            this.applicationSignalService.navigateNext();
+        }
     }
 }

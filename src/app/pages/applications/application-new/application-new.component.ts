@@ -1,5 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
+
+export const MAX_STEP = 7;
+export const INITIAL_STEP = 1;
 
 @Component({
     selector: 'app-application-new',
@@ -8,26 +14,48 @@ import { ApplicationSignalService } from 'src/app/services/application.signal.se
 })
 export class ApplicationNewComponent {
     applicationSignalService = inject(ApplicationSignalService);
+    loading = false;
+    step = INITIAL_STEP;
+    uuid = '';
 
-    MAX_STEP = 7;
-    INITIAL_STEP = 1;
-    step = this.INITIAL_STEP;
+    constructor(private applicationService: ApplicationService, private toastr: ToastrService, route: ActivatedRoute) {
+        this.uuid = route.snapshot.paramMap.get('uuid') ?? '';
 
-    onNext() {
-        if (this.step < this.MAX_STEP) {
-            this.step++;
-        }
-
-        this.applicationSignalService.navigateNext.set(true);
+        effect(() => {
+            this.step = this.applicationSignalService.currentNavStep();
+            if (this.applicationSignalService.submitSave()) {
+                this.handleSave();
+            }
+        });
     }
 
-    onBack() {
-        if (this.step > this.INITIAL_STEP) {
-            this.step--;
-        }
-
-        this.applicationSignalService.navigateBack.set(true);
+    async handleSave() {
+        this.loading = true;
+        const payload = this.applicationSignalService.application();
+        this.applicationService
+            .store({
+                uuid: this.uuid,
+                ...payload,
+            })
+            .subscribe({
+                next: (data: any) => {
+                    this.loading = false;
+                    this.toastr.success('The application has been successfully created', 'SUCCESS!');
+                    this.applicationSignalService.submitSave.set(false);
+                },
+                error: (error: any) => {
+                    this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
+                    setTimeout(() => {
+                        this.loading = false;
+                        this.applicationSignalService.submitSave.set(false);
+                    }, 500);
+                },
+                complete: () => {
+                    setTimeout(() => {
+                        this.loading = false;
+                        this.applicationSignalService.submitSave.set(false);
+                    }, 500);
+                },
+            });
     }
-
-
 }
