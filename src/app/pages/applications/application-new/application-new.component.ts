@@ -35,7 +35,7 @@ export class ApplicationNewComponent {
         const payload = this.applicationSignalService.application();
         this.applicationService
             .store({
-                uuid: '3a4cb875-dc5d-4b11-b073-fafd0a76b09f',
+                uuid: this.uuid,
                 ...payload,
             })
             .subscribe({
