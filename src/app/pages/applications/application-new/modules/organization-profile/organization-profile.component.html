@@ -167,8 +167,15 @@
                                 rows="5"
                                 class="form-control border rounded-1 p-2"
                                 style="resize: none"
+                                formControlName="description"
                                 required
+                                [ngClass]="{ 'is-invalid': submitted && f['description'].errors }"
                             ></textarea>
+                            <div *ngIf="submitted && f['description'].errors" class="invalid-feedback">
+                                <div *ngIf="f['description'].errors['required']">
+                                    Field is required
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group my-3">

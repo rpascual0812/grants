@@ -38,7 +38,7 @@ export class OrganizationProfileComponent implements OnInit {
             organization_pk: [currentApplication?.organization_profile?.organization_pk ?? '', Validators.required],
             mission: [currentApplication?.organization_profile?.mission ?? ''],
             vision: [currentApplication?.organization_profile?.vision ?? ''],
-            description: [currentApplication?.organization_profile?.description ?? ''],
+            description: [currentApplication?.organization_profile?.description ?? '', Validators.required],
             country_pk: [currentApplication?.organization_profile?.country_pk ?? '', Validators.required],
             project_website: [currentApplication?.organization_profile?.project_website ?? ''],
             archived: [false],

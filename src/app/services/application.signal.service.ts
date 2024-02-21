@@ -1,35 +1,13 @@
 import { Injectable, signal } from '@angular/core';
 import { INITIAL_STEP, MAX_STEP } from '../pages/applications/application-new/application-new.component';
+import { ApplicationCreate } from '../interfaces/application.interface';
 
-// Interfaces
-export interface Application {
-    uuid?: string;
-    proponent?: Proponent;
-    organization_profile?: OrganizationProfile;
-}
-
-export interface OrganizationProfile {
-    organization_pk?: number;
-    mission?: string;
-    vision?: string;
-    description?: string;
-    country_pk?: number;
-    project_website?: string;
-}
-
-export interface Proponent {
-    name?: string;
-    address?: string;
-    contact_number?: string;
-    email_address?: string;
-    website?: string;
-}
 @Injectable({
     providedIn: 'root',
 })
 export class ApplicationSignalService {
     public currentNavStep = signal(1);
-    public application = signal<Application | null>(null);
+    public application = signal<ApplicationCreate | null>(null);
     public submitSave = signal(false);
 
     constructor() {}
