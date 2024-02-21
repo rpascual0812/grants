@@ -1,19 +1,22 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { NgbdSortableHeaderDirective, SortEvent } from '../../directives/ngbd-sortable-header.directive';
+import { ApplicationService } from 'src/app/services/application.service';
+import { ApplicationRead } from 'src/app/interfaces/application.interface';
+import { TransformApplicationForList, compare, transformApplicationForList } from 'src/app/utilities/application.utils';
 
-interface Grant {
-    partnerId: string;
-    partner: string;
-    title: string;
-    applicationDate: Date;
-    proposedBudget: number;
-}
+type TableObj = {
+    list: TransformApplicationForList;
+    page: number;
+};
 
-const compare = (v1: string | number | Date, v2: string | number | Date) => {
-    if (v1 instanceof Date && v2 instanceof Date) {
-        return v1.getTime() < v2.getTime() ? -1 : v1.getTime() > v2.getTime() ? 1 : 0;
-    }
-    return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+type GrantApplicationTableObj = {
+    urgentGrants: TableObj;
+    submissions: TableObj;
+    advisersReview: TableObj;
+    grantsTeamReview: TableObj;
+    dueDiligence: TableObj;
+    budgetReviewAndFinalization: TableObj;
+    financialManagementCapacity: TableObj;
 };
 
 @Component({
@@ -21,32 +24,75 @@ const compare = (v1: string | number | Date, v2: string | number | Date) => {
     templateUrl: './grant-application.component.html',
     styleUrls: ['./grant-application.component.scss'],
 })
-export class GrantApplicationComponent {
-    urgentGrants: Grant[] = [];
-    submissions: Grant[] = [];
-    grantsTeamReview: Grant[] = [];
-    advisersReview: Grant[] = [];
-    dueDiligence: Grant[] = [];
-    budgetReviewAndFinalization: Grant[] = [];
-    financialManagementCapacity: Grant[] = []
+export class GrantApplicationComponent implements OnInit {
+    isLoading = true;
+    grantApplication: GrantApplicationTableObj = {
+        urgentGrants: {
+            list: [],
+            page: 1,
+        },
+        submissions: {
+            list: [],
+            page: 1,
+        },
+        advisersReview: {
+            list: [],
+            page: 1,
+        },
+        grantsTeamReview: {
+            list: [],
+            page: 1,
+        },
+        dueDiligence: {
+            list: [],
+            page: 1,
+        },
+        budgetReviewAndFinalization: {
+            list: [],
+            page: 1,
+        },
+        financialManagementCapacity: {
+            list: [],
+            page: 1,
+        },
+    };
 
-    page: number = 1;
+    cp: { [id: string]: number } = {};
 
-    @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective<Grant>>;
+    @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<
+        NgbdSortableHeaderDirective<TransformApplicationForList>
+    >;
 
-    constructor() {
-        for (let i = 1; i <= 12; i++) {
-            this.urgentGrants.push({
-                partnerId: `${i}${new Date().getTime()}`,
-                title: `Project Proposal Title - ${i}`,
-                partner: `Organization Name - ${i}`,
-                applicationDate: new Date(`2024-${i}-1`),
-                proposedBudget: 100,
-            });
-        }
+    constructor(public applicationService: ApplicationService) {}
+
+    ngOnInit() {
+        this.handleFetchApplication();
     }
 
-    onSort({ column, direction }: SortEvent<Grant>) {
+    handleFetchApplication() {
+        this.isLoading = true;
+        this.applicationService.fetch().subscribe({
+            next: (data: Object) => {
+                this.grantApplication.urgentGrants.list = transformApplicationForList(data as ApplicationRead[]);
+                this.grantApplication.submissions.list = transformApplicationForList(data as ApplicationRead[]);
+                this.grantApplication.grantsTeamReview.list = transformApplicationForList(data as ApplicationRead[]);
+                this.grantApplication.advisersReview.list = transformApplicationForList(data as ApplicationRead[]);
+                this.grantApplication.dueDiligence.list = transformApplicationForList(data as ApplicationRead[]);
+                this.grantApplication.budgetReviewAndFinalization.list = transformApplicationForList(
+                    data as ApplicationRead[]
+                );
+                this.grantApplication.financialManagementCapacity.list = transformApplicationForList(
+                    data as ApplicationRead[]
+                );
+                this.isLoading = false;
+            },
+            error: (err) => {
+                this.isLoading = false;
+            },
+        });
+    }
+
+    onSort({ column, direction }: SortEvent<TransformApplicationForList[0]>, key: keyof GrantApplicationTableObj) {
         // resetting other headers
         this.headers.forEach((header) => {
             if (header.sortable !== column) {
@@ -56,16 +102,12 @@ export class GrantApplicationComponent {
 
         // sorting values
         if (direction === '' || column === '') {
-            this.urgentGrants = [...this.urgentGrants];
+            this.grantApplication[key].list = [...this.grantApplication[key].list];
         } else {
-            this.urgentGrants = [...this.urgentGrants].sort((a, b) => {
+            this.grantApplication[key].list = [...this.grantApplication[key].list].sort((a, b) => {
                 const res = compare(a[column], b[column]);
                 return direction === 'asc' ? res : -res;
             });
         }
-    }
-
-    handlePageChange($event: number) {
-        this.page = $event;
     }
 }
