@@ -40,11 +40,20 @@ export class ApplicationNewComponent {
             .subscribe({
                 next: (data: any) => {
                     this.loading = false;
-                    this.toastr.success('The application has been successfully created', 'SUCCESS!');
+                    const status = data?.status;
+                    const code = data?.code ? `code: ${data?.code}` : '';
+                    if (!status) {
+                        this.toastr.error(
+                            `An error occurred while saving grant application. Please try again. ${code}`,
+                            'ERROR!'
+                        );
+                    } else {
+                        this.toastr.success('The application has been successfully created', 'SUCCESS!');
+                    }
                     this.applicationSignalService.submitSave.set(false);
                 },
                 error: (error: any) => {
-                    this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
+                    this.toastr.error('An error occurred while saving grant application. Please try again', 'ERROR!');
                     setTimeout(() => {
                         this.loading = false;
                         this.applicationSignalService.submitSave.set(false);

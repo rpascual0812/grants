@@ -1,36 +1,40 @@
-// Application Create
-export interface ApplicationCreate {
+// Application Save
+export interface ApplicationSave {
     uuid?: string;
-    proponent?: ProponentCreate;
-    organization_profile?: OrganizationProfileCreate;
+    proponent?: ProponentSave;
+    organization_profile?: OrganizationProfileSave;
 }
 
-export interface OrganizationProfileCreate {
+export interface OrganizationProfileSave {
     organization_pk?: number;
     mission?: string;
     vision?: string;
     description?: string;
     country_pk?: number;
     project_website?: string;
+    archived?: boolean;
 }
 
-export interface ProponentCreate {
+export interface ProponentSave {
     name?: string;
     address?: string;
-    contact_number?: string;
+    contact_number?: number;
     email_address?: string;
     website?: string;
+    archived?: boolean;
 }
 
 // Application Read
 export interface ApplicationRead {
     pk?: number;
     uuid?: string;
+    partner_pk?: number;
     created_by?: number;
     date_created?: Date;
     archived?: boolean;
-    application_proponent?: ApplicationProponentRead | null;
-    application_organization_profile?: ApplicationOrganizationProfileRead | null;
+    partner?: PartnerRead;
+    application_proponent?: ApplicationProponentRead;
+    application_organization_profile?: ApplicationOrganizationProfileRead;
     application_project?: null;
 }
 
@@ -55,4 +59,13 @@ export interface ApplicationProponentRead {
     email_address?: string;
     website?: string;
     date_created?: Date;
+}
+
+export interface PartnerRead {
+    pk?: number;
+    partner_id?: string;
+    name?: string;
+    email_address?: string;
+    date_created?: Date;
+    archived?: boolean;
 }
