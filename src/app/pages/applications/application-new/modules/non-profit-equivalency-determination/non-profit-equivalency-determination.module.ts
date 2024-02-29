@@ -5,10 +5,11 @@ import { AttachDocumentsModule } from '../attach-documents/attach-documents.modu
 import { SelectModule } from 'src/app/components/select/select.module';
 import { InputDropdownModule } from '../input-dropdown/input-dropdown.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
     declarations: [NonProfitEquivalencyDeterminationComponent],
     exports: [NonProfitEquivalencyDeterminationComponent],
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, AttachDocumentsModule, SelectModule, InputDropdownModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, AttachDocumentsModule, SelectModule, InputDropdownModule, BsDatepickerModule.forRoot()],
 })
 export class NonProfitEquivalencyDeterminationModule {}

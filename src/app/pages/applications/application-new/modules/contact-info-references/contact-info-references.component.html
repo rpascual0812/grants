@@ -1,5 +1,5 @@
 <div class="main-content">
-    <form (ngSubmit)="handleSave()">
+    <form [formGroup]="form" (ngSubmit)="handleSave()">
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="card bg-gray-100">
@@ -7,83 +7,72 @@
                         <p class="card-title text-dark font-weight-bold">
                             Please provide three names and contact information of References
                         </p>
-                        <div class="row">
-                            <div class="col-12 col-md-3">
-                                <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark">Person 1</label>
-                                    <input type="text" class="form-control border rounded-1 p-1" />
+
+                        <div
+                            formArrayName="references"
+                            *ngFor="let item of formContactReferences.controls; index as i"
+                            [attr.data-index]="i"
+                            class="row"
+                        >
+                            <ng-container [formGroupName]="i">
+                                <div class="col-12 col-md-3">
+                                    <div class="form-group my-3">
+                                        <label class="font-weight-bold text-dark">Person {{ i + 1 }}</label>
+                                        <input
+                                            formControlName="name"
+                                            type="text"
+                                            class="form-control border rounded-1 p-1"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark">Contact</label>
-                                    <input type="tel" class="form-control border rounded-1 p-1" />
+                                <div class="col-12 col-md-3">
+                                    <div class="form-group my-3">
+                                        <label class="font-weight-bold text-dark">Contact</label>
+                                        <input
+                                            formControlName="contact_number"
+                                            type="tel"
+                                            class="form-control border rounded-1 p-1"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark">Email Address</label>
-                                    <input type="email" class="form-control border rounded-1 p-1" />
+                                <div class="col-12 col-md-3">
+                                    <div class="form-group my-3">
+                                        <label class="font-weight-bold text-dark">Email Address</label>
+                                        <input
+                                            formControlName="email_address"
+                                            type="email"
+                                            class="form-control border rounded-1 p-1"
+                                            [ngClass]="{
+                                                'is-invalid':
+                                                    submitted &&
+                                                    formContactReferences.at(i).get('email_address')?.errors
+                                            }"
+                                        />
+                                        <div
+                                            *ngIf="
+                                                submitted && formContactReferences.at(i).get('email_address')?.errors
+                                            "
+                                        >
+                                            <div
+                                                *ngIf="formContactReferences.at(i).get('email_address')?.errors?.['email']"
+                                                class="text-sm text-danger"
+                                            >
+                                                Invalid email
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark">Organization Name</label>
-                                    <input type="text" class="form-control border rounded-1 p-1" />
+                                <div class="col-12 col-md-3">
+                                    <div class="form-group my-3">
+                                        <label class="font-weight-bold text-dark">Organization Name</label>
+                                        <input
+                                            formControlName="organization_name"
+                                            type="text"
+                                            class="form-control border rounded-1 p-1"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-3">
-                                <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark">Person 2</label>
-                                    <input type="text" class="form-control border rounded-1 p-1" />
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark">Contact</label>
-                                    <input type="tel" class="form-control border rounded-1 p-1" />
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark">Email Address</label>
-                                    <input type="email" class="form-control border rounded-1 p-1" />
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark">Organization Name</label>
-                                    <input type="text" class="form-control border rounded-1 p-1" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-3">
-                                <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark">Person 3</label>
-                                    <input type="text" class="form-control border rounded-1 p-1" />
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark">Contact</label>
-                                    <input type="tel" class="form-control border rounded-1 p-1" />
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark">Email Address</label>
-                                    <input type="email" class="form-control border rounded-1 p-1" />
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark">Organization Name</label>
-                                    <input type="text" class="form-control border rounded-1 p-1" />
-                                </div>
-                            </div>
+                            </ng-container>
                         </div>
                     </div>
                 </div>

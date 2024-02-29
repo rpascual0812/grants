@@ -1,36 +1,45 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-interface Data {
-  key: string
-  label: string;
+type SelectedDropdownItem = {
+    key: string;
+    label: string;
+};
+
+export interface InputDropdownValue {
+    value: string | number;
+    selectedItem?: SelectedDropdownItem;
 }
 
 @Component({
-  selector: 'app-input-dropdown',
-  templateUrl: './input-dropdown.component.html',
-  styleUrls: ['./input-dropdown.component.scss']
+    selector: 'app-input-dropdown',
+    templateUrl: './input-dropdown.component.html',
+    styleUrls: ['./input-dropdown.component.scss'],
 })
 export class InputDropdownComponent {
-  @Input() defaultSelected?: string
-  @Input() inputValue?: string = ''
-  @Input() data: Data[] = []
+    @Input() disabledDropdown: boolean = false;
+    @Input() defaultSelected?: string;
+    @Input() inputValue?: string = '';
+    @Input() data: SelectedDropdownItem[] = [];
 
-  @Output() onSelectItem = new EventEmitter<string>()
-  @Output() inputValueChange = new EventEmitter<string>()
+    @Output() onSelectItem = new EventEmitter<string>();
+    @Output() inputValueChange = new EventEmitter<InputDropdownValue>();
 
-  selectedItem = ''
+    selectedItem = '';
 
-  ngOnInit() {
-    this.selectedItem = this.defaultSelected ? this.defaultSelected : '';
-  }
+    ngOnInit() {
+        this.selectedItem = this.defaultSelected ? this.defaultSelected : '';
+    }
 
-  onSelectDropdownItem(key: string) {
-    this.selectedItem = key
-    this.onSelectItem.emit(this.selectedItem)
-  }
+    onSelectDropdownItem(key: string) {
+        this.selectedItem = key;
+        this.inputValue = '';
+        this.onSelectItem.emit(this.selectedItem);
+    }
 
-  onChange(value: number) {
-    this.inputValue = String(value) ?? ''
-    this.inputValueChange.emit(this.inputValue)
-  }
+    onChange(value: number) {
+        this.inputValueChange.emit({
+            value,
+            selectedItem: this.data.filter((val) => val.key === this.selectedItem)?.at(0),
+        });
+    }
 }

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 import { GlobalService } from '../../services/global.service';
 
@@ -9,14 +8,16 @@ import { GlobalService } from '../../services/global.service';
     styleUrls: ['./select.component.scss'],
 })
 export class SelectComponent {
-    @Input() url: String = '';
+    @Input() url: string = '';
+    @Input() listItemKey: string = 'pk';
     @Input() placeholder: string = '';
     @Input() arr: any = [];
     @Input() multiple: boolean = false;
     @Input() limitSelection: any = -1;
     @Input() itemsShowLimit: any = 1;
-    @Input() defaultSelectedPk?: number;
-
+    @Input() disabled: boolean = false;
+    @Input() defaultSelectedItemKey?: any; // default selected with pk in list and url is indicated
+    @Input() defaultSelectedInArr?: any; // default selected without pk in list and url is NOT indicated
     @Output() onSelectEvent = new EventEmitter<string | string[] | any>();
     @Output() onDeSelectEvent = new EventEmitter<any>();
 
@@ -32,7 +33,7 @@ export class SelectComponent {
 
         this.dropdownSettings = {
             singleSelection: !this.multiple,
-            idField: 'pk',
+            idField: this.listItemKey,
             textField: 'name',
             selectAllText: 'Select All',
             unSelectAllText: 'UnSelect All',
@@ -46,23 +47,22 @@ export class SelectComponent {
             this.fetch();
         } else {
             this.dropdownList = this.arr;
+            this.selectedItems = this.arr.filter((item: any) => item === this.defaultSelectedInArr);
+            this.setDefaultSelectedItemKey(this.arr)
         }
     }
 
     onItemSelect(item: any) {
-        console.log(item, 'onItemSelect');
         this.selectedItems = [item];
         this.onSelectEvent.emit(this.selectedItems);
     }
 
     onSelectAll(items: any) {
-        console.log(items, 'onSelectAll');
         this.selectedItems = [...items];
         this.onSelectEvent.emit(this.selectedItems);
     }
 
     onDeselect(item: any) {
-        console.log(item, 'onDeselect');
         this.selectedItems = this.selectedItems.filter((selectedItem: any) => selectedItem !== item);
         this.onDeSelectEvent.emit(this.selectedItems);
     }
@@ -71,7 +71,7 @@ export class SelectComponent {
         this.globalService.selectFetch(this.url).subscribe({
             next: (data: any) => {
                 this.dropdownList = data.data;
-                this.setDefaultSelectedPk(data.data);
+                this.setDefaultSelectedItemKey(data.data);
             },
             error: (error: any) => {
                 console.log(error);
@@ -88,9 +88,11 @@ export class SelectComponent {
         });
     }
 
-    setDefaultSelectedPk(dropdownList: any[]) {
-        if (this.defaultSelectedPk) {
-            this.selectedItems = dropdownList?.filter((item: any) => item.pk === this.defaultSelectedPk);
+    setDefaultSelectedItemKey(dropdownList: any[]) {
+        if (this.defaultSelectedItemKey) {
+            this.selectedItems = dropdownList?.filter(
+                (item: any) => item[this.listItemKey] === this.defaultSelectedItemKey
+            );
         }
     }
 }

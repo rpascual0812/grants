@@ -1,16 +1,29 @@
 <div class="main-content">
-    <form (ngSubmit)="handleNext()">
+    <form [formGroup]="form" (ngSubmit)="handleNext()">
         <div class="row">
             <div class="col-12 col-lg-6 mb-3">
                 <div class="card bg-gray-100">
                     <div class="card-body">
                         <h5 class="card-title">Non-Profit Equivalency Determination</h5>
-
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">Your Organization was formed*</label>
-                                    <app-select [arr]="['2000', '2001', '2002', '2003', '2004']"></app-select>
+                                    <input
+                                        class="form-control border rounded-1 p-1"
+                                        type="number"
+                                        min="1900"
+                                        max="2099"
+                                        step="1"
+                                        #datepickerFull="bsDatepicker"
+                                        bsDatepicker
+                                        formControlName="year"
+                                        [ngClass]="{ 'is-invalid': submitted && f['year'].errors }"
+                                        [bsConfig]="{ dateInputFormat: 'YYYY', minMode: 'year' }"
+                                    />
+                                    <div *ngIf="submitted && f['year'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['year'].errors['required']">Year is required</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
@@ -27,12 +40,28 @@
                         </div>
 
                         <div class="row">
-                            <label class="font-weight-bold text-dark">Financial situation last year</label>
+                            <label class="font-weight-bold text-dark">Financial situation last year*</label>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="number" class="form-control border border-end-0 rounded-1 p-1" />
+                                        <input
+                                            type="number"
+                                            class="form-control border border-end-0 rounded-1 p-1"
+                                            required
+                                            formControlName="financial_last_year_usd"
+                                            [ngClass]="{
+                                                'is-invalid': submitted && f['financial_last_year_usd'].errors
+                                            }"
+                                        />
                                         <div class="border border-start-0 border-end-1 p-1 text-sm">USD</div>
+                                        <div
+                                            *ngIf="submitted && f['financial_last_year_usd'].errors"
+                                            class="invalid-feedback"
+                                        >
+                                            <div *ngIf="f['financial_last_year_usd'].errors['required']">
+                                                Field is required
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -40,24 +69,64 @@
                                 <div class="form-group">
                                     <app-input-dropdown
                                         [data]="availableCurrencies"
-                                        [defaultSelected]="availableCurrencies.at(0)?.key"
+                                        [defaultSelected]="otherCurrenciesDefaultSelected.financial_last_year_other"
+                                        [inputValue]="f['financial_last_year_other'].value ?? ''"
+                                        (onSelectItem)="onSelectItemDropdown($event, 'financial_last_year_other')"
+                                        (inputValueChange)="onInputValueChange($event, 'financial_last_year_other')"
                                     ></app-input-dropdown>
+                                    <div *ngIf="submitted && f['financial_last_year_other'].errors">
+                                        <div
+                                            class="text-danger text-sm my-1"
+                                            *ngIf="f['financial_last_year_other'].errors['required']"
+                                        >
+                                            Field is required
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group my-3">
                             <label class="font-weight-bold text-dark">Source of Funds*</label>
-                            <input type="text" class="form-control border rounded-1 p-1" required />
+                            <input
+                                type="text"
+                                class="form-control border rounded-1 p-1"
+                                required
+                                formControlName="financial_last_year_source"
+                                [ngClass]="{
+                                    'is-invalid': submitted && f['financial_last_year_source'].errors
+                                }"
+                            />
+                            <div *ngIf="submitted && f['financial_last_year_source'].errors" class="invalid-feedback">
+                                <div *ngIf="f['financial_last_year_source'].errors['required']">
+                                    Source of Funds is required
+                                </div>
+                            </div>
                         </div>
 
                         <div class="row">
-                            <label class="font-weight-bold text-dark">Financial situation this year</label>
+                            <label class="font-weight-bold text-dark">Financial situation this year*</label>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="number" class="form-control border border-end-0 rounded-1 p-1" />
+                                        <input
+                                            type="number"
+                                            class="form-control border border-end-0 rounded-1 p-1"
+                                            required
+                                            formControlName="financial_current_usd"
+                                            [ngClass]="{
+                                                'is-invalid': submitted && f['financial_current_usd'].errors
+                                            }"
+                                        />
                                         <div class="border border-start-0 border-end-1 p-1 text-sm">USD</div>
+                                        <div
+                                            *ngIf="submitted && f['financial_current_usd'].errors"
+                                            class="invalid-feedback"
+                                        >
+                                            <div *ngIf="f['financial_current_usd'].errors['required']">
+                                                Field is required
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -65,15 +134,41 @@
                                 <div class="form-group">
                                     <app-input-dropdown
                                         [data]="availableCurrencies"
-                                        [defaultSelected]="availableCurrencies.at(0)?.key"
+                                        [defaultSelected]="
+                                            otherCurrenciesDefaultSelected.financial_current_other_currency
+                                        "
+                                        [inputValue]="f['financial_current_other'].value ?? ''"
+                                        (onSelectItem)="onSelectItemDropdown($event, 'financial_current_other')"
+                                        (inputValueChange)="onInputValueChange($event, 'financial_current_other')"
                                     ></app-input-dropdown>
+                                    <div *ngIf="submitted && f['financial_current_other'].errors">
+                                        <div
+                                            class="text-danger text-sm my-1"
+                                            *ngIf="f['financial_current_other'].errors['required']"
+                                        >
+                                            Field is required
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group my-3">
                             <label class="font-weight-bold text-dark">Source of Funds*</label>
-                            <input type="text" class="form-control border rounded-1 p-1" required />
+                            <input
+                                type="text"
+                                class="form-control border rounded-1 p-1"
+                                required
+                                formControlName="financial_current_source"
+                                [ngClass]="{
+                                    'is-invalid': submitted && f['financial_current_source'].errors
+                                }"
+                            />
+                            <div *ngIf="submitted && f['financial_current_source'].errors" class="invalid-feedback">
+                                <div *ngIf="f['financial_current_source'].errors['required']">
+                                    Source of Funds is required
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group my-3">
@@ -85,7 +180,16 @@
                                 rows="5"
                                 class="form-control border rounded-1 p-2"
                                 style="resize: none"
+                                required
+                                formControlName="officers"
+                                [ngClass]="{
+                                    'is-invalid': submitted && f['officers'].errors
+                                }"
                             ></textarea>
+
+                            <div *ngIf="submitted && f['officers'].errors" class="invalid-feedback">
+                                <div *ngIf="f['officers'].errors['required']">Field is required</div>
+                            </div>
                         </div>
 
                         <div class="form-group my-3">
@@ -98,12 +202,14 @@
                                 class="form-control border rounded-1 p-2"
                                 style="resize: none"
                                 required
+                                formControlName="members"
+                                [ngClass]="{
+                                    'is-invalid': submitted && f['members'].errors
+                                }"
                             ></textarea>
-                        </div>
-
-                        <div class="form-group my-3">
-                            <label class="font-weight-bold text-dark">Website of Project/Organization</label>
-                            <input type="text" class="form-control border rounded-1 p-1" />
+                            <div *ngIf="submitted && f['members'].errors" class="invalid-feedback">
+                                <div *ngIf="f['members'].errors['required']">Field is required</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -119,46 +225,68 @@
                         <h5 class="card-title">Your Organization is operated exclusively for*</h5>
 
                         <div class="row">
-                            <div class="form-check col-12 col-md-6 col-lg-4">
-                                <input class="form-check-input" type="checkbox" />
-                                <label class="form-check-label">charitable</label>
-                            </div>
-                            <div class="form-check col-12 col-md-6 col-lg-4">
-                                <input class="form-check-input" type="checkbox" />
-                                <label class="form-check-label">cultural</label>
-                            </div>
-                            <div class="form-check col-12 col-md-6 col-lg-4">
-                                <input class="form-check-input" type="checkbox" />
-                                <label class="form-check-label">educational purpose</label>
-                            </div>
-                            <div class="form-check col-12 col-md-6 col-lg-4">
-                                <input class="form-check-input" type="checkbox" />
-                                <label class="form-check-label">literacy</label>
-                            </div>
-                            <div class="form-check col-12 col-md-6 col-lg-4">
-                                <input class="form-check-input" type="checkbox" />
-                                <label class="form-check-label">religious</label>
-                            </div>
-                            <div class="form-check col-12 col-md-6 col-lg-4">
-                                <input class="form-check-input" type="checkbox" />
-                                <label class="form-check-label">scientific</label>
-                            </div>
+                            <ng-container formGroupName="operated_for">
+                                <div class="form-check col-12 col-md-6 col-lg-4">
+                                    <input class="form-check-input" formControlName="charitable" type="checkbox" />
+                                    <label class="form-check-label">charitable</label>
+                                </div>
+                                <div class="form-check col-12 col-md-6 col-lg-4">
+                                    <input class="form-check-input" formControlName="cultural" type="checkbox" />
+                                    <label class="form-check-label">cultural</label>
+                                </div>
+                                <div class="form-check col-12 col-md-6 col-lg-4">
+                                    <input
+                                        class="form-check-input"
+                                        formControlName="education_purpose"
+                                        type="checkbox"
+                                    />
+                                    <label class="form-check-label">educational purpose</label>
+                                </div>
+                                <div class="form-check col-12 col-md-6 col-lg-4">
+                                    <input class="form-check-input" formControlName="literacy" type="checkbox" />
+                                    <label class="form-check-label">literacy</label>
+                                </div>
+                                <div class="form-check col-12 col-md-6 col-lg-4">
+                                    <input class="form-check-input" formControlName="religious" type="checkbox" />
+                                    <label class="form-check-label">religious</label>
+                                </div>
+                                <div class="form-check col-12 col-md-6 col-lg-4">
+                                    <input class="form-check-input" formControlName="scientific" type="checkbox" />
+                                    <label class="form-check-label">scientific</label>
+                                </div>
+                            </ng-container>
+
                             <div class="form-group my-2">
                                 <label class="font-weight-bold text-dark">Others please indicate</label>
-                                <input type="text" class="form-control border rounded-1 p-1" required />
+                                <input
+                                    type="text"
+                                    class="form-control border rounded-1 p-1"
+                                    formControlName="operated_for_others"
+                                />
                             </div>
 
                             <div class="form-group my-3">
                                 <div class="row">
-                                    <div class="col-12 col-md-9">
+                                    <div class="col-12 col-md-10">
                                         <label class="font-weight-bold text-dark"
                                             >Does any part of the assets of your organization, now or planned for the
                                             future, inure to the benefit of private individuals, other than in the form
                                             of services which your organization is authorized to provide?*</label
                                         >
                                     </div>
-                                    <div class="col-12 col-md-3">
-                                        <app-select [arr]="['Yes', 'No']"></app-select>
+                                    <div class="col-12 col-md-2">
+                                        <div class="bool-opt-container">
+                                            <select
+                                                #boolAnyAssets
+                                                formControlName="any_assets"
+                                                class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
+                                                (change)="onChangeSelectedBoolOpt(boolAnyAssets.value, 'any_assets')"
+                                            >
+                                                <option value="true">Yes</option>
+                                                <option value="false">No</option>
+                                            </select>
+                                            <i class="material-icons">arrow_drop_down</i>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -168,21 +296,40 @@
                                     rows="5"
                                     class="form-control border rounded-1 p-2"
                                     style="resize: none"
-                                    required
+                                    formControlName="any_assets_description"
+                                    [ngClass]="{
+                                        'is-invalid': submitted && f['any_assets_description'].errors
+                                    }"
                                 ></textarea>
+                                <div *ngIf="submitted && f['any_assets_description'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['any_assets_description'].errors['required']">Field is required</div>
+                                </div>
                             </div>
 
                             <div class="form-group my-3">
                                 <div class="row">
-                                    <div class="col-12 col-md-9">
+                                    <div class="col-12 col-md-10">
                                         <label class="font-weight-bold text-dark"
                                             >Does your organization make any payments to any of its officers or members
                                             of its Board of Directors or other governing body, other than reasonable
                                             compensation for services to the organization?*</label
                                         >
                                     </div>
-                                    <div class="col-12 col-md-3">
-                                        <app-select [arr]="['Yes', 'No']"></app-select>
+                                    <div class="col-12 col-md-2">
+                                        <div class="bool-opt-container">
+                                            <select
+                                                #boolAnyPayments
+                                                formControlName="any_payments"
+                                                class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
+                                                (change)="
+                                                    onChangeSelectedBoolOpt(boolAnyPayments.value, 'any_payments')
+                                                "
+                                            >
+                                                <option value="true">Yes</option>
+                                                <option value="false">No</option>
+                                            </select>
+                                            <i class="material-icons">arrow_drop_down</i>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -192,50 +339,75 @@
                                     rows="5"
                                     class="form-control border rounded-1 p-2"
                                     style="resize: none"
-                                    required
+                                    formControlName="any_payments_description"
+                                    [ngClass]="{
+                                        'is-invalid': submitted && f['any_payments_description'].errors
+                                    }"
                                 ></textarea>
-                            </div>
-
-                            <div class="form-group my-3">
-                                <div class="row">
-                                    <div class="col-12 col-md-9">
-                                        <label class="font-weight-bold text-dark"
-                                            >Does your organization make any payments to any of its officers or members
-                                            of its Board of Directors or other governing body, other than reasonable
-                                            compensation for services to the organization?*</label
-                                        >
-                                    </div>
-                                    <div class="col-12 col-md-3">
-                                        <app-select [arr]="['Yes', 'No']"></app-select>
+                                <div *ngIf="submitted && f['any_payments_description'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['any_payments_description'].errors['required']">
+                                        Field is required
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group my-3">
                                 <div class="row">
-                                    <div class="col-12 col-md-9">
+                                    <div class="col-12 col-md-10">
                                         <label class="font-weight-bold text-dark"
                                             >Upon dissolution, are the assets of the organization required to be
                                             distributed for charitable, educational, scientific, religious, medical or
                                             literary purposes?*</label
                                         >
                                     </div>
-                                    <div class="col-12 col-md-3">
-                                        <app-select [arr]="['Yes', 'No']"></app-select>
+                                    <div class="col-12 col-md-2">
+                                        <div class="bool-opt-container">
+                                            <select
+                                                #boolUponDissolution
+                                                formControlName="upon_dissolution"
+                                                class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
+                                                (change)="
+                                                    onChangeSelectedBoolOpt(
+                                                        boolUponDissolution.value,
+                                                        'upon_dissolution'
+                                                    )
+                                                "
+                                            >
+                                                <option value="true">Yes</option>
+                                                <option value="false">No</option>
+                                            </select>
+                                            <i class="material-icons">arrow_drop_down</i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group my-3">
                                 <div class="row">
-                                    <div class="col-12 col-md-9">
+                                    <div class="col-12 col-md-10">
                                         <label class="font-weight-bold text-dark"
                                             >Is your organization controlled by or operated in connection with any other
                                             organization?*
                                         </label>
                                     </div>
-                                    <div class="col-12 col-md-3">
-                                        <app-select [arr]="['Yes', 'No']"></app-select>
+                                    <div class="col-12 col-md-2">
+                                        <div class="bool-opt-container">
+                                            <select
+                                                #boolIsControlledBy
+                                                formControlName="is_controlled_by"
+                                                class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
+                                                (change)="
+                                                    onChangeSelectedBoolOpt(
+                                                        boolIsControlledBy.value,
+                                                        'is_controlled_by'
+                                                    )
+                                                "
+                                            >
+                                                <option value="true">Yes</option>
+                                                <option value="false">No</option>
+                                            </select>
+                                            <i class="material-icons">arrow_drop_down</i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
