@@ -63,7 +63,7 @@ export class GrantApplicationComponent implements OnInit {
         NgbdSortableHeaderDirective<TransformApplicationForList>
     >;
 
-    constructor(public applicationService: ApplicationService) {}
+    constructor(public applicationService: ApplicationService) { }
 
     ngOnInit() {
         this.handleFetchApplication();
@@ -73,11 +73,14 @@ export class GrantApplicationComponent implements OnInit {
         this.isLoading = true;
         this.applicationService.fetch().subscribe({
             next: (data: Object) => {
+                console.log('data', data);
                 this.grantApplication.urgentGrants.list = transformApplicationForList(data as ApplicationRead[]);
                 this.grantApplication.submissions.list = transformApplicationForList(data as ApplicationRead[]);
                 this.grantApplication.grantsTeamReview.list = transformApplicationForList(data as ApplicationRead[]);
                 this.grantApplication.advisersReview.list = transformApplicationForList(data as ApplicationRead[]);
                 this.grantApplication.dueDiligence.list = transformApplicationForList(data as ApplicationRead[]);
+
+                console.log(this.grantApplication.urgentGrants.list);
                 this.grantApplication.budgetReviewAndFinalization.list = transformApplicationForList(
                     data as ApplicationRead[]
                 );
@@ -109,5 +112,9 @@ export class GrantApplicationComponent implements OnInit {
                 return direction === 'asc' ? res : -res;
             });
         }
+    }
+
+    remove(item: any) {
+        console.log('removing', item);
     }
 }

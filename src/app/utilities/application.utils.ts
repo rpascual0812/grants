@@ -6,10 +6,11 @@ export type CompareItemValue = string | number | Date;
 
 export const transformApplicationForList = (applications: ApplicationRead[]) => {
     return applications.map((app) => ({
+        applicationPk: app.pk as number,
         partnerId: app?.partner?.partner_id ?? '',
         partner: app?.partner?.name ?? '',
-        title: app?.application_proponent?.name ?? '',
-        applicationDate: app?.application_proponent?.date_created as Date,
+        title: app?.application_project?.title ?? '',
+        applicationDate: app?.date_created as Date,
         proposedBudget: 100,
     }));
 };
