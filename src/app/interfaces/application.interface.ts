@@ -35,7 +35,7 @@ export interface ApplicationRead {
     partner?: PartnerRead;
     application_proponent?: ApplicationProponentRead;
     application_organization_profile?: ApplicationOrganizationProfileRead;
-    application_project?: null;
+    application_project?: ApplicationProjectRead;
 }
 
 export interface ApplicationOrganizationProfileRead {
@@ -68,4 +68,16 @@ export interface PartnerRead {
     email_address?: string;
     date_created?: Date;
     archived?: boolean;
+}
+
+export interface ApplicationProjectRead {
+    pk?: number;
+    application_pk?: number;
+    title?: string;
+    duration?: string;
+    background?: string;
+    objective?: string;
+    expected_output?: string;
+    how_will_affect?: string;
+    date_created?: Date;
 }
