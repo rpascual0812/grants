@@ -38,9 +38,8 @@
     </div>
 
     <h6 class="mt-4">List of Partners</h6>
-
     <div class="container overflow-auto max-height-800">
-        <accordion [isAnimated]="true" [closeOthers]="oneAtATime">
+        <accordion *ngIf="!loading" [isAnimated]="true" [closeOthers]="oneAtATime">
             <accordion-group
                 *ngFor="let item of partnersList | paginate : { itemsPerPage: 10, currentPage: page }"
                 style="min-width: 1000px !important"

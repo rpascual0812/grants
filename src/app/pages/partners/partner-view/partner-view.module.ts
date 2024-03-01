@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PartnerViewComponent } from './partner-view.component';
 import { RouterModule } from '@angular/router';
-import { PartnerInformationModule } from '../partner-information/partner-information.module';
+import { PartnerInformationModule } from './modules/partner-information/partner-information.module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { OrganizationProfileModule } from '../organization-profile/organization-profile.module';
-import { ProjectsModule } from '../projects/projects.module';
-import { EvaluationsModule } from '../evaluations/evaluations.module';
-import { NonProfitEquivalencyDeterminationModule } from '../non-profit-equivalency-determination/non-profit-equivalency-determination.module';
-import { OtherInfoModule } from '../other-info/other-info.module';
+import { OrganizationProfileModule } from './modules/organization-profile/organization-profile.module';
+import { ProjectsModule } from './modules/projects/projects.module';
+import { EvaluationsModule } from './modules/evaluations/evaluations.module';
+import { NonProfitEquivalencyDeterminationModule } from './modules/non-profit-equivalency-determination/non-profit-equivalency-determination.module';
+import { OtherInfoModule } from './modules/other-info/other-info.module';
 
 
 @NgModule({
