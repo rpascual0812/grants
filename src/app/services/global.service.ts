@@ -12,7 +12,7 @@ export class GlobalService {
     ) { }
 
     selectFetch(data: any) {
-        console.log(_.BASE_URL + data);
+        console.log(`${_.BASE_URL}/${data}`);
         return this.http.get(`${_.BASE_URL}/${data}`);
     }
 }

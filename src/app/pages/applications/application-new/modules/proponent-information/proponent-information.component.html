@@ -41,7 +41,7 @@
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">Contact number*</label>
                                     <input
-                                        type="number"
+                                        type="tel"
                                         class="form-control border rounded-1 p-1"
                                         required
                                         formControlName="contact_number"
@@ -73,26 +73,70 @@
 
                         <div class="form-group my-3">
                             <label class="font-weight-bold text-dark">Website</label>
-                            <input type="text" class="form-control border rounded-1 p-1" formControlName="website"/>
+                            <input type="text" class="form-control border rounded-1 p-1" formControlName="website" />
                         </div>
 
                         <div class="form-group my-3">
                             <label class="font-weight-bold text-dark">Contact Person*</label>
-                            <input type="text" class="form-control border rounded-1 p-1" required />
+                            <input
+                                type="text"
+                                class="form-control border rounded-1 p-1"
+                                formControlName="contact_person_name"
+                                [ngClass]="{ 'is-invalid': submitted && f['contact_person_name'].errors }"
+                                required
+                            />
+                            <div *ngIf="submitted && f['contact_person_name'].errors" class="invalid-feedback">
+                                <div *ngIf="f['contact_person_name'].errors['required']">
+                                    Contact Person is required
+                                </div>
+                            </div>
                         </div>
 
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">Contact number (Contact Person)*</label>
-                                    <input type="number" class="form-control border rounded-1 p-1" required />
+                                    <input
+                                        type="tel"
+                                        class="form-control border rounded-1 p-1"
+                                        formControlName="contact_person_number"
+                                        [ngClass]="{ 'is-invalid': submitted && f['contact_person_number'].errors }"
+                                        required
+                                    />
+                                    <div
+                                        *ngIf="submitted && f['contact_person_number'].errors"
+                                        class="invalid-feedback"
+                                    >
+                                        <div *ngIf="f['contact_person_number'].errors['required']">
+                                            Contact number is required
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="col-12 col-md-6">
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">Email Address (Contact Person)*</label>
-                                    <input type="email" class="form-control border rounded-1 p-1" required />
+                                    <input
+                                        type="email"
+                                        class="form-control border rounded-1 p-1"
+                                        formControlName="contact_person_email_address"
+                                        [ngClass]="{
+                                            'is-invalid': submitted && f['contact_person_email_address'].errors
+                                        }"
+                                        required
+                                    />
+                                    <div
+                                        *ngIf="submitted && f['contact_person_email_address'].errors"
+                                        class="invalid-feedback"
+                                    >
+                                        <div *ngIf="f['contact_person_email_address'].errors['required']">
+                                            Email Address is required
+                                        </div>
+                                        <div *ngIf="f['contact_person_email_address'].errors['email']">
+                                            Email Address is invalid
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +145,13 @@
             </div>
 
             <div class="col-12 col-lg-6">
-                <button class="btn bg-info text-white w-100 text-capitalize my-2" type="button">Reset Form</button>
+                <button
+                    class="btn bg-info text-white w-100 text-capitalize my-2"
+                    type="button"
+                    (click)="handleResetForm()"
+                >
+                    Reset Form
+                </button>
             </div>
         </div>
 

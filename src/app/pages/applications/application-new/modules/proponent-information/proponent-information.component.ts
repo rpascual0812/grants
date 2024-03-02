@@ -31,7 +31,12 @@ export class ProponentInformationComponent {
             contact_number: [currentApplication?.proponent?.contact_number ?? '', Validators.required],
             email_address: [currentApplication?.proponent?.email_address ?? '', Validators.email],
             website: [currentApplication?.proponent?.website ?? ''],
-            archived: [false],
+            contact_person_name: [currentApplication?.proponent?.contact_person_name ?? '', Validators.required],
+            contact_person_number: [currentApplication?.proponent?.contact_person_number ?? '', Validators.required],
+            contact_person_email_address: [
+                currentApplication?.proponent?.contact_person_email_address ?? '',
+                [Validators.required, Validators.email],
+            ],
         });
     }
 
@@ -53,5 +58,9 @@ export class ProponentInformationComponent {
             this.saveFormValue();
             this.applicationSignalService.navigateNext();
         }
+    }
+
+    handleResetForm() {
+        // this.form.reset();
     }
 }
