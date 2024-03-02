@@ -7,4 +7,5 @@ export const PublicLayoutRoutes: Routes = [
     { path: 'application/auth', component: ApplicationAuthComponent },
     { path: 'application/status', component: ApplicationStatusComponent },
     { path: 'application/:uuid', component: ApplicationNewComponent },
+    { path: 'application/:uuid/information', component: ApplicationNewComponent },
 ];
