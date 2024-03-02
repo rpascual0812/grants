@@ -24,7 +24,7 @@ export class ApplicationService {
     }
 
     destroy(pk: any) {
-        return this.http.delete(`${_.BASE_URL}/applications/${pk}`);
+        return this.http.delete(`${_.BASE_URL}/application/${pk}`);
     }
 
 }
