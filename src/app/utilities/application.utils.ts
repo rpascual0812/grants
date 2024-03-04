@@ -21,3 +21,15 @@ export const compare = (v1: CompareItemValue, v2: CompareItemValue) => {
     }
     return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 };
+
+export const getDurationOpts = () => {
+    let durationOpts = [];
+    for (let i = 1; i <= 36; i++) {
+        let suffix = 'Months';
+        if (i === 1) {
+            suffix = 'Month';
+        }
+        durationOpts.push(`${i} ${suffix}`);
+    }
+    return durationOpts;
+};

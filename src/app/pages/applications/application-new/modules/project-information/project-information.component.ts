@@ -1,11 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PROVINCE_URL_FETCH_STATUS } from '../../utilities/constants';
 
-const PROVINCE_URL_FETCH_STATUS = {
-    notReady: 'notReady',
-    ready: 'ready',
-};
 
 type SelectItem = {
     pk?: number;

@@ -16,6 +16,7 @@ export const TRIBE_LIST_OPTIONS = [
 ];
 
 export const USD_CURRENCY = [{ key: 'USD', label: 'US Dollars' }];
+
 export const OTHER_CURRENCY_LIST = [
     {
         key: 'B$',
@@ -54,3 +55,8 @@ export const OTHER_CURRENCY_LIST = [
         label: 'Vietnamese Dong',
     },
 ];
+
+export const PROVINCE_URL_FETCH_STATUS = {
+    notReady: 'notReady',
+    ready: 'ready',
+};

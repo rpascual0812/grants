@@ -4,7 +4,6 @@ import * as _ from '../utilities/globals';
 @Injectable({
     providedIn: 'root',
 })
-
 export class ApplicationService {
     public navigate_next = signal(false);
     public navigate_back = signal(false);
@@ -15,8 +14,8 @@ export class ApplicationService {
         return this.http.get(`${_.BASE_URL}/application`, { params: filters });
     }
 
-    fetchOne(pk: any) {
-        return this.http.get(`${_.BASE_URL}/applications/${pk}`);
+    fetchOne(uuid: string) {
+        return this.http.get(`${_.BASE_URL}/application/${uuid}`);
     }
 
     store(data: any) {
@@ -26,5 +25,4 @@ export class ApplicationService {
     destroy(pk: any) {
         return this.http.delete(`${_.BASE_URL}/application/${pk}`);
     }
-
 }
