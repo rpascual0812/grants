@@ -1,15 +1,1 @@
-.banner {
-    background: rgb(2, 0, 36);
-    background: linear-gradient(
-        90deg,
-        rgba(2, 0, 36, 1) 0%,
-        rgba(144, 144, 235, 1) 0%,
-        rgba(83, 82, 149, 1) 0%,
-        rgba(0, 212, 255, 1) 100%
-    );
-    border-top-right-radius: 40px;
-    border-bottom-right-radius: 40px;
-    max-width: 490px;
-    text-align: center;
-    min-height: 50px;
-}
+@use '../custom-banner.scss'

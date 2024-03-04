@@ -74,7 +74,8 @@ export class GrantApplicationComponent implements OnInit {
     handleFetchApplication() {
         this.isLoading = true;
         this.applicationService.fetch().subscribe({
-            next: (data: Object) => {
+            next: (res: any) => {
+                const data = res?.data ?? [];
                 this.grantApplication.urgentGrants.list = transformApplicationForList(data as ApplicationRead[]);
                 this.grantApplication.submissions.list = transformApplicationForList(data as ApplicationRead[]);
                 this.grantApplication.grantsTeamReview.list = transformApplicationForList(data as ApplicationRead[]);
