@@ -213,3 +213,19 @@ ng-multiselect-dropdown>.multiselect-dropdown .dropdown-btn {
     border: 1px solid #e5e1e1 !important;
     box-shadow: 0 0.0525rem 0.125rem 0 rgba(0, 0, 0, 0.1) !important;
 }
+
+.nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #1e98e9;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+}
+
+.nav-link:focus,
+.nav-link:hover {
+    color: black;
+}
+
+a:hover {
+    color: black;
+}
