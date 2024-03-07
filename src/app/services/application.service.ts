@@ -8,14 +8,18 @@ export class ApplicationService {
     public navigate_next = signal(false);
     public navigate_back = signal(false);
 
-    constructor(public http: HttpClient) {}
+    constructor(public http: HttpClient) { }
 
     fetch(filters?: any) {
         return this.http.get(`${_.BASE_URL}/application`, { params: filters });
     }
 
-    fetchOne(uuid: string) {
-        return this.http.get(`${_.BASE_URL}/application/${uuid}`);
+    fetchOne(pk: any) {
+        return this.http.get(`${_.BASE_URL}/application/${pk}`);
+    }
+
+    review(number: any) {
+        return this.http.get(`${_.BASE_URL}/application/${number}/review`);
     }
 
     store(data: any) {
