@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { APPLICATION_TIMELINE_STATUS_DATA_MOCK } from '../../../mocks/application-timeline-status-data.mock';
-import { UploadDocumentModalComponent } from '../../../upload-document-modal/upload-document-modal.component';
+import { UploadDocumentModalComponent } from '../../../modals/upload-document-modal/upload-document-modal.component';
 
 export type Status = 'complete' | 'inprogress' | 'notApproved' | 'approved';
 

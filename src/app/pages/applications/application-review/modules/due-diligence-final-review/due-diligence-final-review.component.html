@@ -1,0 +1,99 @@
+<div class="my-5">
+    <div class="title d-flex flex-row gap-2 align-items-center">
+        <h5 class="text-dark">Due Diligence Final Review</h5>
+        <div class="vr"></div>
+        <h5 class="text-dark text-light">Comments</h5>
+        <button class="btn btn-info p-1 text-capitalize" style="background-color: #034241">
+            <i class="material-icons">download</i>
+            Download comments
+        </button>
+    </div>
+
+    <div class="card my-2">
+        <div class="card-body bg-gray-300 p-2">
+            <p class="font-weight-bold text-sm m-0">
+                You are currently checking the grant team review of new applications. Lorem ipsum, dolor sit amet
+                consectetur adipisicing elit. Magni, alias soluta repudiandae delectus autem mollitia, libero dolorem,
+                incidunt optio iure minima debitis dolor! Inventore optio est nobis earum quae voluptate.
+            </p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body bg-gray-300">
+            <div class="card my-3">
+                <div class="card-header p-3" style="background-color: #034241">
+                    <div class="d-flex flex-column flex-md-row text-white gap-1">
+                        <p class="m-0">July 5, 2023 -</p>
+                        <input class="form-control border-bottom text-sm p-0 m-0 w-20 h-10 text-white" type="text" />
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="content my-2">
+                        <textarea
+                            type="text"
+                            rows="4"
+                            class="form-control border rounded-1 p-2 bg-gray-300"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="action-container d-flex flex-column flex-md-row justify-content-md-between">
+                        <button class="btn btn-white">
+                            <div class="d-flex flex-column text-start">
+                                <p class="p-0 m-0 text-sm text-dark font-weight-bold">Attach Documents</p>
+                                <p class="p-0 m-0 text-sm text-info font-weight-bold">
+                                    <span class="icon icon-sm">
+                                        <i class="material-icons">add</i>
+                                    </span>
+                                    Attach File
+                                </p>
+                            </div>
+                        </button>
+
+                        <div class="d-flex flex-column flex-md-row flex-wrap gap-lg-2">
+                            <div class="form-check m-0 p-1">
+                                <input class="form-check-input" type="checkbox" />
+                                <label class="form-check-label text-dark font-weight-bold">Flag</label>
+                            </div>
+                            <div class="form-check m-0 p-1">
+                                <input class="form-check-input" type="checkbox" />
+                                <label class="form-check-label text-dark font-weight-bold">Needs Resolution</label>
+                            </div>
+                            <div class="form-check m-0 p-1">
+                                <input class="form-check-input" type="checkbox" />
+                                <label class="form-check-label text-dark font-weight-bold">Grantee</label>
+                            </div>
+                            <button class="btn btn-dark p-1" style="min-width: 150px; max-height: 30px">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <div>
+                    <h4 class="text-dark">Final Recommendation</h4>
+                    <ng-select
+                        style="--border-color: #034241"
+                        class="custom-recommendation-select w-100"
+                        [items]="['Approved for Next Stage', 'Rejected', 'Cancelled']"
+                        [placeholder]="'Choose your recommendation'"
+                    >
+                    </ng-select>
+                    <div class="d-flex flex-row flex-wrap my-3">
+                        <h4 class="text-dark m-0">Indicative Donor/Project:</h4>
+                        <input type="text" class="form-control border border-2 rounded bg-white w-35 p-1"/>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap my-3 gap-1">
+                        <h4 class="text-dark m-0">Grant Type/Function:</h4>
+                        <select class="form-select px-3 border border-1 rounded-2 bg-white w-35">
+                            <option selected>Travel Grant</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

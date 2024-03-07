@@ -1,4 +1,4 @@
-import { UploadDocumentModalComponent } from './../../../upload-document-modal/upload-document-modal.component';
+import { UploadDocumentModalComponent } from '../../../modals/upload-document-modal/upload-document-modal.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StatusTimelineComponent } from './status-timeline.component';
