@@ -16,7 +16,7 @@ export const MainLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
     { path: 'grants', component: GrantsComponent, canActivate: [authGuard] },
     { path: 'applications', component: ApplicationsComponent, canActivate: [authGuard] },
-    { path: 'applications/:pk/review', component: ApplicationReviewComponent, canActivate: [authGuard] },
+    { path: 'applications/:number/review', component: ApplicationReviewComponent, canActivate: [authGuard] },
     { path: 'partners', component: PartnersComponent, canActivate: [authGuard] },
     { path: 'partner/:pk/information', component: PartnerViewComponent, canActivate: [authGuard] },
     { path: 'reports', component: ReportsComponent, canActivate: [authGuard] },

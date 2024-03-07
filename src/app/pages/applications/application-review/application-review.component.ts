@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ApplicationService } from 'src/app/services/application.service';
 
 @Component({
     selector: 'app-application-review',
@@ -7,13 +8,27 @@ import { ActivatedRoute } from '@angular/router';
     styleUrls: ['./application-review.component.scss'],
 })
 export class ApplicationReviewComponent implements OnInit {
-    pk: string = '';
+    applicationNumber: string = '';
 
-    constructor(private route: ActivatedRoute) {
-        this.pk = this.route.snapshot.paramMap.get('pk') ?? '';
+    constructor(
+        private route: ActivatedRoute,
+        private applicationService: ApplicationService
+    ) {
+        this.applicationNumber = this.route.snapshot.paramMap.get('number') ?? '';
     }
 
     ngOnInit(): void {
-        console.log(this.pk);
+        this.fetch();
+    }
+
+    fetch() {
+        this.applicationService.review(this.applicationNumber).subscribe({
+            next: (res: any) => {
+                console.log(res);
+            },
+            error: (err: any) => {
+                console.log(err);
+            },
+        });
     }
 }

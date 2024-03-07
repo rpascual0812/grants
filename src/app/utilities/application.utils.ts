@@ -7,6 +7,8 @@ export type CompareItemValue = string | number | Date;
 export const transformApplicationForList = (applications: ApplicationRead[]) => {
     return applications.map((app) => ({
         applicationPk: app.pk as number,
+        applicationNumber: app.number as string,
+        uuid: app.uuid as string,
         partnerId: app?.partner?.partner_id ?? '',
         partner: app?.partner?.name ?? '',
         title: app?.application_project?.title ?? '',
