@@ -4,14 +4,16 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
     selector: 'app-application-review',
     templateUrl: './application-review.component.html',
-    styleUrls: ['./application-review.component.scss']
+    styleUrls: ['./application-review.component.scss'],
 })
 export class ApplicationReviewComponent implements OnInit {
-    constructor(private route: ActivatedRoute) { }
+    pk: string = '';
+
+    constructor(private route: ActivatedRoute) {
+        this.pk = this.route.snapshot.paramMap.get('pk') ?? '';
+    }
 
     ngOnInit(): void {
-        const pk = this.route.snapshot.paramMap.get('pk');
-
-        console.log(pk);
+        console.log(this.pk);
     }
 }

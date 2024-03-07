@@ -11,6 +11,7 @@ import { RolesModule } from 'src/app/pages/settings/roles/roles.module';
 import { ApplicationsModule } from 'src/app/pages/applications/applications.module';
 import { PartnersModule } from 'src/app/pages/partners/partners.module';
 import { PartnerViewModule } from 'src/app/pages/partners/partner-view/partner-view.module';
+import { ApplicationReviewModule } from 'src/app/pages/applications/application-review/application-review.module';
 
 @NgModule({
     imports: [
@@ -21,6 +22,7 @@ import { PartnerViewModule } from 'src/app/pages/partners/partner-view/partner-v
         HttpClientModule,
         ModalModule.forRoot(),
         ApplicationsModule,
+        ApplicationReviewModule,
         PartnersModule,
         PartnerViewModule,
         UsersModule,

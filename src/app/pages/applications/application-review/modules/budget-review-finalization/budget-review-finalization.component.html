@@ -1,0 +1,79 @@
+<div class="my-5">
+    <div class="title d-flex flex-row gap-2 align-items-center">
+        <h5 class="text-dark">Budget Review and Finalization</h5>
+        <div class="vr"></div>
+        <h5 class="text-dark text-light">Comments</h5>
+        <button class="btn btn-info p-1 text-capitalize" style="background-color: #034241">
+            <i class="material-icons">download</i>
+            Download comments
+        </button>
+    </div>
+
+    <div class="card my-2">
+        <div class="card-body bg-gray-300 p-2">
+            <p class="font-weight-bold text-sm m-0">
+                You are currently checking the grant team review of new applications. Lorem ipsum, dolor sit amet
+                consectetur adipisicing elit. Magni, alias soluta repudiandae delectus autem mollitia, libero dolorem,
+                incidunt optio iure minima debitis dolor! Inventore optio est nobis earum quae voluptate.
+            </p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body bg-gray-300">
+            <div class="card my-3">
+                <div class="card-header p-3" style="background-color: #034241">
+                    <div class="d-flex flex-column flex-md-row text-white gap-1 align-items-center">
+                        <h5 class="text-white m-0">Grants/Financial Team</h5>
+                        <p class="m-0">Date - name of Adviser</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="content my-2">
+                        <div class="d-flex flex-row align-items-center gap-2 my-2">
+                            <h5 class="m-0">Original Budget Proposal</h5>
+                            <button class="btn btn-default text-info bg-gray-300 p-2">
+                                <i class="material-icons">add</i>
+                                Attach File
+                            </button>
+                        </div>
+                        <div class="d-flex flex-row align-items-center gap-2 my-2">
+                            <h5 class="m-0">Revised Budget Proposal</h5>
+                            <button class="btn btn-default text-info bg-gray-300 p-2">
+                                <i class="material-icons">add</i>
+                                Attach File
+                            </button>
+                        </div>
+                        <div class="d-flex flex-row align-items-center gap-2 my-2">
+                            <h5 class="m-0">Approved Budget Proposal</h5>
+                            <button class="btn btn-default text-info bg-gray-300 p-2">
+                                <i class="material-icons">add</i>
+                                Attach File
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-row align-items-center">
+                    <h5 class="m-0">Organization Bank Account Information</h5>
+                    <button class="btn btn-default text-info" (click)="handleShowModal('orgBankAccntInfo')">
+                        View | Edit
+                    </button>
+                </div>
+                <div class="d-flex flex-row align-items-center">
+                    <h5 class="m-0">Fiscal Sponsor Bank Details</h5>
+                    <button class="btn btn-default text-info" (click)="handleShowModal('fiscalSponsorBankDetail')">
+                        View | Edit
+                    </button>
+                </div>
+                <div class="d-flex flex-row align-items-center">
+                    <h5 class="m-0">Other Information</h5>
+                    <button class="btn btn-default text-info" (click)="handleShowModal('otherInfo')">
+                        View | Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

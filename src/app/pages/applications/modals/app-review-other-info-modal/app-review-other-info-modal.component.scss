@@ -1,0 +1,26 @@
+
+.custom-file-input {
+    max-width: 240px;
+    input[type='file']::file-selector-button {
+        border-radius: 0.2em;
+        background-color: #f1eaea;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        transition: 1s;
+        padding: 0 1rem;
+        margin: 0 0.5rem;
+        border-radius: 4px;
+      }
+
+    .custom-file-icon-container {
+        padding: 0.5rem;
+        background: #1a237e;
+        border-radius: 50% !important;
+        margin-top: 5px;
+        margin-right: 18px;
+
+        i {
+            color: white;
+            font-size: 0.8rem;
+        }
+    }
+}
