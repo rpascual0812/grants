@@ -136,7 +136,7 @@ export interface ApplicationRead {
     partner_pk?: number;
     created_by?: number;
     date_created?: Date;
-    status_pk?: null;
+    status_pk?: number;
     archived?: boolean;
     partner?: PartnerRead;
     application_proponent?: ApplicationProponentRead;
@@ -179,7 +179,7 @@ export interface ApplicationNonprofitEquivalencyDeterminationRead {
     financial_current_source?: string;
     officers?: string;
     members?: string;
-    operated_for?: OperatedForRead;
+    operated_for?: OperatedFor;
     operated_for_others?: string;
     any_assets?: boolean;
     any_assets_description?: string;
@@ -190,7 +190,7 @@ export interface ApplicationNonprofitEquivalencyDeterminationRead {
     date_created?: Date;
 }
 
-export interface OperatedForRead {
+export interface OperatedFor {
     cultural?: boolean;
     literacy?: boolean;
     religious?: boolean;
@@ -234,9 +234,9 @@ export interface ApplicationProjectRead {
 export interface ApplicationProjectLocationRead {
     pk?: number;
     application_project_pk?: number;
-    province_code_url?: string;
     country_pk?: number;
     province_code?: number;
+    province_code_url?: string;
     date_created?: Date;
 }
 
@@ -249,7 +249,7 @@ export interface ApplicationProponentRead {
     email_address?: string;
     website?: string;
     date_created?: Date;
-    contact_person?: ContactPersonRead[];
+    contacts?: ContactPersonRead[];
 }
 
 export interface ContactPersonRead {
@@ -269,10 +269,10 @@ export interface ApplicationProposalRead {
     budget_request_other?: string;
     budget_request_other_currency?: string;
     date_created?: Date;
-    application_proposal_activity?: ApplicationProposalActivityRead[];
+    application_proposal_activity?: ApplicationProposalActivity[];
 }
 
-export interface ApplicationProposalActivityRead {
+export interface ApplicationProposalActivity {
     pk?: number;
     application_proposal_pk?: number;
     name?: string;

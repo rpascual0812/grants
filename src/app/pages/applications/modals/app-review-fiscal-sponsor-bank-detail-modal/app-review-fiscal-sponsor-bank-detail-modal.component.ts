@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ApplicationRead } from 'src/app/interfaces/application.interface';
 
 @Component({
     selector: 'app-app-review-fiscal-sponsor-bank-detail-modal',
@@ -7,5 +8,9 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
     styleUrls: ['./app-review-fiscal-sponsor-bank-detail-modal.component.scss'],
 })
 export class AppReviewFiscalSponsorBankDetailModalComponent {
-    constructor(public bsModalRef: BsModalRef) {}
+    currentApplication: ApplicationRead | null = null
+
+    constructor(public bsModalRef: BsModalRef, private modalService: BsModalService) {
+        this.currentApplication = (modalService?.config?.initialState as ApplicationRead) ?? null
+    }
 }
