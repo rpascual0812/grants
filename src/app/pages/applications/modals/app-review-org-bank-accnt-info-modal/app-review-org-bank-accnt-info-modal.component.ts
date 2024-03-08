@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
     selector: 'app-app-review-org-bank-accnt-info-modal',
@@ -7,5 +7,5 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
     styleUrls: ['./app-review-org-bank-accnt-info-modal.component.scss'],
 })
 export class AppReviewOrgBankAccntInfoModalComponent {
-    constructor(public bsModalRef: BsModalRef) {}
+    constructor(public bsModalRef: BsModalRef, private modalService: BsModalService) {}
 }

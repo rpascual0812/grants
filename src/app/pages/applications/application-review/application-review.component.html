@@ -7,12 +7,12 @@
         <div class="my-5">
             <div class="d-flex justify-content-between flex-wrap">
                 <div>
-                    <h5 class="text-secondary">Proponent ID | ID</h5>
-                    <h3 class="text-dark">Proponent Name | 123456789</h3>
+                    <h5 class="text-secondary">Proponent ID | {{ currentApplication?.application_proponent?.pk }}</h5>
+                    <h3 class="text-dark">Proponent Name | {{ currentApplication?.application_proponent?.name }}</h3>
                 </div>
                 <div>
                     <h5 class="text-secondary">Application Number</h5>
-                    <h3 class="text-dark">123456789</h3>
+                    <h3 class="text-dark">{{ currentApplication?.application_proponent?.contact_number }}</h3>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <p class="text-sm font-weight-bold text-secondary">
-                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit?
+                                    {{ currentApplication?.application_proponent?.name }}
                                 </p>
                             </div>
                         </div>
@@ -44,7 +44,9 @@
                                 <p class="text-sm font-weight-bold text-dark">Country</p>
                             </div>
                             <div class="col-12 col-md-6">
-                                <p class="text-sm font-weight-bold text-secondary">Philippines</p>
+                                <p class="text-sm font-weight-bold text-secondary">
+                                    {{ getCountry(currentApplication?.application_organization_profile?.country_pk) }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -67,8 +69,17 @@
                                 <p class="text-sm font-weight-bold text-dark">Proposed Budget</p>
                             </div>
                             <div class="col-12 col-md-6">
-                                <p class="text-sm font-weight-bold text-secondary m-0">USD 4500</p>
-                                <p class="text-sm font-weight-bold text-secondary m-0">IDR 4500000</p>
+                                <p class="text-sm font-weight-bold text-secondary m-0">
+                                    USD {{ currentApplication?.application_proposal?.budget_request_usd }}
+                                </p>
+                                <p class="text-sm font-weight-bold text-secondary m-0">
+                                    {{
+                                        getProposedBudget(
+                                            currentApplication?.application_proposal?.budget_request_other_currency,
+                                            currentApplication?.application_proposal?.budget_request_other
+                                        )
+                                    }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -79,9 +90,7 @@
                     </div>
                     <div class="col-10">
                         <p class="text-sm font-weight-bold text-secondary">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate maxime eligendi debitis
-                            perspiciatis. Porro ad fugit voluptate ipsam ex. Odio consequuntur ad nostrum cupiditate eum
-                            molestias, fugiat sequi facilis laboriosam?
+                            {{ currentApplication?.application_project?.objective }}
                         </p>
                     </div>
                 </div>
@@ -92,9 +101,7 @@
                     </div>
                     <div class="col-10">
                         <p class="text-sm font-weight-bold text-secondary">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate maxime eligendi debitis
-                            perspiciatis. Porro ad fugit voluptate ipsam ex. Odio consequuntur ad nostrum cupiditate eum
-                            molestias, fugiat sequi facilis laboriosam?
+                            {{ currentApplication?.application_project?.title }}
                         </p>
                     </div>
                 </div>
@@ -104,9 +111,7 @@
                     </div>
                     <div class="col-10">
                         <p class="text-sm font-weight-bold text-secondary">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate maxime eligendi debitis
-                            perspiciatis. Porro ad fugit voluptate ipsam ex. Odio consequuntur ad nostrum cupiditate eum
-                            molestias, fugiat sequi facilis laboriosam?
+                            {{ currentApplication?.application_project?.objective }}
                         </p>
                     </div>
                 </div>
@@ -116,9 +121,7 @@
                     </div>
                     <div class="col-10">
                         <p class="text-sm font-weight-bold text-secondary">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate maxime eligendi debitis
-                            perspiciatis. Porro ad fugit voluptate ipsam ex. Odio consequuntur ad nostrum cupiditate eum
-                            molestias, fugiat sequi facilis laboriosam?
+                            {{ currentApplication?.application_project?.how_will_affect }}
                         </p>
                     </div>
                 </div>
@@ -128,9 +131,7 @@
                     </div>
                     <div class="col-10">
                         <p class="text-sm font-weight-bold text-secondary">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate maxime eligendi debitis
-                            perspiciatis. Porro ad fugit voluptate ipsam ex. Odio consequuntur ad nostrum cupiditate eum
-                            molestias, fugiat sequi facilis laboriosam?
+                            {{ currentApplication?.application_project?.expected_output }}
                         </p>
                     </div>
                 </div>
