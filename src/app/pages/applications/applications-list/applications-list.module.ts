@@ -6,8 +6,8 @@ import { GrantApplicationModule } from './modules/grant-application/grant-applic
 import { FundReleaseModule } from './modules/fund-release/fund-release.module';
 
 @NgModule({
-    declarations: [ApplicationsListComponent],
-    exports: [ApplicationsListComponent],
-    imports: [CommonModule, GrantApplicationModule, ContractFinalizationModule, FundReleaseModule],
+  declarations: [ApplicationsListComponent],
+  exports: [ApplicationsListComponent],
+  imports: [CommonModule, GrantApplicationModule, ContractFinalizationModule, FundReleaseModule],
 })
-export class ApplicationsListModule {}
+export class ApplicationsListModule { }
