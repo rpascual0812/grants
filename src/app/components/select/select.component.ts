@@ -10,12 +10,14 @@ import { GlobalService } from '../../services/global.service';
 export class SelectComponent {
     @Input() url: string = '';
     @Input() listItemKey: string = 'pk';
+    @Input() listItemValue: string = 'name';
     @Input() placeholder: string = '';
     @Input() arr: any = [];
     @Input() multiple: boolean = false;
     @Input() limitSelection: any = -1;
     @Input() itemsShowLimit: any = 1;
     @Input() disabled: boolean = false;
+    @Input() indexZero: any = {};
     @Input() defaultSelectedItemKey?: any; // default selected with pk in list and url is indicated
     @Input() defaultSelectedInArr?: any; // default selected without pk in list and url is NOT indicated
     @Output() onSelectEvent = new EventEmitter<string | string[] | any>();
@@ -71,6 +73,9 @@ export class SelectComponent {
         this.globalService.selectFetch(this.url).subscribe({
             next: (data: any) => {
                 this.dropdownList = data.data;
+                if(this.indexZero) {
+                  this.dropdownList.unshift(this.indexZero);
+                }
                 this.setDefaultSelectedItemKey(data.data);
             },
             error: (error: any) => {

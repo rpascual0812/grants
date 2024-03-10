@@ -25,6 +25,7 @@ export class NewApplicationModalComponent {
   link: string = '';
   email_address: string = '';
   partner_pk: number = 0;
+  partner_name: string = '';
 
   submitted: boolean = false;
 
@@ -50,11 +51,13 @@ export class NewApplicationModalComponent {
       link: [this.link, Validators.required],
       email_address: [this.email_address, Validators.required],
       partner_pk: [this.partner_pk, Validators.required],
+      partner_name: [this.partner_name, Validators.required],
     });
   }
 
   partnerSelected(event: any) {
     this.form.get('partner_pk')?.patchValue(event[0].pk);
+    this.partner_pk = event[0].pk;
   }
 
   submit() {
