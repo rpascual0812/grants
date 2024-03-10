@@ -7,6 +7,7 @@ import { InputDropdownValue } from '../application-new/modules/input-dropdown/in
 import { ApplicationRead } from 'src/app/interfaces/application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 type SelectItem = {
     pk?: number;
@@ -20,7 +21,7 @@ type SelectItem = {
     styleUrls: ['./application-proj-info.component.scss'],
 })
 export class ApplicationProjInfoComponent implements OnInit {
-    uuid = '';
+    pk = '';
     loading = false;
     submitted = false;
     durationOpts: string[] = [];
@@ -39,9 +40,10 @@ export class ApplicationProjInfoComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
+        private toastr: ToastrService,
         route: ActivatedRoute
     ) {
-        this.uuid = route.snapshot.paramMap.get('uuid') ?? '';
+        this.pk = route.snapshot.paramMap.get('pk') ?? '';
     }
 
     get f() {
@@ -60,7 +62,7 @@ export class ApplicationProjInfoComponent implements OnInit {
 
     fetch() {
         this.loading = true;
-        this.applicationService.fetchOne(this.uuid).subscribe({
+        this.applicationService.fetchOne(this.pk).subscribe({
             next: (res: any) => {
                 const data = res?.data as ApplicationRead;
                 this.form.controls['title'].setValue(data?.application_project?.title);
@@ -116,7 +118,12 @@ export class ApplicationProjInfoComponent implements OnInit {
                 this.loading = false;
             },
             error: (err) => {
-                this.loading = false;
+                const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                const statusCode = err?.status ? `status: ${err?.status}` : '';
+                this.toastr.error(
+                    `An error occurred while fetching application. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
             },
         });
     }
