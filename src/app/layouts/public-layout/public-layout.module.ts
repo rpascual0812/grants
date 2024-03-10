@@ -6,12 +6,14 @@ import { ApplicationStatusModule } from 'src/app/pages/applications/application-
 import { ApplicationAuthModule } from 'src/app/pages/applications/application-auth/application-auth.module';
 import { ApplicationNewModule } from 'src/app/pages/applications/application-new/application-new.module';
 import { ApplicationProjInfoModule } from 'src/app/pages/applications/application-proj-info/application-proj-info.module';
+import { ApplicationSuccessModule } from 'src/app/pages/applications/application-success/application-success.module';
 
 @NgModule({
     imports: [
         CommonModule,
         RouterModule.forChild(PublicLayoutRoutes),
         ApplicationNewModule,
+        ApplicationSuccessModule,
         ApplicationStatusModule,
         ApplicationAuthModule,
         ApplicationProjInfoModule

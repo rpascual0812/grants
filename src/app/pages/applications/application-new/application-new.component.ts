@@ -1,5 +1,5 @@
 import { Component, effect, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
@@ -18,8 +18,13 @@ export class ApplicationNewComponent {
     step = INITIAL_STEP;
     uuid = '';
 
-    constructor(private applicationService: ApplicationService, private toastr: ToastrService, route: ActivatedRoute) {
-        this.uuid = route.snapshot.paramMap.get('uuid') ?? '';
+    constructor(
+        private applicationService: ApplicationService,
+        private toastr: ToastrService,
+        private router: Router,
+        private route: ActivatedRoute
+    ) {
+        this.uuid = this.route.snapshot.paramMap.get('uuid') ?? '';
 
         effect(() => {
             this.step = this.applicationSignalService.currentNavStep();
@@ -38,10 +43,11 @@ export class ApplicationNewComponent {
                 ...payload,
             })
             .subscribe({
-                next: (data: any) => {
+                next: (res: any) => {
                     this.loading = false;
-                    const status = data?.status;
-                    const code = data?.code ? `code: ${data?.code}` : '';
+                    const data = res?.data;
+                    const status = res?.status;
+                    const code = res?.code ? `code: ${res?.code}` : '';
                     if (!status) {
                         this.toastr.error(
                             `An error occurred while saving grant application. Please try again. ${code}`,
@@ -49,11 +55,17 @@ export class ApplicationNewComponent {
                         );
                     } else {
                         this.toastr.success('The application has been successfully created', 'SUCCESS!');
+                        this.router.navigate(['public', 'application', data?.application?.pk, 'success']);
                     }
                     this.applicationSignalService.submitSave.set(false);
                 },
-                error: (error: any) => {
-                    this.toastr.error('An error occurred while saving grant application. Please try again', 'ERROR!');
+                error: (err: any) => {
+                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                    const statusCode = err?.status ? `status: ${err?.status}` : '';
+                    this.toastr.error(
+                        `An error occurred while saving grant application. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
                     setTimeout(() => {
                         this.loading = false;
                         this.applicationSignalService.submitSave.set(false);

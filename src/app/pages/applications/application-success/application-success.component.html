@@ -1,0 +1,41 @@
+<div class="content pt-5 bg-gray-200 min-vh-100">
+    <div class="container py-4 text-center">
+        <ng-container *ngIf="loading">
+            <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="!loading && application">
+            <div class="message">
+                <h2 class="text-dark">Thank you for submitting your application</h2>
+                <p class="text-dark">Samadhana Grants Team will get in touch with your feedback.</p>
+                <p class="text-dark">We have a grace period of 30 to 60 days for proposal review and feedback</p>
+            </div>
+
+            <div class="application-number my-5">
+                <h6 class="text-dark p-3 border rounded bg-gray-300 w-30 m-auto">
+                    Application Number: {{ application.number }}
+                </h6>
+            </div>
+
+            <div class="application-details my-3">
+                <p class="text-dark">
+                    The details of this application has been sent to your email
+                    <span class="font-weight-bold">{{ application.partner?.email_address }}</span>
+                </p>
+            </div>
+
+            <div class="application-action">
+                <a class="btn btn-info" style="width: 150px" [routerLink]="['/']">Ok</a>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="!loading && !application">
+            <div class="message">
+                <h2 class="text-dark">Application Not Found</h2>
+                <p class="text-dark">Sorry, the application does not exist.</p>
+            </div>
+        </ng-container>
+    </div>
+</div>
