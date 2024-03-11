@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KIND_OF_ORGANIZATION_MAPPER, TRIBE_LIST_OPTIONS } from '../../utilities/constants';
@@ -22,7 +22,10 @@ export class OrganizationProfileComponent implements OnInit {
     submitted = false;
     applicationSignalService = inject(ApplicationSignalService);
     tribeIndicateList = TRIBE_LIST_OPTIONS;
-
+    selectChangeFieldEventEmitter = {
+        organization_pk: new EventEmitter<any>(),
+        country_pk: new EventEmitter<any>(),
+    };
     constructor(private formBuilder: FormBuilder, private globalService: GlobalService) {}
 
     ngOnInit() {
@@ -156,6 +159,14 @@ export class OrganizationProfileComponent implements OnInit {
                 ...value,
             },
         });
+    }
+
+    handleReset() {
+        this.form.reset();
+        this.onChangeSelectedItem([], 'organization_pk');
+        this.onChangeSelectedItem([], 'country_pk');
+        this.selectChangeFieldEventEmitter.organization_pk.emit([]);
+        this.selectChangeFieldEventEmitter.country_pk.emit([]);
     }
 
     handleNext() {

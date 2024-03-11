@@ -61,6 +61,6 @@ export class ProponentInformationComponent {
     }
 
     handleResetForm() {
-        // this.form.reset();
+        this.form.reset();
     }
 }

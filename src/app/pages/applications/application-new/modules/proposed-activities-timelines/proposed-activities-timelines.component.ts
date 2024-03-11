@@ -18,8 +18,8 @@ interface ProposedActivity {
 export class ProposedActivitiesTimelinesComponent {
     submitted = false;
     form: FormGroup;
-    activities: FormArray
-    durationOpts: string[] = []
+    activities: FormArray;
+    durationOpts: string[] = [];
     proposedActivities: ProposedActivity[] = [];
     availableCurrencies = OTHER_CURRENCY_LIST;
     usdCurrencies = USD_CURRENCY;
@@ -37,7 +37,6 @@ export class ProposedActivitiesTimelinesComponent {
         return this.form.controls;
     }
 
-    
     get formActivities() {
         return <FormArray>this.form.get('activities');
     }
@@ -60,13 +59,13 @@ export class ProposedActivitiesTimelinesComponent {
             budget_request_usd: [currentProposal?.budget_request_usd ?? ''],
             budget_request_other: [currentProposal?.budget_request_other ?? ''],
             budget_request_other_currency: [currentProposal?.budget_request_other_currency ?? ''],
-            activities: this.formBuilder.array([], [Validators.required])
+            activities: this.formBuilder.array([], [Validators.required]),
         });
         const selectedCurrencyKey = currentProposal?.budget_request_other_currency?.split('-').at(0)?.trim();
         this.otherCurrenciesDefaultSelected =
             OTHER_CURRENCY_LIST.find((currency) => currency?.key?.includes(selectedCurrencyKey ?? ''))?.key ??
             OTHER_CURRENCY_LIST.at(0)?.key;
-        this.initialActivities()
+        this.initialActivities();
     }
 
     initialActivities() {
@@ -74,9 +73,7 @@ export class ProposedActivitiesTimelinesComponent {
         const currentApplication = this.applicationSignalService.application();
         const currentActivities = currentApplication?.proposal?.activities ?? [];
         currentActivities.forEach((act) => {
-            this.activities.push(
-                this.createFormActivities(act.name, act.duration)
-            );
+            this.activities.push(this.createFormActivities(act.name, act.duration));
         });
     }
 
@@ -97,11 +94,11 @@ export class ProposedActivitiesTimelinesComponent {
     }
 
     handleOnSelect($event: string[], idx: number) {
-        const name = this.activities?.at(idx)?.get('name')?.value
+        const name = this.activities?.at(idx)?.get('name')?.value;
         this.activities?.at(idx)?.setValue({
             name,
-            duration: $event.at(0) ?? ''
-        })
+            duration: $event.at(0) ?? '',
+        });
     }
 
     onInputValueChange($event: InputDropdownValue, key: string) {
@@ -128,6 +125,11 @@ export class ProposedActivitiesTimelinesComponent {
                 ...value,
             },
         });
+    }
+
+    handleReset() {
+        this.form.reset();
+        this.activities.clear();
     }
 
     handleNext() {

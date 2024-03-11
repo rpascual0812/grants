@@ -35,6 +35,7 @@
                                                 ? form.controls['duration'].value
                                                 : null
                                         "
+                                        [changeFieldEventEmitter]="selectChangeFieldEventEmitter"
                                     ></app-select>
                                     <div *ngIf="submitted && f['duration'].errors">
                                         <div *ngIf="f['duration'].errors['required']" class="text-sm text-danger">
@@ -106,7 +107,7 @@
 
             <div class="col-12 col-lg-6">
                 <app-attach-documents></app-attach-documents>
-                <button class="btn bg-info text-white w-100 text-capitalize my-2">Reset Form</button>
+                <button class="btn bg-info text-white w-100 text-capitalize my-3" type="button" (click)="handleReset()">Reset Form</button>
             </div>
 
             <div class="col-12 col-lg-6 my-2">
