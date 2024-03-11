@@ -8,25 +8,14 @@
 
                         <div class="form-group my-3">
                             <label class="font-weight-bold text-dark">Kind of Organization*</label>
-                            <!-- <app-select
-                                [ngClass]="{ 'is-invalid': submitted && f['organization_pk'].errors }"
-                                (onSelectEvent)="onChangeSelectedItem($event, 'organization_pk')"
-                                (onDeSelectEvent)="onChangeSelectedItem($event, 'organization_pk')"
-                                [defaultSelectedItemKey]="
-                                    applicationSignalService.application()?.organization_profile?.organization_pk
-                                "
-                                [url]="'organization'"
-                            ></app-select> -->
-
                             <app-select
                                 *ngIf="!orgListLoading"
                                 [ngClass]="{ 'is-invalid': submitted && f['organization_pk'].errors }"
                                 (onSelectEvent)="onChangeSelectedItem($event, 'organization_pk')"
                                 (onDeSelectEvent)="onChangeSelectedItem($event, 'organization_pk')"
-                                [defaultSelectedItemKey]="
-                                    applicationSignalService.application()?.organization_profile?.organization_pk
-                                "
+                                [defaultSelectedItemKey]="form.controls['organization_pk'].value"
                                 [arr]="orgList"
+                                [changeFieldEventEmitter]="selectChangeFieldEventEmitter.organization_pk"
                             ></app-select>
                             <div *ngIf="submitted && f['organization_pk'].errors" class="invalid-feedback">
                                 <div *ngIf="f['organization_pk'].errors['required']">
@@ -266,10 +255,9 @@
                                 [url]="'country'"
                                 (onSelectEvent)="onChangeSelectedItem($event, 'country_pk')"
                                 (onDeSelectEvent)="onChangeSelectedItem($event, 'country_pk')"
-                                [defaultSelectedItemKey]="
-                                    applicationSignalService.application()?.organization_profile?.country_pk
-                                "
+                                [defaultSelectedItemKey]="form.controls['country_pk'].value"
                                 [ngClass]="{ 'is-invalid': submitted && f['country_pk'].errors }"
+                                [changeFieldEventEmitter]="selectChangeFieldEventEmitter.country_pk"
                             ></app-select>
                             <div *ngIf="submitted && f['country_pk'].errors" class="invalid-feedback">
                                 <div *ngIf="f['country_pk'].errors['required']">Country is required</div>
@@ -289,11 +277,13 @@
             </div>
             <div class="col-12 col-lg-6">
                 <app-attach-documents></app-attach-documents>
-                <button class="btn bg-info text-white w-100 text-capitalize my-2">Reset Form</button>
+                <button class="btn bg-info text-white w-100 text-capitalize my-3" type="button" (click)="handleReset()">
+                    Reset Form
+                </button>
             </div>
         </div>
 
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center my-3">
             <button class="btn btn-white text-capitalize m-1" (click)="handleBack()" type="button">Back</button>
             <button class="btn btn-dark-blue text-capitalize m-1">Next</button>
         </div>

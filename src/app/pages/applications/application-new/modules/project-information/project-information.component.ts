@@ -1,8 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PROVINCE_URL_FETCH_STATUS } from '../../utilities/constants';
-
 
 type SelectItem = {
     pk?: number;
@@ -62,6 +61,7 @@ export class ProjectInformationComponent implements OnInit {
     beneficiaryYoungWomen: FormArray;
     beneficiaryYoungMen: FormArray;
     applicationSignalService = inject(ApplicationSignalService);
+    selectChangeFieldEventEmitter = new EventEmitter<any>();
 
     constructor(private formBuilder: FormBuilder) {}
 
@@ -274,6 +274,26 @@ export class ProjectInformationComponent implements OnInit {
                 ...value,
             },
         });
+    }
+
+    handleReset() {
+        this.form.reset();
+        this.selectChangeFieldEventEmitter.emit([]);
+        this.onChangeSelectedItem([], 'duration');
+        this.resetBeneficiary();
+        this.resetProjLoc();
+    }
+
+    resetBeneficiary() {
+        this.beneficiaryYoungWomen.clear();
+        this.beneficiaryWomen.clear();
+        this.beneficiaryYoungMen.clear();
+        this.beneficiaryMen.clear();
+        this.initialBeneficiaries();
+    }
+
+    resetProjLoc() {
+        this.projectLoc.clear();
     }
 
     handleNext() {

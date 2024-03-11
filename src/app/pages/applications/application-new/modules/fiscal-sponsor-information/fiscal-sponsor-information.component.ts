@@ -50,6 +50,10 @@ export class FiscalSponsorInformationComponent {
         });
     }
 
+    handleReset() {
+        this.form.reset();
+    }
+
     handleNext() {
         this.submitted = true;
         const { status } = this.form;

@@ -17,6 +17,12 @@ export class NonProfitEquivalencyDeterminationComponent {
         financial_last_year_other: OTHER_CURRENCY_LIST?.at(0)?.key,
         financial_current_other_currency: OTHER_CURRENCY_LIST?.at(0)?.key,
     };
+    initialBooleanValue = {
+        any_assets: true,
+        any_payments: true,
+        upon_dissolution: true,
+        is_controlled_by: true,
+    };
     applicationSignalService = inject(ApplicationSignalService);
 
     constructor(private formBuilder: FormBuilder) {}
@@ -69,12 +75,24 @@ export class NonProfitEquivalencyDeterminationComponent {
             officers: [nonProfitEquivalencyDetermination?.officers ?? '', Validators.required],
             members: [nonProfitEquivalencyDetermination?.members ?? '', Validators.required],
             operated_for_others: [nonProfitEquivalencyDetermination?.operated_for_others ?? ''],
-            any_assets: [nonProfitEquivalencyDetermination?.any_assets ?? true, Validators.required],
+            any_assets: [
+                nonProfitEquivalencyDetermination?.any_assets ?? this.initialBooleanValue.any_assets,
+                Validators.required,
+            ],
             any_assets_description: [nonProfitEquivalencyDetermination?.any_assets_description ?? ''],
-            any_payments: [nonProfitEquivalencyDetermination?.any_payments ?? true, Validators.required],
+            any_payments: [
+                nonProfitEquivalencyDetermination?.any_payments ?? this.initialBooleanValue.any_payments,
+                Validators.required,
+            ],
             any_payments_description: [nonProfitEquivalencyDetermination?.any_payments_description ?? ''],
-            upon_dissolution: [nonProfitEquivalencyDetermination?.upon_dissolution ?? true, Validators.required],
-            is_controlled_by: [nonProfitEquivalencyDetermination?.is_controlled_by ?? true, Validators.required],
+            upon_dissolution: [
+                nonProfitEquivalencyDetermination?.upon_dissolution ?? this.initialBooleanValue.upon_dissolution,
+                Validators.required,
+            ],
+            is_controlled_by: [
+                nonProfitEquivalencyDetermination?.is_controlled_by ?? this.initialBooleanValue.is_controlled_by,
+                Validators.required,
+            ],
             operated_for: this.formBuilder.group({
                 charitable: [nonProfitEquivalencyDetermination?.operated_for?.charitable ?? false],
                 literacy: [nonProfitEquivalencyDetermination?.operated_for?.literacy ?? false],
@@ -170,6 +188,13 @@ export class NonProfitEquivalencyDeterminationComponent {
                 ...value,
             },
         });
+    }
+
+    handleReset() {
+        this.form.reset({
+            ...this.initialBooleanValue,
+        });
+        this.initialDescriptionsRequired();
     }
 
     handleNext() {
