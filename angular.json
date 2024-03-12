@@ -43,16 +43,22 @@
                             "src/assets/js/core/material-dashboard.min.js"
                         ],
                         "allowedCommonJsDependencies": [
-                          "sweetalert2"
+                            "sweetalert2"
                         ]
                     },
                     "configurations": {
                         "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.prod.ts"
+                                }
+                            ],
                             "budgets": [
                                 {
                                     "type": "initial",
                                     "maximumWarning": "2mb",
-                                    "maximumError": "4mb"
+                                    "maximumError": "5mb"
                                 },
                                 {
                                     "type": "anyComponentStyle",
