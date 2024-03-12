@@ -1,0 +1,11 @@
+scp -r dist/grants ubuntu@54.255.183.131:/usr/share/nginx/html
+
+server{
+    listen 80 default_server;
+    server_name _;
+    root /home/ubuntu/grants;
+    include /etc/nginx/default.d/*.conf;
+    location / {
+        try_files $uri $uri/ /index.html =404;
+    }
+}
