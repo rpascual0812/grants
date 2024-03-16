@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, OnInit, effect, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApplicationService } from 'src/app/services/application.service';
@@ -12,7 +12,7 @@ export const INITIAL_STEP = 1;
     templateUrl: './application-new.component.html',
     styleUrls: ['./application-new.component.scss'],
 })
-export class ApplicationNewComponent {
+export class ApplicationNewComponent implements OnInit {
     applicationSignalService = inject(ApplicationSignalService);
     loading = false;
     step = INITIAL_STEP;
@@ -25,13 +25,36 @@ export class ApplicationNewComponent {
         private route: ActivatedRoute
     ) {
         this.uuid = this.route.snapshot.paramMap.get('uuid') ?? '';
+    }
 
-        effect(() => {
-            this.step = this.applicationSignalService.currentNavStep();
-            if (this.applicationSignalService.submitSave()) {
-                this.handleSave();
+    appSignalEffect = effect(() => {
+        this.step = this.applicationSignalService.currentNavStep();
+        if (this.applicationSignalService.submitSave()) {
+            this.handleSave();
+        }
+    });
+
+    ngOnInit() {
+        this.fetch()
+    }
+
+    async fetch() {
+        this.applicationService.generated(this.uuid).subscribe({
+            next: (res: any) => {
+                const data = res?.data
+                this.applicationSignalService.appForm.set(data)
+                this.applicationSignalService.loadingInitialAppForm.set(false)
+            },
+            error: (err) => {
+                const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                const statusCode = err?.status ? `status: ${err?.status}` : '';
+                this.toastr.error(
+                    `An error occurred while saving grant application. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+                this.applicationSignalService.loadingInitialAppForm.set(false)
             }
-        });
+        })
     }
 
     async handleSave() {
@@ -66,12 +89,6 @@ export class ApplicationNewComponent {
                         `An error occurred while saving grant application. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
-                    setTimeout(() => {
-                        this.loading = false;
-                        this.applicationSignalService.submitSave.set(false);
-                    }, 500);
-                },
-                complete: () => {
                     setTimeout(() => {
                         this.loading = false;
                         this.applicationSignalService.submitSave.set(false);

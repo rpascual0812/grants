@@ -1,6 +1,7 @@
 import { Injectable, Signal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as _ from '../utilities/globals';
+import { Partner } from '../interfaces/_application.interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -18,6 +19,10 @@ export class ApplicationService {
     return this.http.get(`${_.BASE_URL}/application/${pk}`);
   }
 
+  generated(uuid: string) {
+    return this.http.get(`${_.BASE_URL}/application/${uuid}/generated`);
+  }
+
   review(number: any) {
     return this.http.get(`${_.BASE_URL}/application/${number}/review`);
   }
@@ -28,6 +33,10 @@ export class ApplicationService {
 
   store(data: any) {
     return this.http.post(`${_.BASE_URL}/application`, data);
+  }
+
+  saveApplicationPartner(data: Partner) {
+    return this.http.post(`${_.BASE_URL}/application/partner`, data);
   }
 
   destroy(pk: any) {
