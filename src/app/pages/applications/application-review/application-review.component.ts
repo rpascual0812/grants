@@ -26,7 +26,7 @@ export class ApplicationReviewComponent implements OnInit {
         this.applicationNumber = this.route.snapshot.paramMap.get('number') ?? '';
     }
 
-    ngOnInit(): void {
+    ngOnInit() {
         this.fetch();
     }
 
