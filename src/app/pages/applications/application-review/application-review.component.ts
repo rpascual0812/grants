@@ -28,7 +28,6 @@ export class ApplicationReviewComponent implements OnInit {
 
     ngOnInit(): void {
         this.fetch();
-        this.fetchCountry();
     }
 
     fetch() {
@@ -39,6 +38,7 @@ export class ApplicationReviewComponent implements OnInit {
                 this.applicationReviewSignalService.applicationReview.set({
                     ...data,
                 });
+                console.log(data);
                 this.currentApplication = data;
                 this.loading = false;
             },
@@ -47,22 +47,6 @@ export class ApplicationReviewComponent implements OnInit {
                 this.loading = false;
             },
         });
-    }
-
-    fetchCountry() {
-        this.globalService.selectFetch(`country`).subscribe({
-            next: (res: any) => {
-                const data: Country[] = res?.data ?? [];
-                this.countryList = data;
-            },
-            error: (err: any) => {
-                console.log(err);
-            },
-        });
-    }
-
-    getCountry(pk?: number) {
-        return this.countryList?.find((country) => country?.pk === pk)?.name ?? '';
     }
 
     getProposedBudget(otherCurrencySymbol?: string, otherCurrencyValue?: string) {

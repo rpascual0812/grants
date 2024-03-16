@@ -295,6 +295,48 @@ export interface PartnerRead {
     partner_id?: string;
     name?: string;
     email_address?: string;
+    contacts?: PartnerContacts[];
+    organization?: PartnerOrganization;
     date_created?: Date;
     archived?: boolean;
+}
+
+export interface PartnerContacts {
+    pk?: number;
+    partner_pk?: number;
+    name?: string;
+    contact_number?: string;
+    email_address?: string;
+    date_created?: Date;
+}
+
+export interface PartnerOrganization {
+    pk?: number;
+    partner_pk?: number;
+    organization_pk?: number;
+    tribe?: string;
+    womens_organization?: boolean;
+    youth_organization?: boolean;
+    differently_abled_organization?: boolean;
+    other_sectoral_group?: string;
+    farmers_group?: boolean;
+    fisherfolks?: boolean;
+    mission?: string;
+    vision?: string;
+    description?: string;
+    country_pk?: number;
+    country?: Country;
+    project_website?: string;
+    date_created?: Date;
+}
+
+export interface Country {
+    pk?: number;
+    name?: string;
+    code?: string;
+    dial_code?: string;
+    currency_name?: string;
+    currency_symbol?: string;
+    currency_code?: string;
+    date_created?: Date;
 }
