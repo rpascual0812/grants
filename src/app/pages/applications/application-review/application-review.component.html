@@ -7,91 +7,89 @@
         <div class="my-5">
             <div class="d-flex justify-content-between flex-wrap">
                 <div>
-                    <h5 class="text-secondary">Proponent ID | {{ currentApplication?.application_proponent?.pk }}</h5>
-                    <h3 class="text-dark">Proponent Name | {{ currentApplication?.application_proponent?.name }}</h3>
+                    <h5 class="text-secondary">Proponent ID | {{ currentApplication?.partner?.partner_id }}</h5>
+                    <h3 class="text-dark">Proponent Name | {{ currentApplication?.partner?.name }}</h3>
                 </div>
                 <div>
                     <h5 class="text-secondary">Application Number</h5>
-                    <h3 class="text-dark">{{ currentApplication?.application_proponent?.contact_number }}</h3>
+                    <h3 class="text-dark">{{ currentApplication?.number }}</h3>
                 </div>
             </div>
         </div>
 
         <div class="card">
             <div class="card-body bg-gray-300">
-                <div class="row g-0">
-                    <div class="col-12 col-md-5">
+                <div class="row">
+                    <div class="col-md-12">
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-2">
                                 <p class="text-sm font-weight-bold text-dark">Overall Grant Status</p>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <p class="text-sm font-weight-bold text-secondary">The Grants Corporation</p>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <p class="text-sm font-weight-bold text-dark">Project</p>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <p class="text-sm font-weight-bold text-secondary">
-                                    {{ currentApplication?.application_proponent?.name }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <p class="text-sm font-weight-bold text-dark">Country</p>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <p class="text-sm font-weight-bold text-secondary">
-                                    {{ getCountry(currentApplication?.application_organization_profile?.country_pk) }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-none d-md-flex col-md-1 justify-content-center">
-                        <div class="d-flex h-100">
-                            <div class="vr"></div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-2">
                                 <p class="text-sm font-weight-bold text-dark">Grant Type and Function</p>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <app-select [arr]="['ALL', 'Filter 1', 'Filter 2']"></app-select>
                             </div>
                         </div>
-                        <div class="row mt-2">
-                            <div class="col-12 col-md-6">
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-12 col-md-2">
+                                <p class="text-sm font-weight-bold text-dark">Project</p>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <p class="text-sm font-weight-bold text-secondary">
+                                    {{ currentApplication?.application_project?.title }}
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-2">
                                 <p class="text-sm font-weight-bold text-dark">Proposed Budget</p>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <p class="text-sm font-weight-bold text-secondary m-0">
                                     USD {{ currentApplication?.application_proposal?.budget_request_usd }}
                                 </p>
                                 <p class="text-sm font-weight-bold text-secondary m-0">
                                     {{
-                                        getProposedBudget(
-                                            currentApplication?.application_proposal?.budget_request_other_currency,
-                                            currentApplication?.application_proposal?.budget_request_other
-                                        )
+                                    getProposedBudget(
+                                    currentApplication?.application_proposal?.budget_request_other_currency,
+                                    currentApplication?.application_proposal?.budget_request_other
+                                    )
                                     }}
                                 </p>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row g-0 my-3">
-                    <div class="col-2">
-                        <p class="text-sm font-weight-bold text-dark">Objectives</p>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-12 col-md-2">
+                                <p class="text-sm font-weight-bold text-dark">Country</p>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <p class="text-sm font-weight-bold text-secondary">
+                                    {{ currentApplication?.partner?.organization?.country?.name }}
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-6">
+
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-10">
-                        <p class="text-sm font-weight-bold text-secondary">
-                            {{ currentApplication?.application_project?.objective }}
-                        </p>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-12 col-md-2">
+                                <p class="text-sm font-weight-bold text-dark">Objectives</p>
+                            </div>
+                            <div class="col-10">
+                                <p class="text-sm font-weight-bold text-secondary">
+                                    {{ currentApplication?.application_project?.objective }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr class="border border-1 border-dark" />
