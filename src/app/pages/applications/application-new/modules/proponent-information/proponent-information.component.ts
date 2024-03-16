@@ -77,14 +77,14 @@ export class ProponentInformationComponent {
                             ...data,
                         },
                     });
-                    this.toastr.success('The application has been successfully created', 'SUCCESS!');
+                    this.toastr.success('Proponent Information has been successfully saved', 'SUCCESS!');
                     this.applicationSignalService.navigateNext();
                 },
                 error: (err) => {
                     const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
                     const statusCode = err?.status ? `status: ${err?.status}` : '';
                     this.toastr.error(
-                        `An error occurred while saving grant application. ${statusCode} ${errorMessage} Please try again.`,
+                        `An error occurred while saving Proponent Information. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
                 },
