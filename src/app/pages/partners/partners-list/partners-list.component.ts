@@ -17,7 +17,7 @@ export class PartnersListComponent implements OnInit {
     oneAtATime = true;
     partnersList: Partner[] = [];
     page: number = 1;
-    constructor(private partnerService: PartnerService) {}
+    constructor(private partnerService: PartnerService) { }
 
     ngOnInit() {
         this.fetch();
@@ -31,18 +31,12 @@ export class PartnersListComponent implements OnInit {
                 this.partnersList = data.map((item, idx: number) => ({
                     partner: item?.name ?? '',
                     id: item?.partner_id,
-                    location: `${idx + 1}, C, Medicion 2-F, Imus, Cavite, Philippines`,
-                    totalGrantAmount: `10000`,
+                    location: item.address,
+                    grand_total_amount: item.grand_total_amount,
                     expanded: false,
-                    info: [
-                        {
-                            grantTitle: `Grant Title Sample with super long name`,
-                            amount: `10000`,
-                            status: `Preparing for project start up`,
-                            donorProject: `Global Green grants`,
-                        },
-                    ],
+                    applications: item?.application,
                 }));
+
                 this.loading = false;
             },
             error: (err) => {

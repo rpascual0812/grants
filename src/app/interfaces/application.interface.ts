@@ -297,7 +297,12 @@ export interface PartnerRead {
     email_address?: string;
     contacts?: PartnerContacts[];
     organization?: PartnerOrganization;
+    address?: string;
+    contact_number?: string;
+    website?: string;
     date_created?: Date;
+    grand_total_amount?: number;
+    application?: PartnerApplications[];
     archived?: boolean;
 }
 
@@ -339,4 +344,40 @@ export interface Country {
     currency_symbol?: string;
     currency_code?: string;
     date_created?: Date;
+}
+
+export interface PartnerApplications {
+    pk?: number;
+    uuid?: string;
+    number?: string;
+    partner_pk?: number;
+    created_by?: number;
+    date_created?: Date;
+    status_pk?: number;
+    archived?: boolean;
+    application_status?: ApplicationStatusesRead;
+    application_project?: ApplicationProjectRead;
+    application_proposal?: ApplicationProposalRead;
+    application_fiscal_sponsor?: ApplicationFiscalSponsorRead;
+    application_nonprofit_equivalency_determination?: ApplicationNonprofitEquivalencyDeterminationRead;
+    application_reference?: ApplicationReferenceRead[];
+}
+
+export interface ApplicationStatusesRead {
+    pk?: number;
+    application_pk?: number;
+    status_pk?: number;
+    status?: StatusRead;
+    archived?: boolean;
+}
+
+export interface StatusRead {
+    pk?: number;
+    name?: string;
+    description?: string;
+    parent_pk?: number;
+    sort?: number;
+    created_by?: number;
+    date_created?: Date;
+    archived?: boolean;
 }
