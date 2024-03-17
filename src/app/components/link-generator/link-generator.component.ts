@@ -39,7 +39,7 @@ export class LinkGeneratorComponent {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) { }
+    ) {}
 
     get f() {
         return this.form.controls;
