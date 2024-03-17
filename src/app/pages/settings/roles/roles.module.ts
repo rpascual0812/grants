@@ -7,6 +7,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { RolesComponent } from './roles.component';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { RolesModalComponent } from './roles-modal/roles-modal.component';
+import { SelectModule } from 'src/app/components/select/select.module';
 
 @NgModule({
     declarations: [
@@ -18,8 +19,8 @@ import { RolesModalComponent } from './roles-modal/roles-modal.component';
         ReactiveFormsModule,
         CommonModule,
         NgxPaginationModule,
-
-        ComponentsModule
+        ComponentsModule,
+        SelectModule
     ]
 })
 export class RolesModule { }

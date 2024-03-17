@@ -23,6 +23,8 @@ export class RolesComponent {
     pagination: any = _.PAGINATION;
     tableSizes: any = _.TABLE_SIZES;
 
+    page: number = 1;
+
     constructor(
         private userService: UserService,
         private formBuilder: FormBuilder,
@@ -122,5 +124,10 @@ export class RolesComponent {
         this.pagination.tableSize = event.target.value;
         this.pagination.page = 1;
         this.fetch();
+    }
+
+    handleIsOpenChange($event: boolean, id: string) {
+        const currentIdx = this.roles.findIndex((role: any) => role['id'] === id);
+        this.roles[currentIdx]['expanded'] = $event;
     }
 }

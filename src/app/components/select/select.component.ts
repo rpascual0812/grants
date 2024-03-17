@@ -30,7 +30,7 @@ export class SelectComponent {
     selectedItems: any = [];
     dropdownSettings = {};
 
-    constructor(private globalService: GlobalService) {}
+    constructor(private globalService: GlobalService) { }
 
     ngOnInit() {
         this.subscribeToChangeFieldEmitter();
@@ -58,7 +58,12 @@ export class SelectComponent {
     }
 
     onItemSelect(item: any) {
-        this.selectedItems = [item];
+        if (this.multiple) {
+            this.selectedItems.push(item);
+        }
+        else {
+            this.selectedItems = [item];
+        }
         this.onSelectEvent.emit(this.selectedItems);
     }
 
