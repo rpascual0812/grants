@@ -3,6 +3,8 @@ import { ApplicationSignalService } from 'src/app/services/application.signal.se
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OTHER_CURRENCY_LIST } from '../../utilities/constants';
 import { InputDropdownValue } from '../input-dropdown/input-dropdown.component';
+import { ToastrService } from 'ngx-toastr';
+import { ApplicationService } from 'src/app/services/application.service';
 
 @Component({
     selector: 'app-non-profit-equivalency-determination',
@@ -25,7 +27,11 @@ export class NonProfitEquivalencyDeterminationComponent {
     };
     applicationSignalService = inject(ApplicationSignalService);
 
-    constructor(private formBuilder: FormBuilder) {}
+    constructor(
+        private formBuilder: FormBuilder,
+        private applicationService: ApplicationService,
+        private toastr: ToastrService
+    ) {}
 
     ngOnInit(): void {
         this.setForm();
@@ -36,9 +42,11 @@ export class NonProfitEquivalencyDeterminationComponent {
     }
 
     setForm() {
-        const currentApplication = this.applicationSignalService.application();
-        const nonProfitEquivalencyDetermination = currentApplication?.non_profit_equivalency_determination;
+        const currentApplication = this.applicationSignalService.appForm();
+        const nonProfitEquivalencyDetermination = currentApplication?.application_nonprofit_equivalency_determination;
         this.form = this.formBuilder.group({
+            pk: [nonProfitEquivalencyDetermination?.pk],
+            application_pk: [currentApplication?.pk],
             year: [nonProfitEquivalencyDetermination?.year, Validators.required],
             financial_last_year_usd: [
                 nonProfitEquivalencyDetermination?.financial_last_year_usd ?? '',
@@ -107,8 +115,8 @@ export class NonProfitEquivalencyDeterminationComponent {
     }
 
     initialCurrenciesDefaultSelected() {
-        const currentApplication = this.applicationSignalService.application();
-        const nonProfitEquivalencyDetermination = currentApplication?.non_profit_equivalency_determination;
+        const currentApplication = this.applicationSignalService.appForm();
+        const nonProfitEquivalencyDetermination = currentApplication?.application_nonprofit_equivalency_determination;
 
         const selectedCurrencyLastYearKey = nonProfitEquivalencyDetermination?.financial_last_year_other_currency
             ?.split('-')
@@ -179,15 +187,51 @@ export class NonProfitEquivalencyDeterminationComponent {
         this.form?.controls[key]?.updateValueAndValidity();
     }
 
-    saveFormValue() {
+    saveFormValue(isNavigateNext?: boolean) {
+        const currentApplication = this.applicationSignalService.appForm();
         const { value } = this.form;
-        const currentApplication = this.applicationSignalService.application();
-        this.applicationSignalService.application.set({
-            ...currentApplication,
-            non_profit_equivalency_determination: {
+        this.applicationService
+            .saveApplicationNonProfitEquivalencyDetermination({
                 ...value,
-            },
-        });
+            })
+            .subscribe({
+                next: (res: any) => {
+                    const data = res?.data;
+                    const status = res.status;
+                    if (status) {
+                        this.applicationSignalService.appForm.set({
+                            ...currentApplication,
+                            application_nonprofit_equivalency_determination: {
+                                ...data,
+                            },
+                        });
+
+                        this.toastr.success(
+                            'Non-Profit Equivalency Determination has been successfully saved',
+                            'SUCCESS!'
+                        );
+
+                        if (isNavigateNext) {
+                            this.applicationSignalService.navigateNext();
+                        } else {
+                            this.applicationSignalService.navigateBack();
+                        }
+                    } else {
+                        this.toastr.error(
+                            `An error occurred while saving Non-Profit Equivalency Determination. Please try again.`,
+                            'ERROR!'
+                        );
+                    }
+                },
+                error: (err) => {
+                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                    const statusCode = err?.status ? `status: ${err?.status}` : '';
+                    this.toastr.error(
+                        `An error occurred while saving Non-Profit Equivalency Determination. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
+                },
+            });
     }
 
     handleReset() {
@@ -197,17 +241,19 @@ export class NonProfitEquivalencyDeterminationComponent {
         this.initialDescriptionsRequired();
     }
 
-    handleNext() {
+    processForm(isNavigateNext?: boolean) {
         this.submitted = true;
         const { status } = this.form;
         if (status === 'VALID') {
-            this.saveFormValue();
-            this.applicationSignalService.navigateNext();
+            this.saveFormValue(isNavigateNext);
         }
     }
 
+    handleNext() {
+        this.processForm(true);
+    }
+
     handleBack() {
-        this.saveFormValue();
-        this.applicationSignalService.navigateBack();
+        this.processForm();
     }
 }

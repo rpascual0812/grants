@@ -167,22 +167,30 @@ export class OrganizationProfileComponent implements OnInit {
             .subscribe({
                 next: (res: any) => {
                     const data = res?.data;
-                    this.applicationSignalService.appForm.set({
-                        ...currentApplication,
-                        partner: {
-                            ...currentApplication?.partner,
-                            organization: {
-                                ...data,
+                    const status = res.status;
+                    if (status) {
+                        this.applicationSignalService.appForm.set({
+                            ...currentApplication,
+                            partner: {
+                                ...currentApplication?.partner,
+                                organization: {
+                                    ...data,
+                                },
                             },
-                        },
-                    });
+                        });
 
-                    this.toastr.success('Organization Profile has been successfully saved', 'SUCCESS!');
+                        this.toastr.success('Organization Profile has been successfully saved', 'SUCCESS!');
 
-                    if (isNavigateNext) {
-                        this.applicationSignalService.navigateNext();
+                        if (isNavigateNext) {
+                            this.applicationSignalService.navigateNext();
+                        } else {
+                            this.applicationSignalService.navigateBack();
+                        }
                     } else {
-                        this.applicationSignalService.navigateBack();
+                        this.toastr.error(
+                            `An error occurred while saving Proponent Information. Please try again.`,
+                            'ERROR!'
+                        );
                     }
                 },
                 error: (err) => {
