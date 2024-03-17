@@ -1,4 +1,4 @@
-<div class="main-body container-fluid mb-3">
+<div class="container-fluid mb-3">
     <nav aria-label="breadcrumb">
         <h4 class="font-weight-bolder mb-0 mb-5">Users & Roles</h4>
     </nav>
@@ -68,27 +68,6 @@
                                     <td class="w-15 align-middle text-center text-sm">
                                         <app-select url="roles" [multiple]="true" [limitSelection]="2"
                                             [itemsShowLimit]="3" placeholder="Please select"></app-select>
-                                        <!-- <div class="shadow-x p-2 bg-white rounded w-100 cursor-pointer"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span class="badge rounded-pill bg-grant-primary"
-                                                style="padding-top: 6px; padding-left: 7px; padding-right: 7px;">{{getActiveRoles(user.user_role)}}</span>
-                                            <span class="p-2">Roles</span>
-                                            <i class="fa fa-caret-down"></i>
-                                        </div>
-                                        <ul style="top: 0 !important;"
-                                            class="dropdown-menu  dropdown-menu-end px-3 py-3 me-sm-n4"
-                                            aria-labelledby="dropdownMenuButton">
-                                            <li class="form-check form-switch" *ngFor="let role of roles; let i = index"
-                                                (click)="$event.stopPropagation()">
-                                                <input class="form-check-input" type="checkbox" id="{{role.pk}}"
-                                                    (click)="updateRole(role, user, $event)"
-                                                    [checked]="checkRoles(user.user_role, role)">
-                                                <label class="form-check-label" for="{{role.pk}}"
-                                                    (click)="$event.stopPropagation()">
-                                                    {{role.name}}
-                                                </label>
-                                            </li>
-                                        </ul> -->
                                     </td>
                                     <td class="w-20 opacity-7">
                                         <div class="ms-auto text-end">
@@ -142,11 +121,19 @@
                             </tfoot>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    <div class="col-md-12 px-5 mt-5 mb-5">
-                        <h4>Link and Name Generator</h4>
+    <div class="row mb-4">
+        <div class="col-lg-12 col-md-6 mb-md-0">
+            <h4>Link and Name Generator</h4>
+            <div class="card pb-2">
+                <div class="card-body px-0 pb-2">
+                    <div class="col-md-12 px-5">
                         <app-link-generator></app-link-generator>
-                        <button class="btn btn-sm btn-dark-blue mt-2 justify-content-end" (click)="generate()">Generate
+                        <button class="btn btn-md btn-dark-blue mt-2 float-end" (click)="generate()">Generate
                             Link</button>
                     </div>
                 </div>
@@ -154,4 +141,78 @@
         </div>
     </div>
 
+    <div class="row mb-4">
+        <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
+            <h4>Existing Links</h4>
+            <div class="card">
+                <div class="card-body px-0 pb-2">
+                    <div class="table-responsive">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Partner's Name</th>
+                                    <th
+                                        class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Contact Number</th>
+                                    <th
+                                        class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Link Sent To</th>
+                                    <th
+                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Provided Link</th>
+                                    <th
+                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    *ngFor="let application of applications | paginate : { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.count }; let i = index">
+                                    <td scope="row">
+                                        <div class="d-flex px-2 py-1">
+                                            <span class="mb-0 text-sm">{{application.partner.name}}</span>
+                                        </div>
+                                    </td>
+                                    <td scope="row">
+                                        <div class="d-flex px-2 py-1">
+                                            <span class="mb-0 text-sm">{{application.partner.contact_number}}</span>
+                                        </div>
+                                    </td>
+                                    <td class="w-25 align-middle text-sm">
+                                        <span class="mb-0 text-sm">{{application.partner.email_address}}</span>
+                                    </td>
+                                    <td class="w-25 align-middle text-center text-sm">
+                                        <span class="text-xs">{{link + application.uuid}}</span>
+                                    </td>
+                                    <td class="w-15 align-middle text-center text-sm">
+                                        <a href="javascript:void(0)" class="text-danger">Remove</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot *ngIf="false">
+                                <tr>
+                                    <td colspan="100%">
+                                        <div class="d-flex flex-row-reverse mt-2" *ngIf="pagination.count>0">
+                                            <pagination-controls [responsive]="true" previousLabel="Prev"
+                                                nextLabel="Next"
+                                                (pageChange)="onTableDataChange($event)"></pagination-controls>
+                                            <div>
+                                                <select (change)="onTableSizeChange($event)"
+                                                    class="form-control form-control-sm pagination-select">
+                                                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                                                        {{ size }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
