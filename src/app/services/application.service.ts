@@ -1,7 +1,7 @@
 import { Injectable, Signal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as _ from '../utilities/globals';
-import { Partner } from '../interfaces/_application.interface';
+import { Organization, Partner } from '../interfaces/_application.interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -37,6 +37,10 @@ export class ApplicationService {
 
   saveApplicationPartner(data: Partner) {
     return this.http.post(`${_.BASE_URL}/application/partner`, data);
+  }
+
+  saveApplicationPartnerOrg(data: Organization) {
+    return this.http.post(`${_.BASE_URL}/application/partner_organization`, data);
   }
 
   destroy(pk: any) {

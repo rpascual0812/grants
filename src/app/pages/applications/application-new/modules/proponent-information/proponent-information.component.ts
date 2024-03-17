@@ -75,6 +75,9 @@ export class ProponentInformationComponent {
                         ...currentApplication,
                         partner: {
                             ...data,
+                            organization: {
+                                ...currentApplication?.partner?.organization
+                            }
                         },
                     });
                     this.toastr.success('Proponent Information has been successfully saved', 'SUCCESS!');

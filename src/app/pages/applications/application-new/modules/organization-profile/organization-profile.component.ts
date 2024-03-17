@@ -3,6 +3,8 @@ import { ApplicationSignalService } from 'src/app/services/application.signal.se
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KIND_OF_ORGANIZATION_MAPPER, TRIBE_LIST_OPTIONS } from '../../utilities/constants';
 import { GlobalService } from 'src/app/services/global.service';
+import { ApplicationService } from 'src/app/services/application.service';
+import { ToastrService } from 'ngx-toastr';
 
 type SelectItem = {
     pk: number;
@@ -26,7 +28,12 @@ export class OrganizationProfileComponent implements OnInit {
         organization_pk: new EventEmitter<any>(),
         country_pk: new EventEmitter<any>(),
     };
-    constructor(private formBuilder: FormBuilder, private globalService: GlobalService) {}
+    constructor(
+        private formBuilder: FormBuilder,
+        private globalService: GlobalService,
+        private applicationService: ApplicationService,
+        private toastr: ToastrService
+    ) {}
 
     ngOnInit() {
         this.setForm();
@@ -38,29 +45,29 @@ export class OrganizationProfileComponent implements OnInit {
     }
 
     setForm() {
-        const currentApplication = this.applicationSignalService.application();
+        const currentApplication = this.applicationSignalService.appForm();
+        const appOrg = currentApplication?.partner?.organization;
         this.form = this.formBuilder.group({
-            organization_pk: [currentApplication?.organization_profile?.organization_pk ?? '', Validators.required],
-            mission: [currentApplication?.organization_profile?.mission ?? ''],
-            vision: [currentApplication?.organization_profile?.vision ?? ''],
-            description: [currentApplication?.organization_profile?.description ?? '', Validators.required],
-            country_pk: [currentApplication?.organization_profile?.country_pk ?? '', Validators.required],
-            project_website: [currentApplication?.organization_profile?.project_website ?? ''],
-            tribe: [currentApplication?.organization_profile?.tribe ?? ''],
-            womens_organization: [currentApplication?.organization_profile?.womens_organization ?? false],
-            differently_abled_organization: [
-                currentApplication?.organization_profile?.differently_abled_organization ?? false,
-            ],
-            farmers_group: [currentApplication?.organization_profile?.farmers_group ?? false],
-            youth_organization: [currentApplication?.organization_profile?.youth_organization ?? false],
-            fisherfolks: [currentApplication?.organization_profile?.fisherfolks ?? false],
-            other_sectoral_group: [currentApplication?.organization_profile?.other_sectoral_group ?? ''],
+            organization_pk: [appOrg?.organization_pk ?? '', Validators.required],
+            mission: [appOrg?.mission ?? ''],
+            vision: [appOrg?.vision ?? ''],
+            description: [appOrg?.description ?? '', Validators.required],
+            country_pk: [appOrg?.country_pk ?? '', Validators.required],
+            project_website: [appOrg?.project_website ?? ''],
+            tribe: [appOrg?.tribe ?? ''],
+            womens_organization: [appOrg?.womens_organization ?? false],
+            differently_abled_organization: [appOrg?.differently_abled_organization ?? false],
+            farmers_group: [appOrg?.farmers_group ?? false],
+            youth_organization: [appOrg?.youth_organization ?? false],
+            fisherfolks: [appOrg?.fisherfolks ?? false],
+            other_sectoral_group: [appOrg?.other_sectoral_group ?? ''],
         });
     }
 
     initialSelectedOrg(orgList: SelectItem[]) {
-        const currentApplication = this.applicationSignalService.application();
-        const orgPk = currentApplication?.organization_profile?.organization_pk;
+        const currentApplication = this.applicationSignalService.appForm();
+        const appOrg = currentApplication?.partner?.organization;
+        const orgPk = appOrg?.organization_pk;
         this.selectedOrganization = orgPk ? orgList?.find((org) => org.pk === orgPk)?.name ?? '' : '';
     }
 
@@ -72,15 +79,14 @@ export class OrganizationProfileComponent implements OnInit {
                 this.initialSelectedOrg(this.orgList);
                 this.orgListLoading = false;
             },
-            error: (error: any) => {
-                console.log(error);
+            error: (err: any) => {
                 setTimeout(() => {
-                    this.orgListLoading = false;
-                }, 500);
-            },
-            complete: () => {
-                console.log('Complete');
-                setTimeout(() => {
+                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                    const statusCode = err?.status ? `status: ${err?.status}` : '';
+                    this.toastr.error(
+                        `An error occurred while fetching organization. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
                     this.orgListLoading = false;
                 }, 500);
             },
@@ -150,15 +156,44 @@ export class OrganizationProfileComponent implements OnInit {
         this.form.controls[key].setValue(value === 'true' ? true : false);
     }
 
-    saveFormValue() {
+    saveFormValue(isNavigateNext?: boolean) {
+        const currentApplication = this.applicationSignalService.appForm();
         const { value } = this.form;
-        const currentApplication = this.applicationSignalService.application();
-        this.applicationSignalService.application.set({
-            ...currentApplication,
-            organization_profile: {
+        this.applicationService
+            .saveApplicationPartnerOrg({
+                partner_id: currentApplication?.partner?.partner_id,
                 ...value,
-            },
-        });
+            })
+            .subscribe({
+                next: (res: any) => {
+                    const data = res?.data;
+                    this.applicationSignalService.appForm.set({
+                        ...currentApplication,
+                        partner: {
+                            ...currentApplication?.partner,
+                            organization: {
+                                ...data,
+                            },
+                        },
+                    });
+
+                    this.toastr.success('Organization Profile has been successfully saved', 'SUCCESS!');
+
+                    if (isNavigateNext) {
+                        this.applicationSignalService.navigateNext();
+                    } else {
+                        this.applicationSignalService.navigateBack();
+                    }
+                },
+                error: (err) => {
+                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                    const statusCode = err?.status ? `status: ${err?.status}` : '';
+                    this.toastr.error(
+                        `An error occurred while saving Proponent Information. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
+                },
+            });
     }
 
     handleReset() {
@@ -169,17 +204,19 @@ export class OrganizationProfileComponent implements OnInit {
         this.selectChangeFieldEventEmitter.country_pk.emit([]);
     }
 
-    handleNext() {
+    processForm(isNavigateNext?: boolean) {
         this.submitted = true;
         const { status } = this.form;
         if (status === 'VALID') {
-            this.saveFormValue();
-            this.applicationSignalService.navigateNext();
+            this.saveFormValue(isNavigateNext);
         }
     }
 
+    handleNext() {
+        this.processForm(true);
+    }
+
     handleBack() {
-        this.saveFormValue();
-        this.applicationSignalService.navigateBack();
+        this.processForm();
     }
 }
