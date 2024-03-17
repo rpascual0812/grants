@@ -1,9 +1,10 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, ViewChild } from '@angular/core';
 import { FormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { v4 as uuidv4 } from 'uuid';
 import { ToastrService } from 'ngx-toastr';
 import { ApplicationService } from 'src/app/services/application.service';
+import { SelectComponent } from '../select/select.component';
 
 @Component({
     selector: 'app-link-generator',
@@ -11,6 +12,7 @@ import { ApplicationService } from 'src/app/services/application.service';
     styleUrls: ['./link-generator.component.scss']
 })
 export class LinkGeneratorComponent {
+    @ViewChild(SelectComponent) select: SelectComponent;
     public callback: EventEmitter<any> = new EventEmitter();
     loading: boolean = false;
     title?: string;
@@ -38,12 +40,21 @@ export class LinkGeneratorComponent {
     get f() { return this.form.controls; }
 
     ngOnInit(): void {
-        this.uuid = uuidv4();
-        this.link = window.location.origin + '/public/application/' + this.uuid;
+        this.setForm();
+    }
+
+    reset() {
+        this.email_address = '';
+        this.form.get('partner_pk')?.patchValue(0);
+        this.partner_name = '';
+        this.form.reset();
         this.setForm();
     }
 
     setForm() {
+        this.uuid = uuidv4();
+        this.link = window.location.origin + '/public/application/' + this.uuid;
+
         this.form = this.formBuilder.group({
             pk: [''],
             uuid: [this.uuid, Validators.required],
@@ -75,7 +86,8 @@ export class LinkGeneratorComponent {
                     setTimeout(() => { this.loading = false; }, 500);
                 },
                 complete: () => {
-                    console.log('Complete');
+                    this.reset();
+                    this.select.reset();
                     setTimeout(() => { this.loading = false; }, 500);
                     this.bsModalRef.hide();
                 }

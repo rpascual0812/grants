@@ -116,4 +116,8 @@ export class SelectComponent {
                 this.selectedItems = data;
             });
     }
+
+    reset() {
+        this.selectedItems = [];
+    }
 }
