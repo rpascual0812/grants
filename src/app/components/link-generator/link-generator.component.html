@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-md-12">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="Link" formControlName="link"
+                            [ngClass]="{ 'is-invalid': submitted && f['link'].errors }">
+                        <div *ngIf="submitted && f['link'].errors" class="invalid-feedback">
+                            <div *ngIf="f['link'].errors['required']">Link is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="Email Address"
+                            formControlName="email_address"
+                            [ngClass]="{ 'is-invalid': submitted && f['email_address'].errors }">
+                        <div *ngIf="submitted && f['email_address'].errors" class="invalid-feedback">
+                            <div *ngIf="f['email_address'].errors['required']">Email Address is required</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="{{ partner_pk == null ? 'col-md-4' : 'col-md-12'}}">
+                    <div class="form-group">
+                        <app-select url="partner" [indexZero]="{ pk: null, name: 'New'}"
+                            (onSelectEvent)="partnerSelected($event)" placeholder="Please select"></app-select>
+                    </div>
+                </div>
+                <div class="col-md-8" *ngIf="partner_pk == null">
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="Partner's Name"
+                            formControlName="partner_name"
+                            [ngClass]="{ 'is-invalid': submitted && f['partner_name'].errors }">
+                        <div *ngIf="submitted && f['partner_name'].errors" class="invalid-feedback">
+                            <div *ngIf="f['partner_name'].errors['required']">Partner's Name is required</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

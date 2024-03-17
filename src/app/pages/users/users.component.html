@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="col-lg-8 col-5 my-auto text-end">
-                        <button class="btn btn-md bg-grant-primary text-sm text-white" (click)="userModal(null)">
+                        <button class="btn btn-sm bg-grant-primary text-sm text-white" (click)="userModal(null)">
                             <i class="material-icons text-sm">add_circle</i>
                             Add User
                         </button>
@@ -21,7 +21,6 @@
                 </div>
             </div>
             <div class="card">
-
                 <div class="card-body px-0 pb-2">
                     <div class="table-responsive">
                         <table class="table align-items-center mb-0">
@@ -143,8 +142,16 @@
                             </tfoot>
                         </table>
                     </div>
+
+                    <div class="col-md-12 px-5 mt-5 mb-5">
+                        <h4>Link and Name Generator</h4>
+                        <app-link-generator></app-link-generator>
+                        <button class="btn btn-sm btn-dark-blue mt-2 justify-content-end" (click)="generate()">Generate
+                            Link</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>

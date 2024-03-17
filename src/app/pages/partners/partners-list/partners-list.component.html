@@ -106,6 +106,9 @@
                                 <p class="text-dark text-sm m-0 p-0">{{ application?.donorProject }}</p>
                             </div>
                         </div>
+                        <div class="row my-1" *ngIf="item?.['applications'].length == 0">
+                            <p class="text-center">No applications found.</p>
+                        </div>
                     </div>
                 </button>
             </accordion-group>
