@@ -1,7 +1,8 @@
 import { Injectable, Signal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as _ from '../utilities/globals';
-import { Organization, Partner } from '../interfaces/_application.interface';
+import { ApplicationFiscalSponsor, Organization, Partner } from '../interfaces/_application.interface';
+import { ApplicationNonprofitEquivalencyDeterminationRead } from '../interfaces/application.interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -41,6 +42,14 @@ export class ApplicationService {
 
   saveApplicationPartnerOrg(data: Organization) {
     return this.http.post(`${_.BASE_URL}/application/partner_organization`, data);
+  }
+
+  saveApplicationFiscalSponsor(data: ApplicationFiscalSponsor) {
+    return this.http.post(`${_.BASE_URL}/application/fiscal_sponsor`, data);
+  }
+
+  saveApplicationNonProfitEquivalencyDetermination(data: ApplicationNonprofitEquivalencyDeterminationRead) {
+    return this.http.post(`${_.BASE_URL}/application/nonprofit_equivalency_determination`, data);
   }
 
   destroy(pk: any) {

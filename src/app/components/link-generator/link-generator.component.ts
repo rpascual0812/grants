@@ -1,19 +1,21 @@
-import { Component, EventEmitter, ViewChild } from '@angular/core';
+import { Component, EventEmitter, ViewChild, inject } from '@angular/core';
 import { FormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { v4 as uuidv4 } from 'uuid';
 import { ToastrService } from 'ngx-toastr';
 import { ApplicationService } from 'src/app/services/application.service';
 import { SelectComponent } from '../select/select.component';
+import { LinkGeneratorRefetchKey, LinkGeneratorSignalService } from 'src/app/services/link-generator.signal.service';
 
 @Component({
     selector: 'app-link-generator',
     templateUrl: './link-generator.component.html',
-    styleUrls: ['./link-generator.component.scss']
+    styleUrls: ['./link-generator.component.scss'],
 })
 export class LinkGeneratorComponent {
     @ViewChild(SelectComponent) select: SelectComponent;
     public callback: EventEmitter<any> = new EventEmitter();
+    refetchKey: string = '';
     loading: boolean = false;
     title?: string;
     saveBtnName?: string;
@@ -30,6 +32,8 @@ export class LinkGeneratorComponent {
 
     submitted: boolean = false;
 
+    linkGeneratorSignalService = inject(LinkGeneratorSignalService);
+
     constructor(
         public bsModalRef: BsModalRef,
         private formBuilder: FormBuilder,
@@ -37,7 +41,9 @@ export class LinkGeneratorComponent {
         private toastr: ToastrService
     ) { }
 
-    get f() { return this.form.controls; }
+    get f() {
+        return this.form.controls;
+    }
 
     ngOnInit(): void {
         this.setForm();
@@ -78,6 +84,10 @@ export class LinkGeneratorComponent {
             .subscribe({
                 next: (data: any) => {
                     this.callback.emit({ data });
+                    this.linkGeneratorSignalService.linkGeneratorData.set({
+                        data,
+                        refetchKey: this.refetchKey as LinkGeneratorRefetchKey,
+                    });
                     this.toastr.success('The link has been successfully sent to ' + this.form.value.email_address, 'SUCCESS!');
                 },
                 error: (error: any) => {

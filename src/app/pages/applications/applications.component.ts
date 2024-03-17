@@ -83,7 +83,9 @@ export class ApplicationsComponent {
     this.bsModalRef.content.activateBtnName = 'Activate';
 
     this.bsModalRef.content.callback.subscribe((res: any) => {
+      console.log("🚀 ~ ApplicationsComponent ~ this.bsModalRef.content.callback.subscribe ~ res:", res);
       const data = res.data.data;
+      console.log("🚀 ~ ApplicationsComponent ~ this.bsModalRef.content.callback.subscribe ~ data:", data);
       this.init();
       // this.users.forEach(user => {
       //     if (user.pk == data.pk) {
