@@ -41,7 +41,7 @@ import { InputComponent } from './input/input.component';
         PasswordGeneratorComponent,
         PermissionsComponent,
         LogsComponent,
-        InputComponent
+        InputComponent,
     ],
     providers: [
 

@@ -14,13 +14,16 @@ import { ResetPasswordModalComponent } from './reset-password-modal/reset-passwo
 import { ComponentsModule } from 'src/app/components/components.module';
 
 import { ModalComponent } from '../../components/modal/modal.component';
+import { NewApplicationModalComponent } from '../applications/applications-list/modules/new-application-modal/new-application-modal.component';
+import { LinkGeneratorModule } from 'src/app/components/link-generator/link-generator.module';
 
 @NgModule({
     declarations: [
         UsersComponent,
         UsersModalComponent,
         ResetPasswordModalComponent,
-        ModalComponent
+        ModalComponent,
+        NewApplicationModalComponent
     ],
     imports: [
         FormsModule,
@@ -30,7 +33,8 @@ import { ModalComponent } from '../../components/modal/modal.component';
         NgxPaginationModule,
         ClipboardModule,
         ComponentsModule,
-        SelectModule
+        SelectModule,
+        LinkGeneratorModule
     ]
 })
 export class UsersModule { }

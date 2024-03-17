@@ -11,6 +11,7 @@ import { LogsComponent } from 'src/app/components/logs/logs.component';
 
 import { Subscription } from 'rxjs';
 import { ModalService } from '../../components/modal/modal.service';
+import { LinkGeneratorComponent } from 'src/app/components/link-generator/link-generator.component';
 
 @Component({
     selector: 'app-users',
@@ -32,6 +33,8 @@ export class UsersComponent implements OnInit {
     @ViewChild('modal', { read: ViewContainerRef })
     entry!: ViewContainerRef;
     sub!: Subscription;
+
+    @ViewChild(LinkGeneratorComponent) linkGeneratorComponent: LinkGeneratorComponent;
 
     constructor(
         private userService: UserService,
@@ -301,6 +304,10 @@ export class UsersComponent implements OnInit {
 
     rolesData(event: any) {
         console.log('data', event);
+    }
+
+    generate() {
+        this.linkGeneratorComponent.submit();
     }
 
 }
