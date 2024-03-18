@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContractFinalizationComponent } from './contract-finalization.component';
-import { NgbdSortableHeaderDirective } from '../../directives/ngbd-sortable-header.directive';
+import { NgbdSortableHeaderDirective } from '../../../../../directives/ngbd-sortable-header.directive';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({

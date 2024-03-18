@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GrantsComponent } from './grants.component';
+import { SelectModule } from 'src/app/components/select/select.module';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { GrantsListModule } from './grants-list/grants-list.module';
 
 
 
@@ -9,7 +13,12 @@ import { GrantsComponent } from './grants.component';
     GrantsComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    AccordionModule.forRoot(),
+    SelectModule,
+    FormsModule,
+    ReactiveFormsModule,
+    GrantsListModule,
   ]
 })
 export class GrantsModule { }

@@ -1,5 +1,8 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { NgbdSortableHeaderDirective, SortEvent } from '../../../../../directives/ngbd-sortable-header.directive';
+import {
+    NgbdSortableHeaderDirective,
+    SortEvent,
+} from 'src/app/directives/ngbd-sortable-header.directive';
 
 interface Grant {
     partnerId: string;
@@ -7,12 +10,9 @@ interface Grant {
     title: string;
     applicationDate: Date;
     proposedBudget: number;
-    expanded: boolean;
 }
 
-type ColumnObj = string | number | Date;
-
-const compare = (v1: ColumnObj, v2: ColumnObj) => {
+const compare = (v1: string | number | Date, v2: string | number | Date) => {
     if (v1 instanceof Date && v2 instanceof Date) {
         return v1.getTime() < v2.getTime() ? -1 : v1.getTime() > v2.getTime() ? 1 : 0;
     }
@@ -20,25 +20,27 @@ const compare = (v1: ColumnObj, v2: ColumnObj) => {
 };
 
 @Component({
-    selector: 'app-fund-release',
-    templateUrl: './fund-release.component.html',
-    styleUrls: ['./fund-release.component.scss'],
+    selector: 'app-contract-finalization',
+    templateUrl: './contract-finalization.component.html',
+    styleUrls: ['./contract-finalization.component.scss'],
 })
-export class FundReleaseComponent {
-    fundRelease: Grant[] = [];
-    closingGrant: Grant[] = [];
+export class ContractFinalizationComponent {
+    contractPreparation: Grant[] = [];
+    finalApproval: Grant[] = [];
+    partnerSigning: Grant[] = [];
+    bankDetails: Grant[] = [];
+
     page: number = 1;
     @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective<Grant>>;
 
     constructor() {
         for (let i = 1; i <= 12; i++) {
-            this.fundRelease.push({
+            this.contractPreparation.push({
                 partnerId: `${i}${new Date().getTime()}`,
                 title: `Project Proposal Title - ${i}`,
                 partner: `Organization Name - ${i}`,
                 applicationDate: new Date(`2024-${i}-1`),
                 proposedBudget: 100,
-                expanded: false,
             });
         }
     }
@@ -53,32 +55,16 @@ export class FundReleaseComponent {
 
         // sorting values
         if (direction === '' || column === '') {
-            this.fundRelease = [...this.fundRelease];
+            this.contractPreparation = [...this.contractPreparation];
         } else {
-            this.fundRelease = [...this.fundRelease].sort((a, b) => {
-                if (typeof a[column] !== 'boolean' && typeof b[column] !== 'boolean') {
-                    const res = compare(a[column] as ColumnObj, b[column] as ColumnObj);
-                    return direction === 'asc' ? res : -res;
-                }
-                return 1;
+            this.contractPreparation = [...this.contractPreparation].sort((a, b) => {
+                const res = compare(a[column], b[column]);
+                return direction === 'asc' ? res : -res;
             });
         }
     }
 
     handlePageChange($event: number) {
         this.page = $event;
-    }
-
-    handleReview($event: MouseEvent) {
-        $event.stopPropagation();
-    }
-
-    handleDelete($event: MouseEvent) {
-        $event.stopPropagation();
-    }
-
-    handleIsOpenChange($event: boolean, partnerId: string) {
-        const currentIdx = this.fundRelease.findIndex((item) => item.partnerId === partnerId);
-        this.fundRelease[currentIdx]['expanded'] = $event;
     }
 }

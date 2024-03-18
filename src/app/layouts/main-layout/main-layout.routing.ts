@@ -14,7 +14,7 @@ import { PartnerViewComponent } from 'src/app/pages/partners/partner-view/partne
 
 export const MainLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
-    { path: 'grants', component: ApplicationsComponent, canActivate: [authGuard] },
+    { path: 'grants', component: GrantsComponent, canActivate: [authGuard] },
     { path: 'applications', component: ApplicationsComponent, canActivate: [authGuard] },
     { path: 'applications/:number/review', component: ApplicationReviewComponent, canActivate: [authGuard] },
     { path: 'partners', component: PartnersComponent, canActivate: [authGuard] },
