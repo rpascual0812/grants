@@ -12,6 +12,7 @@ import { ApplicationsModule } from 'src/app/pages/applications/applications.modu
 import { PartnersModule } from 'src/app/pages/partners/partners.module';
 import { PartnerViewModule } from 'src/app/pages/partners/partner-view/partner-view.module';
 import { ApplicationReviewModule } from 'src/app/pages/applications/application-review/application-review.module';
+import { GrantsModule } from 'src/app/pages/grants/grants.module';
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import { ApplicationReviewModule } from 'src/app/pages/applications/application-
         HttpClientModule,
         ModalModule.forRoot(),
         ApplicationsModule,
+        GrantsModule,
         ApplicationReviewModule,
         PartnersModule,
         PartnerViewModule,
