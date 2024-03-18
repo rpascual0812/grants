@@ -8,36 +8,80 @@ import { Router } from '@angular/router';
 })
 export class SidebarComponent {
 
-    settings: any = [
+    menu: any = [
         {
             name: 'dashboard',
             label: 'Dashboard',
-            icon: 'home'
+            icon: {
+                type: 'material',
+                name: 'home'
+            }
         },
         {
             name: 'grants',
             label: 'Grants',
-            icon: 'business_center'
+            icon: {
+                type: 'material',
+                name: 'business_center'
+            }
         },
         {
             name: 'applications',
             label: 'Applications',
-            icon: 'description'
+            icon: {
+                type: 'material',
+                name: 'description'
+            }
         },
         {
             name: 'partners',
             label: 'Partners',
-            icon: 'foundation'
+            icon: {
+                type: 'material',
+                name: 'foundation'
+            }
         },
         {
             name: 'reports',
             label: 'Reports',
-            icon: 'report'
+            icon: {
+                type: 'material',
+                name: 'report'
+            }
         },
         {
-            name: 'users',
-            label: 'Users & Roles',
-            icon: 'groups'
+            name: 'settings',
+            label: 'Settings',
+            icon: {
+                type: 'material',
+                name: 'settings'
+            },
+            sub: [
+                {
+                    name: 'users',
+                    label: 'Users',
+                    icon: {
+                        type: 'material',
+                        name: 'groups'
+                    }
+                },
+                {
+                    name: 'donors',
+                    label: 'Donors',
+                    icon: {
+                        type: 'fa',
+                        name: 'donate'
+                    }
+                },
+                {
+                    name: 'roles',
+                    label: 'Roles',
+                    icon: {
+                        type: 'material',
+                        name: 'admin_panel_settings'
+                    }
+                }
+            ]
         },
     ];
 
