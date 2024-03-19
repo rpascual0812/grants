@@ -1,5 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 
 @Component({
@@ -12,26 +14,33 @@ export class FiscalSponsorInformationComponent {
     submitted: boolean = false;
     applicationSignalService = inject(ApplicationSignalService);
 
-    constructor(private formBuilder: FormBuilder) {}
+    constructor(
+        private formBuilder: FormBuilder,
+        private applicationService: ApplicationService,
+        private toastr: ToastrService
+    ) {}
 
-    ngOnInit(): void {
+    ngOnInit() {
         this.setForm();
     }
 
     setForm() {
-        const currentApplication = this.applicationSignalService.application();
+        const currentApplication = this.applicationSignalService.appForm();
+        const appFiscalSponsor = currentApplication?.application_fiscal_sponsor;
         this.form = this.formBuilder.group({
-            name: [currentApplication?.fiscal_sponsor?.name ?? ''],
-            address: [currentApplication?.fiscal_sponsor?.address ?? ''],
-            contact_number: [currentApplication?.fiscal_sponsor?.contact_number ?? ''],
-            email_address: [currentApplication?.fiscal_sponsor?.email_address ?? '', Validators.email],
-            head: [currentApplication?.fiscal_sponsor?.head ?? ''],
-            person_in_charge: [currentApplication?.fiscal_sponsor?.person_in_charge ?? ''],
-            bank_account_name: [currentApplication?.fiscal_sponsor?.bank_account_name ?? ''],
-            account_number: [currentApplication?.fiscal_sponsor?.account_number ?? ''],
-            bank_name: [currentApplication?.fiscal_sponsor?.bank_name ?? ''],
-            bank_branch: [currentApplication?.fiscal_sponsor?.bank_branch ?? ''],
-            bank_address: [currentApplication?.fiscal_sponsor?.bank_address ?? ''],
+            application_pk: [currentApplication?.pk],
+            pk: [appFiscalSponsor?.pk],
+            name: [appFiscalSponsor?.name ?? ''],
+            address: [appFiscalSponsor?.address ?? ''],
+            contact_number: [appFiscalSponsor?.contact_number ?? ''],
+            email_address: [appFiscalSponsor?.email_address ?? '', Validators.email],
+            head: [appFiscalSponsor?.head ?? ''],
+            person_in_charge: [appFiscalSponsor?.person_in_charge ?? ''],
+            bank_account_name: [appFiscalSponsor?.bank_account_name ?? ''],
+            account_number: [appFiscalSponsor?.account_number ?? ''],
+            bank_name: [appFiscalSponsor?.bank_name ?? ''],
+            bank_branch: [appFiscalSponsor?.bank_branch ?? ''],
+            bank_address: [appFiscalSponsor?.bank_address ?? ''],
         });
     }
 
@@ -39,32 +48,67 @@ export class FiscalSponsorInformationComponent {
         return this.form.controls;
     }
 
-    saveFormValue() {
+    saveFormValue(isNavigateNext?: boolean) {
+        const currentApplication = this.applicationSignalService.appForm();
         const { value } = this.form;
-        const currentApplication = this.applicationSignalService.application();
-        this.applicationSignalService.application.set({
-            ...currentApplication,
-            fiscal_sponsor: {
+        this.applicationService
+            .saveApplicationFiscalSponsor({
                 ...value,
-            },
-        });
+            })
+            .subscribe({
+                next: (res: any) => {
+                    const data = res?.data;
+                    const status = res.status;
+                    if (status) {
+                        this.applicationSignalService.appForm.set({
+                            ...currentApplication,
+                            application_fiscal_sponsor: {
+                                ...data,
+                            },
+                        });
+
+                        this.toastr.success('Fiscal Sponsor Information has been successfully saved', 'SUCCESS!');
+
+                        if (isNavigateNext) {
+                            this.applicationSignalService.navigateNext();
+                        } else {
+                            this.applicationSignalService.navigateBack();
+                        }
+                    } else {
+                        this.toastr.error(
+                            `An error occurred while saving Fiscal Sponsor Information. Please try again.`,
+                            'ERROR!'
+                        );
+                    }
+                },
+                error: (err) => {
+                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                    const statusCode = err?.status ? `status: ${err?.status}` : '';
+                    this.toastr.error(
+                        `An error occurred while saving Fiscal Sponsor. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
+                },
+            });
     }
 
     handleReset() {
         this.form.reset();
     }
 
-    handleNext() {
+    processForm(isNavigateNext?: boolean) {
         this.submitted = true;
         const { status } = this.form;
         if (status === 'VALID') {
-            this.saveFormValue();
-            this.applicationSignalService.navigateNext();
+            this.saveFormValue(isNavigateNext);
         }
     }
 
+    handleNext() {
+        this.processForm(true);
+    }
+
     handleBack() {
-        this.saveFormValue();
-        this.applicationSignalService.navigateBack();
+        this.processForm();
     }
 }
