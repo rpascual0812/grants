@@ -1,1 +1,63 @@
-<p>grants works!</p>
+<main class="main-content mt-0 container">
+    <h4 class="text-dark">Applications</h4>
+    <div class="row gap-1 align-items-end">
+        <div class="col-12 col-md-5 px-2">
+            <div class="form-group">
+                <label class="font-weight-bold text-dark">Filters</label>
+                <div
+                    class="d-flex flex-wrap flex-row gap-2 border rounded-2 bg-gray-300 align-items-center"
+                    style="min-height: 40px"
+                >
+                    <div *ngFor="let filter of filterSelections" class="form-check">
+                        <input
+                            #checkbox
+                            id="{{ filter.label }}"
+                            class="form-check-input"
+                            type="checkbox"
+                            (click)="handleCheckedFilterSelect(checkbox.checked, filter.id)"
+                            [checked]="selectedFilterIds.has(filter.id)"
+                        />
+                        <label for="{{ filter.label }}" class="form-check-label font-weight-bold mb-0">{{
+                            filter.label
+                        }}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-2">
+            <button class="btn btn-dark-blue">Apply</button>
+        </div>
+
+        <ng-container *ngIf="selectedFilterIds.has('fundRelease')">
+            <div class="row">
+                <div class="col-10">
+                    <input
+                        class="form-control border border-1 rounded p-2 my-3"
+                        placeholder="Partner Name"
+                        type="text"
+                    />
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-2">
+                    <input class="form-control border border-1 rounded p-2 my-1" placeholder="Country" />
+                </div>
+                <div class="col-2">
+                    <input class="form-control border border-1 rounded p-2 my-1" placeholder="Province" />
+                </div>
+                <div class="col-2">
+                    <input class="form-control border border-1 rounded p-2 my-1" placeholder="Donor/Project" />
+                </div>
+                <div class="col-2">
+                    <input class="form-control border border-1 rounded p-2 my-1" placeholder="Grant Type/Function" />
+                </div>
+                <div class="col-4">
+                    <button class="btn btn-dark-blue w-50 my-1">Search</button>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <app-grants-list [filter]="selectedFilterIds"></app-grants-list>
+</main>

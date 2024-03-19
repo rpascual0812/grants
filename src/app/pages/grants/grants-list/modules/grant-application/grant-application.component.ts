@@ -1,12 +1,14 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { NgbdSortableHeaderDirective, SortEvent } from '../../../../../directives/ngbd-sortable-header.directive';
-import { ApplicationService } from 'src/app/services/application.service';
-import { ApplicationRead } from 'src/app/interfaces/application.interface';
-import { TransformApplicationForList, compare, transformApplicationForList } from 'src/app/utilities/application.utils';
-import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, QueryList, ViewChildren } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { ApplicationRead } from 'src/app/interfaces/application.interface';
+import {
+    NgbdSortableHeaderDirective,
+    SortEvent,
+} from 'src/app/directives/ngbd-sortable-header.directive';
+import { ApplicationService } from 'src/app/services/application.service';
+import { TransformApplicationForList, compare, transformApplicationForList } from 'src/app/utilities/application.utils';
 import * as _ from '../../../../../utilities/globals';
-import { APPLICATION_REVIEW_LIST_KEY, LinkGeneratorSignalService } from 'src/app/services/link-generator.signal.service';
 
 type TableObj = {
     list: TransformApplicationForList;
@@ -28,7 +30,7 @@ type GrantApplicationTableObj = {
     templateUrl: './grant-application.component.html',
     styleUrls: ['./grant-application.component.scss'],
 })
-export class GrantApplicationComponent implements OnInit {
+export class GrantApplicationComponent {
     isLoading = true;
     grantApplication: GrantApplicationTableObj = {
         urgentGrants: {
@@ -67,16 +69,7 @@ export class GrantApplicationComponent implements OnInit {
         NgbdSortableHeaderDirective<TransformApplicationForList>
     >;
 
-    linkGeneratorSignalService = inject(LinkGeneratorSignalService);
-
     constructor(private applicationService: ApplicationService, private toastr: ToastrService) {}
-
-    generatorSignalEffect = effect(() => {
-        const data = this.linkGeneratorSignalService.linkGeneratorData();
-        if (data?.refetchKey === APPLICATION_REVIEW_LIST_KEY) {
-            this.handleFetchApplication();
-        }
-    });
 
     ngOnInit() {
         this.handleFetchApplication();
@@ -100,11 +93,9 @@ export class GrantApplicationComponent implements OnInit {
                     data as ApplicationRead[]
                 );
                 this.isLoading = false;
-                this.linkGeneratorSignalService.linkGeneratorData.set(null);
             },
             error: (err) => {
                 this.isLoading = false;
-                this.linkGeneratorSignalService.linkGeneratorData.set(null);
             },
         });
     }

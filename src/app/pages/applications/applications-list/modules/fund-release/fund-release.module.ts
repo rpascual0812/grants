@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FundReleaseComponent } from './fund-release.component';
-import { NgbdSortableHeaderDirective } from '../../directives/ngbd-sortable-header.directive';
+import { NgbdSortableHeaderDirective } from '../../../../../directives/ngbd-sortable-header.directive';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 

@@ -1,5 +1,5 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { NgbdSortableHeaderDirective, SortEvent } from '../../directives/ngbd-sortable-header.directive';
+import { NgbdSortableHeaderDirective, SortEvent } from '../../../../../directives/ngbd-sortable-header.directive';
 
 interface Grant {
     partnerId: string;
