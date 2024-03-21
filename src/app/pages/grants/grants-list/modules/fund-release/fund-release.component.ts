@@ -1,4 +1,4 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { NgbdSortableHeaderDirective, SortEvent } from 'src/app/directives/ngbd-sortable-header.directive';
 
 interface Grant {
@@ -7,6 +7,7 @@ interface Grant {
     title: string;
     applicationDate: Date;
     proposedBudget: number;
+    donorProject: string;
     expanded: boolean;
 }
 
@@ -23,6 +24,7 @@ const compare = (v1: ColumnObj, v2: ColumnObj) => {
     selector: 'app-fund-release',
     templateUrl: './fund-release.component.html',
     styleUrls: ['./fund-release.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class FundReleaseComponent {
     fundRelease: Grant[] = [];
@@ -38,6 +40,7 @@ export class FundReleaseComponent {
                 partner: `Organization Name - ${i}`,
                 applicationDate: new Date(`2024-${i}-1`),
                 proposedBudget: 100,
+                donorProject: `Random Donor Project - ${i}`,
                 expanded: false,
             });
         }

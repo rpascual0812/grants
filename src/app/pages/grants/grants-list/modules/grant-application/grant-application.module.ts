@@ -5,8 +5,6 @@ import { NgbdSortableHeaderDirective } from 'src/app/directives/ngbd-sortable-he
 import { NgxPaginationModule } from 'ngx-pagination';
 import { RouterModule } from '@angular/router';
 
-
-
 @NgModule({
   declarations: [
     GrantApplicationComponent

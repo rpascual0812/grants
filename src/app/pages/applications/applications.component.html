@@ -16,9 +16,15 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-4">
+    <div class="col-12 col-md-2">
       <div class="form-group">
-        <label class="font-weight-bold text-dark">Kind of Organization*</label>
+        <label class="font-weight-bold text-dark">Select Indicative Donor</label>
+        <app-select [arr]="['ALL', 'Filter 1', 'Filter 2']"></app-select>
+      </div>
+    </div>
+    <div class="col-12 col-md-2">
+      <div class="form-group">
+        <label class="font-weight-bold text-dark">Grant Type</label>
         <app-select [arr]="['ALL', 'Filter 1', 'Filter 2']"></app-select>
       </div>
     </div>
@@ -27,7 +33,7 @@
     </div>
   </div>
 
-  <div *ngIf="showActiveDonorSelection()" class="active-donor-container">
+  <!-- <div *ngIf="showActiveDonorSelection()" class="active-donor-container">
     <accordion [isAnimated]="true">
       <accordion-group (isOpenChange)="handleExpandAccordion($event, 'activeDonor')" [panelClass]="
                     currentExpandedAccordion.has('activeDonor')
@@ -84,7 +90,7 @@
         </div>
       </accordion-group>
     </accordion>
-  </div>
+  </div> -->
 
   <app-applications-list [filter]="selectedFilterIds"></app-applications-list>
 </main>
