@@ -16,13 +16,9 @@ import { ComponentsModule } from './components/components.module';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 @NgModule({
-    declarations: [
-        AppComponent,
-        AuthLayoutComponent,
-        MainLayoutComponent,
-        PublicLayoutComponent
-    ],
+    declarations: [AppComponent, AuthLayoutComponent, MainLayoutComponent, PublicLayoutComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -36,16 +32,17 @@ import { PublicLayoutComponent } from './layouts/public-layout/public-layout.com
         ToastrModule.forRoot({
             timeOut: 5000,
             positionClass: 'toast-top-right',
-            preventDuplicates: true
+            preventDuplicates: true,
         }),
     ],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptor,
-            multi: true
-        }
+            multi: true,
+        },
+        provideCharts(withDefaultRegisterables()),
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule { }

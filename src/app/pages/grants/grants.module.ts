@@ -5,7 +5,7 @@ import { SelectModule } from 'src/app/components/select/select.module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GrantsListModule } from './grants-list/grants-list.module';
-
+import { BaseChartDirective } from 'ng2-charts';
 
 
 @NgModule({
@@ -19,6 +19,7 @@ import { GrantsListModule } from './grants-list/grants-list.module';
     FormsModule,
     ReactiveFormsModule,
     GrantsListModule,
+    BaseChartDirective
   ]
 })
 export class GrantsModule { }

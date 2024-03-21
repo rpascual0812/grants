@@ -1,7 +1,7 @@
 <div>
     <div class="card my-2">
         <div class="card-header py-2" style="background-color: #f44335">
-            <h5 class="text-white text-center">Urgent Grants</h5>
+            <h5 class="text-white text-center">Received Proposals</h5>
         </div>
         <div class="card-body overflow-auto p-0 m-0">
             <table class="table">
@@ -30,7 +30,7 @@
                     <tr *ngFor="
                             let item of grantApplication.urgentGrants.list
                                 | paginate : { itemsPerPage: 10, currentPage: grantApplication.urgentGrants.page, id: 'urgentGrants', }
-                        " style="background-color: #f1aea8">
+                        ">
                         <th class="text-dark font-weight-bold" scope="row">{{ item.partnerId }}</th>
                         <td class="text-dark font-weight-light">
                             {{ item?.partner }}
@@ -56,69 +56,6 @@
             <div class="my-3">
                 <pagination-controls (pageChange)="grantApplication.urgentGrants.page = $event"
                     id="urgentGrants"></pagination-controls>
-            </div>
-        </div>
-    </div>
-
-    <div class="card my-2">
-        <div class="card-header py-2" style="background-color: #f20000">
-            <h5 class="text-white text-center">Submissions</h5>
-        </div>
-        <div class="card-body p-0 m-0">
-            <table class="table">
-                <thead>
-                    <tr style="background-color: #ff1f00">
-                        <th class="p-2 text-white" scope="col">Partner ID</th>
-                        <th class="p-2 text-white" scope="col" sortable="partner"
-                            (sort)="onSort($event, 'submissions')">
-                            Partner
-                        </th>
-                        <th class="p-2 text-white" scope="col" sortable="title" (sort)="onSort($event, 'submissions')">
-                            Title
-                        </th>
-                        <th class="p-2 text-white" scope="col" sortable="applicationDate"
-                            (sort)="onSort($event, 'submissions')">
-                            Application Date
-                        </th>
-                        <th class="p-2 text-white" scope="col" sortable="proposedBudget"
-                            (sort)="onSort($event, 'submissions')">
-                            Proposed Budget
-                        </th>
-                        <th class="p-2" scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="
-                            let item of grantApplication.submissions.list
-                                | paginate
-                                    : {
-                                          itemsPerPage: 10,
-                                          currentPage: grantApplication.submissions.page,
-                                          id: 'submissions'
-                                      }
-                        ">
-                        <th class="font-weight-bold" style="color: #ff1f00" scope="row">{{ item.partnerId }}</th>
-                        <td class="text-dark font-weight-light">
-                            {{ item.partner }}
-                        </td>
-                        <td class="text-dark font-weight-light">{{ item.title }}</td>
-                        <td class="text-dark font-weight-light">{{ item.applicationDate | date : 'dd-MMM-YYYY' }}</td>
-                        <td class="text-dark font-weight-light">
-                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD | 7501175 IDR' : '' }}
-                        </td>
-                        <td>
-                            <button class="btn btn-default text-info">Review</button>
-                            <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div *ngIf="grantApplication.submissions.list.length <= 0" class="text-center">
-                <p class="text-danger w-100 font-weight-bold">There are no queued applications at this stage</p>
-            </div>
-            <div class="my-3">
-                <pagination-controls (pageChange)="grantApplication.submissions.page = $event"
-                    id="submissions"></pagination-controls>
             </div>
         </div>
     </div>

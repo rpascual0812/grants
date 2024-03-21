@@ -5,20 +5,9 @@ import { NgbdSortableHeaderDirective } from 'src/app/directives/ngbd-sortable-he
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 
-
-
 @NgModule({
-  declarations: [
-    FundReleaseComponent
-  ],
-  exports: [
-    FundReleaseComponent
-  ],
-  imports: [
-    CommonModule,
-    NgbdSortableHeaderDirective,
-    NgxPaginationModule,
-    AccordionModule
-  ]
+    declarations: [FundReleaseComponent],
+    exports: [FundReleaseComponent],
+    imports: [CommonModule, NgbdSortableHeaderDirective, NgxPaginationModule, AccordionModule.forRoot()],
 })
-export class FundReleaseModule { }
+export class FundReleaseModule {}

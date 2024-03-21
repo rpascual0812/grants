@@ -10,6 +10,7 @@ interface Grant {
     title: string;
     applicationDate: Date;
     proposedBudget: number;
+    donorProject: string;
 }
 
 const compare = (v1: string | number | Date, v2: string | number | Date) => {
@@ -28,7 +29,6 @@ export class ContractFinalizationComponent {
     contractPreparation: Grant[] = [];
     finalApproval: Grant[] = [];
     partnerSigning: Grant[] = [];
-    bankDetails: Grant[] = [];
 
     page: number = 1;
     @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective<Grant>>;
@@ -41,6 +41,7 @@ export class ContractFinalizationComponent {
                 partner: `Organization Name - ${i}`,
                 applicationDate: new Date(`2024-${i}-1`),
                 proposedBudget: 100,
+                donorProject: `Random Donor Project - ${i}`
             });
         }
     }
