@@ -1,0 +1,113 @@
+<div>
+    <div class="title d-flex flex-row gap-2 align-items-center">
+        <h5 class="text-dark">Initial Submission</h5>
+        <div class="vr"></div>
+        <h5 class="text-dark text-light">Comments</h5>
+        <button class="btn btn-info p-1 text-capitalize" style="background-color: #f98f38">
+            <i class="material-icons">download</i>
+            Download comments
+        </button>
+    </div>
+
+    <p class="text-dark p-0 m-0 my-3">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi exercitationem accusantium, quidem voluptatem
+        cumque reiciendis facere, maxime illo minus sit, laborum amet veniam! Totam eveniet mollitia neque laboriosam,
+        vitae delectus.
+    </p>
+
+    <div class="card my-3">
+        <div class="card-header p-3" style="background-color: #f98f38">
+            <div class="d-flex flex-column flex-md-row text-white justify-content-between align-items-md-center">
+                <p class="m-0">July 5, 2023 - Jane Doe</p>
+                <div class="d-flex flex-column flex-md-row gap-1 align-items-md-center">
+                    <button class="btn btn-icon-only btn-danger rounded-circle">
+                        <i class="material-icons text-xl">delete</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="content">
+                <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, error, corporis eos minima ratione
+                    placeat explicabo ullam iure dolorum doloremque beatae facere, voluptatem obcaecati dicta officia
+                    sed atque quas sequi?
+                </p>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-white p-1">Mark as Resolved</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-3">
+        <div class="card-header p-3" style="background-color: #f98f38">
+            <div class="d-flex flex-column flex-md-row text-white justify-content-between align-items-md-center">
+                <p class="m-0">July 5, 2023 - Jane Doe</p>
+                <div class="d-flex flex-column flex-md-row gap-1 align-items-md-center">
+                    <button class="btn btn-icon-only btn-danger rounded-circle">
+                        <i class="material-icons text-xl">delete</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="content">
+                <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, error, corporis eos minima ratione
+                    placeat explicabo ullam iure dolorum doloremque beatae facere, voluptatem obcaecati dicta officia
+                    sed atque quas sequi?
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-3">
+        <div class="card-header p-3" style="background-color: #f98f38">
+            <div class="d-flex flex-column flex-md-row text-white gap-1">
+                <p class="m-0">July 5, 2023 -</p>
+                <input class="form-control border-bottom text-sm p-0 m-0 w-20 h-10 text-white" type="text" />
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="content my-2">
+                <textarea
+                    type="text"
+                    rows="4"
+                    class="form-control border rounded-1 p-2 bg-gray-300"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="action-container d-flex flex-column flex-md-row justify-content-md-between">
+                <button class="btn btn-white">
+                    <div class="d-flex flex-column text-start">
+                        <p class="p-0 m-0 text-sm text-dark font-weight-bold">Attach Documents</p>
+                        <p class="p-0 m-0 text-sm text-info font-weight-bold">
+                            <span class="icon icon-sm">
+                                <i class="material-icons">add</i>
+                            </span>
+                            Attach File
+                        </p>
+                    </div>
+                </button>
+
+                <div class="d-flex flex-column flex-md-row flex-wrap gap-lg-2">
+                    <button class="btn btn-dark p-1" style="min-width: 150px; max-height: 30px">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end">
+        <div>
+            <h4 class="text-dark">Recommendation</h4>
+            <ng-select
+                style="--border-color: #f98f38"
+                class="custom-recommendation-select"
+                [items]="['Approved for Next Stage', 'Rejected', 'Cancelled']"
+                [placeholder]="'Choose your recommendation'"
+            >
+            </ng-select>
+        </div>
+    </div>
+</div>

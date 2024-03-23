@@ -14,6 +14,7 @@ import { PartnerViewModule } from 'src/app/pages/partners/partner-view/partner-v
 import { ApplicationReviewModule } from 'src/app/pages/applications/application-review/application-review.module';
 import { GrantsModule } from 'src/app/pages/grants/grants.module';
 import { LinksModule } from 'src/app/pages/settings/links/links.module';
+import { GrantViewModule } from 'src/app/pages/grants/grant-view/grant-view.module';
 
 @NgModule({
     imports: [
@@ -25,6 +26,7 @@ import { LinksModule } from 'src/app/pages/settings/links/links.module';
         ModalModule.forRoot(),
         ApplicationsModule,
         GrantsModule,
+        GrantViewModule,
         ApplicationReviewModule,
         PartnersModule,
         PartnerViewModule,

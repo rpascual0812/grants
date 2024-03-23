@@ -1,0 +1,23 @@
+@import '~@ng-select/ng-select/themes/default.theme.css';
+
+.ng-select.custom-recommendation-select {
+    width: 300px;
+    font-style: italic;
+}
+
+.ng-select.custom-recommendation-select .ng-select-container {
+    border-left: 15px solid var(--border-color);
+    height: 50px;
+}
+
+.ng-select.custom-recommendation-select .ng-dropdown-panel {
+    border-left: 15px solid var(--border-color);
+    .ng-option {
+        padding: 0.5rem;
+        font-style: italic;
+    }
+}
+
+.ng-select.custom-recommendation-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+    border-left: 15px solid var(--border-color);
+}
