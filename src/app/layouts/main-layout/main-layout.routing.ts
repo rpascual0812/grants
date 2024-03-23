@@ -8,10 +8,12 @@ import { ReportsComponent } from 'src/app/pages/reports/reports.component';
 import { ProfileComponent } from 'src/app/pages/profile/profile.component';
 import { ApplicationReviewComponent } from 'src/app/pages/applications/application-review/application-review.component';
 import { PartnerViewComponent } from 'src/app/pages/partners/partner-view/partner-view.component';
+import { GrantViewComponent } from 'src/app/pages/grants/grant-view/grant-view.component';
 
 export const MainLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
     { path: 'grants', component: GrantsComponent, canActivate: [authGuard] },
+    { path: 'grant/:pk', component: GrantViewComponent, canActivate: [authGuard] },
     { path: 'applications', component: ApplicationsComponent, canActivate: [authGuard] },
     { path: 'applications/:number/review', component: ApplicationReviewComponent, canActivate: [authGuard] },
     { path: 'partners', component: PartnersComponent, canActivate: [authGuard] },

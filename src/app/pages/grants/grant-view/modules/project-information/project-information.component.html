@@ -1,0 +1,206 @@
+<div>
+    <h4 class="text-dark mb-4">Project Information</h4>
+    <div class="row">
+        <div class="col-md-2">
+            <p class="text-dark-blue font-weight-bold">Project Title</p>
+        </div>
+        <div class="col-md-10">
+            <p class="text-secondary font-weight-bold">The Project Title</p>
+        </div>
+        <div class="col-md-2">
+            <p class="text-dark-blue font-weight-bold">Project duration</p>
+        </div>
+        <div class="col-md-10">
+            <p class="text-secondary font-weight-bold">5 months</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <p class="text-dark-blue font-weight-bold">Background/What is the problem to be addressed?</p>
+        </div>
+        <div class="col-md-12">
+            <p class="text-secondary font-weight-bold">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam amet repellendus impedit dignissimos
+                atque ducimus magnam consequatur, possimus, quod error iure! Debitis earum nulla error dolorem aperiam,
+                eveniet atque facilis?
+            </p>
+        </div>
+
+        <div class="col-md-12">
+            <p class="text-dark-blue font-weight-bold">Project Objectives?</p>
+        </div>
+        <div class="col-md-12">
+            <p class="text-secondary font-weight-bold">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam amet repellendus impedit dignissimos
+                atque ducimus magnam consequatur, possimus, quod error iure! Debitis earum nulla error dolorem aperiam,
+                eveniet atque facilis?
+            </p>
+        </div>
+
+        <div class="col-md-12">
+            <p class="text-dark-blue font-weight-bold">
+                Expected outputs/How will the proposed projects activities improve the situation?
+            </p>
+        </div>
+        <div class="col-md-12">
+            <p class="text-secondary font-weight-bold">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam amet repellendus impedit dignissimos
+                atque ducimus magnam consequatur, possimus, quod error iure! Debitis earum nulla error dolorem aperiam,
+                eveniet atque facilis?
+            </p>
+        </div>
+
+        <div class="col-md-12">
+            <p class="text-dark-blue font-weight-bold">
+                How will the women and children be involved in the project? How will they benefit or be affected
+            </p>
+        </div>
+        <div class="col-md-12">
+            <p class="text-secondary font-weight-bold">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam amet repellendus impedit dignissimos
+                atque ducimus magnam consequatur, possimus, quod error iure! Debitis earum nulla error dolorem aperiam,
+                eveniet atque facilis?
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 form-group my-3">
+            <label class="font-weight-bold text-dark">Website of Project Organization</label>
+            <div class="d-flex gap-1">
+                <input type="text" class="form-control border rounded-1 p-1 bg-white max-width-500" />
+                <button class="btn btn-default btn-sm text-info text-xs">Edit</button>
+                <button class="btn btn-default btn-sm text-danger text-xs">Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <p class="text-dark font-weight-bold p-0">Project Location</p>
+            <div class="container">
+                <!-- <div *ngIf="submitted && f['project_locations'].errors">
+                    <div *ngIf="f['project_locations'].errors['required']" class="text-sm text-danger">
+                        Project Location is required
+                    </div>
+                </div> -->
+                <!-- *ngFor="let item of formProjLocations.controls; index as i"[attr.data-index]="i" -->
+                <!-- formArrayName="project_locations" -->
+                <div class="row align-items-center my-2">
+                    <!-- {{ i + 1 }} -->
+                    <!-- [formGroupName]="i" -->
+                    <ng-container>
+                        <div class="col-12 col-md-2 my-1">
+                            <p class="font-weight-bold text-dark text-sm p-0 m-0">Location</p>
+                        </div>
+
+                        <!-- (onSelectEvent)="onModifyProjLoc($event, 'pk', 'country_pk', i)"
+                        (onDeSelectEvent)="onModifyProjLoc($event, 'pk', 'country_pk', i)"
+                        [defaultSelectedItemKey]="
+                            formProjLocations.controls.at(i)?.get('country_pk')?.value ?? ''
+                        " -->
+                        <div class="col-12 col-md-4 my-1">
+                            <app-select class="shadow-none" [url]="'country'" [listItemKey]="'pk'"></app-select>
+                            <!-- <div *ngIf="submitted && formProjLocations.controls.at(i)?.get('country_pk')?.errors">
+                                <div
+                                    *ngIf="formProjLocations.controls.at(i)?.get('country_pk')?.errors"
+                                    class="text-sm text-danger"
+                                >
+                                    Country is required
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="col-12 col-md-4 my-1">
+                            <!-- <app-select
+                                *ngIf="
+                                    !formProjLocations.controls.at(i)?.get('country_pk')?.value ||
+                                    formProjLocations.controls.at(i)?.get('province_code_url')?.value ===
+                                        provinceUrlFetchStatus.notReady
+                                "
+                                [arr]="[]"
+                                [disabled]="
+                                    isNotValidKeyNumber(
+                                        formProjLocations.controls.at(i)?.get('country_pk')?.value ?? ''
+                                    )
+                                "
+                            >
+                            </app-select> -->
+
+                            <!-- *ngIf="
+                                    formProjLocations.controls.at(i)?.get('country_pk')?.value &&
+                                    formProjLocations.controls.at(i)?.get('province_code_url')?.value ===
+                                        provinceUrlFetchStatus.ready
+                                " -->
+                            <!-- 
+                                [disabled]="
+                                isNotValidKeyNumber(
+                                    formProjLocations.controls.at(i)?.get('country_pk')?.value ?? ''
+                                )
+                            " -->
+
+                            <!-- (onSelectEvent)="onModifyProjLoc($event, 'province_code', 'province_code', i)"
+                            (onDeSelectEvent)="onModifyProjLoc($event, 'province_code', 'province_code', i)"
+                            [defaultSelectedItemKey]="
+                                formProjLocations.controls.at(i)?.get('province_code')?.value ?? ''
+                            " -->
+
+                            <!-- [url]="
+                            'province?country_pk=' + formProjLocations.controls.at(i)?.get('country_pk')?.value
+                        " -->
+                            <app-select class="shadow-none" [listItemKey]="'province_code'"></app-select>
+                            <!-- <div *ngIf="submitted && formProjLocations.controls.at(i)?.get('province_code')?.errors">
+                                <div
+                                    *ngIf="
+                                        formProjLocations.controls?.at(i) &&
+                                        formProjLocations.controls?.at(i)?.get('province_code')?.errors
+                                    "
+                                    class="text-sm text-danger"
+                                >
+                                    Province is required
+                                </div>
+                            </div> -->
+                        </div>
+                        <!-- (click)="onDelProjLoc(i)" -->
+                        <div class="col-12 col-md-2 my-1">
+                            <button class="btn btn-danger" type="button">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </div>
+                    </ng-container>
+                </div>
+
+                <!-- (click)="onAddProjLoc()" -->
+                <button class="btn btn-dark-blue my-3" type="button">
+                    <span class="icon icon-sm position-relative" style="bottom: 2px">
+                        <i class="material-icons">add</i>
+                    </span>
+                    Add
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <p class="text-dark font-weight-bold p-0">Site</p>
+            <div class="col-md-12 form-group my-3">
+                <div class="row gap-0">
+                    <div class="col-12 col-md-9 p-0">
+                        <input type="text" class="form-control border rounded-1 p-1 bg-white" />
+                    </div>
+                    <div class="col-2 col-md-1 p-0">
+                        <button class="btn btn-default btn-sm text-info text-xs">Edit</button>
+                    </div>
+                    <div class="col-2 col-md-1 p-0">
+                        <button class="btn btn-default btn-sm text-danger text-xs">Remove</button>
+                    </div>
+                </div>
+                <button class="btn btn-dark-blue my-3" type="button">
+                    <span class="icon icon-sm position-relative" style="bottom: 2px">
+                        <i class="material-icons">add</i>
+                    </span>
+                    Add Site
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

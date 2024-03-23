@@ -1,0 +1,267 @@
+<main>
+    <div class="container">
+        <div class="page-title">
+            <h4 class="text-dark">Grant Progress</h4>
+        </div>
+
+        <div class="my-5">
+            <div class="d-flex justify-content-between flex-wrap">
+                <div>
+                    <h5 class="text-secondary">Project</h5>
+                    <h3 class="text-dark">Project Name 1</h3>
+                </div>
+                <div>
+                    <h5 class="text-secondary">Grant Number/Code</h5>
+                    <h3 class="text-dark">9090909090</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body bg-gray-300">
+                <div class="row">
+                    <div class="col-md-4 border-divider">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-dark">Partner's Name</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-secondary">
+                                    Lembaga Papua Tour Guide Community
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-dark">Country</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-secondary">Indonesia</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-dark">Grant Amount</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-secondary">
+                                    Lembaga Papua Tour Guide Community
+                                </p>
+                                <p class="text-sm font-weight-bold text-secondary">
+                                    Lembaga Papua Tour Guide Community
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <input class="form-check-input p-0" type="checkbox" />
+                                <label class="form-check-label text-dark font-weight-bold"
+                                    >Financial Management Training/Coaching</label
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5 border-divider">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-dark">Overall Grant Status</p>
+                            </div>
+                            <div class="col-md-6">
+                                <small class="badge text-bg-danger text-white text-wrap text-xs text-capitalize"
+                                    >Preparing for project start up</small
+                                >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-dark">Grantee</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-secondary">
+                                    Lembaga Papua Tour Guide Community
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-dark">Grant Type and Function</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-secondary">
+                                    Lembaga Papua Tour Guide Community Lembaga Papua Tour Guide Community
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-dark">Duration</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-secondary">10-Jul-2022 - 10-Aug-2022</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-dark">Signed Contract</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="text-sm font-weight-bold text-secondary">
+                                    <span>
+                                        <i class="material-icons">attach_file</i>
+                                    </span>
+                                    document.pdf
+                                </p>
+                                <p class="text-sm font-weight-bold text-secondary">
+                                    <span>
+                                        <i class="material-icons">attach_file</i>
+                                    </span>
+                                    document.pdf
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end my-3">
+                        <button class="btn btn-icon-only">
+                            <i class="material-icons">edit</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="text-sm font-weight-bold text-dark">Objective</p>
+                    </div>
+                    <div class="col-md-10">
+                        <p class="text-sm font-weight-bold text-secondary">
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque aperiam soluta,
+                            laudantium aut ex repellat, explicabo dolor ullam temporibus aliquid, quo numquam impedit
+                            neque molestiae. Velit quasi dolorum incidunt ex?
+                        </p>
+                    </div>
+                    <div class="d-flex justify-content-end my-3">
+                        <button class="btn btn-icon-only">
+                            <i class="material-icons">edit</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="my-5">
+            <accordion [isAnimated]="true">
+                <accordion-group
+                    (isOpenChange)="handleIsOpenChange($event, 'assessment')"
+                    [panelClass]="
+                        currentExpanded.has('assessment')
+                            ? 'custom-accordion-expanded w-100'
+                            : 'custom-accordion-collapsed w-100'
+                    "
+                    class="my-3"
+                >
+                    <div class="flex d-flex justify-content-between align-items-center py-2" accordion-heading>
+                        <div class="pull-left float-left">
+                            <p class="text-dark text-sm font-weight-bold m-0 p-0">Assessment</p>
+                        </div>
+                    </div>
+                    <app-assessment></app-assessment>
+                </accordion-group>
+
+                <accordion-group
+                    (isOpenChange)="handleIsOpenChange($event, 'projectInformation')"
+                    [panelClass]="
+                        currentExpanded.has('projectInformation')
+                            ? 'custom-accordion-expanded w-100'
+                            : 'custom-accordion-collapsed w-100'
+                    "
+                    class="my-3"
+                >
+                    <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
+                        <div class="pull-left float-left">
+                            <p class="text-dark text-sm font-weight-bold m-0 p-0">Project Information</p>
+                        </div>
+
+                        <div class="pull-right float-right">
+                            <div class="d-flex flex flex-row">
+                                <button class="btn btn-icon-only" (click)="handleOnEdit($event, 'projectInformation')">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn btn-icon-only">
+                                    <i class="material-icons">{{
+                                        currentExpanded.has('projectInformation') ? 'expand_less' : 'expand_more'
+                                    }}</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <app-project-information></app-project-information>
+                </accordion-group>
+
+                <accordion-group
+                    (isOpenChange)="handleIsOpenChange($event, 'activitiesAndTimeline')"
+                    [panelClass]="
+                        currentExpanded.has('activitiesAndTimeline')
+                            ? 'custom-accordion-expanded w-100'
+                            : 'custom-accordion-collapsed w-100'
+                    "
+                    class="my-3"
+                >
+                    <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
+                        <div class="pull-left float-left">
+                            <p class="text-dark text-sm font-weight-bold m-0 p-0">Activities and Timeline</p>
+                        </div>
+
+                        <div class="pull-right float-right">
+                            <div class="d-flex flex flex-row">
+                                <button
+                                    class="btn btn-icon-only"
+                                    (click)="handleOnEdit($event, 'activitiesAndTimeline')"
+                                >
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn btn-icon-only">
+                                    <i class="material-icons">{{
+                                        currentExpanded.has('activitiesAndTimeline') ? 'expand_less' : 'expand_more'
+                                    }}</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <app-activities-timeline></app-activities-timeline>
+                </accordion-group>
+
+                <accordion-group
+                    (isOpenChange)="handleIsOpenChange($event, 'reviews')"
+                    [panelClass]="
+                        currentExpanded.has('reviews')
+                            ? 'custom-accordion-expanded w-100'
+                            : 'custom-accordion-collapsed w-100'
+                    "
+                    class="my-3"
+                >
+                    <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
+                        <div class="pull-left float-left">
+                            <p class="text-dark text-sm font-weight-bold m-0 p-0">Reviews</p>
+                        </div>
+
+                        <div class="pull-right float-right">
+                            <div class="d-flex flex flex-row">
+                                <button class="btn btn-icon-only" (click)="handleOnEdit($event, 'reviews')">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn btn-icon-only">
+                                    <i class="material-icons">{{
+                                        currentExpanded.has('reviews') ? 'expand_less' : 'expand_more'
+                                    }}</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <app-review></app-review>
+                </accordion-group>
+            </accordion>
+        </div>
+    </div>
+</main>
