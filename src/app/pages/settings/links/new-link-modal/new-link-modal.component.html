@@ -1,0 +1,19 @@
+<div>
+    <div class="modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">{{title}}</h4>
+                <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <app-link-generator></app-link-generator>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark-blue" (click)="submit()">{{saveBtnName}}</button>
+                <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">{{closeBtnName}}</button>
+            </div>
+        </div>
+    </div>
+</div>

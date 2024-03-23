@@ -27,26 +27,19 @@ export class UsersComponent implements OnInit {
     users: any = [];
     filters: any = {};
     url: String = _.BASE_URL;
-    applications: any = [];
 
     pagination: any = _.PAGINATION;
     tableSizes: any = _.TABLE_SIZES;
 
-    link: string = window.location.origin + '/public/application/';
-
     @ViewChild('modal', { read: ViewContainerRef })
     entry!: ViewContainerRef;
     sub!: Subscription;
-
-    @ViewChild(LinkGeneratorComponent) linkGeneratorComponent: LinkGeneratorComponent;
 
     constructor(
         private userService: UserService,
         private formBuilder: FormBuilder,
         private modalService: BsModalService,
         private roleService: RoleService,
-        private applicationService: ApplicationService
-        // private modalService: ModalService
     ) {
 
     }
@@ -61,7 +54,6 @@ export class UsersComponent implements OnInit {
 
         this.fetchRoles();
         this.fetch();
-        this.fetchApplications();
     }
 
     fetchRoles() {
@@ -100,18 +92,6 @@ export class UsersComponent implements OnInit {
                     setTimeout(() => { this.loading = false; }, 500);
                 }
             });
-    }
-
-    fetchApplications() {
-        this.applicationService.fetch().subscribe({
-            next: (res: any) => {
-                const data = res?.data ?? [];
-                this.applications = data;
-            },
-            error: (err) => {
-                console.log(err);
-            },
-        });
     }
 
     userModal(user: any) {
@@ -322,13 +302,4 @@ export class UsersComponent implements OnInit {
     rolesData(event: any) {
         console.log('data', event);
     }
-
-    generate() {
-        this.linkGeneratorComponent.submit();
-    }
-
-    refresh() {
-        this.linkGeneratorComponent.reset();
-    }
-
 }
