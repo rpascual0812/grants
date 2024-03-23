@@ -13,6 +13,7 @@ import { PartnersModule } from 'src/app/pages/partners/partners.module';
 import { PartnerViewModule } from 'src/app/pages/partners/partner-view/partner-view.module';
 import { ApplicationReviewModule } from 'src/app/pages/applications/application-review/application-review.module';
 import { GrantsModule } from 'src/app/pages/grants/grants.module';
+import { LinksModule } from 'src/app/pages/settings/links/links.module';
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import { GrantsModule } from 'src/app/pages/grants/grants.module';
         PartnersModule,
         PartnerViewModule,
         UsersModule,
-        RolesModule
+        RolesModule,
+        LinksModule
     ],
     declarations: [
 

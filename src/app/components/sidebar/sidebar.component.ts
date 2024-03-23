@@ -80,7 +80,15 @@ export class SidebarComponent {
                         type: 'material',
                         name: 'admin_panel_settings'
                     }
-                }
+                },
+                {
+                    name: 'links',
+                    label: 'Links',
+                    icon: {
+                        type: 'material',
+                        name: 'link'
+                    }
+                },
             ]
         },
     ];
