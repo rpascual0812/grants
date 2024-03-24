@@ -8,29 +8,43 @@
                 <thead>
                     <tr style="background-color: #f1aea8">
                         <th class="p-2 text-dark" scope="col">Partner ID</th>
-                        <th class="p-2 text-dark" scope="col" sortable="partnerId"
-                            (sort)="onSort($event, 'urgentGrants')">
+                        <th
+                            class="p-2 text-dark"
+                            scope="col"
+                            sortable="partnerId"
+                            (sort)="onSort($event, 'urgentGrants')"
+                        >
                             Partner
                         </th>
                         <th class="p-2 text-dark" scope="col" sortable="title" (sort)="onSort($event, 'urgentGrants')">
                             Title
                         </th>
-                        <th class="p-2 text-dark" scope="col" sortable="applicationDate"
-                            (sort)="onSort($event, 'urgentGrants')">
+                        <th
+                            class="p-2 text-dark"
+                            scope="col"
+                            sortable="applicationDate"
+                            (sort)="onSort($event, 'urgentGrants')"
+                        >
                             Application Date
                         </th>
-                        <th class="p-2 text-dark" scope="col" sortable="proposedBudget"
-                            (sort)="onSort($event, 'urgentGrants')">
+                        <th
+                            class="p-2 text-dark"
+                            scope="col"
+                            sortable="proposedBudget"
+                            (sort)="onSort($event, 'urgentGrants')"
+                        >
                             Proposed Budget
                         </th>
                         <th class="p-2" scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="
+                    <tr
+                        *ngFor="
                             let item of grantApplication.urgentGrants.list
-                                | paginate : { itemsPerPage: 10, currentPage: grantApplication.urgentGrants.page, id: 'urgentGrants', }
-                        ">
+                                | paginate : { itemsPerPage: grantApplication.urgentGrants.tableSize, currentPage: grantApplication.urgentGrants.page, id: 'urgentGrants', }
+                        "
+                    >
                         <th class="text-dark font-weight-bold" scope="row">{{ item.partnerId }}</th>
                         <td class="text-dark font-weight-light">
                             {{ item?.partner }}
@@ -40,11 +54,14 @@
                             {{ item?.applicationDate | date : 'dd-MMM-YYYY' }}
                         </td>
                         <td class="text-dark font-weight-light">
-                            {{ item.proposedBudget | number }} USD | 7501175 IDR
+                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD' : '' }}
+                            {{ item?.proposedBudgetOther ? ' | ' + (item?.proposedBudgetOther | number) : '' }}
+                            {{ item?.proposedBudgetOtherCurrency ?? '' }}
                         </td>
                         <td class="text-dark font-weight-light">
-                            <a [routerLink]="['/applications/' + item.applicationNumber + '/review']"><button
-                                    class="btn btn-default text-info">Review</button></a>
+                            <a [routerLink]="['/applications/' + item.applicationNumber + '/review']"
+                                ><button class="btn btn-default text-info">Review</button></a
+                            >
                             <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
                         </td>
                     </tr>
@@ -53,9 +70,21 @@
             <div *ngIf="grantApplication.urgentGrants.list.length <= 0" class="text-center">
                 <p class="text-danger w-100 font-weight-bold">There are no queued applications at this stage</p>
             </div>
-            <div class="my-3">
-                <pagination-controls (pageChange)="grantApplication.urgentGrants.page = $event"
-                    id="urgentGrants"></pagination-controls>
+            <div class="my-3 d-flex justify-content-end">
+                <div>
+                    <select
+                        (change)="onTableSizeChange($event, 'urgentGrants')"
+                        class="form-control form-control-sm pagination-select"
+                    >
+                        <option *ngFor="let size of tableSizes" [value]="size">
+                            {{ size }}
+                        </option>
+                    </select>
+                </div>
+                <pagination-controls
+                    (pageChange)="grantApplication.urgentGrants.page = $event"
+                    id="urgentGrants"
+                ></pagination-controls>
             </div>
         </div>
     </div>
@@ -69,35 +98,53 @@
                 <thead>
                     <tr style="background-color: #da6800">
                         <th class="p-2 text-white" scope="col">Partner ID</th>
-                        <th class="p-2 text-white" scope="col" sortable="partner"
-                            (sort)="onSort($event, 'grantsTeamReview')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="partner"
+                            (sort)="onSort($event, 'grantsTeamReview')"
+                        >
                             Partner
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="title"
-                            (sort)="onSort($event, 'grantsTeamReview')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="title"
+                            (sort)="onSort($event, 'grantsTeamReview')"
+                        >
                             Title
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="applicationDate"
-                            (sort)="onSort($event, 'grantsTeamReview')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="applicationDate"
+                            (sort)="onSort($event, 'grantsTeamReview')"
+                        >
                             Application Date
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="proposedBudget"
-                            (sort)="onSort($event, 'grantsTeamReview')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="proposedBudget"
+                            (sort)="onSort($event, 'grantsTeamReview')"
+                        >
                             Proposed Budget
                         </th>
                         <th class="p-2" scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="
+                    <tr
+                        *ngFor="
                             let item of grantApplication.grantsTeamReview.list
                                 | paginate
                                     : {
-                                          itemsPerPage: 10,
+                                          itemsPerPage: grantApplication.grantsTeamReview.tableSize,
                                           currentPage: grantApplication.grantsTeamReview.page,
                                           id: 'grantsTeamReview'
                                       }
-                        ">
+                        "
+                    >
                         <th class="font-weight-bold" style="color: #f24700" scope="row">{{ item.partnerId }}</th>
                         <td class="text-dark font-weight-light">
                             {{ item.partner }}
@@ -105,11 +152,17 @@
                         <td class="text-dark font-weight-light">{{ item.title }}</td>
                         <td class="text-dark font-weight-light">{{ item.applicationDate | date : 'dd-MMM-YYYY' }}</td>
                         <td class="text-dark font-weight-light">
-                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD | 7501175 IDR' : '' }}
+                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD' : '' }}
+                            {{ item?.proposedBudgetOther ? ' | ' + (item?.proposedBudgetOther | number) : '' }}
+                            {{ item?.proposedBudgetOtherCurrency ?? '' }}
                         </td>
                         <td>
-                            <button class="btn btn-default text-info"
-                                [routerLink]="['/applications/' + item.applicationNumber + '/review']">Review</button>
+                            <button
+                                class="btn btn-default text-info"
+                                [routerLink]="['/applications/' + item.applicationNumber + '/review']"
+                            >
+                                Review
+                            </button>
                             <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
                         </td>
                     </tr>
@@ -118,9 +171,21 @@
             <div *ngIf="grantApplication.grantsTeamReview.list.length <= 0" class="text-center">
                 <p class="text-danger w-100 font-weight-bold">There are no queued applications at this stage</p>
             </div>
-            <div class="my-3">
-                <pagination-controls (pageChange)="grantApplication.grantsTeamReview.page = $event"
-                    id="grantsTeamReview"></pagination-controls>
+            <div class="my-3 d-flex justify-content-end">
+                <div>
+                    <select
+                        (change)="onTableSizeChange($event, 'grantsTeamReview')"
+                        class="form-control form-control-sm pagination-select"
+                    >
+                        <option *ngFor="let size of tableSizes" [value]="size">
+                            {{ size }}
+                        </option>
+                    </select>
+                </div>
+                <pagination-controls
+                    (pageChange)="grantApplication.grantsTeamReview.page = $event"
+                    id="grantsTeamReview"
+                ></pagination-controls>
             </div>
         </div>
     </div>
@@ -134,35 +199,53 @@
                 <thead>
                     <tr style="background-color: #f38520">
                         <th class="p-2 text-white" scope="col">Partner ID</th>
-                        <th class="p-2 text-white" scope="col" sortable="partner"
-                            (sort)="onSort($event, 'advisersReview')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="partner"
+                            (sort)="onSort($event, 'advisersReview')"
+                        >
                             Partner
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="title"
-                            (sort)="onSort($event, 'advisersReview')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="title"
+                            (sort)="onSort($event, 'advisersReview')"
+                        >
                             Title
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="applicationDate"
-                            (sort)="onSort($event, 'advisersReview')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="applicationDate"
+                            (sort)="onSort($event, 'advisersReview')"
+                        >
                             Application Date
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="proposedBudget"
-                            (sort)="onSort($event, 'advisersReview')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="proposedBudget"
+                            (sort)="onSort($event, 'advisersReview')"
+                        >
                             Proposed Budget
                         </th>
                         <th class="p-2" scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="
+                    <tr
+                        *ngFor="
                             let item of grantApplication.advisersReview.list
                                 | paginate
                                     : {
-                                          itemsPerPage: 10,
+                                          itemsPerPage: grantApplication.advisersReview.tableSize,
                                           currentPage: grantApplication.advisersReview.page,
                                           id: 'advisersReview'
                                       }
-                        ">
+                        "
+                    >
                         <th class="font-weight-bold" style="color: #ff6200" scope="row">{{ item.partnerId }}</th>
                         <td class="text-dark font-weight-light">
                             {{ item.partner }}
@@ -170,11 +253,17 @@
                         <td class="text-dark font-weight-light">{{ item.title }}</td>
                         <td class="text-dark font-weight-light">{{ item.applicationDate | date : 'dd-MMM-YYYY' }}</td>
                         <td class="text-dark font-weight-light">
-                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD | 7501175 IDR' : '' }}
+                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD' : '' }}
+                            {{ item?.proposedBudgetOther ? ' | ' + (item?.proposedBudgetOther | number) : '' }}
+                            {{ item?.proposedBudgetOtherCurrency ?? '' }}
                         </td>
                         <td>
-                            <button class="btn btn-default text-info"
-                                [routerLink]="['/applications/' + item.applicationNumber + '/review']">Review</button>
+                            <button
+                                class="btn btn-default text-info"
+                                [routerLink]="['/applications/' + item.applicationNumber + '/review']"
+                            >
+                                Review
+                            </button>
                             <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
                         </td>
                     </tr>
@@ -183,9 +272,21 @@
             <div *ngIf="grantApplication.advisersReview.list.length <= 0" class="text-center">
                 <p class="text-danger w-100 font-weight-bold">There are no queued applications at this stage</p>
             </div>
-            <div class="my-3">
-                <pagination-controls (pageChange)="grantApplication.advisersReview.page = $event"
-                    id="advisersReview"></pagination-controls>
+            <div class="my-3 d-flex justify-content-end">
+                <div>
+                    <select
+                        (change)="onTableSizeChange($event, 'advisersReview')"
+                        class="form-control form-control-sm pagination-select"
+                    >
+                        <option *ngFor="let size of tableSizes" [value]="size">
+                            {{ size }}
+                        </option>
+                    </select>
+                </div>
+                <pagination-controls
+                    (pageChange)="grantApplication.advisersReview.page = $event"
+                    id="advisersReview"
+                ></pagination-controls>
             </div>
         </div>
     </div>
@@ -199,34 +300,48 @@
                 <thead>
                     <tr style="background-color: #f38520">
                         <th class="p-2 text-white" scope="col">Partner ID</th>
-                        <th class="p-2 text-white" scope="col" sortable="partner"
-                            (sort)="onSort($event, 'dueDiligence')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="partner"
+                            (sort)="onSort($event, 'dueDiligence')"
+                        >
                             Partner
                         </th>
                         <th class="p-2 text-white" scope="col" sortable="title" (sort)="onSort($event, 'dueDiligence')">
                             Title
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="applicationDate"
-                            (sort)="onSort($event, 'dueDiligence')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="applicationDate"
+                            (sort)="onSort($event, 'dueDiligence')"
+                        >
                             Application Date
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="proposedBudget"
-                            (sort)="onSort($event, 'dueDiligence')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="proposedBudget"
+                            (sort)="onSort($event, 'dueDiligence')"
+                        >
                             Proposed Budget
                         </th>
                         <th class="p-2" scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="
+                    <tr
+                        *ngFor="
                             let item of grantApplication.dueDiligence.list
                                 | paginate
                                     : {
-                                          itemsPerPage: 10,
+                                          itemsPerPage: grantApplication.dueDiligence.tableSize,
                                           currentPage: grantApplication.dueDiligence.page,
                                           id: 'dueDiligence'
                                       }
-                        ">
+                        "
+                    >
                         <th class="font-weight-bold" style="color: #ff6200" scope="row">{{ item.partnerId }}</th>
                         <td class="text-dark font-weight-light">
                             {{ item.partner }}
@@ -234,11 +349,17 @@
                         <td class="text-dark font-weight-light">{{ item.title }}</td>
                         <td class="text-dark font-weight-light">{{ item.applicationDate | date : 'dd-MMM-YYYY' }}</td>
                         <td class="text-dark font-weight-light">
-                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD | 7501175 IDR' : '' }}
+                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD' : '' }}
+                            {{ item?.proposedBudgetOther ? ' | ' + (item?.proposedBudgetOther | number) : '' }}
+                            {{ item?.proposedBudgetOtherCurrency ?? '' }}
                         </td>
                         <td>
-                            <button class="btn btn-default text-info"
-                                [routerLink]="['/applications/' + item.applicationNumber + '/review']">Review</button>
+                            <button
+                                class="btn btn-default text-info"
+                                [routerLink]="['/applications/' + item.applicationNumber + '/review']"
+                            >
+                                Review
+                            </button>
                             <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
                         </td>
                     </tr>
@@ -247,9 +368,21 @@
             <div *ngIf="grantApplication.dueDiligence.list.length <= 0" class="text-center">
                 <p class="text-danger w-100 font-weight-bold">There are no queued applications at this stage</p>
             </div>
-            <div class="my-3">
-                <pagination-controls (pageChange)="grantApplication.dueDiligence.page = $event"
-                    id="dueDiligence"></pagination-controls>
+            <div class="my-3 d-flex justify-content-end">
+                <div>
+                    <select
+                        (change)="onTableSizeChange($event, 'dueDiligence')"
+                        class="form-control form-control-sm pagination-select"
+                    >
+                        <option *ngFor="let size of tableSizes" [value]="size">
+                            {{ size }}
+                        </option>
+                    </select>
+                </div>
+                <pagination-controls
+                    (pageChange)="grantApplication.dueDiligence.page = $event"
+                    id="dueDiligence"
+                ></pagination-controls>
             </div>
         </div>
     </div>
@@ -263,35 +396,53 @@
                 <thead>
                     <tr style="background-color: #f5b62f">
                         <th class="p-2 text-white" scope="col">Partner ID</th>
-                        <th class="p-2 text-white" scope="col" sortable="partner"
-                            (sort)="onSort($event, 'budgetReviewAndFinalization')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="partner"
+                            (sort)="onSort($event, 'budgetReviewAndFinalization')"
+                        >
                             Partner
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="title"
-                            (sort)="onSort($event, 'budgetReviewAndFinalization')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="title"
+                            (sort)="onSort($event, 'budgetReviewAndFinalization')"
+                        >
                             Title
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="applicationDate"
-                            (sort)="onSort($event, 'budgetReviewAndFinalization')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="applicationDate"
+                            (sort)="onSort($event, 'budgetReviewAndFinalization')"
+                        >
                             Application Date
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="proposedBudget"
-                            (sort)="onSort($event, 'budgetReviewAndFinalization')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="proposedBudget"
+                            (sort)="onSort($event, 'budgetReviewAndFinalization')"
+                        >
                             Proposed Budget
                         </th>
                         <th class="p-2" scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="
+                    <tr
+                        *ngFor="
                             let item of grantApplication.budgetReviewAndFinalization.list
                                 | paginate
                                     : {
-                                          itemsPerPage: 10,
+                                          itemsPerPage: grantApplication.budgetReviewAndFinalization.tableSize,
                                           currentPage: grantApplication.budgetReviewAndFinalization.page,
                                           id: 'budgetReviewAndFinalization'
                                       }
-                        ">
+                        "
+                    >
                         <th class="font-weight-bold" style="color: #ff9100" scope="row">{{ item.partnerId }}</th>
                         <td class="text-dark font-weight-light">
                             {{ item.partner }}
@@ -299,11 +450,17 @@
                         <td class="text-dark font-weight-light">{{ item.title }}</td>
                         <td class="text-dark font-weight-light">{{ item.applicationDate | date : 'dd-MMM-YYYY' }}</td>
                         <td class="text-dark font-weight-light">
-                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD | 7501175 IDR' : '' }}
+                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD' : '' }}
+                            {{ item?.proposedBudgetOther ? ' | ' + (item?.proposedBudgetOther | number) : '' }}
+                            {{ item?.proposedBudgetOtherCurrency ?? '' }}
                         </td>
                         <td>
-                            <button class="btn btn-default text-info"
-                                [routerLink]="['/applications/' + item.applicationNumber + '/review']">Review</button>
+                            <button
+                                class="btn btn-default text-info"
+                                [routerLink]="['/applications/' + item.applicationNumber + '/review']"
+                            >
+                                Review
+                            </button>
                             <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
                         </td>
                     </tr>
@@ -312,9 +469,21 @@
             <div *ngIf="grantApplication.budgetReviewAndFinalization.list.length <= 0" class="text-center">
                 <p class="text-danger w-100 font-weight-bold">There are no queued applications at this stage</p>
             </div>
-            <div class="my-3">
-                <pagination-controls (pageChange)="grantApplication.budgetReviewAndFinalization.page = $event"
-                    id="budgetReviewAndFinalization"></pagination-controls>
+            <div class="my-3 d-flex justify-content-end">
+                <div>
+                    <select
+                        (change)="onTableSizeChange($event, 'budgetReviewAndFinalization')"
+                        class="form-control form-control-sm pagination-select"
+                    >
+                        <option *ngFor="let size of tableSizes" [value]="size">
+                            {{ size }}
+                        </option>
+                    </select>
+                </div>
+                <pagination-controls
+                    (pageChange)="grantApplication.budgetReviewAndFinalization.page = $event"
+                    id="budgetReviewAndFinalization"
+                ></pagination-controls>
             </div>
         </div>
     </div>
@@ -328,35 +497,53 @@
                 <thead>
                     <tr style="background-color: #f5b62f">
                         <th class="p-2 text-white" scope="col">Partner ID</th>
-                        <th class="p-2 text-white" scope="col" sortable="partner"
-                            (sort)="onSort($event, 'financialManagementCapacity')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="partner"
+                            (sort)="onSort($event, 'financialManagementCapacity')"
+                        >
                             Partner
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="title"
-                            (sort)="onSort($event, 'financialManagementCapacity')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="title"
+                            (sort)="onSort($event, 'financialManagementCapacity')"
+                        >
                             Title
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="applicationDate"
-                            (sort)="onSort($event, 'financialManagementCapacity')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="applicationDate"
+                            (sort)="onSort($event, 'financialManagementCapacity')"
+                        >
                             Application Date
                         </th>
-                        <th class="p-2 text-white" scope="col" sortable="proposedBudget"
-                            (sort)="onSort($event, 'financialManagementCapacity')">
+                        <th
+                            class="p-2 text-white"
+                            scope="col"
+                            sortable="proposedBudget"
+                            (sort)="onSort($event, 'financialManagementCapacity')"
+                        >
                             Proposed Budget
                         </th>
                         <th class="p-2" scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="
+                    <tr
+                        *ngFor="
                             let item of grantApplication.financialManagementCapacity.list
                                 | paginate
                                     : {
-                                          itemsPerPage: 10,
+                                          itemsPerPage: grantApplication.financialManagementCapacity.tableSize,
                                           currentPage: grantApplication.financialManagementCapacity.page,
                                           id: 'financialManagementCapacity'
                                       }
-                        ">
+                        "
+                    >
                         <th class="font-weight-bold" style="color: #ff9100" scope="row">{{ item.partnerId }}</th>
                         <td class="text-dark font-weight-light">
                             {{ item.partner }}
@@ -364,11 +551,16 @@
                         <td class="text-dark font-weight-light">{{ item.title }}</td>
                         <td class="text-dark font-weight-light">{{ item.applicationDate | date : 'dd-MMM-YYYY' }}</td>
                         <td class="text-dark font-weight-light">
-                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD | 7501175 IDR' : '' }}
+                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD' : '' }} |
+                            {{ item?.proposedBudgetOther | number }} {{ item?.proposedBudgetOtherCurrency ?? '' }}
                         </td>
                         <td>
-                            <button class="btn btn-default text-info"
-                                [routerLink]="['/applications/' + item.applicationNumber + '/review']">Review</button>
+                            <button
+                                class="btn btn-default text-info"
+                                [routerLink]="['/applications/' + item.applicationNumber + '/review']"
+                            >
+                                Review
+                            </button>
                             <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
                         </td>
                     </tr>
@@ -377,9 +569,21 @@
             <div *ngIf="grantApplication.financialManagementCapacity.list.length <= 0" class="text-center">
                 <p class="text-danger w-100 font-weight-bold">There are no queued applications at this stage</p>
             </div>
-            <div class="my-3">
-                <pagination-controls (pageChange)="grantApplication.financialManagementCapacity.page = $event"
-                    id="financialManagementCapacity"></pagination-controls>
+            <div class="my-3 d-flex justify-content-end">
+                <div>
+                    <select
+                        (change)="onTableSizeChange($event, 'financialManagementCapacity')"
+                        class="form-control form-control-sm pagination-select"
+                    >
+                        <option *ngFor="let size of tableSizes" [value]="size">
+                            {{ size }}
+                        </option>
+                    </select>
+                </div>
+                <pagination-controls
+                    (pageChange)="grantApplication.financialManagementCapacity.page = $event"
+                    id="financialManagementCapacity"
+                ></pagination-controls>
             </div>
         </div>
     </div>

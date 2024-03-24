@@ -1,5 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { GRANT_TYPES } from 'src/app/utilities/constants';
 
 @Component({
     selector: 'app-applications',
@@ -8,6 +9,8 @@ import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
     encapsulation: ViewEncapsulation.None,
 })
 export class ApplicationsComponent {
+    grantTypes = GRANT_TYPES
+    selectiveIndicator = []
     bsModalRef?: BsModalRef;
     currentExpandedAccordion = new Set();
     filterSelections = [

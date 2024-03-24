@@ -60,3 +60,24 @@ export const PROVINCE_URL_FETCH_STATUS = {
     notReady: 'notReady',
     ready: 'ready',
 };
+
+export const GRANT_TYPES = [
+    'Travel Grant',
+    'Capacity Development',
+    'Urgent Grant',
+    'Education Grant',
+    'Indigenous Knowledge Building',
+    'Resiliency Building',
+    'Social Justice Grant',
+    'Institutional Development',
+];
+
+export const THEMATIC_AREAS = [
+    'Tenure',
+    'Natural Resource Governance',
+    'Living Economy',
+    'Mitigating & Adapting to Climate Change',
+    'Governance and Leadership Development',
+    'Next Generation',
+    'Disability Rights in the Intersection of Environmental Justice',
+];

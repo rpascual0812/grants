@@ -13,7 +13,9 @@ export const transformApplicationForList = (applications: ApplicationRead[]) => 
         partner: app?.partner?.name ?? '',
         title: app?.application_project?.title ?? '',
         applicationDate: app?.date_created as Date,
-        proposedBudget: 100,
+        proposedBudget: app?.application_proposal?.budget_request_usd ?? '',
+        proposedBudgetOther: app?.application_proposal?.budget_request_other ?? '',
+        proposedBudgetOtherCurrency: app?.application_proposal?.budget_request_other_currency?.split('-')?.at(0)?.trim() ?? ''
     }));
 };
 
