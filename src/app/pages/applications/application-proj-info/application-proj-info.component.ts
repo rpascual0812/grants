@@ -65,14 +65,14 @@ export class ApplicationProjInfoComponent implements OnInit {
         this.applicationService.fetchOne(this.pk).subscribe({
             next: (res: any) => {
                 const data = res?.data as ApplicationRead;
-                this.form.controls['title'].setValue(data?.application_project?.title);
-                this.form.controls['duration'].setValue(data?.application_project?.duration);
-                this.form.controls['background'].setValue(data?.application_project?.background);
-                this.form.controls['objective'].setValue(data?.application_project?.objective);
-                this.form.controls['expected_output'].setValue(data?.application_project?.expected_output);
-                this.form.controls['how_will_affect'].setValue(data?.application_project?.how_will_affect);
+                this.form.controls['title'].setValue(data?.project?.title);
+                this.form.controls['duration'].setValue(data?.project?.duration);
+                this.form.controls['background'].setValue(data?.project?.background);
+                this.form.controls['objective'].setValue(data?.project?.objective);
+                this.form.controls['expected_output'].setValue(data?.project?.expected_output);
+                this.form.controls['how_will_affect'].setValue(data?.project?.how_will_affect);
 
-                this.initialProjLocations(data?.application_project?.application_project_location ?? []);
+                this.initialProjLocations(data?.project?.project_location ?? []);
 
                 this.form.controls['project_website'].setValue(data?.application_organization_profile?.project_website);
 
@@ -130,12 +130,12 @@ export class ApplicationProjInfoComponent implements OnInit {
 
     setForm() {
         this.form = this.formBuilder.group({
-            title: [this.application?.application_project?.title ?? '', Validators.required],
-            duration: [this.application?.application_project?.duration ?? '', Validators.required],
-            background: [this.application?.application_project?.background ?? '', Validators.required],
-            objective: [this.application?.application_project?.objective ?? '', Validators.required],
-            expected_output: [this.application?.application_project?.expected_output ?? '', Validators.required],
-            how_will_affect: [this.application?.application_project?.how_will_affect ?? '', Validators.required],
+            title: [this.application?.project?.title ?? '', Validators.required],
+            duration: [this.application?.project?.duration ?? '', Validators.required],
+            background: [this.application?.project?.background ?? '', Validators.required],
+            objective: [this.application?.project?.objective ?? '', Validators.required],
+            expected_output: [this.application?.project?.expected_output ?? '', Validators.required],
+            how_will_affect: [this.application?.project?.how_will_affect ?? '', Validators.required],
             project_website: [this.application?.application_organization_profile?.project_website ?? ''],
             project_locations: this.formBuilder.array([], [Validators.required]),
             monitor: [this.application?.application_proposal?.monitor ?? '', Validators?.required],
@@ -155,7 +155,7 @@ export class ApplicationProjInfoComponent implements OnInit {
             ],
             financial_last_year_other_currency: [
                 this.application?.application_nonprofit_equivalency_determination?.financial_last_year_other_currency ??
-                    '',
+                '',
                 Validators.required,
             ],
             financial_current_usd: [
@@ -168,7 +168,7 @@ export class ApplicationProjInfoComponent implements OnInit {
             ],
             financial_current_other_currency: [
                 this.application?.application_nonprofit_equivalency_determination?.financial_current_other_currency ??
-                    '',
+                '',
                 Validators.required,
             ],
             members: [this.application?.application_nonprofit_equivalency_determination?.members, Validators.required],

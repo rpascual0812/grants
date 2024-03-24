@@ -55,4 +55,8 @@ export class ApplicationService {
     destroy(pk: any) {
         return this.http.delete(`${_.BASE_URL}/application/${pk}`);
     }
+
+    saveReview(data: any) {
+        return this.http.post(`${_.BASE_URL}/application/review`, data);
+    }
 }

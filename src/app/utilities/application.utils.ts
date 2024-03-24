@@ -11,7 +11,7 @@ export const transformApplicationForList = (applications: ApplicationRead[]) => 
         uuid: app.uuid as string,
         partnerId: app?.partner?.partner_id ?? '',
         partner: app?.partner?.name ?? '',
-        title: app?.application_project?.title ?? '',
+        title: app?.project?.title ?? '',
         applicationDate: app?.date_created as Date,
         proposedBudget: app?.application_proposal?.budget_request_usd ?? '',
         proposedBudgetOther: app?.application_proposal?.budget_request_other ?? '',
