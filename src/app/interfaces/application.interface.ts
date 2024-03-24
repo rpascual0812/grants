@@ -38,6 +38,7 @@ export interface OrganizationProfileSave {
 }
 
 export interface ProjectSave {
+    pk?: number;
     title?: string;
     duration?: string;
     background?: string;
