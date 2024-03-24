@@ -12,7 +12,6 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 export class GrantsComponent implements OnInit {
     currentExpandedAccordion = new Set();
     filterSelections = [
-        { label: 'Grant Application', id: 'grantApplication', checked: true },
         { label: 'Contract Finalization', id: 'contractFinalization', checked: false },
         { label: 'Fund Release', id: 'fundRelease', checked: false },
     ];
@@ -77,7 +76,7 @@ export class GrantsComponent implements OnInit {
         return image;
     });
     @ViewChild(BaseChartDirective) horizontalBarChart: BaseChartDirective<'bar'> | undefined;
-    public horizontalBarChartOptions: ChartConfiguration['options']  = {
+    public horizontalBarChartOptions: ChartConfiguration['options'] = {
         // We use these empty structures as placeholders for dynamic theming.
         responsive: true,
         maintainAspectRatio: false,
@@ -142,7 +141,7 @@ export class GrantsComponent implements OnInit {
 
 
     @ViewChild(BaseChartDirective) barChart: BaseChartDirective<'bar'> | undefined;
-    public barChartChartOptions: ChartConfiguration['options']  = {
+    public barChartChartOptions: ChartConfiguration['options'] = {
         // We use these empty structures as placeholders for dynamic theming.
         responsive: true,
         maintainAspectRatio: false,
@@ -172,10 +171,10 @@ export class GrantsComponent implements OnInit {
                     callback: (tickValue, index, ticks) => {
                         console.log(this.barChartData.labels)
                         const label = this.barChartData.labels?.at(index) ?? ''
-                       if (/\s/.test(label as string)) {
-                        return (label as string)?.split(" ");
-                       }
-                       return label as string
+                        if (/\s/.test(label as string)) {
+                            return (label as string)?.split(" ");
+                        }
+                        return label as string
                     },
                 },
             },

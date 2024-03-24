@@ -1,7 +1,10 @@
 import { Component, EventEmitter, OnInit, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 import { PROVINCE_URL_FETCH_STATUS } from '../../utilities/constants';
+import { DocumentService } from 'src/app/services/document.service';
 
 type SelectItem = {
     pk?: number;
@@ -63,7 +66,12 @@ export class ProjectInformationComponent implements OnInit {
     applicationSignalService = inject(ApplicationSignalService);
     selectChangeFieldEventEmitter = new EventEmitter<any>();
 
-    constructor(private formBuilder: FormBuilder) {}
+    constructor(
+        private formBuilder: FormBuilder,
+        private documentService: DocumentService,
+        private toastr: ToastrService,
+        public bsModalRef: BsModalRef,
+    ) { }
 
     ngOnInit() {
         this.getDurationOpts();
@@ -96,6 +104,7 @@ export class ProjectInformationComponent implements OnInit {
 
     setForm() {
         const currentApplication = this.applicationSignalService.application();
+        console.log(currentApplication);
         this.form = this.formBuilder.group({
             title: [currentApplication?.project?.title ?? '', Validators.required],
             duration: [currentApplication?.project?.duration ?? '', Validators.required],
@@ -308,5 +317,28 @@ export class ProjectInformationComponent implements OnInit {
     handleBack() {
         this.saveFormValue();
         this.applicationSignalService.navigateBack();
+    }
+
+    saveAttachment(ev: any) {
+        const currentApplication = this.applicationSignalService.application();
+        this.documentService
+            .save({
+                table_pk: 1,
+                table_name: 'projects',
+                document_pk: ev.pk
+            })
+            .subscribe({
+                next: (data: any) => {
+                    this.toastr.success('The document has been successfully uploaded', 'SUCCESS!');
+                },
+                error: (error: any) => {
+                    console.log(error);
+                    this.toastr.error('An error occurred while uploading the document. Please try again', 'ERROR!');
+                },
+                complete: () => {
+                    console.log('Complete');
+                    this.bsModalRef.hide();
+                }
+            });
     }
 }

@@ -108,7 +108,8 @@
                             {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD | 7501175 IDR' : '' }}
                         </td>
                         <td>
-                            <button class="btn btn-default text-info">Review</button>
+                            <button class="btn btn-default text-info"
+                                [routerLink]="['/applications/' + item.applicationNumber + '/review']">Review</button>
                             <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
                         </td>
                     </tr>
@@ -172,7 +173,8 @@
                             {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD | 7501175 IDR' : '' }}
                         </td>
                         <td>
-                            <button class="btn btn-default text-info">Review</button>
+                            <button class="btn btn-default text-info"
+                                [routerLink]="['/applications/' + item.applicationNumber + '/review']">Review</button>
                             <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
                         </td>
                     </tr>
@@ -235,7 +237,8 @@
                             {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD | 7501175 IDR' : '' }}
                         </td>
                         <td>
-                            <button class="btn btn-default text-info">Review</button>
+                            <button class="btn btn-default text-info"
+                                [routerLink]="['/applications/' + item.applicationNumber + '/review']">Review</button>
                             <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
                         </td>
                     </tr>
@@ -299,7 +302,8 @@
                             {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD | 7501175 IDR' : '' }}
                         </td>
                         <td>
-                            <button class="btn btn-default text-info">Review</button>
+                            <button class="btn btn-default text-info"
+                                [routerLink]="['/applications/' + item.applicationNumber + '/review']">Review</button>
                             <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
                         </td>
                     </tr>
@@ -363,7 +367,8 @@
                             {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD | 7501175 IDR' : '' }}
                         </td>
                         <td>
-                            <button class="btn btn-default text-info">Review</button>
+                            <button class="btn btn-default text-info"
+                                [routerLink]="['/applications/' + item.applicationNumber + '/review']">Review</button>
                             <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
                         </td>
                     </tr>

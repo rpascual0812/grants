@@ -14,7 +14,6 @@ import { ResetPasswordModalComponent } from './reset-password-modal/reset-passwo
 import { ComponentsModule } from 'src/app/components/components.module';
 
 import { ModalComponent } from '../../components/modal/modal.component';
-import { NewApplicationModalComponent } from '../applications/applications-list/modules/new-application-modal/new-application-modal.component';
 import { LinkGeneratorModule } from 'src/app/components/link-generator/link-generator.module';
 
 @NgModule({
@@ -23,7 +22,6 @@ import { LinkGeneratorModule } from 'src/app/components/link-generator/link-gene
         UsersModalComponent,
         ResetPasswordModalComponent,
         ModalComponent,
-        NewApplicationModalComponent
     ],
     imports: [
         FormsModule,

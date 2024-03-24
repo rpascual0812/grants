@@ -1,25 +1,18 @@
 <main class="main-content mt-0 container">
     <h4 class="text-dark">Grants</h4>
     <div class="row gap-1 align-items-end">
-        <div class="col-12 col-md-5 px-2">
+        <div class="col-12 col-md-4 px-2">
             <div class="form-group">
                 <label class="font-weight-bold text-dark">Filters</label>
-                <div
-                    class="d-flex flex-wrap flex-row gap-2 border rounded-2 bg-gray-300 align-items-center"
-                    style="min-height: 40px"
-                >
+                <div class="d-flex flex-wrap flex-row gap-2 border rounded-2 bg-gray-300 align-items-center"
+                    style="min-height: 40px">
                     <div *ngFor="let filter of filterSelections" class="form-check">
-                        <input
-                            #checkbox
-                            id="{{ filter.label }}"
-                            class="form-check-input"
-                            type="checkbox"
+                        <input #checkbox id="{{ filter.label }}" class="form-check-input" type="checkbox"
                             (click)="handleCheckedFilterSelect(checkbox.checked, filter.id)"
-                            [checked]="selectedFilterIds.has(filter.id)"
-                        />
+                            [checked]="selectedFilterIds.has(filter.id)" />
                         <label for="{{ filter.label }}" class="form-check-label font-weight-bold mb-0">{{
                             filter.label
-                        }}</label>
+                            }}</label>
                     </div>
                 </div>
             </div>
@@ -32,11 +25,8 @@
         <ng-container *ngIf="selectedFilterIds.has('fundRelease')">
             <div class="row">
                 <div class="col-10">
-                    <input
-                        class="form-control border border-1 rounded p-2 my-3"
-                        placeholder="Partner Name"
-                        type="text"
-                    />
+                    <input class="form-control border border-1 rounded p-2 my-3" placeholder="Partner Name"
+                        type="text" />
                 </div>
             </div>
 
@@ -65,15 +55,11 @@
     <!-- Extras -->
     <div class="active-donor-container">
         <accordion [isAnimated]="true">
-            <accordion-group
-                (isOpenChange)="handleExpandAccordion($event, 'activeDonor')"
-                [panelClass]="
+            <accordion-group (isOpenChange)="handleExpandAccordion($event, 'activeDonor')" [panelClass]="
                     currentExpandedAccordion.has('activeDonor')
                         ? 'custom-accordion-expanded w-100'
                         : 'custom-accordion-collapsed w-100'
-                "
-                class="my-3"
-            >
+                " class="my-3">
                 <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                     <div class="pull-left float-left">
                         <p class="text-dark text-sm font-weight-bold m-0 p-0">Choose which donor</p>
@@ -82,25 +68,16 @@
                     <div class="pull-right float-right">
                         <div class="d-flex flex flex-row align-items-center">
                             <div class="form-check form-switch">
-                                <input
-                                    #showInactiveDonors
-                                    id="showInactiveDonors"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    role="switch"
-                                    (click)="handleToggleShowInactiveDonors($event, showInactiveDonors.checked)"
-                                />
-                                <label
-                                    for="showInactiveDonors"
-                                    class="form-check-label p-0 m-0"
-                                    (click)="$event.stopPropagation()"
-                                    >Show Former Donors</label
-                                >
+                                <input #showInactiveDonors id="showInactiveDonors" class="form-check-input"
+                                    type="checkbox" role="switch"
+                                    (click)="handleToggleShowInactiveDonors($event, showInactiveDonors.checked)" />
+                                <label for="showInactiveDonors" class="form-check-label p-0 m-0"
+                                    (click)="$event.stopPropagation()">Show Former Donors</label>
                             </div>
                             <button class="btn btn-icon-only">
                                 <i class="material-icons">{{
                                     currentExpandedAccordion.has('activeDonor') ? 'expand_less' : 'expand_more'
-                                }}</i>
+                                    }}</i>
                             </button>
                         </div>
                     </div>
@@ -108,19 +85,14 @@
                 <div>
                     <h6 class="text-dark">Current Donors</h6>
                     <div class="d-flex flex-wrap flex-row gap-1">
-                        <button
-                            *ngFor="let activeDonor of activeDonors"
-                            class="card max-width-200"
+                        <button *ngFor="let activeDonor of activeDonors" class="card max-width-200"
                             [ngClass]="{'border-2 border-dark-blue': selectedActiveDonorId === activeDonor?.['id']}"
-                            (click)="handleSelectActiveDonor(activeDonor?.['id'] ?? '')"
-                        >
+                            (click)="handleSelectActiveDonor(activeDonor?.['id'] ?? '')">
                             <div class="card-body p-2 m-0">
                                 <div class="d-flex flex-wrap flex-row justify-content-between align-items-center">
                                     <div class="d-flex flex-row align-items-center gap-1">
-                                        <span
-                                            class="d-inline-block rounded-circle bg-success position-relative"
-                                            style="height: 20px; width: 20px; bottom: 2px"
-                                        ></span>
+                                        <span class="d-inline-block rounded-circle bg-success position-relative"
+                                            style="height: 20px; width: 20px; bottom: 2px"></span>
                                         <p class="text-dark d-inline font-weight-bold p-0 m-0 text-sm">Active</p>
                                     </div>
                                     <p class="text-dark font-weight-bold p-0 m-0 text-sm">
@@ -142,15 +114,11 @@
 
     <div class="active-donor-container">
         <accordion [isAnimated]="true">
-            <accordion-group
-                (isOpenChange)="handleExpandAccordion($event, 'summary')"
-                [panelClass]="
+            <accordion-group (isOpenChange)="handleExpandAccordion($event, 'summary')" [panelClass]="
                     currentExpandedAccordion.has('summary')
                         ? 'custom-accordion-expanded w-100'
                         : 'custom-accordion-collapsed w-100'
-                "
-                class="my-3"
-            >
+                " class="my-3">
                 <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                     <div class="pull-left float-left">
                         <p class="text-dark text-sm font-weight-bold m-0 p-0">Summary</p>
@@ -161,7 +129,7 @@
                             <button class="btn btn-icon-only">
                                 <i class="material-icons">{{
                                     currentExpandedAccordion.has('summary') ? 'expand_less' : 'expand_more'
-                                }}</i>
+                                    }}</i>
                             </button>
                         </div>
                     </div>
@@ -171,14 +139,11 @@
                         <div class="col">
                             <div class="card">
                                 <div class="row g-0">
-                                    <div
-                                        class="col-md-4 bg-dark-blue"
-                                        style="
+                                    <div class="col-md-4 bg-dark-blue" style="
                                             border-top-left-radius: 8px;
                                             border-bottom-left-radius: 8px;
                                             min-height: 130px;
-                                        "
-                                    >
+                                        ">
                                         <h5 class="text-white p-2 font-weight-light">Total Grant Budget</h5>
                                     </div>
                                     <div class="col-md-8">
@@ -195,15 +160,12 @@
                         <div class="col">
                             <div class="card">
                                 <div class="row g-0">
-                                    <div
-                                        class="col-md-4"
-                                        style="
+                                    <div class="col-md-4" style="
                                             border-top-left-radius: 8px;
                                             border-bottom-left-radius: 8px;
                                             min-height: 130px;
                                             background-color: var(--bs-purple);
-                                        "
-                                    >
+                                        ">
                                         <h5 class="text-white p-2 font-weight-light">Total Grants Approved</h5>
                                     </div>
                                     <div class="col-md-8">
@@ -218,14 +180,11 @@
                         <div class="col">
                             <div class="card">
                                 <div class="row g-0">
-                                    <div
-                                        class="col-md-4 bg-info"
-                                        style="
+                                    <div class="col-md-4 bg-info" style="
                                             border-top-left-radius: 8px;
                                             border-bottom-left-radius: 8px;
                                             min-height: 130px;
-                                        "
-                                    >
+                                        ">
                                         <h5 class="text-white p-2 font-weight-light">Total of First Time Grantee</h5>
                                     </div>
                                     <div class="col-md-8">
@@ -244,13 +203,8 @@
                                 <h4 class="text-dark pt-4 ps-4 font-weight-bold">Status Breakdown</h4>
                                 <div class="pie-chart-container">
                                     <div chartType="pie" class="pie-chart">
-                                        <canvas
-                                            baseChart
-                                            [plugins]="pieChartPlugins"
-                                            [data]="pieChartData"
-                                            [type]="pieChartType"
-                                            [options]="pieChartOptions"
-                                        >
+                                        <canvas baseChart [plugins]="pieChartPlugins" [data]="pieChartData"
+                                            [type]="pieChartType" [options]="pieChartOptions">
                                         </canvas>
                                     </div>
                                 </div>
@@ -262,13 +216,8 @@
                                 <h4 class="text-dark pt-4 ps-4 font-weight-bold">Force Breakdown</h4>
                                 <div class="pie-chart-container">
                                     <div chartType="pie" class="pie-chart">
-                                        <canvas
-                                            baseChart
-                                            [plugins]="pieChartPlugins"
-                                            [data]="pieChartData"
-                                            [type]="pieChartType"
-                                            [options]="pieChartOptions"
-                                        >
+                                        <canvas baseChart [plugins]="pieChartPlugins" [data]="pieChartData"
+                                            [type]="pieChartType" [options]="pieChartOptions">
                                         </canvas>
                                     </div>
                                 </div>
@@ -280,13 +229,8 @@
                                 <h4 class="text-dark pt-4 ps-4 font-weight-bold">Grants Applied per country</h4>
                                 <div class="pie-chart-container">
                                     <div chartType="pie" class="pie-chart">
-                                        <canvas
-                                            baseChart
-                                            [plugins]="pieChartPlugins"
-                                            [data]="pieChartData"
-                                            [type]="pieChartType"
-                                            [options]="pieChartOptions"
-                                        >
+                                        <canvas baseChart [plugins]="pieChartPlugins" [data]="pieChartData"
+                                            [type]="pieChartType" [options]="pieChartOptions">
                                         </canvas>
                                     </div>
                                 </div>
@@ -298,13 +242,8 @@
                                 <h4 class="text-dark pt-4 ps-4 font-weight-bold">Grants Approved per Country</h4>
                                 <div class="pie-chart-container">
                                     <div chartType="pie" class="pie-chart">
-                                        <canvas
-                                            baseChart
-                                            [plugins]="pieChartPlugins"
-                                            [data]="pieChartData"
-                                            [type]="pieChartType"
-                                            [options]="pieChartOptions"
-                                        >
+                                        <canvas baseChart [plugins]="pieChartPlugins" [data]="pieChartData"
+                                            [type]="pieChartType" [options]="pieChartOptions">
                                         </canvas>
                                     </div>
                                 </div>
@@ -316,13 +255,8 @@
                                 <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Grants per Type</h4>
                                 <div class="pie-chart-container">
                                     <div chartType="pie" class="pie-chart">
-                                        <canvas
-                                            baseChart
-                                            [plugins]="pieChartPlugins"
-                                            [data]="pieChartData"
-                                            [type]="pieChartType"
-                                            [options]="pieChartOptions"
-                                        >
+                                        <canvas baseChart [plugins]="pieChartPlugins" [data]="pieChartData"
+                                            [type]="pieChartType" [options]="pieChartOptions">
                                         </canvas>
                                     </div>
                                 </div>
@@ -333,13 +267,9 @@
                             <div class="card">
                                 <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Grants per country</h4>
                                 <div chartType="bar" class="bar-chart">
-                                    <canvas
-                                        baseChart
-                                        [data]="horizontalBarChartData"
-                                        [options]="horizontalBarChartOptions"
-                                        [type]="barChartType"
-                                        [plugins]="horizontalBarChartPlugins"
-                                    >
+                                    <canvas baseChart [data]="horizontalBarChartData"
+                                        [options]="horizontalBarChartOptions" [type]="barChartType"
+                                        [plugins]="horizontalBarChartPlugins">
                                     </canvas>
                                 </div>
                             </div>
@@ -349,15 +279,11 @@
                     <div class="row row-cols-1 my-3">
                         <div class="col">
                             <div class="card">
-                                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Amount of Grants going per Theme/Focus</h4>
+                                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Amount of Grants going per
+                                    Theme/Focus</h4>
                                 <div chartType="bar" class="bar-chart">
-                                    <canvas
-                                        baseChart
-                                        [data]="barChartData"
-                                        [options]="barChartChartOptions"
-                                        [type]="barChartType"
-                                        [plugins]="barChartPlugins"
-                                    >
+                                    <canvas baseChart [data]="barChartData" [options]="barChartChartOptions"
+                                        [type]="barChartType" [plugins]="barChartPlugins">
                                     </canvas>
                                 </div>
                             </div>
