@@ -3,7 +3,7 @@ import { ApplicationSignalService } from 'src/app/services/application.signal.se
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import { PROVINCE_URL_FETCH_STATUS } from '../../utilities/constants';
+import { PROVINCE_URL_FETCH_STATUS } from '../../../../../utilities/constants';
 import { DocumentService } from 'src/app/services/document.service';
 
 type SelectItem = {

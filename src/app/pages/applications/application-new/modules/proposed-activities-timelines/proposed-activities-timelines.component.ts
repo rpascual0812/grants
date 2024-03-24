@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InputDropdownValue } from '../input-dropdown/input-dropdown.component';
-import { OTHER_CURRENCY_LIST, USD_CURRENCY } from '../../utilities/constants';
+import { OTHER_CURRENCY_LIST, USD_CURRENCY } from '../../../../../utilities/constants';
 
 interface ProposedActivity {
     id: number;

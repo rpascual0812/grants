@@ -14,6 +14,7 @@ import {
 type TableObj = {
     list: TransformApplicationForList;
     page: number;
+    tableSize: number;
 };
 
 type GrantApplicationTableObj = {
@@ -32,30 +33,37 @@ type GrantApplicationTableObj = {
 })
 export class GrantApplicationComponent implements OnInit {
     isLoading = true;
+    tableSizes: any = _.TABLE_SIZES;
     grantApplication: GrantApplicationTableObj = {
         urgentGrants: {
             list: [],
             page: 1,
+            tableSize: 10,
         },
         advisersReview: {
             list: [],
             page: 1,
+            tableSize: 10,
         },
         grantsTeamReview: {
             list: [],
             page: 1,
+            tableSize: 10,
         },
         dueDiligence: {
             list: [],
             page: 1,
+            tableSize: 10,
         },
         budgetReviewAndFinalization: {
             list: [],
             page: 1,
+            tableSize: 10,
         },
         financialManagementCapacity: {
             list: [],
             page: 1,
+            tableSize: 10,
         },
     };
 
@@ -175,5 +183,12 @@ export class GrantApplicationComponent implements OnInit {
                 });
             }
         );
+    }
+
+    
+    onTableSizeChange(event: any, key: keyof typeof this.grantApplication) {
+        this.grantApplication[key].tableSize = event.target.value
+        this.grantApplication[key].page = 1
+        this.handleFetchApplication()
     }
 }

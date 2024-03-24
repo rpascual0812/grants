@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { KIND_OF_ORGANIZATION_MAPPER, TRIBE_LIST_OPTIONS } from '../../utilities/constants';
+import { KIND_OF_ORGANIZATION_MAPPER, TRIBE_LIST_OPTIONS } from '../../../../../utilities/constants';
 import { GlobalService } from 'src/app/services/global.service';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ToastrService } from 'ngx-toastr';
