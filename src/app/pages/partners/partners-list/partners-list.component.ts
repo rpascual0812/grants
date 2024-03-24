@@ -60,7 +60,7 @@ export class PartnersListComponent implements OnInit {
                         location: item.address,
                         grand_total_amount: item.grand_total_amount,
                         expanded: false,
-                        applications: item?.application?.filter((app) => !!app?.application_project?.title),
+                        applications: item?.application?.filter((app) => !!app?.project?.title),
                     }));
                     this.loading = false;
                 },
