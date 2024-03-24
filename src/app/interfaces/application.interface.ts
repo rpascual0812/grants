@@ -142,7 +142,7 @@ export interface ApplicationRead {
     partner?: PartnerRead;
     application_proponent?: ApplicationProponentRead;
     application_organization_profile?: ApplicationOrganizationProfileRead;
-    application_project?: ApplicationProjectRead;
+    project?: ProjectRead;
     application_proposal?: ApplicationProposalRead;
     application_fiscal_sponsor?: ApplicationFiscalSponsorRead;
     application_nonprofit_equivalency_determination?: ApplicationNonprofitEquivalencyDeterminationRead;
@@ -219,7 +219,7 @@ export interface ApplicationOrganizationProfileRead {
     date_created?: Date;
 }
 
-export interface ApplicationProjectRead {
+export interface ProjectRead {
     pk?: number;
     application_pk?: number;
     title?: string;
@@ -229,12 +229,12 @@ export interface ApplicationProjectRead {
     expected_output?: string;
     how_will_affect?: string;
     date_created?: Date;
-    application_project_location?: ApplicationProjectLocationRead[];
+    project_location?: ApplicationProjectLocationRead[];
 }
 
 export interface ApplicationProjectLocationRead {
     pk?: number;
-    application_project_pk?: number;
+    project_pk?: number;
     country_pk?: number;
     province_code?: number;
     province_code_url?: string;
@@ -357,7 +357,7 @@ export interface PartnerApplications {
     status_pk?: number;
     archived?: boolean;
     application_status?: ApplicationStatusesRead;
-    application_project?: ApplicationProjectRead;
+    project?: ProjectRead;
     application_proposal?: ApplicationProposalRead;
     application_fiscal_sponsor?: ApplicationFiscalSponsorRead;
     application_nonprofit_equivalency_determination?: ApplicationNonprofitEquivalencyDeterminationRead;

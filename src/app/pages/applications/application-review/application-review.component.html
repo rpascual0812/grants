@@ -32,7 +32,7 @@
                                 <p class="text-sm font-weight-bold text-dark">Grant Type and Function</p>
                             </div>
                             <div class="col-12 col-md-4">
-                                <app-select [arr]="['ALL', 'Filter 1', 'Filter 2']"></app-select>
+                                <app-select url="types"></app-select>
                             </div>
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                             </div>
                             <div class="col-12 col-md-4">
                                 <p class="text-sm font-weight-bold text-secondary">
-                                    {{ currentApplication?.application_project?.title }}
+                                    {{ currentApplication?.project?.title }}
                                 </p>
                             </div>
                             <div class="col-12 col-md-2">
@@ -86,7 +86,7 @@
                             </div>
                             <div class="col-10">
                                 <p class="text-sm font-weight-bold text-secondary">
-                                    {{ currentApplication?.application_project?.objective }}
+                                    {{ currentApplication?.project?.objective }}
                                 </p>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                     </div>
                     <div class="col-10">
                         <p class="text-sm font-weight-bold text-secondary">
-                            {{ currentApplication?.application_project?.title }}
+                            {{ currentApplication?.project?.title }}
                         </p>
                     </div>
                 </div>
@@ -109,7 +109,7 @@
                     </div>
                     <div class="col-10">
                         <p class="text-sm font-weight-bold text-secondary">
-                            {{ currentApplication?.application_project?.objective }}
+                            {{ currentApplication?.project?.objective }}
                         </p>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
                     </div>
                     <div class="col-10">
                         <p class="text-sm font-weight-bold text-secondary">
-                            {{ currentApplication?.application_project?.how_will_affect }}
+                            {{ currentApplication?.project?.how_will_affect }}
                         </p>
                     </div>
                 </div>
@@ -129,7 +129,7 @@
                     </div>
                     <div class="col-10">
                         <p class="text-sm font-weight-bold text-secondary">
-                            {{ currentApplication?.application_project?.expected_output }}
+                            {{ currentApplication?.project?.expected_output }}
                         </p>
                     </div>
                 </div>
