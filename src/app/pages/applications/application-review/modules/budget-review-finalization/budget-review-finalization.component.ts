@@ -1,5 +1,5 @@
 import { AppReviewOtherInfoModalComponent } from './../../../modals/app-review-other-info-modal/app-review-other-info-modal.component';
-import { Component, effect, inject } from '@angular/core';
+import { Component, Input, effect, inject } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AppReviewOrgBankAccntInfoModalComponent } from '../../../modals/app-review-org-bank-accnt-info-modal/app-review-org-bank-accnt-info-modal.component';
 import { AppReviewFiscalSponsorBankDetailModalComponent } from '../../../modals/app-review-fiscal-sponsor-bank-detail-modal/app-review-fiscal-sponsor-bank-detail-modal.component';
@@ -14,13 +14,9 @@ import { ApplicationRead } from 'src/app/interfaces/application.interface';
 export class BudgetReviewFinalizationComponent {
     bsModalRef?: BsModalRef;
     applicationReviewSignalService = inject(ApplicationReviewSignalService);
-    currentApplication: ApplicationRead | null = null;
+    @Input() currentApplication: ApplicationRead | null
 
-    constructor(private modalService: BsModalService) {
-        effect(() => {
-            this.currentApplication = this.applicationReviewSignalService.applicationReview();
-        });
-    }
+    constructor(private modalService: BsModalService) {}
 
     handleShowModal(key: 'orgBankAccntInfo' | 'fiscalSponsorBankDetail' | 'otherInfo') {
         const initialState: any = this.currentApplication;

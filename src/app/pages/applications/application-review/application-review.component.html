@@ -4,142 +4,148 @@
             <h4 class="text-dark">Application Review</h4>
         </div>
 
-        <div class="my-5">
-            <div class="d-flex justify-content-between flex-wrap">
-                <div>
-                    <h5 class="text-secondary">Proponent ID | {{ currentApplication?.partner?.partner_id }}</h5>
-                    <h3 class="text-dark">Proponent Name | {{ currentApplication?.partner?.name }}</h3>
-                </div>
-                <div>
-                    <h5 class="text-secondary">Application Number</h5>
-                    <h3 class="text-dark">{{ currentApplication?.number }}</h3>
-                </div>
+        <div class="container text-center" *ngIf="loading">
+            <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-body bg-gray-300">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-12 col-md-2">
-                                <p class="text-sm font-weight-bold text-dark">Overall Grant Status</p>
-                            </div>
-                            <div class="col-12 col-md-4">
-                                <p class="text-sm font-weight-bold text-secondary">The Grants Corporation</p>
-                            </div>
-                            <div class="col-12 col-md-2">
-                                <p class="text-sm font-weight-bold text-dark">Grant Type and Function</p>
-                            </div>
-                            <div class="col-12 col-md-4">
-                                <app-select url="types"></app-select>
-                            </div>
-                        </div>
+        <ng-container *ngIf="!loading">
+            <div class="my-5">
+                <div class="d-flex justify-content-between flex-wrap">
+                    <div>
+                        <h5 class="text-secondary">Proponent ID | {{ currentApplication?.partner?.partner_id }}</h5>
+                        <h3 class="text-dark">Proponent Name | {{ currentApplication?.partner?.name }}</h3>
                     </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-12 col-md-2">
-                                <p class="text-sm font-weight-bold text-dark">Project</p>
-                            </div>
-                            <div class="col-12 col-md-4">
-                                <p class="text-sm font-weight-bold text-secondary">
-                                    {{ currentApplication?.project?.title }}
-                                </p>
-                            </div>
-                            <div class="col-12 col-md-2">
-                                <p class="text-sm font-weight-bold text-dark">Proposed Budget</p>
-                            </div>
-                            <div class="col-12 col-md-4">
-                                <p class="text-sm font-weight-bold text-secondary m-0">
-                                    USD {{ currentApplication?.application_proposal?.budget_request_usd }}
-                                </p>
-                                <p class="text-sm font-weight-bold text-secondary m-0">
-                                    {{
-                                    getProposedBudget(
-                                    currentApplication?.application_proposal?.budget_request_other_currency,
-                                    currentApplication?.application_proposal?.budget_request_other
-                                    )
-                                    }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-12 col-md-2">
-                                <p class="text-sm font-weight-bold text-dark">Country</p>
-                            </div>
-                            <div class="col-12 col-md-4">
-                                <p class="text-sm font-weight-bold text-secondary">
-                                    {{ currentApplication?.partner?.organization?.country?.name }}
-                                </p>
-                            </div>
-                            <div class="col-12 col-md-6">
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-12 col-md-2">
-                                <p class="text-sm font-weight-bold text-dark">Objectives</p>
-                            </div>
-                            <div class="col-10">
-                                <p class="text-sm font-weight-bold text-secondary">
-                                    {{ currentApplication?.project?.objective }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr class="border border-1 border-dark" />
-                <div class="row g-0 my-3">
-                    <div class="col-2">
-                        <p class="text-sm font-weight-bold text-dark">Project Title</p>
-                    </div>
-                    <div class="col-10">
-                        <p class="text-sm font-weight-bold text-secondary">
-                            {{ currentApplication?.project?.title }}
-                        </p>
-                    </div>
-                </div>
-                <div class="row g-0 my-3">
-                    <div class="col-2">
-                        <p class="text-sm font-weight-bold text-dark">Project Objectives</p>
-                    </div>
-                    <div class="col-10">
-                        <p class="text-sm font-weight-bold text-secondary">
-                            {{ currentApplication?.project?.objective }}
-                        </p>
-                    </div>
-                </div>
-                <div class="row g-0 my-3">
-                    <div class="col-2">
-                        <p class="text-sm font-weight-bold text-dark">Project Beneficiaries</p>
-                    </div>
-                    <div class="col-10">
-                        <p class="text-sm font-weight-bold text-secondary">
-                            {{ currentApplication?.project?.how_will_affect }}
-                        </p>
-                    </div>
-                </div>
-                <div class="row g-0 my-3">
-                    <div class="col-2">
-                        <p class="text-sm font-weight-bold text-dark">Project Outcomes</p>
-                    </div>
-                    <div class="col-10">
-                        <p class="text-sm font-weight-bold text-secondary">
-                            {{ currentApplication?.project?.expected_output }}
-                        </p>
+                    <div>
+                        <h5 class="text-secondary">Application Number</h5>
+                        <h3 class="text-dark">{{ currentApplication?.number }}</h3>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <app-medium-grants></app-medium-grants>
-        <app-grants-team-review></app-grants-team-review>
-        <app-advisers-review></app-advisers-review>
-        <app-budget-review-finalization></app-budget-review-finalization>
-        <app-due-diligence-final-review></app-due-diligence-final-review>
+            <div class="card">
+                <div class="card-body bg-gray-300">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-12 col-md-2">
+                                    <p class="text-sm font-weight-bold text-dark">Overall Grant Status</p>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <p class="text-sm font-weight-bold text-secondary">The Grants Corporation</p>
+                                </div>
+                                <div class="col-12 col-md-2">
+                                    <p class="text-sm font-weight-bold text-dark">Grant Type and Function</p>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <app-select url="types"></app-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-12 col-md-2">
+                                    <p class="text-sm font-weight-bold text-dark">Project</p>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <p class="text-sm font-weight-bold text-secondary">
+                                        {{ currentApplication?.project?.title }}
+                                    </p>
+                                </div>
+                                <div class="col-12 col-md-2">
+                                    <p class="text-sm font-weight-bold text-dark">Proposed Budget</p>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <p class="text-sm font-weight-bold text-secondary m-0">
+                                        USD {{ currentApplication?.application_proposal?.budget_request_usd }}
+                                    </p>
+                                    <p class="text-sm font-weight-bold text-secondary m-0">
+                                        {{
+                                            getProposedBudget(
+                                                currentApplication?.application_proposal?.budget_request_other_currency,
+                                                currentApplication?.application_proposal?.budget_request_other
+                                            )
+                                        }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-12 col-md-2">
+                                    <p class="text-sm font-weight-bold text-dark">Country</p>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <p class="text-sm font-weight-bold text-secondary">
+                                        {{ currentApplication?.partner?.organization?.country?.name }}
+                                    </p>
+                                </div>
+                                <div class="col-12 col-md-6"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-12 col-md-2">
+                                    <p class="text-sm font-weight-bold text-dark">Objectives</p>
+                                </div>
+                                <div class="col-10">
+                                    <p class="text-sm font-weight-bold text-secondary">
+                                        {{ currentApplication?.project?.objective }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="border border-1 border-dark" />
+                    <div class="row g-0 my-3">
+                        <div class="col-2">
+                            <p class="text-sm font-weight-bold text-dark">Project Title</p>
+                        </div>
+                        <div class="col-10">
+                            <p class="text-sm font-weight-bold text-secondary">
+                                {{ currentApplication?.project?.title }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row g-0 my-3">
+                        <div class="col-2">
+                            <p class="text-sm font-weight-bold text-dark">Project Objectives</p>
+                        </div>
+                        <div class="col-10">
+                            <p class="text-sm font-weight-bold text-secondary">
+                                {{ currentApplication?.project?.objective }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row g-0 my-3">
+                        <div class="col-2">
+                            <p class="text-sm font-weight-bold text-dark">Project Beneficiaries</p>
+                        </div>
+                        <div class="col-10">
+                            <p class="text-sm font-weight-bold text-secondary">
+                                {{ currentApplication?.project?.how_will_affect }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row g-0 my-3">
+                        <div class="col-2">
+                            <p class="text-sm font-weight-bold text-dark">Project Outcomes</p>
+                        </div>
+                        <div class="col-10">
+                            <p class="text-sm font-weight-bold text-secondary">
+                                {{ currentApplication?.project?.expected_output }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <app-medium-grants [currentApplication]="currentApplication"></app-medium-grants>
+            <app-grants-team-review [currentApplication]="currentApplication"></app-grants-team-review>
+            <app-advisers-review [currentApplication]="currentApplication"></app-advisers-review>
+            <app-budget-review-finalization [currentApplication]="currentApplication"></app-budget-review-finalization>
+            <app-due-diligence-final-review [currentApplication]="currentApplication"></app-due-diligence-final-review>
+        </ng-container>
     </div>
 </main>

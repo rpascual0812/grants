@@ -1,13 +1,16 @@
-import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, effect, inject } from '@angular/core';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
+import { ApplicationRead } from 'src/app/interfaces/application.interface';
 
 @Component({
     selector: 'app-medium-grants',
     templateUrl: './medium-grants.component.html',
     styleUrls: ['./medium-grants.component.scss']
 })
-export class MediumGrantsComponent {
+export class MediumGrantsComponent implements OnInit {
+    @Input() currentApplication: ApplicationRead | null
+
     attachments: any = {
         additional_information: [],
         management_capacity: []
@@ -18,6 +21,9 @@ export class MediumGrantsComponent {
         private cdr: ChangeDetectorRef,
         private modalService: BsModalService,
     ) { }
+
+    ngOnInit() {}
+
 
     uploadFiles(type: string) {
         const initialState: ModalOptions = {
