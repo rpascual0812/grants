@@ -4,6 +4,8 @@ import { DateTime } from 'luxon';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApplicationService } from 'src/app/services/application.service';
+import { ApplicationRead } from 'src/app/interfaces/application.interface';
+
 @Component({
     selector: 'app-grants-team-review',
     templateUrl: './grants-team-review.component.html',
@@ -11,6 +13,7 @@ import { ApplicationService } from 'src/app/services/application.service';
     encapsulation: ViewEncapsulation.None
 })
 export class GrantsTeamReviewComponent implements OnInit {
+    @Input() currentApplication: ApplicationRead | null
     reviews: any = [];
     dateNow = DateTime.now().toFormat('LLLL dd, yyyy');
     user: any = {};
