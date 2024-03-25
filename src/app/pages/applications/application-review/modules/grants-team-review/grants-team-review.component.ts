@@ -14,7 +14,11 @@ import { ApplicationRead } from 'src/app/interfaces/application.interface';
 })
 export class GrantsTeamReviewComponent implements OnInit {
     @Input() currentApplication: ApplicationRead | null
-    reviews: any = [];
+    reviews: any = {
+        grants_team_review: [],
+        advisers_review: [],
+        final_review: []
+    };
     dateNow = DateTime.now().toFormat('LLLL dd, yyyy');
     user: any = {};
 
@@ -31,6 +35,12 @@ export class GrantsTeamReviewComponent implements OnInit {
     ngOnInit() {
         this.setForm();
         this.fetchUser();
+
+        if (this.currentApplication?.reviews) {
+            this.currentApplication?.reviews.forEach(review => {
+                this.reviews[review.type].push(review);
+            });
+        }
     }
 
     get f() { return this.form.controls; }
@@ -40,7 +50,8 @@ export class GrantsTeamReviewComponent implements OnInit {
             pk: [''],
             message: ['', Validators.required],
             flag: [''],
-            application_pk: ['']
+            application_pk: [''],
+            type: ['grants_team_review'],
         });
     }
 
@@ -62,12 +73,12 @@ export class GrantsTeamReviewComponent implements OnInit {
     submit() {
         this.submitted = true;
         if (!this.form.invalid) {
-            this.form.get('application_pk')?.patchValue(1);
+            this.form.get('application_pk')?.patchValue(this.currentApplication?.pk);
             this.applicationService
                 .saveReview(this.form.value)
                 .subscribe({
                     next: (data: any) => {
-                        console.log(data);
+                        this.reviews.grants_team_review.push(data.data);
                         this.toastr.success('Your review has been successfully saved', 'SUCCESS!');
                     },
                     error: (error: any) => {

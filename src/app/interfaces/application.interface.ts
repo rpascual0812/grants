@@ -147,6 +147,7 @@ export interface ApplicationRead {
     application_fiscal_sponsor?: ApplicationFiscalSponsorRead;
     application_nonprofit_equivalency_determination?: ApplicationNonprofitEquivalencyDeterminationRead;
     application_reference?: ApplicationReferenceRead[];
+    reviews?: ReviewRead[];
 }
 
 export interface ApplicationFiscalSponsorRead {
@@ -378,6 +379,16 @@ export interface StatusRead {
     description?: string;
     parent_pk?: number;
     sort?: number;
+    created_by?: number;
+    date_created?: Date;
+    archived?: boolean;
+}
+
+export interface ReviewRead {
+    pk?: number;
+    message: string;
+    flag?: string;
+    type: string;
     created_by?: number;
     date_created?: Date;
     archived?: boolean;
