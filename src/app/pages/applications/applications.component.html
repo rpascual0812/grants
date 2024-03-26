@@ -1,17 +1,19 @@
 <main class="main-content mt-0 container">
     <h4 class="text-dark">Applications</h4>
     <div class="row gap-1 align-items-end">
-        <div class="col-12 col-md-2">
+        <div class="col-12 col-md-3">
             <div class="form-group">
                 <label class="font-weight-bold text-dark">Filters</label>
                 <label class="font-weight-bold text-dark">Select Indicative Donor</label>
                 <app-select [arr]="selectiveIndicator"></app-select>
             </div>
         </div>
-        <div class="col-12 col-md-2">
+        <div class="col-12 col-md-3">
             <div class="form-group">
                 <label class="font-weight-bold text-dark">Grant Type</label>
-                <app-select [arr]="grantTypes"></app-select>
+                <app-select  [url]="'types'"
+                (onSelectEvent)="onChangeSelectedItem($event, 'type_pk')"
+                (onDeSelectEvent)="onChangeSelectedItem($event, 'type_pk')"></app-select>
             </div>
         </div>
         <div class="col-12 col-md-2">

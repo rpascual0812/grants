@@ -6,7 +6,12 @@
         </div>
         <div class="col-12 col-md-2">
             <div class="form-control">
-                <app-select [arr]="grantTypes" placeholder="Grant Type"></app-select>
+                <app-select
+                    [url]="'types'"
+                    (onSelectEvent)="onChangeSelectedItem($event, 'type_pk')"
+                    (onDeSelectEvent)="onChangeSelectedItem($event, 'type_pk')"
+                    placeholder="Grant Type"
+                ></app-select>
             </div>
         </div>
         <div class="col-12 col-md-3">
