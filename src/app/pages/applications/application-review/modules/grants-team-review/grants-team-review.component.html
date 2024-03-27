@@ -46,6 +46,12 @@
                         <p>
                             {{review.message}}
                         </p>
+
+                        <div class="row mt-3 mb-3">
+                            <div class="md-12" *ngFor="let attachment of review.documents; let i = index">
+                                <a href="javascript:;">{{attachment.original_name}}</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-white p-1">Mark as Resolved</button>
@@ -86,8 +92,14 @@
                             </div>
                         </div>
 
+                        <div class="row mt-3 mb-3">
+                            <div class="md-12" *ngFor="let attachment of attachments; let i = index">
+                                <a href="javascript:;">{{attachment.original_name}}</a>
+                            </div>
+                        </div>
+
                         <div class="action-container d-flex flex-column flex-md-row justify-content-md-between">
-                            <button class="btn btn-white">
+                            <button class="btn btn-white" type="button" (click)="uploadFiles()">
                                 <div class="d-flex flex-column text-start">
                                     <p class="p-0 m-0 text-sm text-dark font-weight-bold">Attach Documents</p>
                                     <p class="p-0 m-0 text-sm text-info font-weight-bold">
