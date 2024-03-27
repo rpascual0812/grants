@@ -11,6 +11,7 @@ type SelectItem = {
 
 type Filter = {
     organization_pk: number | null;
+    type_pk: number | null;
 };
 
 interface Partner {
@@ -37,6 +38,7 @@ export class PartnersListComponent implements OnInit {
 
     filter: Filter = {
         organization_pk: null,
+        type_pk: null,
     };
 
     constructor(private partnerService: PartnerService) { }

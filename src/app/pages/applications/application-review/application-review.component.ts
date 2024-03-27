@@ -63,8 +63,8 @@ export class ApplicationReviewComponent implements OnInit {
     }
 
     getProposedBudget(otherCurrencySymbol?: string, otherCurrencyValue?: string) {
-        const currencySymbol = otherCurrencySymbol?.split('-')
-        return `${currencySymbol?.at(0)} ${otherCurrencyValue}`
+        const currencySymbol = otherCurrencySymbol?.split('-');
+        return `${currencySymbol?.at(0)} ${otherCurrencyValue}`;
     }
 
     onChangeGrantType(item: GrantTypeItem[] | string[], key: string) {

@@ -10,6 +10,7 @@ import {
     APPLICATION_REVIEW_LIST_KEY,
     LinkGeneratorSignalService,
 } from 'src/app/services/link-generator.signal.service';
+import { ApplicationListSignalService } from 'src/app/services/application-list.signal.service';
 
 type TableObj = {
     list: TransformApplicationForList;
@@ -74,8 +75,9 @@ export class GrantApplicationComponent implements OnInit {
     >;
 
     linkGeneratorSignalService = inject(LinkGeneratorSignalService);
+    appListSignalService = inject(ApplicationListSignalService);
 
-    constructor(private applicationService: ApplicationService, private toastr: ToastrService) {}
+    constructor(private applicationService: ApplicationService, private toastr: ToastrService) { }
 
     generatorSignalEffect = effect(() => {
         const data = this.linkGeneratorSignalService.linkGeneratorData();
@@ -84,34 +86,51 @@ export class GrantApplicationComponent implements OnInit {
         }
     });
 
+    appListSignalEffect = effect(() => {
+        const filters = this.appListSignalService.filters();
+        const applyFilters = this.appListSignalService.applyFilter()
+        if (applyFilters) {
+            this.handleFetchApplication(filters ?? undefined);
+            this.appListSignalService.applyFilter.set(false)
+        }
+    }, {
+        allowSignalWrites: true,
+    });
+
     ngOnInit() {
         this.handleFetchApplication();
     }
 
-    handleFetchApplication() {
+    handleFetchApplication(filters?: { type_pk?: number }) {
         this.isLoading = true;
-        this.applicationService.fetch().subscribe({
-            next: (res: any) => {
-                const data = res?.data ?? [];
-                this.grantApplication.urgentGrants.list = transformApplicationForList(data as ApplicationRead[]);
-                this.grantApplication.grantsTeamReview.list = transformApplicationForList(data as ApplicationRead[]);
-                this.grantApplication.advisersReview.list = transformApplicationForList(data as ApplicationRead[]);
-                this.grantApplication.dueDiligence.list = transformApplicationForList(data as ApplicationRead[]);
+        this.applicationService
+            .fetch({
+                ...filters,
+            })
+            .subscribe({
+                next: (res: any) => {
+                    const data = res?.data ?? [];
+                    this.grantApplication.urgentGrants.list = transformApplicationForList(data as ApplicationRead[]);
+                    this.grantApplication.grantsTeamReview.list = transformApplicationForList(
+                        data as ApplicationRead[]
+                    );
+                    this.grantApplication.advisersReview.list = transformApplicationForList(data as ApplicationRead[]);
+                    this.grantApplication.dueDiligence.list = transformApplicationForList(data as ApplicationRead[]);
 
-                this.grantApplication.budgetReviewAndFinalization.list = transformApplicationForList(
-                    data as ApplicationRead[]
-                );
-                this.grantApplication.financialManagementCapacity.list = transformApplicationForList(
-                    data as ApplicationRead[]
-                );
-                this.isLoading = false;
-                this.linkGeneratorSignalService.linkGeneratorData.set(null);
-            },
-            error: (err) => {
-                this.isLoading = false;
-                this.linkGeneratorSignalService.linkGeneratorData.set(null);
-            },
-        });
+                    this.grantApplication.budgetReviewAndFinalization.list = transformApplicationForList(
+                        data as ApplicationRead[]
+                    );
+                    this.grantApplication.financialManagementCapacity.list = transformApplicationForList(
+                        data as ApplicationRead[]
+                    );
+                    this.isLoading = false;
+                    this.linkGeneratorSignalService.linkGeneratorData.set(null);
+                },
+                error: (err) => {
+                    this.isLoading = false;
+                    this.linkGeneratorSignalService.linkGeneratorData.set(null);
+                },
+            });
     }
 
     onSort({ column, direction }: SortEvent<TransformApplicationForList[0]>, key: keyof GrantApplicationTableObj) {
@@ -185,10 +204,9 @@ export class GrantApplicationComponent implements OnInit {
         );
     }
 
-    
     onTableSizeChange(event: any, key: keyof typeof this.grantApplication) {
-        this.grantApplication[key].tableSize = event.target.value
-        this.grantApplication[key].page = 1
-        this.handleFetchApplication()
+        this.grantApplication[key].tableSize = event.target.value;
+        this.grantApplication[key].page = 1;
+        this.handleFetchApplication();
     }
 }
