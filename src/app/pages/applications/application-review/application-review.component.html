@@ -39,7 +39,10 @@
                                     <p class="text-sm font-weight-bold text-dark">Grant Type and Function</p>
                                 </div>
                                 <div class="col-12 col-md-4">
-                                    <app-select url="types"></app-select>
+                                    <app-select url="types"
+                                        [defaultSelectedItemKey]="currentApplication?.project?.type_pk"
+                                        (onSelectEvent)="onChangeGrantType($event, 'grant_type_pk')"
+                                        (onDeSelectEvent)="onChangeGrantType($event, 'grant_type_pk')"></app-select>
                                 </div>
                             </div>
                         </div>
@@ -62,10 +65,10 @@
                                     </p>
                                     <p class="text-sm font-weight-bold text-secondary m-0">
                                         {{
-                                            getProposedBudget(
-                                                currentApplication?.application_proposal?.budget_request_other_currency,
-                                                currentApplication?.application_proposal?.budget_request_other
-                                            )
+                                        getProposedBudget(
+                                        currentApplication?.application_proposal?.budget_request_other_currency,
+                                        currentApplication?.application_proposal?.budget_request_other
+                                        )
                                         }}
                                     </p>
                                 </div>

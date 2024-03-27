@@ -1,10 +1,12 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { DateTime } from 'luxon';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationRead } from 'src/app/interfaces/application.interface';
+import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 
 @Component({
     selector: 'app-grants-team-review',
@@ -25,11 +27,16 @@ export class GrantsTeamReviewComponent implements OnInit {
     submitted: boolean = false;
     form: FormGroup;
 
+    attachments: any = [];
+
     constructor(
+        public documentUploaderRef: BsModalRef,
+        private modalService: BsModalService,
         private formBuilder: FormBuilder,
         private userService: UserService,
         private applicationService: ApplicationService,
         private toastr: ToastrService,
+        private cdr: ChangeDetectorRef,
     ) { }
 
     ngOnInit() {
@@ -52,6 +59,7 @@ export class GrantsTeamReviewComponent implements OnInit {
             flag: [''],
             application_pk: [''],
             type: ['grants_team_review'],
+            documents: ['']
         });
     }
 
@@ -79,6 +87,7 @@ export class GrantsTeamReviewComponent implements OnInit {
                 .subscribe({
                     next: (data: any) => {
                         this.reviews.grants_team_review.push(data.data);
+                        this.clear();
                         this.toastr.success('Your review has been successfully saved', 'SUCCESS!');
                     },
                     error: (error: any) => {
@@ -94,4 +103,21 @@ export class GrantsTeamReviewComponent implements OnInit {
         }
     }
 
+    clear() {
+        this.attachments = [];
+        this.form.reset();
+    }
+
+    uploadFiles() {
+        const initialState: ModalOptions = {
+            class: 'modal-lg'
+        };
+        this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
+
+        this.documentUploaderRef.content.document.subscribe((res: any) => {
+            this.attachments.push(res.file);
+            this.form.get('documents')?.patchValue(this.attachments);
+            this.cdr.detectChanges();
+        });
+    }
 }

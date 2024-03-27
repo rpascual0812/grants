@@ -1,27 +1,38 @@
 import { ApplicationReviewSignalService } from './../../../services/appliaction-review.signal.service';
 import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationRead } from 'src/app/interfaces/application.interface';
 import { Country } from 'src/app/interfaces/country.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { GlobalService } from 'src/app/services/global.service';
+import * as _ from '../../../utilities/globals';
 
+type GrantTypeItem = {
+    pk?: number;
+    name: string;
+    description?: string
+};
 @Component({
     selector: 'app-application-review',
     templateUrl: './application-review.component.html',
     styleUrls: ['./application-review.component.scss'],
 })
 export class ApplicationReviewComponent implements OnInit {
-    loading = false;
+    submitted: boolean = false;
+    loading: boolean = false;
     applicationNumber: string = '';
     currentApplication: ApplicationRead | null = null;
     countryList: Country[] = [];
+
+    form: FormGroup;
 
     applicationReviewSignalService = inject(ApplicationReviewSignalService);
     constructor(
         private route: ActivatedRoute,
         private applicationService: ApplicationService,
-        private globalService: GlobalService
+        private globalService: GlobalService,
+        private formBuilder: FormBuilder,
     ) {
         this.applicationNumber = this.route.snapshot.paramMap.get('number') ?? '';
     }
@@ -29,6 +40,8 @@ export class ApplicationReviewComponent implements OnInit {
     ngOnInit() {
         this.fetch();
     }
+
+    get f() { return this.form.controls; }
 
     fetch() {
         this.loading = true;
@@ -52,5 +65,30 @@ export class ApplicationReviewComponent implements OnInit {
     getProposedBudget(otherCurrencySymbol?: string, otherCurrencyValue?: string) {
         const currencySymbol = otherCurrencySymbol?.split('-')
         return `${currencySymbol?.at(0)} ${otherCurrencyValue}`
+    }
+
+    onChangeGrantType(item: GrantTypeItem[] | string[], key: string) {
+        this.loading = true;
+
+        const extractedItem = item?.at(0);
+        const pk = (extractedItem as GrantTypeItem)?.['pk' ?? ''] ?? '';
+        const data = {
+            application_pk: this.currentApplication?.pk,
+            project: {
+                type_pk: pk
+            }
+        }
+        console.log(data);
+        this.applicationService.store(data).subscribe({
+            next: (res: any) => {
+                console.log(res);
+                this.loading = false;
+            },
+            error: (err: any) => {
+                console.log(err);
+                this.loading = false;
+            },
+        });
+
     }
 }

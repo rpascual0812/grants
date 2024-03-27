@@ -229,6 +229,7 @@ export interface ProjectRead {
     objective?: string;
     expected_output?: string;
     how_will_affect?: string;
+    type_pk?: number;
     date_created?: Date;
     project_location?: ApplicationProjectLocationRead[];
 }
