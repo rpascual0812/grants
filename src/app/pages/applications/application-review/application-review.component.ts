@@ -2,6 +2,7 @@ import { ApplicationReviewSignalService } from './../../../services/appliaction-
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { ApplicationRead } from 'src/app/interfaces/application.interface';
 import { Country } from 'src/app/interfaces/country.interface';
 import { ApplicationService } from 'src/app/services/application.service';
@@ -30,6 +31,7 @@ export class ApplicationReviewComponent implements OnInit {
     applicationReviewSignalService = inject(ApplicationReviewSignalService);
     constructor(
         private route: ActivatedRoute,
+        private toastr: ToastrService,
         private applicationService: ApplicationService,
         private globalService: GlobalService,
         private formBuilder: FormBuilder,
@@ -68,8 +70,6 @@ export class ApplicationReviewComponent implements OnInit {
     }
 
     onChangeGrantType(item: GrantTypeItem[] | string[], key: string) {
-        this.loading = true;
-
         const extractedItem = item?.at(0);
         const pk = (extractedItem as GrantTypeItem)?.['pk' ?? ''] ?? '';
         const data = {
@@ -78,15 +78,13 @@ export class ApplicationReviewComponent implements OnInit {
                 type_pk: pk
             }
         }
-        console.log(data);
+
         this.applicationService.store(data).subscribe({
             next: (res: any) => {
-                console.log(res);
-                this.loading = false;
+                this.toastr.success('The Grant Type has been successfully saved', 'SUCCESS!');
             },
             error: (err: any) => {
                 console.log(err);
-                this.loading = false;
             },
         });
 

@@ -148,6 +148,7 @@ export interface ApplicationRead {
     application_nonprofit_equivalency_determination?: ApplicationNonprofitEquivalencyDeterminationRead;
     application_reference?: ApplicationReferenceRead[];
     reviews?: ReviewRead[];
+    documents?: DocumentRead[];
 }
 
 export interface ApplicationFiscalSponsorRead {
@@ -392,5 +393,16 @@ export interface ReviewRead {
     type: string;
     created_by?: number;
     date_created?: Date;
+    archived?: boolean;
+}
+
+export interface DocumentRead {
+    pk?: number;
+    filename: string;
+    original_name: string;
+    path: string;
+    size: string;
+    mime_type: string;
+    type: string;
     archived?: boolean;
 }

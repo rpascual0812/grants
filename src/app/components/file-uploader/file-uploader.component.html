@@ -7,7 +7,8 @@
 <div class="modal-body">
     <div class="container">
         <div class="mb-3">
-            <input class="form-control" type="file" id="formFile" (change)="selectFiles($event)" multiple>
+            <input class="form-control" style="border: solid 1px #CCC !important;" type="file" id="formFile"
+                (change)="selectFiles($event)" multiple>
         </div>
 
         <div class="col-md-12 mt-3" *ngIf="this.selectedFiles.length > 0">
