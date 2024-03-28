@@ -17,9 +17,7 @@ import { FileUploaderComponent } from 'src/app/components/file-uploader/file-upl
 export class GrantsTeamReviewComponent implements OnInit {
     @Input() currentApplication: ApplicationRead | null
     reviews: any = {
-        grants_team_review: [],
-        advisers_review: [],
-        final_review: []
+        grants_team_review: []
     };
     dateNow = DateTime.now().toFormat('LLLL dd, yyyy');
     user: any = {};
@@ -45,7 +43,9 @@ export class GrantsTeamReviewComponent implements OnInit {
 
         if (this.currentApplication?.reviews) {
             this.currentApplication?.reviews.forEach(review => {
-                this.reviews[review.type].push(review);
+                if (this.reviews[review.type]) {
+                    this.reviews[review.type].push(review);
+                }
             });
         }
     }
@@ -86,6 +86,7 @@ export class GrantsTeamReviewComponent implements OnInit {
                 .saveReview(this.form.value)
                 .subscribe({
                     next: (data: any) => {
+                        data.data.user = this.user;
                         this.reviews.grants_team_review.push(data.data);
                         this.clear();
                         this.toastr.success('Your review has been successfully saved', 'SUCCESS!');
@@ -106,6 +107,7 @@ export class GrantsTeamReviewComponent implements OnInit {
     clear() {
         this.attachments = [];
         this.form.reset();
+        this.form.get('type')?.patchValue('grants_team_review');
     }
 
     uploadFiles() {

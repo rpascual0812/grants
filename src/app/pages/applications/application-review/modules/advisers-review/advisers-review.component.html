@@ -19,65 +19,114 @@
         </div>
     </div>
 
+    <div class="card my-3" *ngFor="let review of reviews.advisers_review; let i = index">
+        <div class="card-header p-3" style="background-color: #034241">
+            <div class="d-flex flex-column flex-md-row text-white justify-content-between align-items-md-center">
+                <p class="m-0">{{ review.date_created | date : 'dd-MMM-YYYY' }} - {{ review.user.first_name }}
+                    {{ review.user.last_name
+                    }}</p>
+                <div class="d-flex flex-column flex-md-row gap-1 align-items-md-center">
+                    <p class="m-0" *ngIf="review.flag == 'needs_resolution'">
+                        Flag: Needs resolution
+                        <span class="badge text-bg-danger text-white">Not Yet Started</span>
+                    </p>
+
+                    <p class="m-0" *ngIf="review.flag == 'grantee'">
+                        Flag: Grantee
+                        <span class="badge text-bg-success text-white">Marked as Resolved</span>
+                    </p>
+                    <button class="btn btn-icon-only btn-danger rounded-circle">
+                        <i class="material-icons text-xl">delete</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="content">
+                <p>
+                    {{review.message}}
+                </p>
+
+                <div class="row mt-3 mb-3">
+                    <div class="md-12" *ngFor="let attachment of review.documents; let i = index">
+                        <a href="javascript:;">{{attachment.original_name}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-white p-1">Mark as Resolved</button>
+            </div>
+        </div>
+    </div>
+
     <div class="card">
         <div class="card-body bg-gray-300">
             <div class="card my-3">
                 <div class="card-header p-3" style="background-color: #034241">
                     <div class="d-flex flex-column flex-md-row text-white gap-1">
-                        <p class="m-0">July 5, 2023 -</p>
-                        <input class="form-control border-bottom text-sm p-0 m-0 w-20 h-10 text-white" type="text" />
+                        <p class="m-0">{{dateNow | date : 'dd-MMM-YYYY'}} - {{user.first_name}} {{user.last_name}}</p>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="content my-2">
-                        <textarea
-                            type="text"
-                            rows="4"
-                            class="form-control border rounded-1 p-2 bg-gray-300"
-                            required
-                        ></textarea>
-                    </div>
-
-                    <div class="action-container d-flex flex-column flex-md-row justify-content-md-between">
-                        <button class="btn btn-white">
-                            <div class="d-flex flex-column text-start">
-                                <p class="p-0 m-0 text-sm text-dark font-weight-bold">Attach Documents</p>
-                                <p class="p-0 m-0 text-sm text-info font-weight-bold">
-                                    <span class="icon icon-sm">
-                                        <i class="material-icons">add</i>
-                                    </span>
-                                    Attach File
-                                </p>
+                    <form [formGroup]="form" class="text-start" (ngSubmit)="submit()">
+                        <div class="content my-2">
+                            <textarea type="text" rows="4" class="form-control border rounded-1 p-2 bg-gray-300"
+                                formControlName="message" [ngClass]="{ 'is-invalid': submitted && f['message'].errors }"
+                                required></textarea>
+                            <div *ngIf="submitted && f['message'].errors" class="invalid-feedback">
+                                <div *ngIf="f['message'].errors['required']">Review is required</div>
                             </div>
-                        </button>
-
-                        <div class="d-flex flex-column flex-md-row flex-wrap gap-lg-2">
-                            <div class="form-check m-0 p-1">
-                                <input class="form-check-input" type="checkbox" />
-                                <label class="form-check-label text-dark font-weight-bold">Flag</label>
-                            </div>
-                            <div class="form-check m-0 p-1">
-                                <input class="form-check-input" type="checkbox" />
-                                <label class="form-check-label text-dark font-weight-bold">Needs Resolution</label>
-                            </div>
-                            <div class="form-check m-0 p-1">
-                                <input class="form-check-input" type="checkbox" />
-                                <label class="form-check-label text-dark font-weight-bold">Grantee</label>
-                            </div>
-                            <button class="btn btn-dark p-1" style="min-width: 150px; max-height: 30px">Save</button>
                         </div>
-                    </div>
+
+                        <div class="row mt-3 mb-3">
+                            <div class="md-12" *ngFor="let attachment of attachments; let i = index">
+                                <a href="javascript:;">{{attachment.original_name}}</a>
+                            </div>
+                        </div>
+
+                        <div class="action-container d-flex flex-column flex-md-row justify-content-md-between">
+                            <button class="btn btn-white" type="button" (click)="uploadFiles()">
+                                <div class="d-flex flex-column text-start">
+                                    <p class="p-0 m-0 text-sm text-dark font-weight-bold">Attach Documents</p>
+                                    <p class="p-0 m-0 text-sm text-info font-weight-bold">
+                                        <span class="icon icon-sm">
+                                            <i class="material-icons">add</i>
+                                        </span>
+                                        Attach File
+                                    </p>
+                                </div>
+                            </button>
+
+                            <div class="d-flex flex-column flex-md-row flex-wrap gap-lg-2">
+                                <div class="form-check m-0 p-1">
+                                    <label class="form-check-label text-dark font-weight-bold">Flag:</label>
+                                </div>
+                                <div class="form-check m-0 p-1">
+                                    <input id="advisers_review-needs-resolution" class="form-check-input" type="radio"
+                                        name="flag" formControlName="flag" value="needs_resolution" />
+                                    <label class="form-check-label text-dark font-weight-bold"
+                                        for="advisers_review-needs-resolution">Needs
+                                        Resolution</label>
+                                </div>
+                                <div class="form-check m-0 p-1">
+                                    <input id="advisers_review-grantee" class="form-check-input" type="radio"
+                                        name="flag" formControlName="flag" value="grantee" />
+                                    <label class="form-check-label text-dark font-weight-bold"
+                                        for="advisers_review-grantee">Grantee</label>
+                                </div>
+                                <button class="btn btn-dark p-1" style="min-width: 150px; max-height: 30px"
+                                    [disabled]="submitted">Save</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="d-flex justify-content-end">
                 <div>
                     <h4 class="text-dark">Recommendation</h4>
-                    <ng-select
-                        style="--border-color: #034241"
-                        class="custom-recommendation-select"
+                    <ng-select style="--border-color: #034241" class="custom-recommendation-select"
                         [items]="['Approved for Next Stage', 'Rejected', 'Cancelled']"
-                        [placeholder]="'Choose your recommendation'"
-                    >
+                        [placeholder]="'Choose your recommendation'">
                     </ng-select>
                 </div>
             </div>

@@ -59,4 +59,8 @@ export class ApplicationService {
     saveReview(data: any) {
         return this.http.post(`${_.BASE_URL}/application/review`, data);
     }
+
+    saveMediumGrantsAttachment(data: any) {
+        return this.http.post(`${_.BASE_URL}/application/attachment`, data);
+    }
 }
