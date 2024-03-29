@@ -63,4 +63,12 @@ export class ApplicationService {
     saveMediumGrantsAttachment(data: any) {
         return this.http.post(`${_.BASE_URL}/application/attachment`, data);
     }
+
+    destroyReview(pk: number) {
+        return this.http.delete(`${_.BASE_URL}/application/review/${pk}`);
+    }
+
+    updateRecommendation(data: any) {
+        return this.http.post(`${_.BASE_URL}/application/recommendation`, data);
+    }
 }

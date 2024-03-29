@@ -37,7 +37,7 @@
                                 Flag: Grantee
                                 <span class="badge text-bg-success text-white">Marked as Resolved</span>
                             </p>
-                            <button class="btn btn-icon-only btn-danger rounded-circle">
+                            <button class="btn btn-icon-only btn-danger rounded-circle" (click)="delete(i)">
                                 <i class="material-icons text-xl">delete</i>
                             </button>
                         </div>
@@ -141,7 +141,8 @@
                     <h4 class="text-dark">Recommendation</h4>
                     <ng-select style="--border-color: #f98f38" class="custom-recommendation-select"
                         [items]="['Approved for Next Stage', 'Rejected', 'Cancelled']"
-                        [placeholder]="'Choose your recommendation'">
+                        [placeholder]="'Choose your recommendation'" (change)="recommendationOnChange($event)"
+                        [(ngModel)]="recommendation">
                     </ng-select>
                 </div>
             </div>
