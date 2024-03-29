@@ -51,7 +51,7 @@ export class ApplicationProjInfoComponent implements OnInit {
     }
 
     get formProjLocations() {
-        return <FormArray>this.form.get('project_locations');
+        return <FormArray>this.form.get('project_location');
     }
 
     ngOnInit() {
@@ -180,7 +180,7 @@ export class ApplicationProjInfoComponent implements OnInit {
     }
 
     initialProjLocations(currentProjLoc: ApplicationProjectLocationRead[]) {
-        this.projectLoc = this.form.get('project_locations') as FormArray;
+        this.projectLoc = this.form.get('project_location') as FormArray;
         currentProjLoc.forEach((proj) => {
             this.projectLoc.push(
                 this.createFormProjLocations(proj.country_pk, proj.province_code, this.provinceUrlFetchStatus.ready)
@@ -205,7 +205,7 @@ export class ApplicationProjInfoComponent implements OnInit {
     }
 
     onAddProjLoc() {
-        this.projectLoc = this.form.get('project_locations') as FormArray;
+        this.projectLoc = this.form.get('project_location') as FormArray;
         this.projectLoc.push(this.createFormProjLocations());
     }
 

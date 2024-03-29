@@ -9,7 +9,7 @@
                         </p>
 
                         <div
-                            formArrayName="references"
+                            formArrayName="application_reference"
                             *ngFor="let item of formContactReferences.controls; index as i"
                             [attr.data-index]="i"
                             class="row"
@@ -22,7 +22,19 @@
                                             formControlName="name"
                                             type="text"
                                             class="form-control border rounded-1 p-1"
+                                            [ngClass]="{
+                                                'is-invalid':
+                                                    submitted && formContactReferences.at(i).get('name')?.errors
+                                            }"
                                         />
+                                        <div *ngIf="submitted && formContactReferences.at(i).get('name')?.errors">
+                                            <div
+                                                *ngIf="formContactReferences.at(i).get('name')?.errors?.['required']"
+                                                class="text-sm text-danger"
+                                            >
+                                                Person Name is required
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-3">
@@ -32,7 +44,24 @@
                                             formControlName="contact_number"
                                             type="tel"
                                             class="form-control border rounded-1 p-1"
+                                            [ngClass]="{
+                                                'is-invalid':
+                                                    submitted &&
+                                                    formContactReferences.at(i).get('contact_number')?.errors
+                                            }"
                                         />
+                                        <div
+                                            *ngIf="
+                                                submitted && formContactReferences.at(i).get('contact_number')?.errors
+                                            "
+                                        >
+                                            <div
+                                                *ngIf="formContactReferences.at(i).get('contact_number')?.errors?.['required']"
+                                                class="text-sm text-danger"
+                                            >
+                                                Contact Number is required
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-3">
@@ -59,6 +88,13 @@
                                             >
                                                 Invalid email
                                             </div>
+
+                                            <div
+                                                *ngIf="formContactReferences.at(i).get('email_address')?.errors?.['required']"
+                                                class="text-sm text-danger"
+                                            >
+                                                Email is required
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -69,7 +105,25 @@
                                             formControlName="organization_name"
                                             type="text"
                                             class="form-control border rounded-1 p-1"
+                                            [ngClass]="{
+                                                'is-invalid':
+                                                    submitted &&
+                                                    formContactReferences.at(i).get('organization_name')?.errors
+                                            }"
                                         />
+                                        <div
+                                            *ngIf="
+                                                submitted &&
+                                                formContactReferences.at(i).get('organization_name')?.errors
+                                            "
+                                        >
+                                            <div
+                                                *ngIf="formContactReferences.at(i).get('organization_name')?.errors?.['required']"
+                                                class="text-sm text-danger"
+                                            >
+                                                Organization Name is required
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </ng-container>

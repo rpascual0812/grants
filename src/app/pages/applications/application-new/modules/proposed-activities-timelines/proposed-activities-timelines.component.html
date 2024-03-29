@@ -17,7 +17,7 @@
                             </div>
 
                             <div
-                                formArrayName="activities"
+                                formArrayName="application_proposal_activity"
                                 *ngFor="let item of formActivities.controls; index as i"
                                 [attr.data-index]="i"
                                 class="row my-2 align-items-center"
@@ -80,8 +80,8 @@
                                 <i class="material-icons">add</i>
                             </button>
 
-                            <div *ngIf="submitted && f['activities'].errors" class="my-2">
-                                <div *ngIf="f['activities'].errors['required']" class="text-sm text-danger">
+                            <div *ngIf="submitted && f['application_proposal_activity'].errors" class="my-2">
+                                <div *ngIf="f['application_proposal_activity'].errors['required']" class="text-sm text-danger">
                                     Activities are required
                                 </div>
                             </div>

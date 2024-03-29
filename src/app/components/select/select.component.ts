@@ -1,6 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { GlobalService } from '../../services/global.service';
+
+export interface ChangeFieldEventEmitter {
+    selectedItems?: any[];
+    arr?: any[];
+    key?: string;
+}
 
 @Component({
     selector: 'app-select',
@@ -8,6 +14,7 @@ import { GlobalService } from '../../services/global.service';
     styleUrls: ['./select.component.scss'],
 })
 export class SelectComponent {
+    @Input() key: string = '';
     @Input() url: string = '';
     @Input() listItemKey: string = 'pk';
     @Input() listItemValue: string = 'name';
@@ -20,7 +27,7 @@ export class SelectComponent {
     @Input() indexZero: any = {};
     @Input() defaultSelectedItemKey?: any; // default selected with pk in list and url is indicated
     @Input() defaultSelectedInArr?: any; // default selected without pk in list and url is NOT indicated
-    @Input() changeFieldEventEmitter?: EventEmitter<any>;
+    @Input() changeFieldEventEmitter?: EventEmitter<ChangeFieldEventEmitter>;
 
     @Output() onSelectEvent = new EventEmitter<string | string[] | any>();
     @Output() onDeSelectEvent = new EventEmitter<any>();
@@ -30,7 +37,7 @@ export class SelectComponent {
     selectedItems: any = [];
     dropdownSettings = {};
 
-    constructor(private globalService: GlobalService) { }
+    constructor(private globalService: GlobalService, private cdRef: ChangeDetectorRef) {}
 
     ngOnInit() {
         this.subscribeToChangeFieldEmitter();
@@ -60,8 +67,7 @@ export class SelectComponent {
     onItemSelect(item: any) {
         if (this.multiple) {
             this.selectedItems.push(item);
-        }
-        else {
+        } else {
             this.selectedItems = [item];
         }
         this.onSelectEvent.emit(this.selectedItems);
@@ -109,10 +115,20 @@ export class SelectComponent {
         }
     }
 
-    subscribeToChangeFieldEmitter(): void {
+    subscribeToChangeFieldEmitter() {
         this.changeFieldEventEmitter &&
-            this.changeFieldEventEmitter.subscribe((data: any) => {
-                this.selectedItems = data;
+            this.changeFieldEventEmitter.subscribe((data: ChangeFieldEventEmitter) => {
+                let tmpKey = data?.key ?? '';
+                if (tmpKey === this.key) {
+                    if (data?.selectedItems) {
+                        this.selectedItems = data.selectedItems;
+                    }
+
+                    if (data?.arr) {
+                        this.arr = data.arr;
+                        this.dropdownList = this.arr;
+                    }
+                }
             });
     }
 

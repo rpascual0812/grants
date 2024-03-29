@@ -208,8 +208,12 @@ export class OrganizationProfileComponent implements OnInit {
         this.form.reset();
         this.onChangeSelectedItem([], 'organization_pk');
         this.onChangeSelectedItem([], 'country_pk');
-        this.selectChangeFieldEventEmitter.organization_pk.emit([]);
-        this.selectChangeFieldEventEmitter.country_pk.emit([]);
+        this.selectChangeFieldEventEmitter.organization_pk.emit({
+            selectedItems: [],
+        });
+        this.selectChangeFieldEventEmitter.country_pk.emit({
+            selectedItems: [],
+        });
     }
 
     processForm(isNavigateNext?: boolean) {

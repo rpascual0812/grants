@@ -35,15 +35,15 @@ export class ApplicationNewComponent implements OnInit {
     });
 
     ngOnInit() {
-        this.fetch()
+        this.fetch();
     }
 
     async fetch() {
         this.applicationService.generated(this.uuid).subscribe({
             next: (res: any) => {
-                const data = res?.data
-                this.applicationSignalService.appForm.set(data)
-                this.applicationSignalService.loadingInitialAppForm.set(false)
+                const data = res?.data;
+                this.applicationSignalService.appForm.set(data);
+                this.applicationSignalService.loadingInitialAppForm.set(false);
             },
             error: (err) => {
                 const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
@@ -52,48 +52,13 @@ export class ApplicationNewComponent implements OnInit {
                     `An error occurred while saving grant application. ${statusCode} ${errorMessage} Please try again.`,
                     'ERROR!'
                 );
-                this.applicationSignalService.loadingInitialAppForm.set(false)
-            }
-        })
+                this.applicationSignalService.loadingInitialAppForm.set(false);
+            },
+        });
     }
 
     async handleSave() {
-        this.loading = true;
-        const payload = this.applicationSignalService.application();
-        this.applicationService
-            .store({
-                uuid: this.uuid,
-                ...payload,
-            })
-            .subscribe({
-                next: (res: any) => {
-                    this.loading = false;
-                    const data = res?.data;
-                    const status = res?.status;
-                    const code = res?.code ? `code: ${res?.code}` : '';
-                    if (!status) {
-                        this.toastr.error(
-                            `An error occurred while saving grant application. Please try again. ${code}`,
-                            'ERROR!'
-                        );
-                    } else {
-                        this.toastr.success('The application has been successfully created', 'SUCCESS!');
-                        this.router.navigate(['public', 'application', data?.application?.pk, 'success']);
-                    }
-                    this.applicationSignalService.submitSave.set(false);
-                },
-                error: (err: any) => {
-                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
-                    const statusCode = err?.status ? `status: ${err?.status}` : '';
-                    this.toastr.error(
-                        `An error occurred while saving grant application. ${statusCode} ${errorMessage} Please try again.`,
-                        'ERROR!'
-                    );
-                    setTimeout(() => {
-                        this.loading = false;
-                        this.applicationSignalService.submitSave.set(false);
-                    }, 500);
-                },
-            });
+        const currentApplication = this.applicationSignalService.appForm();
+        this.router.navigate(['public', 'application', currentApplication?.pk, 'success']);
     }
 }
