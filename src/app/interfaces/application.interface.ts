@@ -149,6 +149,7 @@ export interface ApplicationRead {
     application_reference?: ApplicationReferenceRead[];
     reviews?: ReviewRead[];
     documents?: DocumentRead[];
+    recommendations?: RecommendationRead[];
 }
 
 export interface ApplicationFiscalSponsorRead {
@@ -404,5 +405,14 @@ export interface DocumentRead {
     size: string;
     mime_type: string;
     type: string;
+    archived?: boolean;
+}
+
+export interface RecommendationRead {
+    pk?: number;
+    application_pk: number;
+    recommendation: string;
+    type: string;
+    created_by?: number;
     archived?: boolean;
 }

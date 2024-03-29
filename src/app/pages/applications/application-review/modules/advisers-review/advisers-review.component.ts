@@ -7,6 +7,8 @@ import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationRead } from 'src/app/interfaces/application.interface';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import * as _ from '../../../../../utilities/globals';
 
 @Component({
     selector: 'app-advisers-review',
@@ -25,6 +27,7 @@ export class AdvisersReviewComponent implements OnInit {
     form: FormGroup;
 
     attachments: any = [];
+    recommendation: any = '';
 
     constructor(
         public documentUploaderRef: BsModalRef,
@@ -44,6 +47,14 @@ export class AdvisersReviewComponent implements OnInit {
             this.currentApplication?.reviews.forEach(review => {
                 if (this.reviews[review.type]) {
                     this.reviews[review.type].push(review);
+                }
+            });
+        }
+
+        if (this.currentApplication?.recommendations) {
+            this.currentApplication?.recommendations.forEach(recommendation => {
+                if (recommendation.type == 'advisers_review') {
+                    this.recommendation = recommendation.recommendation;
                 }
             });
         }
@@ -119,6 +130,55 @@ export class AdvisersReviewComponent implements OnInit {
             this.attachments.push(res.file);
             this.form.get('documents')?.patchValue(this.attachments);
             this.cdr.detectChanges();
+        });
+    }
+
+    delete(i: number) {
+        const review = this.reviews.advisers_review[i];
+        _.confirmMessage(
+            {
+                title: '<strong>Are you sure you want to delete this application?</strong>',
+                icon: 'question',
+                buttons: {
+                    showClose: true,
+                    showCancel: true,
+                    focusConfirm: false,
+                },
+                confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
+            },
+            () => {
+                this.applicationService.destroyReview(review.pk).subscribe({
+                    next: (data: any) => {
+                        this.reviews.advisers_review.splice(i, 1);
+                    },
+                    error: (err: HttpErrorResponse) => {
+                        const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                        const statusCode = err?.status ? `status: ${err?.status}` : '';
+                        this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
+                    },
+                });
+            }
+        );
+    }
+
+    recommendationOnChange(ev: any) {
+        console.log(ev);
+        const recommendation = {
+            application_pk: this.currentApplication?.pk,
+            recommendation: ev,
+            type: 'advisers_review'
+        }
+
+        this.applicationService.updateRecommendation(recommendation).subscribe({
+            next: (data: any) => {
+                this.toastr.success(`Your recommendation has been successfully saved.`);
+            },
+            error: (err: HttpErrorResponse) => {
+                const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                const statusCode = err?.status ? `status: ${err?.status}` : '';
+                this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
+            },
         });
     }
 
