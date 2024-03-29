@@ -1,10 +1,12 @@
 import { Component, EventEmitter, OnInit, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import { PROVINCE_URL_FETCH_STATUS } from '../../../../../utilities/constants';
 import { DocumentService } from 'src/app/services/document.service';
+import { GlobalService } from 'src/app/services/global.service';
+import { ChangeFieldEventEmitter, SelectComponent } from 'src/app/components/select/select.component';
+import { ApplicationService } from 'src/app/services/application.service';
 
 type SelectItem = {
     pk?: number;
@@ -12,40 +14,21 @@ type SelectItem = {
     name: string;
 };
 
-const beneficiaryFactory = (type: string) => {
-    if (type === 'women') {
-        return [
-            { type: 'women', name: 'Women', count: 150 },
-            { type: 'women', name: 'Diffable Women', count: 150 },
-            { type: 'women', name: 'Other Vulnerable Sector', count: 150 },
-        ];
-    }
+type ProvinceOpt = {
+    country_pk?: number;
+    province_code?: number;
+    name?: string;
+};
 
-    if (type === 'young_women') {
-        return [
-            { type: 'young_women', name: 'Young Women', count: 150 },
-            { type: 'young_women', name: 'Diffable Women', count: 150 },
-            { type: 'young_women', name: 'Other Vulnerable Sector', count: 150 },
-        ];
+const BENEFICIARY_TYPE = ['women', 'men', 'young_women', 'young_men'];
+const BENEFICIARY_NAME = (type: string) => {
+    const mainName = type?.split('_').join(' ');
+    const tempName = type?.split('_');
+    let diffName = type?.split('_')?.at(0);
+    if (tempName.length > 1) {
+        diffName = type?.split('_')?.at(1);
     }
-
-    if (type === 'men') {
-        return [
-            { type: 'men', name: 'Men', count: 150 },
-            { type: 'men', name: 'Diffable Men', count: 150 },
-            { type: 'men', name: 'Other Vulnerable Sector', count: 150 },
-        ];
-    }
-
-    if (type === 'young_men') {
-        return [
-            { type: 'young_men', name: 'Young Men', count: 150 },
-            { type: 'young_men', name: 'Diffable Men', count: 150 },
-            { type: 'young_men', name: 'Other Vulnerable Sector', count: 150 },
-        ];
-    }
-
-    return [];
+    return [mainName, `diffable ${diffName}`, 'other vulnerable sector'];
 };
 
 @Component({
@@ -55,26 +38,30 @@ const beneficiaryFactory = (type: string) => {
 })
 export class ProjectInformationComponent implements OnInit {
     form: FormGroup;
-    provinceUrlFetchStatus = PROVINCE_URL_FETCH_STATUS;
     submitted = false;
     durationOpts: string[] = [];
+
+    provinceOpts: ProvinceOpt[] = [];
+    loadingProvinceOpts = true;
     projectLoc: FormArray;
-    beneficiaryWomen: FormArray;
-    beneficiaryMen: FormArray;
-    beneficiaryYoungWomen: FormArray;
-    beneficiaryYoungMen: FormArray;
+    projBeneficiary: FormArray;
+
     applicationSignalService = inject(ApplicationSignalService);
-    selectChangeFieldEventEmitter = new EventEmitter<any>();
+    durationSelectChangeFieldEventEmitter = new EventEmitter<ChangeFieldEventEmitter>();
+    provinceSelectChangeFieldEventEmitter = new EventEmitter<ChangeFieldEventEmitter>();
 
     constructor(
         private formBuilder: FormBuilder,
         private documentService: DocumentService,
+        private globalService: GlobalService,
+        private applicationService: ApplicationService,
         private toastr: ToastrService,
-        public bsModalRef: BsModalRef,
-    ) { }
+        public bsModalRef: BsModalRef
+    ) {}
 
     ngOnInit() {
         this.getDurationOpts();
+        this.fetchProvinces();
         this.setForm();
     }
 
@@ -83,122 +70,109 @@ export class ProjectInformationComponent implements OnInit {
     }
 
     get formProjLocations() {
-        return <FormArray>this.form.get('project_locations');
+        return <FormArray>this.form.get('project_location');
     }
 
-    get formBeneficiaryWomen() {
-        return <FormArray>this.form.get('beneficiary_women');
-    }
-
-    get formBeneficiaryMen() {
-        return <FormArray>this.form.get('beneficiary_men');
-    }
-
-    get formBeneficiaryYoungWomen() {
-        return <FormArray>this.form.get('beneficiary_young_women');
-    }
-
-    get formBeneficiaryYoungMen() {
-        return <FormArray>this.form.get('beneficiary_young_men');
+    get formProjBeneficiary() {
+        return <FormArray>this.form.get('project_beneficiary');
     }
 
     setForm() {
-        const currentApplication = this.applicationSignalService.application();
-        console.log(currentApplication);
+        const currentApplication = this.applicationSignalService.appForm();
+        const project = currentApplication?.project;
         this.form = this.formBuilder.group({
-            title: [currentApplication?.project?.title ?? '', Validators.required],
-            duration: [currentApplication?.project?.duration ?? '', Validators.required],
-            background: [currentApplication?.project?.background ?? '', Validators.required],
-            objective: [currentApplication?.project?.objective ?? '', Validators.required],
-            expected_output: [currentApplication?.project?.expected_output ?? '', Validators.required],
-            how_will_affect: [currentApplication?.project?.how_will_affect ?? '', Validators.required],
-            beneficiary_women: this.formBuilder.array([]),
-            beneficiary_men: this.formBuilder.array([]),
-            beneficiary_young_women: this.formBuilder.array([]),
-            beneficiary_young_men: this.formBuilder.array([]),
-            project_locations: this.formBuilder.array([], [Validators.required]),
+            title: [project?.title ?? '', Validators.required],
+            duration: [project?.duration ?? '', Validators.required],
+            background: [project?.background ?? '', Validators.required],
+            objective: [project?.objective ?? '', Validators.required],
+            expected_output: [project?.expected_output ?? '', Validators.required],
+            how_will_affect: [project?.how_will_affect ?? '', Validators.required],
+            project_beneficiary: this.formBuilder.array([]),
+            project_location: this.formBuilder.array([], [Validators.required]),
         });
-        this.initialProjLocations();
         this.initialBeneficiaries();
     }
 
     initialBeneficiaries() {
-        this.beneficiaryWomen = this.form.get('beneficiary_women') as FormArray;
-        const currentApplication = this.applicationSignalService.application();
-        const currentBeneficiaryWomen = currentApplication?.project?.beneficiary_women ?? beneficiaryFactory('women');
-        currentBeneficiaryWomen.forEach((beneficiary) =>
-            this.beneficiaryWomen.push(
-                this.createFormBeneficiaries(
-                    beneficiary?.type as string,
-                    beneficiary?.name as string,
-                    beneficiary?.count as number
-                )
-            )
-        );
-
-        this.beneficiaryMen = this.form.get('beneficiary_men') as FormArray;
-        const currentBeneficiaryMen = currentApplication?.project?.beneficiary_men ?? beneficiaryFactory('men');
-        currentBeneficiaryMen.forEach((beneficiary) =>
-            this.beneficiaryMen.push(
-                this.createFormBeneficiaries(
-                    beneficiary?.type as string,
-                    beneficiary?.name as string,
-                    beneficiary?.count as number
-                )
-            )
-        );
-
-        this.beneficiaryYoungWomen = this.form.get('beneficiary_young_women') as FormArray;
-        const currentBeneficiaryYoungWomen =
-            currentApplication?.project?.beneficiary_young_women ?? beneficiaryFactory('young_women');
-        currentBeneficiaryYoungWomen.forEach((beneficiary) =>
-            this.beneficiaryYoungWomen.push(
-                this.createFormBeneficiaries(
-                    beneficiary?.type as string,
-                    beneficiary?.name as string,
-                    beneficiary?.count as number
-                )
-            )
-        );
-
-        this.beneficiaryYoungMen = this.form.get('beneficiary_young_men') as FormArray;
-        const currentBeneficiaryYoungMen =
-            currentApplication?.project?.beneficiary_young_men ?? beneficiaryFactory('young_men');
-        currentBeneficiaryYoungMen.forEach((beneficiary) =>
-            this.beneficiaryYoungMen.push(
-                this.createFormBeneficiaries(
-                    beneficiary?.type as string,
-                    beneficiary?.name as string,
-                    beneficiary?.count as number
-                )
-            )
-        );
+        this.projBeneficiary = this.form.get('project_beneficiary') as FormArray;
+        const currentApplication = this.applicationSignalService.appForm();
+        const projBeneficiary = currentApplication?.project?.project_beneficiary;
+        const currentBeneficiary = projBeneficiary ?? [];
+        BENEFICIARY_TYPE.forEach((type) => {
+            const names = BENEFICIARY_NAME(type);
+            names.forEach((name) => {
+                const existingBeneficiary = currentBeneficiary?.find(
+                    (item) => item?.type === type && item.name === name
+                );
+                const pk = existingBeneficiary?.pk;
+                const count = existingBeneficiary?.count;
+                this.projBeneficiary.push(this.createFormBeneficiaries(type, name, count, pk));
+            });
+        });
     }
 
-    createFormBeneficiaries(type: string, name: string, count: number): FormGroup {
+    createFormBeneficiaries(type: string, name: string, count?: number, projBeneficiaryPk?: number): FormGroup {
         return this.formBuilder.group({
+            pk: [projBeneficiaryPk ?? ''],
             type: [type],
             name: [name],
-            count: [count, Validators.required],
+            count: [count ?? 0, Validators.required],
         });
     }
 
     initialProjLocations() {
-        this.projectLoc = this.form.get('project_locations') as FormArray;
-        const currentApplication = this.applicationSignalService.application();
-        const currentProjLoc = currentApplication?.project?.project_locations ?? [];
-        currentProjLoc.forEach((proj) => {
-            this.projectLoc.push(
-                this.createFormProjLocations(proj.country_pk, proj.province_code, proj.province_code_url)
-            );
+        this.projectLoc = this.form.get('project_location') as FormArray;
+        const currentApplication = this.applicationSignalService.appForm();
+        const projLoc = currentApplication?.project?.project_location;
+        const currentProjLoc = projLoc ?? [];
+        currentProjLoc.forEach((projLoc, idx) => {
+            this.projectLoc.push(this.createFormProjLocations(projLoc?.pk, projLoc.country_pk, projLoc.province_code));
+            setTimeout(() => {
+                this.provinceSelectChangeFieldEventEmitter.emit({
+                    selectedItems: this.provinceOpts?.filter(
+                        (province) => province.province_code === projLoc.province_code
+                    ),
+                    arr: this.getProvinceOpts(projLoc.country_pk as number),
+                    key: idx.toString(),
+                });
+            }, 500);
         });
     }
 
-    createFormProjLocations(countryPk?: number, provinceCode?: number, urlFetchStatus?: string): FormGroup {
+    fetchProvinces() {
+        this.loadingProvinceOpts = true;
+        this.globalService.selectFetch(`province`).subscribe({
+            next: (res: any) => {
+                const status = res?.status;
+                const data = res?.data;
+                if (!status) {
+                    this.toastr.error('An error occurred while fetching Provinces', 'ERROR!');
+                } else {
+                    this.provinceOpts = data?.map((item: any) => ({
+                        country_pk: item?.country_pk,
+                        province_code: item?.province_code,
+                        name: item?.name,
+                    }));
+                }
+                this.initialProjLocations();
+                this.loadingProvinceOpts = false;
+            },
+            error: (err) => {
+                this.toastr.error('An error occurred while fetching Provinces', 'ERROR!');
+                this.loadingProvinceOpts = false;
+            },
+        });
+    }
+
+    getProvinceOpts(countryPk: number) {
+        return this.provinceOpts.filter((item) => item.country_pk === countryPk);
+    }
+
+    createFormProjLocations(projLocPk?: number, countryPk?: number, provinceCode?: number): FormGroup {
         return this.formBuilder.group({
+            pk: [projLocPk ?? ''],
             country_pk: [countryPk ?? '', Validators.required],
             province_code: [provinceCode ?? '', Validators.required],
-            province_code_url: [urlFetchStatus ?? this.provinceUrlFetchStatus.notReady],
         });
     }
 
@@ -213,16 +187,48 @@ export class ProjectInformationComponent implements OnInit {
     }
 
     onAddProjLoc() {
-        this.projectLoc = this.form.get('project_locations') as FormArray;
+        this.projectLoc = this.form.get('project_location') as FormArray;
         this.projectLoc.push(this.createFormProjLocations());
     }
 
     onDelProjLoc(idx: number) {
-        this.projectLoc.removeAt(idx);
+        const currentApplication = this.applicationSignalService.appForm();
+        const project = currentApplication?.project;
+        const projectPk = project?.pk ?? null;
+        const tempLocPk = this.projectLoc.at(idx).get('pk')?.value;
+        const locationPk = typeof tempLocPk === 'string' || !tempLocPk ? null : tempLocPk;
+        if (projectPk && locationPk) {
+            this.applicationService
+                .deleteAppProjLoc({
+                    projectPk,
+                    locationPk,
+                })
+                .subscribe({
+                    next: (res: any) => {
+                        const status = res?.status;
+                        if (status) {
+                            this.projectLoc.removeAt(idx);
+                        } else {
+                            this.toastr.error(
+                                `An error occurred while deleting Project Location. Please try again.`,
+                                'ERROR!'
+                            );
+                        }
+                    },
+                    error: (err) => {
+                        this.toastr.error(
+                            `An error occurred while deleting Project Location. Please try again.`,
+                            'ERROR!'
+                        );
+                    },
+                });
+        } else {
+            this.projectLoc.removeAt(idx);
+        }
     }
 
     onAddProjectLoc() {
-        this.projectLoc = this.form.get('project_locations') as FormArray;
+        this.projectLoc = this.form.get('project_location') as FormArray;
         this.projectLoc.push(this.createFormProjLocations());
     }
 
@@ -232,32 +238,30 @@ export class ProjectInformationComponent implements OnInit {
         key: 'country_pk' | 'province_code',
         idx: number
     ) {
+        const currentApplication = this.applicationSignalService.appForm();
+        const project = currentApplication?.project;
+        const projLoc = project?.project_location?.at(idx);
         const extractedItem = item?.at(0);
         const pk = (extractedItem as SelectItem)?.[listItemKey ?? ''] ?? '';
         if (key === 'country_pk') {
             this.projectLoc.controls.at(idx)?.setValue({
+                pk: projLoc?.pk ?? '',
                 country_pk: pk,
                 province_code: '',
-                province_code_url: this.provinceUrlFetchStatus.notReady,
             });
-            this.refetchProvinceList(idx, pk);
+
+            this.provinceSelectChangeFieldEventEmitter.emit({
+                arr: this.getProvinceOpts(pk as number),
+                selectedItems: [],
+                key: idx.toString(),
+            });
         } else {
             this.projectLoc.controls.at(idx)?.setValue({
+                pk: projLoc?.pk ?? '',
                 country_pk: this.projectLoc.at(idx).get('country_pk')?.value,
                 province_code: pk,
-                province_code_url: this.provinceUrlFetchStatus.ready,
             });
         }
-    }
-
-    refetchProvinceList(idx: number, pk: number | string) {
-        setTimeout(() => {
-            this.projectLoc.controls.at(idx)?.setValue({
-                country_pk: pk,
-                province_code: '',
-                province_code_url: this.provinceUrlFetchStatus.ready,
-            });
-        }, 500);
     }
 
     isNotValidKeyNumber(countryPk: number) {
@@ -274,49 +278,87 @@ export class ProjectInformationComponent implements OnInit {
         }
     }
 
-    saveFormValue() {
+    saveFormValue(isNavigateNext?: boolean) {
+        const currentApplication = this.applicationSignalService.appForm();
+        const project = currentApplication?.project;
         const { value } = this.form;
-        const currentApplication = this.applicationSignalService.application();
-        this.applicationSignalService.application.set({
-            ...currentApplication,
-            project: {
+        this.applicationService
+            .saveApplicationProject({
+                pk: project?.pk,
+                application_pk: currentApplication?.pk,
                 ...value,
-            },
-        });
+                project_location: value?.project_location ?? [],
+            })
+            .subscribe({
+                next: (res: any) => {
+                    const data = res?.data;
+                    const status = res.status;
+
+                    if (status) {
+                        this.applicationSignalService.appForm.set({
+                            ...currentApplication,
+                            project: {
+                                ...data,
+                            },
+                        });
+
+                        this.toastr.success('Project Information has been successfully saved', 'SUCCESS!');
+
+                        if (isNavigateNext) {
+                            this.applicationSignalService.navigateNext();
+                        } else {
+                            this.applicationSignalService.navigateBack();
+                        }
+                    } else {
+                        this.toastr.error(
+                            `An error occurred while saving Project Information. Please try again.`,
+                            'ERROR!'
+                        );
+                    }
+                },
+                error: (err) => {
+                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                    const statusCode = err?.status ? `status: ${err?.status}` : '';
+                    this.toastr.error(
+                        `An error occurred while saving Project Information. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
+                },
+            });
     }
 
     handleReset() {
         this.form.reset();
-        this.selectChangeFieldEventEmitter.emit([]);
+        this.durationSelectChangeFieldEventEmitter.emit({
+            selectedItems: [],
+        });
         this.onChangeSelectedItem([], 'duration');
-        this.resetBeneficiary();
-        this.resetProjLoc();
+        // this.resetBeneficiary();
+        // this.resetProjLoc();
     }
 
     resetBeneficiary() {
-        this.beneficiaryYoungWomen.clear();
-        this.beneficiaryWomen.clear();
-        this.beneficiaryYoungMen.clear();
-        this.beneficiaryMen.clear();
         this.initialBeneficiaries();
     }
 
     resetProjLoc() {
-        this.projectLoc.clear();
+        this.projectLoc.reset();
     }
 
-    handleNext() {
+    processForm(isNavigateNext?: boolean) {
         this.submitted = true;
         const { status } = this.form;
         if (status === 'VALID') {
-            this.saveFormValue();
-            this.applicationSignalService.navigateNext();
+            this.saveFormValue(isNavigateNext);
         }
     }
 
+    handleNext() {
+        this.processForm(true);
+    }
+
     handleBack() {
-        this.saveFormValue();
-        this.applicationSignalService.navigateBack();
+        this.processForm();
     }
 
     saveAttachment(ev: any) {
@@ -325,7 +367,7 @@ export class ProjectInformationComponent implements OnInit {
             .save({
                 table_pk: 1,
                 table_name: 'projects',
-                document_pk: ev.pk
+                document_pk: ev.pk,
             })
             .subscribe({
                 next: (data: any) => {
@@ -338,7 +380,7 @@ export class ProjectInformationComponent implements OnInit {
                 complete: () => {
                     console.log('Complete');
                     this.bsModalRef.hide();
-                }
+                },
             });
     }
 }

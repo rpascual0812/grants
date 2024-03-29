@@ -6,14 +6,14 @@ export interface Application {
     partner_pk?: number;
     created_by?: number;
     date_created?: Date;
-    status_pk?: null;
+    status_pk?: number;
     archived?: boolean;
     partner?: Partner;
-    application_project?: any;
-    application_proposal?: any;
+    project?: Project;
+    application_proposal?: ApplicationProposal;
     application_fiscal_sponsor?: ApplicationFiscalSponsor;
     application_nonprofit_equivalency_determination?: ApplicationNonProfitEquivalencyDetermination;
-    application_reference?: any[];
+    application_reference?: ApplicationReference[];
 }
 
 export interface Partner {
@@ -100,6 +100,39 @@ export interface ApplicationNonProfitEquivalencyDetermination {
     date_created?: Date;
 }
 
+export interface Project {
+    pk?: number;
+    application_pk?: number;
+    title?: string;
+    duration?: string;
+    background?: string;
+    objective?: string;
+    expected_output?: string;
+    how_will_affect?: string;
+    status_pk?: number;
+    type_pk?: number;
+    date_created?: Date;
+    project_beneficiary: ProjectBeneficiary[];
+    project_location?: ProjectLocation[];
+}
+
+export interface ProjectBeneficiary {
+    pk?: number;
+    project_pk?: number;
+    type?: string;
+    name?: string;
+    count?: number;
+    date_created?: Date;
+}
+
+export interface ProjectLocation {
+    pk?: number;
+    project_pk?: number;
+    country_pk?: number;
+    province_code?: number;
+    date_created?: Date;
+}
+
 export interface OperatedFor {
     cultural?: boolean;
     literacy?: boolean;
@@ -107,4 +140,33 @@ export interface OperatedFor {
     charitable?: boolean;
     scientific?: boolean;
     education_purpose?: boolean;
+}
+
+export interface ApplicationProposal {
+    pk?: number;
+    application_pk?: number;
+    monitor?: string;
+    budget_request_usd?: string;
+    budget_request_other?: string;
+    budget_request_other_currency?: string;
+    date_created?: Date;
+    application_proposal_activity?: ApplicationProposalActivity[];
+}
+
+export interface ApplicationProposalActivity {
+    pk?: number;
+    application_proposal_pk?: number;
+    name?: string;
+    duration?: string;
+    date_created?: Date;
+}
+
+export interface ApplicationReference {
+    pk?: number;
+    application_pk?: number;
+    name?: string;
+    contact_number?: string;
+    email_address?: string;
+    organization_name?: string;
+    date_created?: Date;
 }

@@ -1,7 +1,14 @@
 import { Injectable, Signal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as _ from '../utilities/globals';
-import { ApplicationFiscalSponsor, Organization, Partner } from '../interfaces/_application.interface';
+import {
+    ApplicationFiscalSponsor,
+    ApplicationProposal,
+    ApplicationReference,
+    Organization,
+    Partner,
+    Project,
+} from '../interfaces/_application.interface';
 import { ApplicationNonprofitEquivalencyDeterminationRead } from '../interfaces/application.interface';
 @Injectable({
     providedIn: 'root',
@@ -10,7 +17,7 @@ export class ApplicationService {
     public navigate_next = signal(false);
     public navigate_back = signal(false);
 
-    constructor(public http: HttpClient) { }
+    constructor(public http: HttpClient) {}
 
     fetch(filters?: any) {
         return this.http.get(`${_.BASE_URL}/application`, { params: filters });
@@ -50,6 +57,31 @@ export class ApplicationService {
 
     saveApplicationNonProfitEquivalencyDetermination(data: ApplicationNonprofitEquivalencyDeterminationRead) {
         return this.http.post(`${_.BASE_URL}/application/nonprofit_equivalency_determination`, data);
+    }
+
+    saveApplicationProject(data: Project) {
+        return this.http.post(`${_.BASE_URL}/application/project`, data);
+    }
+
+    saveApplicationProposal(data: ApplicationProposal) {
+        return this.http.post(`${_.BASE_URL}/application/proposal`, data);
+    }
+
+    saveAppReference(data: {
+        application_pk?: number,
+        application_reference: ApplicationReference[]
+    }) {
+        return this.http.post(`${_.BASE_URL}/application/reference`, data);
+    }
+
+    deleteAppProposalAct(params: { proposalPk: number; activityPk: number }) {
+        const { proposalPk, activityPk } = params;
+        return this.http.delete(`${_.BASE_URL}/application/proposal/${proposalPk}/activity/${activityPk}`);
+    }
+
+    deleteAppProjLoc(params: { projectPk: number; locationPk: number }) {
+        const { projectPk, locationPk } = params;
+        return this.http.delete(`${_.BASE_URL}/application/project/${projectPk}/location/${locationPk}`);
     }
 
     destroy(pk: any) {
