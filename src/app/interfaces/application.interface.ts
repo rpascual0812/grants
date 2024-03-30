@@ -134,6 +134,7 @@ export interface ApplicationRead {
     pk?: number;
     uuid?: string;
     number?: string;
+    donor?: string;
     partner_pk?: number;
     created_by?: number;
     date_created?: Date;

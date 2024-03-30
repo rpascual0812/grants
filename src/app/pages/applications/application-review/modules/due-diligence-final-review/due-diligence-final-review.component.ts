@@ -33,6 +33,8 @@ export class DueDiligenceFinalReviewComponent {
 
     attachments: any = [];
     recommendation: any = '';
+    donor: any = '';
+    timeout: any = null;
 
     constructor(
         public documentUploaderRef: BsModalRef,
@@ -48,10 +50,20 @@ export class DueDiligenceFinalReviewComponent {
         this.setForm();
         this.fetchUser();
 
+        this.donor = this.currentApplication?.donor;
+
         if (this.currentApplication?.reviews) {
             this.currentApplication?.reviews.forEach(review => {
                 if (this.reviews[review.type]) {
                     this.reviews[review.type].push(review);
+                }
+            });
+        }
+
+        if (this.currentApplication?.recommendations) {
+            this.currentApplication?.recommendations.forEach(recommendation => {
+                if (recommendation.type == 'final_review') {
+                    this.recommendation = recommendation.recommendation;
                 }
             });
         }
@@ -182,7 +194,6 @@ export class DueDiligenceFinalReviewComponent {
     }
 
     recommendationOnChange(ev: any) {
-        console.log(ev);
         const recommendation = {
             application_pk: this.currentApplication?.pk,
             recommendation: ev,
@@ -199,5 +210,27 @@ export class DueDiligenceFinalReviewComponent {
                 this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
             },
         });
+    }
+
+    saveDonor() {
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+            const data = {
+                application_pk: this.currentApplication?.pk,
+                application: {
+                    donor: this.donor
+                }
+            };
+            this.applicationService.store(data).subscribe({
+                next: (data: any) => {
+                    this.toastr.success(`Donor has been successfully saved.`);
+                },
+                error: (err: HttpErrorResponse) => {
+                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                    const statusCode = err?.status ? `status: ${err?.status}` : '';
+                    this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
+                },
+            });
+        }, 1000);
     }
 }
