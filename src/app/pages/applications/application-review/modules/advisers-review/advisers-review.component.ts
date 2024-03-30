@@ -8,6 +8,7 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationRead } from 'src/app/interfaces/application.interface';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { formatDate } from '@angular/common';
 import * as _ from '../../../../../utilities/globals';
 
 @Component({
@@ -28,6 +29,7 @@ export class AdvisersReviewComponent implements OnInit {
 
     attachments: any = [];
     recommendation: any = '';
+    SERVER: string = '';
 
     constructor(
         public documentUploaderRef: BsModalRef,
@@ -180,6 +182,30 @@ export class AdvisersReviewComponent implements OnInit {
                 this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
             },
         });
+    }
+
+    export() {
+        this.applicationService.reviews(this.currentApplication?.pk, 'advisers_review').subscribe({
+            next: (data: any) => {
+                let reviews = '';
+                data.data[0].reviews.forEach((review: any) => {
+                    const date = formatDate(review.date_created, 'yyyy-MM-dd HH:mm:ss', "en-US");
+                    reviews += review.message + ' - ' + review.user.first_name + ' ' + review.user.last_name + ' - ' + date + '\n\n'
+                    review.documents.forEach((doc: any) => {
+                        reviews += this.SERVER + '/' + doc.path + '\n';
+                    });
+                    reviews += '\n\n\n';
+                });
+                _.exportFile('application/docx', 'Advisers Review.docx', reviews);
+            },
+            error: (err: HttpErrorResponse) => {
+                const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                const statusCode = err?.status ? `status: ${err?.status}` : '';
+                this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
+            },
+        });
+
+
     }
 
 }

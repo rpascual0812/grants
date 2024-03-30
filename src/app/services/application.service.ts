@@ -31,8 +31,12 @@ export class ApplicationService {
         return this.http.get(`${_.BASE_URL}/application/${uuid}/generated`);
     }
 
-    review(number: any) {
+    review(number: any) { // this is the application review page
         return this.http.get(`${_.BASE_URL}/application/${number}/review`);
+    }
+
+    reviews(pk: any, type: string) { // this is the reviews of each applications
+        return this.http.get(`${_.BASE_URL}/application/${pk}/reviews`, { params: { type } });
     }
 
     generate(data: any) {
