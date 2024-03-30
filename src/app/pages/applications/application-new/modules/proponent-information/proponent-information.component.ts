@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Partner } from 'src/app/interfaces/_application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
+import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
 @Component({
     selector: 'app-proponent-information',
@@ -14,6 +15,7 @@ export class ProponentInformationComponent {
     initialLoading = true;
     form: FormGroup;
     submitted: boolean = false;
+    processing: boolean = false;
     applicationSignalService = inject(ApplicationSignalService);
 
     constructor(
@@ -51,6 +53,7 @@ export class ProponentInformationComponent {
     }
 
     saveFormValue() {
+        this.processing = true;
         const currentApplication = this.applicationSignalService.appForm();
         const { value } = this.form;
         this.applicationService
@@ -70,26 +73,35 @@ export class ProponentInformationComponent {
             })
             .subscribe({
                 next: (res: any) => {
+                    const status = res?.status;
                     const data = res?.data as Partner;
-                    this.applicationSignalService.appForm.set({
-                        ...currentApplication,
-                        partner: {
-                            ...data,
-                            organization: {
-                                ...currentApplication?.partner?.organization
-                            }
-                        },
-                    });
-                    this.toastr.success('Proponent Information has been successfully saved', 'SUCCESS!');
-                    this.applicationSignalService.navigateNext();
+                    if (status) {
+                        this.applicationSignalService.appForm.set({
+                            ...currentApplication,
+                            partner: {
+                                ...data,
+                                organization: {
+                                    ...currentApplication?.partner?.organization,
+                                },
+                            },
+                        });
+                        this.toastr.success('Proponent Information has been successfully saved', 'SUCCESS!');
+                        this.applicationSignalService.navigateNext();
+                    } else {
+                        this.toastr.error(
+                            `An error occurred while saving Proponent Information. Please try again.`,
+                            'ERROR!'
+                        );
+                    }
+                    this.processing = false;
                 },
                 error: (err) => {
-                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
-                    const statusCode = err?.status ? `status: ${err?.status}` : '';
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
                     this.toastr.error(
                         `An error occurred while saving Proponent Information. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
+                    this.processing = false;
                 },
             });
     }

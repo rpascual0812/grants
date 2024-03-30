@@ -3,6 +3,12 @@ import { ApplicationRead } from '../interfaces/application.interface';
 // Interfaces or Types
 export type TransformApplicationForList = ReturnType<typeof transformApplicationForList>;
 export type CompareItemValue = string | number | Date;
+export interface ApiError extends Error {
+    error?: {
+        message?: string;
+    };
+    status?: string;
+}
 
 export const transformApplicationForList = (applications: ApplicationRead[]) => {
     return applications.map((app) => ({
@@ -15,7 +21,8 @@ export const transformApplicationForList = (applications: ApplicationRead[]) => 
         applicationDate: app?.date_created as Date,
         proposedBudget: app?.application_proposal?.budget_request_usd ?? '',
         proposedBudgetOther: app?.application_proposal?.budget_request_other ?? '',
-        proposedBudgetOtherCurrency: app?.application_proposal?.budget_request_other_currency?.split('-')?.at(0)?.trim() ?? ''
+        proposedBudgetOtherCurrency:
+            app?.application_proposal?.budget_request_other_currency?.split('-')?.at(0)?.trim() ?? '',
     }));
 };
 
@@ -36,4 +43,13 @@ export const getDurationOpts = () => {
         durationOpts.push(`${i} ${suffix}`);
     }
     return durationOpts;
+};
+
+export const extractErrorMessage = (err: ApiError) => {
+    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+    const statusCode = err?.status ? `status: ${err?.status}` : '';
+    return {
+        errorMessage,
+        statusCode,
+    };
 };
