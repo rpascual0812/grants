@@ -9,6 +9,7 @@ import { ApplicationRead } from 'src/app/interfaces/application.interface';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import * as _ from '../../../../../utilities/globals';
+import { formatDate } from '@angular/common';
 
 type GrantTypeItem = {
     pk?: number;
@@ -35,6 +36,7 @@ export class DueDiligenceFinalReviewComponent {
     recommendation: any = '';
     donor: any = '';
     timeout: any = null;
+    SERVER: string = '';
 
     constructor(
         public documentUploaderRef: BsModalRef,
@@ -232,5 +234,29 @@ export class DueDiligenceFinalReviewComponent {
                 },
             });
         }, 1000);
+    }
+
+    export() {
+        this.applicationService.reviews(this.currentApplication?.pk, 'final_review').subscribe({
+            next: (data: any) => {
+                let reviews = '';
+                data.data[0].reviews.forEach((review: any) => {
+                    const date = formatDate(review.date_created, 'yyyy-MM-dd HH:mm:ss', "en-US");
+                    reviews += review.message + ' - ' + review.user.first_name + ' ' + review.user.last_name + ' - ' + date + '\n\n'
+                    review.documents.forEach((doc: any) => {
+                        reviews += this.SERVER + '/' + doc.path + '\n';
+                    });
+                    reviews += '\n\n\n';
+                });
+                _.exportFile('application/docx', 'Due Diligence Final Review.docx', reviews);
+            },
+            error: (err: HttpErrorResponse) => {
+                const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                const statusCode = err?.status ? `status: ${err?.status}` : '';
+                this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
+            },
+        });
+
+
     }
 }

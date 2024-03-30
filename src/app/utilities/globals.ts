@@ -65,3 +65,17 @@ export function onExit(element: any) {
         element.parentNode.classList.add("is-filled");
     }
 }
+
+export function exportFile(mimetype: string, filename: string, content: string) {
+    var data = new Blob([content], { type: mimetype });
+    let url = window.URL.createObjectURL(data);
+    let a = document.createElement('a');
+    document.body.appendChild(a);
+
+    a.setAttribute('style', 'display: none');
+    a.href = url;
+    a.download = filename ? filename : 'file.txt';
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+}

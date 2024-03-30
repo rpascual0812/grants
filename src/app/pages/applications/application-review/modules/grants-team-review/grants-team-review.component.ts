@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from 'src/app/services/user.service';
 import { DateTime } from 'luxon';
 import { ToastrService } from 'ngx-toastr';
@@ -9,6 +10,7 @@ import { ApplicationRead } from 'src/app/interfaces/application.interface';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import * as _ from '../../../../../utilities/globals';
 import { HttpErrorResponse } from '@angular/common/http';
+import { formatDate } from '@angular/common';
 
 @Component({
     selector: 'app-grants-team-review',
@@ -31,6 +33,9 @@ export class GrantsTeamReviewComponent implements OnInit {
     attachments: any = [];
     recommendation: any = '';
 
+    content: any;
+    SERVER: string = '';
+
     constructor(
         public documentUploaderRef: BsModalRef,
         private modalService: BsModalService,
@@ -39,11 +44,14 @@ export class GrantsTeamReviewComponent implements OnInit {
         private applicationService: ApplicationService,
         private toastr: ToastrService,
         private cdr: ChangeDetectorRef,
+        private sanitizer: DomSanitizer
     ) { }
 
     ngOnInit() {
         this.setForm();
         this.fetchUser();
+
+        this.SERVER = _.BASE_URL;
 
         if (this.currentApplication?.reviews) {
             this.currentApplication?.reviews.forEach(review => {
@@ -181,5 +189,29 @@ export class GrantsTeamReviewComponent implements OnInit {
                 this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
             },
         });
+    }
+
+    export() {
+        this.applicationService.reviews(this.currentApplication?.pk, 'grants_team_review').subscribe({
+            next: (data: any) => {
+                let reviews = '';
+                data.data[0].reviews.forEach((review: any) => {
+                    const date = formatDate(review.date_created, 'yyyy-MM-dd HH:mm:ss', "en-US");
+                    reviews += review.message + ' - ' + review.user.first_name + ' ' + review.user.last_name + ' - ' + date + '\n\n'
+                    review.documents.forEach((doc: any) => {
+                        reviews += this.SERVER + '/' + doc.path + '\n';
+                    });
+                    reviews += '\n\n\n';
+                });
+                _.exportFile('application/docx', 'Grants Team Review.docx', reviews);
+            },
+            error: (err: HttpErrorResponse) => {
+                const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                const statusCode = err?.status ? `status: ${err?.status}` : '';
+                this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
+            },
+        });
+
+
     }
 }
