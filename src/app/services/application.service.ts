@@ -17,7 +17,7 @@ export class ApplicationService {
     public navigate_next = signal(false);
     public navigate_back = signal(false);
 
-    constructor(public http: HttpClient) {}
+    constructor(public http: HttpClient) { }
 
     fetch(filters?: any) {
         return this.http.get(`${_.BASE_URL}/application`, { params: filters });
@@ -41,6 +41,10 @@ export class ApplicationService {
 
     store(data: any) {
         return this.http.post(`${_.BASE_URL}/application`, data);
+    }
+
+    saveApplicationAttachment(data: any) {
+        return this.http.post(`${_.BASE_URL}/application/attachment`, data);
     }
 
     saveApplicationPartner(data: Partner) {
