@@ -5,6 +5,7 @@ import { KIND_OF_ORGANIZATION_MAPPER, TRIBE_LIST_OPTIONS } from '../../../../../
 import { GlobalService } from 'src/app/services/global.service';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ToastrService } from 'ngx-toastr';
+import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
 type SelectItem = {
     pk: number;
@@ -17,6 +18,7 @@ type SelectItem = {
     styleUrls: ['./organization-profile.component.scss'],
 })
 export class OrganizationProfileComponent implements OnInit {
+    processing = false;
     form: FormGroup;
     orgListLoading = false;
     orgList: SelectItem[] = [];
@@ -157,6 +159,7 @@ export class OrganizationProfileComponent implements OnInit {
     }
 
     saveFormValue(isNavigateNext?: boolean) {
+        this.processing = true;
         const currentApplication = this.applicationSignalService.appForm();
         const { value } = this.form;
         this.applicationService
@@ -192,28 +195,16 @@ export class OrganizationProfileComponent implements OnInit {
                             'ERROR!'
                         );
                     }
+                    this.processing = false;
                 },
                 error: (err) => {
-                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
-                    const statusCode = err?.status ? `status: ${err?.status}` : '';
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
                     this.toastr.error(
                         `An error occurred while saving Proponent Information. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
                 },
             });
-    }
-
-    handleReset() {
-        this.form.reset();
-        this.onChangeSelectedItem([], 'organization_pk');
-        this.onChangeSelectedItem([], 'country_pk');
-        this.selectChangeFieldEventEmitter.organization_pk.emit({
-            selectedItems: [],
-        });
-        this.selectChangeFieldEventEmitter.country_pk.emit({
-            selectedItems: [],
-        });
     }
 
     processForm(isNavigateNext?: boolean) {
@@ -230,5 +221,17 @@ export class OrganizationProfileComponent implements OnInit {
 
     handleBack() {
         this.processForm();
+    }
+
+    handleReset() {
+        this.form.reset();
+        this.onChangeSelectedItem([], 'organization_pk');
+        this.onChangeSelectedItem([], 'country_pk');
+        this.selectChangeFieldEventEmitter.organization_pk.emit({
+            selectedItems: [],
+        });
+        this.selectChangeFieldEventEmitter.country_pk.emit({
+            selectedItems: [],
+        });
     }
 }
