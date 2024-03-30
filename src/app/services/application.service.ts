@@ -32,7 +32,7 @@ export class ApplicationService {
     }
 
     review(number: any) { // this is the application review page
-        return this.http.get(`${_.BASE_URL}/application/${number}/review`);
+        return this.http.get(`${_.BASE_URL}/application/${number}/review`, { params: { reviews: true } });
     }
 
     reviews(pk: any, type: string) { // this is the reviews of each applications
