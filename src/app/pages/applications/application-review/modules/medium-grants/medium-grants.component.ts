@@ -81,7 +81,7 @@ export class MediumGrantsComponent implements OnInit {
             },
             () => {
                 this.applicationService
-                    .deleteApplicationAttachment({ application_pk: this.currentApplication?.pk, document_pk: this.attachments[type][i].pk })
+                    .deleteApplicationAttachment({ application_pk: this.currentApplication?.pk, document_pk: this.attachments[type][i].pk, type: 'document' })
                     .subscribe({
                         next: (data: any) => {
                             if (data.status) {
