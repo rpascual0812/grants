@@ -6,6 +6,7 @@ import { ApplicationSignalService } from 'src/app/services/application.signal.se
 import * as _ from '../../../../../utilities/globals';
 import { DocumentService } from 'src/app/services/document.service';
 import { PartnerFiscalSponsor } from 'src/app/interfaces/_application.interface';
+import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
 @Component({
     selector: 'app-fiscal-sponsor-information',
@@ -13,6 +14,7 @@ import { PartnerFiscalSponsor } from 'src/app/interfaces/_application.interface'
     styleUrls: ['./fiscal-sponsor-information.component.scss'],
 })
 export class FiscalSponsorInformationComponent {
+    processing = false;
     form: FormGroup;
     submitted: boolean = false;
     applicationSignalService = inject(ApplicationSignalService);
@@ -44,7 +46,6 @@ export class FiscalSponsorInformationComponent {
         const currentApplication = this.applicationSignalService.appForm();
         const appFiscalSponsor = currentApplication?.partner?.partner_fiscal_sponsor;
         this.form = this.formBuilder.group({
-            pk: [appFiscalSponsor?.pk],
             name: [appFiscalSponsor?.name ?? ''],
             address: [appFiscalSponsor?.address ?? ''],
             contact_number: [appFiscalSponsor?.contact_number ?? ''],
@@ -80,12 +81,15 @@ export class FiscalSponsorInformationComponent {
     }
 
     saveFormValue() {
+        this.processing = true;
         const currentApplication = this.applicationSignalService.appForm();
         const partner = currentApplication?.partner;
+        const partnerFiscalSponsor = partner?.partner_fiscal_sponsor;
         const { value } = this.form;
         this.applicationService
             .saveApplicationFiscalSponsor({
                 partner_pk: partner?.pk,
+                pk: partnerFiscalSponsor?.pk,
                 ...value,
             })
             .subscribe({
@@ -102,20 +106,22 @@ export class FiscalSponsorInformationComponent {
                             'ERROR!'
                         );
                     }
+                    this.processing = false;
                 },
                 error: (err) => {
-                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
-                    const statusCode = err?.status ? `status: ${err?.status}` : '';
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
                     this.toastr.error(
                         `An error occurred while saving Fiscal Sponsor. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
+                    this.processing = false;
                 },
             });
     }
 
     handleReset() {
-        this.form.reset();
+        const fields = Object.keys(this.form.controls).map((key) => key);
+        fields.forEach((field) => this.form.controls[field]?.setValue(''));
     }
 
     handleNext() {

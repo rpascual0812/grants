@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ProjectOrganizationReference } from 'src/app/interfaces/_application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
+import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
 const referencesFactory = () => {
     return [
@@ -36,6 +37,7 @@ const referencesFactory = () => {
     styleUrls: ['./contact-info-references.component.scss'],
 })
 export class ContactInfoReferencesComponent {
+    processing = false;
     form: FormGroup;
     contactReferences: FormArray;
     applicationSignalService = inject(ApplicationSignalService);
@@ -45,7 +47,7 @@ export class ContactInfoReferencesComponent {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.setForm();
@@ -118,6 +120,7 @@ export class ContactInfoReferencesComponent {
     }
 
     saveFormValue() {
+        this.processing = true;
         const { value } = this.form;
         const currentApplication = this.applicationSignalService.appForm();
         this.applicationService
@@ -139,14 +142,15 @@ export class ContactInfoReferencesComponent {
                             'ERROR!'
                         );
                     }
+                    this.processing = false;
                 },
                 error: (err) => {
-                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
-                    const statusCode = err?.status ? `status: ${err?.status}` : '';
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
                     this.toastr.error(
                         `An error occurred while saving Contact Reference. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
+                    this.processing = false;
                 },
             });
     }
