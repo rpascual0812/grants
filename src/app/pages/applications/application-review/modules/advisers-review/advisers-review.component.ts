@@ -29,7 +29,7 @@ export class AdvisersReviewComponent implements OnInit {
 
     attachments: any = [];
     recommendation: any = '';
-    SERVER: string = '';
+    SERVER: string = _.BASE_URL;
 
     constructor(
         public documentUploaderRef: BsModalRef,

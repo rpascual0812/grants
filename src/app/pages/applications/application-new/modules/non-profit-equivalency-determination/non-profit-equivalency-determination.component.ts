@@ -1,10 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OTHER_CURRENCY_LIST } from '../../../../../utilities/constants';
 import { InputDropdownValue } from '../input-dropdown/input-dropdown.component';
 import { ToastrService } from 'ngx-toastr';
 import { ApplicationService } from 'src/app/services/application.service';
+
+import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
+import * as _ from '../../../../../utilities/globals';
+import { DocumentService } from 'src/app/services/document.service';
 
 @Component({
     selector: 'app-non-profit-equivalency-determination',
@@ -27,14 +32,30 @@ export class NonProfitEquivalencyDeterminationComponent {
     };
     applicationSignalService = inject(ApplicationSignalService);
 
+    attachments: any = [];
+    SERVER: string = _.BASE_URL;
+
     constructor(
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
-        private toastr: ToastrService
-    ) {}
+        private toastr: ToastrService,
+        public documentUploaderRef: BsModalRef,
+        private cdr: ChangeDetectorRef,
+        private modalService: BsModalService,
+        private documentService: DocumentService,
+    ) { }
 
     ngOnInit(): void {
         this.setForm();
+
+        const currentApplication = this.applicationSignalService.appForm();
+        if (currentApplication?.documents) {
+            currentApplication?.documents.forEach((document: any) => {
+                if (document.type == 'non_profit_equivalency_legal_registration') {
+                    this.attachments.push(document);
+                }
+            });
+        }
     }
 
     get f() {
@@ -255,5 +276,41 @@ export class NonProfitEquivalencyDeterminationComponent {
 
     handleBack() {
         this.processForm();
+    }
+
+    uploadFiles() {
+        const initialState: ModalOptions = {
+            class: 'modal-lg'
+        };
+        this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
+
+        this.documentUploaderRef.content.document.subscribe((res: any) => {
+            this.attachments.push(res.file);
+            this.saveAttachment(res.file);
+            this.cdr.detectChanges();
+        });
+    }
+
+    saveAttachment(ev: any) {
+        const currentApplication = this.applicationSignalService.appForm();
+        this.documentService
+            .save({
+                table_pk: currentApplication?.pk,
+                table_name: 'applications',
+                document_pk: ev.pk,
+                type: 'non_profit_equivalency_legal_registration'
+            })
+            .subscribe({
+                next: (data: any) => {
+                    this.toastr.success('The document has been successfully uploaded', 'SUCCESS!');
+                },
+                error: (error: any) => {
+                    console.log(error);
+                    this.toastr.error('An error occurred while uploading the document. Please try again', 'ERROR!');
+                },
+                complete: () => {
+                    console.log('Complete');
+                },
+            });
     }
 }

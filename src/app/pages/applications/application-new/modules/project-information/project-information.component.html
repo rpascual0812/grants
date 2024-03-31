@@ -9,13 +9,9 @@
                             <div class="col-12 col-lg-8">
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">Project title*</label>
-                                    <input
-                                        type="text"
-                                        class="form-control border rounded-1 p-1"
-                                        required
+                                    <input type="text" class="form-control border rounded-1 p-1" required
                                         [ngClass]="{ 'is-invalid': submitted && f['title'].errors }"
-                                        formControlName="title"
-                                    />
+                                        formControlName="title" />
                                     <div *ngIf="submitted && f['title'].errors" class="invalid-feedback">
                                         <div *ngIf="f['title'].errors['required']">Project title is required</div>
                                     </div>
@@ -25,9 +21,7 @@
                             <div class="col-12 col-lg-4">
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">Duration*</label>
-                                    <app-select
-                                        class="shadow-none"
-                                        [arr]="durationOpts"
+                                    <app-select class="shadow-none" [arr]="durationOpts"
                                         (onSelectEvent)="onChangeSelectedItem($event, 'duration')"
                                         (onDeSelectEvent)="onChangeSelectedItem($event, 'duration')"
                                         [defaultSelectedInArr]="
@@ -35,8 +29,7 @@
                                                 ? form.controls['duration'].value
                                                 : null
                                         "
-                                        [changeFieldEventEmitter]="durationSelectChangeFieldEventEmitter"
-                                    ></app-select>
+                                        [changeFieldEventEmitter]="durationSelectChangeFieldEventEmitter"></app-select>
                                     <div *ngIf="submitted && f['duration'].errors">
                                         <div *ngIf="f['duration'].errors['required']" class="text-sm text-danger">
                                             Duration is required
@@ -47,18 +40,12 @@
                         </div>
 
                         <div class="form-group my-3">
-                            <label class="font-weight-bold text-dark"
-                                >Background/What is the problem to be addressed?*</label
-                            >
-                            <textarea
-                                type="text"
-                                rows="5"
-                                class="form-control border rounded-1 p-2"
-                                style="resize: none"
-                                required
+                            <label class="font-weight-bold text-dark">Background/What is the problem to be
+                                addressed?*</label>
+                            <textarea type="text" rows="5" class="form-control border rounded-1 p-2"
+                                style="resize: none" required
                                 [ngClass]="{ 'is-invalid': submitted && f['background'].errors }"
-                                formControlName="background"
-                            ></textarea>
+                                formControlName="background"></textarea>
                             <div *ngIf="submitted && f['background'].errors" class="invalid-feedback">
                                 <div *ngIf="f['background'].errors['required']">
                                     Background/What is the problem to be addressed is required
@@ -68,33 +55,22 @@
 
                         <div class="form-group my-3">
                             <label class="font-weight-bold text-dark">Objectives*</label>
-                            <textarea
-                                type="text"
-                                rows="5"
-                                class="form-control border rounded-1 p-2"
-                                style="resize: none"
-                                required
+                            <textarea type="text" rows="5" class="form-control border rounded-1 p-2"
+                                style="resize: none" required
                                 [ngClass]="{ 'is-invalid': submitted && f['objective'].errors }"
-                                formControlName="objective"
-                            ></textarea>
+                                formControlName="objective"></textarea>
                             <div *ngIf="submitted && f['objective'].errors" class="invalid-feedback">
                                 <div *ngIf="f['objective'].errors['required']">Objectives is required</div>
                             </div>
                         </div>
 
                         <div class="form-group my-3">
-                            <label class="font-weight-bold text-dark"
-                                >Expected outputs/How will the proposed project activities improve?*</label
-                            >
-                            <textarea
-                                type="text"
-                                rows="5"
-                                class="form-control border rounded-1 p-2"
-                                style="resize: none"
-                                required
+                            <label class="font-weight-bold text-dark">Expected outputs/How will the proposed project
+                                activities improve?*</label>
+                            <textarea type="text" rows="5" class="form-control border rounded-1 p-2"
+                                style="resize: none" required
                                 [ngClass]="{ 'is-invalid': submitted && f['expected_output'].errors }"
-                                formControlName="expected_output"
-                            ></textarea>
+                                formControlName="expected_output"></textarea>
                             <div *ngIf="submitted && f['expected_output'].errors" class="invalid-feedback">
                                 <div *ngIf="f['expected_output'].errors['required']">
                                     Expected outputs/How will the proposed project activities improve is required
@@ -110,51 +86,35 @@
                         <div class="border-top border-2"></div>
                         <div class="row">
                             <div class="col-12 col-lg-6">
-                                <div
-                                    formArrayName="project_beneficiary"
+                                <div formArrayName="project_beneficiary"
                                     *ngFor="let item of formProjBeneficiary.controls.slice(0, 3); index as i"
-                                    [attr.data-index]="i"
-                                    class="form-group row my-1"
-                                >
+                                    [attr.data-index]="i" class="form-group row my-1">
                                     <ng-container [formGroupName]="i">
-                                        <label class="col-7 font-weight-bold text-dark text-capitalize"
-                                            >{{ formProjBeneficiary.controls.at(i)?.get('name')?.value }}:</label
-                                        >
+                                        <label class="col-7 font-weight-bold text-dark text-capitalize">{{
+                                            formProjBeneficiary.controls.at(i)?.get('name')?.value }}:</label>
                                         <div class="col-3">
-                                            <input
-                                                formControlName="count"
-                                                type="number"
-                                                class="form-control border rounded-1 p-1"
-                                                [ngClass]="{
+                                            <input formControlName="count" type="number"
+                                                class="form-control border rounded-1 p-1" [ngClass]="{
                                                     'is-invalid':
                                                         submitted && formProjBeneficiary.at(i).get('count')?.errors
-                                                }"
-                                            />
+                                                }" />
                                         </div>
                                     </ng-container>
                                 </div>
                             </div>
                             <div class="col-12 col-lg-6">
-                                <div
-                                    formArrayName="project_beneficiary"
+                                <div formArrayName="project_beneficiary"
                                     *ngFor="let item of formProjBeneficiary.controls.slice(3, 6); index as i"
-                                    [attr.data-index]="i + 3"
-                                    class="form-group row my-1"
-                                >
+                                    [attr.data-index]="i + 3" class="form-group row my-1">
                                     <ng-container [formGroupName]="i + 3">
-                                        <label class="col-7 font-weight-bold text-dark text-capitalize"
-                                            >{{ formProjBeneficiary.controls.at(i + 3)?.get('name')?.value }}:</label
-                                        >
+                                        <label class="col-7 font-weight-bold text-dark text-capitalize">{{
+                                            formProjBeneficiary.controls.at(i + 3)?.get('name')?.value }}:</label>
                                         <div class="col-3">
-                                            <input
-                                                formControlName="count"
-                                                type="number"
-                                                class="form-control border rounded-1 p-1"
-                                                [ngClass]="{
+                                            <input formControlName="count" type="number"
+                                                class="form-control border rounded-1 p-1" [ngClass]="{
                                                     'is-invalid':
                                                         submitted && formProjBeneficiary.at(i + 3).get('count')?.errors
-                                                }"
-                                            />
+                                                }" />
                                         </div>
                                     </ng-container>
                                 </div>
@@ -164,52 +124,36 @@
                         <div class="border-top border-2"></div>
                         <div class="row">
                             <div class="col-12 col-lg-6">
-                                <div
-                                    formArrayName="project_beneficiary"
+                                <div formArrayName="project_beneficiary"
                                     *ngFor="let item of formProjBeneficiary.controls.slice(6, 9); index as i"
-                                    [attr.data-index]="i + 6"
-                                    class="form-group row my-1"
-                                >
+                                    [attr.data-index]="i + 6" class="form-group row my-1">
                                     <ng-container [formGroupName]="i + 6">
-                                        <label class="col-7 font-weight-bold text-dark text-capitalize"
-                                            >{{ formProjBeneficiary.controls.at(i + 6)?.get('name')?.value }}:</label
-                                        >
+                                        <label class="col-7 font-weight-bold text-dark text-capitalize">{{
+                                            formProjBeneficiary.controls.at(i + 6)?.get('name')?.value }}:</label>
                                         <div class="col-3">
-                                            <input
-                                                formControlName="count"
-                                                type="number"
-                                                class="form-control border rounded-1 p-1"
-                                                [ngClass]="{
+                                            <input formControlName="count" type="number"
+                                                class="form-control border rounded-1 p-1" [ngClass]="{
                                                     'is-invalid':
                                                         submitted && formProjBeneficiary.at(i + 6).get('count')?.errors
-                                                }"
-                                            />
+                                                }" />
                                         </div>
                                     </ng-container>
                                 </div>
                             </div>
 
                             <div class="col-12 col-lg-6">
-                                <div
-                                    formArrayName="project_beneficiary"
+                                <div formArrayName="project_beneficiary"
                                     *ngFor="let item of formProjBeneficiary.controls.slice(9, 12); index as i"
-                                    [attr.data-index]="i + 9"
-                                    class="form-group row my-1"
-                                >
+                                    [attr.data-index]="i + 9" class="form-group row my-1">
                                     <ng-container [formGroupName]="i + 9">
-                                        <label class="col-7 font-weight-bold text-dark text-capitalize"
-                                            >{{ formProjBeneficiary.controls.at(i + 9)?.get('name')?.value }}:</label
-                                        >
+                                        <label class="col-7 font-weight-bold text-dark text-capitalize">{{
+                                            formProjBeneficiary.controls.at(i + 9)?.get('name')?.value }}:</label>
                                         <div class="col-3">
-                                            <input
-                                                formControlName="count"
-                                                type="number"
-                                                class="form-control border rounded-1 p-1"
-                                                [ngClass]="{
+                                            <input formControlName="count" type="number"
+                                                class="form-control border rounded-1 p-1" [ngClass]="{
                                                     'is-invalid':
                                                         submitted && formProjBeneficiary.at(i + 9).get('count')?.errors
-                                                }"
-                                            />
+                                                }" />
                                         </div>
                                     </ng-container>
                                 </div>
@@ -217,19 +161,13 @@
                         </div>
 
                         <div class="form-group my-3">
-                            <label class="font-weight-bold text-dark"
-                                >How will women and children be involved in the project? How will the benefit or be
-                                affected by the other project*</label
-                            >
-                            <textarea
-                                type="text"
-                                rows="5"
-                                class="form-control border rounded-1 p-2"
-                                style="resize: none"
-                                required
+                            <label class="font-weight-bold text-dark">How will women and children be involved in the
+                                project? How will the benefit or be
+                                affected by the other project*</label>
+                            <textarea type="text" rows="5" class="form-control border rounded-1 p-2"
+                                style="resize: none" required
                                 [ngClass]="{ 'is-invalid': submitted && f['how_will_affect'].errors }"
-                                formControlName="how_will_affect"
-                            ></textarea>
+                                formControlName="how_will_affect"></textarea>
                             <div *ngIf="submitted && f['how_will_affect'].errors" class="invalid-feedback">
                                 <div *ngIf="f['how_will_affect'].errors['required']">Field is required</div>
                             </div>
@@ -242,12 +180,9 @@
                                     Project Location is required
                                 </div>
                             </div>
-                            <div
-                                formArrayName="project_location"
-                                *ngFor="let item of formProjLocations.controls; index as i"
-                                [attr.data-index]="i"
-                                class="row align-items-center my-2"
-                            >
+                            <div formArrayName="project_location"
+                                *ngFor="let item of formProjLocations.controls; index as i" [attr.data-index]="i"
+                                class="row align-items-center my-2">
                                 <ng-container [formGroupName]="i">
                                     <div class="col-12 col-md-2 my-1">
                                         <p class="font-weight-bold text-dark text-sm p-0 m-0">
@@ -256,59 +191,41 @@
                                         </p>
                                     </div>
                                     <div class="col-12 col-md-4 my-1">
-                                        <app-select
-                                            class="shadow-none"
-                                            [url]="'country'"
-                                            [listItemKey]="'pk'"
+                                        <app-select class="shadow-none" [url]="'country'" [listItemKey]="'pk'"
                                             (onSelectEvent)="onModifyProjLoc($event, 'pk', 'country_pk', i)"
                                             (onDeSelectEvent)="onModifyProjLoc($event, 'pk', 'country_pk', i)"
                                             [defaultSelectedItemKey]="
                                                 formProjLocations.controls.at(i)?.get('country_pk')?.value ?? ''
-                                            "
-                                        ></app-select>
-                                        <div
-                                            *ngIf="
+                                            "></app-select>
+                                        <div *ngIf="
                                                 submitted && formProjLocations.controls.at(i)?.get('country_pk')?.errors
-                                            "
-                                        >
-                                            <div
-                                                *ngIf="formProjLocations.controls.at(i)?.get('country_pk')?.errors"
-                                                class="text-sm text-danger"
-                                            >
+                                            ">
+                                            <div *ngIf="formProjLocations.controls.at(i)?.get('country_pk')?.errors"
+                                                class="text-sm text-danger">
                                                 Country is required
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-12 col-md-4 my-1">
-                                        <app-select
-                                            [key]="i.toString()"
-                                            [listItemKey]="'province_code'"
+                                        <app-select [key]="i.toString()" [listItemKey]="'province_code'"
                                             [changeFieldEventEmitter]="provinceSelectChangeFieldEventEmitter"
                                             (onSelectEvent)="
                                                 onModifyProjLoc($event, 'province_code', 'province_code', i)
-                                            "
-                                            (onDeSelectEvent)="
+                                            " (onDeSelectEvent)="
                                                 onModifyProjLoc($event, 'province_code', 'province_code', i)
-                                            "
-                                            [defaultSelectedItemKey]="
+                                            " [defaultSelectedItemKey]="
                                                 formProjLocations.controls.at(i)?.get('province_code')?.value ?? ''
-                                            "
-                                        >
+                                            ">
                                         </app-select>
-                                        <div
-                                            *ngIf="
+                                        <div *ngIf="
                                                 submitted &&
                                                 formProjLocations.controls.at(i)?.get('province_code')?.errors
-                                            "
-                                        >
-                                            <div
-                                                *ngIf="
+                                            ">
+                                            <div *ngIf="
                                                     formProjLocations.controls?.at(i) &&
                                                     formProjLocations.controls?.at(i)?.get('province_code')?.errors
-                                                "
-                                                class="text-sm text-danger"
-                                            >
+                                                " class="text-sm text-danger">
                                                 Province is required
                                             </div>
                                         </div>
@@ -338,7 +255,9 @@
         </div>
 
         <div class="col-12 col-lg-6">
-            <app-attach-documents (onFileAttached)="saveAttachment($event)"></app-attach-documents>
+            <app-attach-documents [inputAttachments]="attachments"
+                (onFileAttached)="saveAttachment($event)"></app-attach-documents>
+
             <button class="btn bg-info text-white w-100 text-capitalize my-3" type="button" (click)="handleReset()">
                 Reset Form
             </button>

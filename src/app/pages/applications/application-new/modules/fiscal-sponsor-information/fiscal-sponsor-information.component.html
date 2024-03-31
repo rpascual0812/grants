@@ -23,34 +23,25 @@
 
                         <div class="form-group my-3">
                             <label class="font-weight-bold text-dark">Person-in-Charge</label>
-                            <input
-                                formControlName="person_in_charge"
-                                type="text"
-                                class="form-control border rounded-1 p-1"
-                            />
+                            <input formControlName="person_in_charge" type="text"
+                                class="form-control border rounded-1 p-1" />
                         </div>
 
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">Contact number</label>
-                                    <input
-                                        formControlName="contact_number"
-                                        type="tel"
-                                        class="form-control border rounded-1 p-1"
-                                    />
+                                    <input formControlName="contact_number" type="tel"
+                                        class="form-control border rounded-1 p-1" />
                                 </div>
                             </div>
 
                             <div class="col-12 col-md-6">
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">Email Address</label>
-                                    <input
-                                        formControlName="email_address"
-                                        type="email"
+                                    <input formControlName="email_address" type="email"
                                         class="form-control border rounded-1 p-1"
-                                        [ngClass]="{ 'is-invalid': submitted && f['email_address'].errors }"
-                                    />
+                                        [ngClass]="{ 'is-invalid': submitted && f['email_address'].errors }" />
                                     <div *ngIf="submitted && f['email_address'].errors" class="invalid-feedback">
                                         <div *ngIf="f['email_address'].errors['email']">Invalid email address</div>
                                     </div>
@@ -60,33 +51,24 @@
 
                         <div class="form-group my-3">
                             <label class="font-weight-bold text-dark">Bank Account Name</label>
-                            <input
-                                formControlName="bank_account_name"
-                                type="text"
-                                class="form-control border rounded-1 p-1"
-                            />
+                            <input formControlName="bank_account_name" type="text"
+                                class="form-control border rounded-1 p-1" />
                         </div>
 
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">Account Number</label>
-                                    <input
-                                        formControlName="account_number"
-                                        type="text"
-                                        class="form-control border rounded-1 p-1"
-                                    />
+                                    <input formControlName="account_number" type="text"
+                                        class="form-control border rounded-1 p-1" />
                                 </div>
                             </div>
 
                             <div class="col-12 col-md-6">
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">Name of Bank</label>
-                                    <input
-                                        formControlName="bank_name"
-                                        type="text"
-                                        class="form-control border rounded-1 p-1"
-                                    />
+                                    <input formControlName="bank_name" type="text"
+                                        class="form-control border rounded-1 p-1" />
                                 </div>
                             </div>
                         </div>
@@ -95,22 +77,16 @@
                             <div class="col-12 col-md-6">
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">Bank Branch</label>
-                                    <input
-                                        formControlName="bank_branch"
-                                        type="text"
-                                        class="form-control border rounded-1 p-1"
-                                    />
+                                    <input formControlName="bank_branch" type="text"
+                                        class="form-control border rounded-1 p-1" />
                                 </div>
                             </div>
 
                             <div class="col-12 col-md-6">
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">Bank Address</label>
-                                    <input
-                                        formControlName="bank_address"
-                                        type="text"
-                                        class="form-control border rounded-1 p-1"
-                                    />
+                                    <input formControlName="bank_address" type="text"
+                                        class="form-control border rounded-1 p-1" />
                                 </div>
                             </div>
                         </div>
@@ -119,8 +95,11 @@
             </div>
 
             <div class="col-12 col-lg-6">
-                <app-attach-documents></app-attach-documents>
-                <button class="btn bg-info text-white w-100 text-capitalize my-3" type="button" (click)="handleReset()">Reset Form</button>
+                <app-attach-documents [inputAttachments]="attachments"
+                    (onFileAttached)="saveAttachment($event)"></app-attach-documents>
+
+                <button class="btn bg-info text-white w-100 text-capitalize my-3" type="button"
+                    (click)="handleReset()">Reset Form</button>
             </div>
         </div>
 
