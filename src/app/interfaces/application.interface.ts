@@ -393,6 +393,7 @@ export interface ReviewRead {
     message: string;
     flag?: string;
     type: string;
+    resolved?: boolean;
     created_by?: number;
     date_created?: Date;
     archived?: boolean;

@@ -26,14 +26,14 @@
                     {{ review.user.last_name
                     }}</p>
                 <div class="d-flex flex-column flex-md-row gap-1 align-items-md-center">
-                    <p class="m-0" *ngIf="review.flag == 'needs_resolution'">
-                        Flag: Needs resolution
-                        <span class="badge text-bg-danger text-white">Not Yet Started</span>
-                    </p>
-
-                    <p class="m-0" *ngIf="review.flag == 'grantee'">
-                        Flag: Grantee
-                        <span class="badge text-bg-success text-white">Marked as Resolved</span>
+                    <p class="m-0">
+                        Flag:
+                        <span *ngIf="review.flag == 'needs_resolution'">Needs Resolution</span>
+                        <span *ngIf="review.flag == 'grantee'">Grantee</span>
+                        <span class="badge text-bg-danger text-white mx-2" *ngIf="!review.resolved">Not Yet
+                            Started</span>
+                        <span class="badge text-bg-success text-white mx-2" *ngIf="review.resolved">Marked as
+                            Resolved</span>
                     </p>
                     <button class="btn btn-icon-only btn-danger rounded-circle" (click)="delete(i)">
                         <i class="material-icons text-xl">delete</i>
@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <button class="btn btn-white p-1">Mark as Resolved</button>
+                <button (click)="resolve(i)" class="btn btn-white p-1">Mark as Resolved</button>
             </div>
         </div>
     </div>

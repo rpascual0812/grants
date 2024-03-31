@@ -20,10 +20,7 @@ import { formatDate } from '@angular/common';
 })
 export class GrantsTeamReviewComponent implements OnInit {
     @Input() currentApplication: ApplicationRead | null
-    reviews: any = {
-        grants_team_review: []
-    };
-
+    reviews: any = [];
     dateNow = DateTime.now().toFormat('LLLL dd, yyyy');
     user: any = {};
 
@@ -55,9 +52,7 @@ export class GrantsTeamReviewComponent implements OnInit {
 
         if (this.currentApplication?.reviews) {
             this.currentApplication?.reviews.forEach(review => {
-                if (this.reviews[review.type]) {
-                    this.reviews[review.type].push(review);
-                }
+                this.reviews.push(review);
             });
         }
 
@@ -107,7 +102,7 @@ export class GrantsTeamReviewComponent implements OnInit {
                 .subscribe({
                     next: (data: any) => {
                         data.data.user = this.user;
-                        this.reviews.grants_team_review.push(data.data);
+                        this.reviews.push(data.data);
                         this.clear();
                         this.toastr.success('Your review has been successfully saved', 'SUCCESS!');
                     },
@@ -144,7 +139,7 @@ export class GrantsTeamReviewComponent implements OnInit {
     }
 
     delete(i: number) {
-        const review = this.reviews.grants_team_review[i];
+        const review = this.reviews[i];
         _.confirmMessage(
             {
                 title: '<strong>Are you sure you want to delete this application?</strong>',
@@ -160,7 +155,7 @@ export class GrantsTeamReviewComponent implements OnInit {
             () => {
                 this.applicationService.destroyReview(review.pk).subscribe({
                     next: (data: any) => {
-                        this.reviews.grants_team_review.splice(i, 1);
+                        this.reviews.splice(i, 1);
                     },
                     error: (err: HttpErrorResponse) => {
                         const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
@@ -211,7 +206,38 @@ export class GrantsTeamReviewComponent implements OnInit {
                 this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
             },
         });
+    }
 
-
+    resolve(i: number) {
+        _.confirmMessage(
+            {
+                title: '<strong>Are you sure you want to resolve this review?</strong>',
+                icon: 'question',
+                buttons: {
+                    showClose: true,
+                    showCancel: true,
+                    focusConfirm: false,
+                },
+                confirmButtonText: '<i class="fa fa-thumbs-up"></i> Yes',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
+            },
+            () => {
+                const data = {
+                    application_pk: this.currentApplication?.pk,
+                    review_pk: this.reviews[i].pk
+                }
+                this.applicationService.resolveReview(data).subscribe({
+                    next: (data: any) => {
+                        this.reviews[i].resolved = true;
+                        this.toastr.success(`The review has been resolved sucessfully`);
+                    },
+                    error: (err: HttpErrorResponse) => {
+                        const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                        const statusCode = err?.status ? `status: ${err?.status}` : '';
+                        this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
+                    },
+                });
+            }
+        );
     }
 }

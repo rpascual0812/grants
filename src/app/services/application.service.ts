@@ -111,4 +111,8 @@ export class ApplicationService {
     updateRecommendation(data: any) {
         return this.http.post(`${_.BASE_URL}/application/recommendation`, data);
     }
+
+    resolveReview(data: any) {
+        return this.http.post(`${_.BASE_URL}/application/${data.application_pk}/review/${data.review_pk}/resolve`, data);
+    }
 }
