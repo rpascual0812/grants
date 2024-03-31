@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { ProjectOrganizationReference } from 'src/app/interfaces/_application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 
@@ -68,10 +69,8 @@ export class ContactInfoReferencesComponent {
     initialReferences() {
         this.contactReferences = this.form.get('application_reference') as FormArray;
         const currentApplication = this.applicationSignalService?.appForm();
-        const currentReferences =
-            (currentApplication?.application_reference ?? []).length > 0
-                ? currentApplication?.application_reference ?? []
-                : referencesFactory();
+        const partnerOrgReferences = currentApplication?.partner?.organization?.partner_organization_reference ?? [];
+        const currentReferences = partnerOrgReferences.length > 0 ? partnerOrgReferences : referencesFactory();
         currentReferences.forEach((ref) => {
             this.contactReferences.push(
                 this.createFormBeneficiaries(
@@ -101,32 +100,39 @@ export class ContactInfoReferencesComponent {
         });
     }
 
-    saveFormValue(isNavigateNext?: boolean) {
+    saveCurrentAppForm(data: ProjectOrganizationReference[]) {
+        const currentApplication = this.applicationSignalService.appForm();
+        const partner = currentApplication?.partner;
+        const organization = partner?.organization;
+        this.applicationSignalService.appForm.set({
+            ...currentApplication,
+            partner: {
+                ...partner,
+                organization: {
+                    ...organization,
+                    partner_organization_reference: [...data],
+                    pk: organization?.pk,
+                },
+            },
+        });
+    }
+
+    saveFormValue() {
         const { value } = this.form;
         const currentApplication = this.applicationSignalService.appForm();
         this.applicationService
             .saveAppReference({
-                application_pk: currentApplication?.pk,
-                application_reference: value?.application_reference,
+                partner_organization_pk: currentApplication?.pk,
+                partner_organization_reference: value?.application_reference,
             })
             .subscribe({
                 next: (res: any) => {
-                    const data = res?.data;
-                    const status = res.status;
-
+                    const data = res?.data?.partner_organization_reference ?? [];
+                    const status = res?.status;
                     if (status) {
-                        this.applicationSignalService.appForm.set({
-                            ...currentApplication,
-                            application_reference: data?.application_reference,
-                        });
-
+                        this.saveCurrentAppForm(data);
                         this.toastr.success('Contact Reference has been successfully saved', 'SUCCESS!');
-
-                        if (isNavigateNext) {
-                            this.applicationSignalService.submitSave.set(true);
-                        } else {
-                            this.applicationSignalService.navigateBack();
-                        }
+                        this.applicationSignalService.submitSave.set(true);
                     } else {
                         this.toastr.error(
                             `An error occurred while saving Contact Reference. Please try again.`,
@@ -145,19 +151,17 @@ export class ContactInfoReferencesComponent {
             });
     }
 
-    processForm(isNavigateNext?: boolean) {
+    handleSave() {
         this.submitted = true;
         const { status } = this.form;
         if (status === 'VALID') {
-            this.saveFormValue(isNavigateNext);
+            this.saveFormValue();
         }
     }
 
-    handleSave() {
-        this.processForm(true);
-    }
-
     handleBack() {
-        this.processForm();
+        const { value } = this.form;
+        this.saveCurrentAppForm(value?.application_reference ?? []);
+        this.applicationSignalService.navigateBack();
     }
 }

@@ -10,6 +10,7 @@ import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import * as _ from '../../../../../utilities/globals';
 import { DocumentService } from 'src/app/services/document.service';
+import { ApplicationNonProfitEquivalencyDetermination } from 'src/app/interfaces/_application.interface';
 
 @Component({
     selector: 'app-non-profit-equivalency-determination',
@@ -208,8 +209,17 @@ export class NonProfitEquivalencyDeterminationComponent {
         this.form?.controls[key]?.updateValueAndValidity();
     }
 
-    saveFormValue(isNavigateNext?: boolean) {
+    saveCurrentAppForm(data: ApplicationNonProfitEquivalencyDetermination) {
         const currentApplication = this.applicationSignalService.appForm();
+        this.applicationSignalService.appForm.set({
+            ...currentApplication,
+            application_nonprofit_equivalency_determination: {
+                ...data,
+            },
+        });
+    }
+
+    saveFormValue() {
         const { value } = this.form;
         this.applicationService
             .saveApplicationNonProfitEquivalencyDetermination({
@@ -220,23 +230,12 @@ export class NonProfitEquivalencyDeterminationComponent {
                     const data = res?.data;
                     const status = res.status;
                     if (status) {
-                        this.applicationSignalService.appForm.set({
-                            ...currentApplication,
-                            application_nonprofit_equivalency_determination: {
-                                ...data,
-                            },
-                        });
-
+                        this.saveCurrentAppForm(data)
                         this.toastr.success(
                             'Non-Profit Equivalency Determination has been successfully saved',
                             'SUCCESS!'
                         );
-
-                        if (isNavigateNext) {
-                            this.applicationSignalService.navigateNext();
-                        } else {
-                            this.applicationSignalService.navigateBack();
-                        }
+                        this.applicationSignalService.navigateNext();
                     } else {
                         this.toastr.error(
                             `An error occurred while saving Non-Profit Equivalency Determination. Please try again.`,
@@ -262,20 +261,18 @@ export class NonProfitEquivalencyDeterminationComponent {
         this.initialDescriptionsRequired();
     }
 
-    processForm(isNavigateNext?: boolean) {
+    handleNext() {
         this.submitted = true;
         const { status } = this.form;
         if (status === 'VALID') {
-            this.saveFormValue(isNavigateNext);
+            this.saveFormValue();
         }
     }
 
-    handleNext() {
-        this.processForm(true);
-    }
-
     handleBack() {
-        this.processForm();
+        const { value } = this.form
+        this.saveCurrentAppForm(value)
+        this.applicationSignalService.navigateBack()
     }
 
     uploadFiles() {
