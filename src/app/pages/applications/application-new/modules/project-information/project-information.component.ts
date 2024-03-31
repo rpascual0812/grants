@@ -8,6 +8,7 @@ import { GlobalService } from 'src/app/services/global.service';
 import { ChangeFieldEventEmitter, SelectComponent } from 'src/app/components/select/select.component';
 import { ApplicationService } from 'src/app/services/application.service';
 import * as _ from '../../../../../utilities/globals';
+import { Project } from 'src/app/interfaces/_application.interface';
 
 type SelectItem = {
     pk?: number;
@@ -61,7 +62,7 @@ export class ProjectInformationComponent implements OnInit {
         private applicationService: ApplicationService,
         private toastr: ToastrService,
         public bsModalRef: BsModalRef
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.getDurationOpts();
@@ -292,7 +293,22 @@ export class ProjectInformationComponent implements OnInit {
         }
     }
 
-    saveFormValue(isNavigateNext?: boolean) {
+    saveCurrentAppForm(data: Project) {
+        const currentApplication = this.applicationSignalService.appForm();
+        const project = currentApplication?.project;
+        const projectProposal = project?.project_proposal;
+        this.applicationSignalService.appForm.set({
+            ...currentApplication,
+            project: {
+                ...data,
+                pk: data?.pk ?? project?.pk,
+                project_proposal: {
+                    ...projectProposal,
+                },
+            },
+        });
+    }
+    saveFormValue() {
         const currentApplication = this.applicationSignalService.appForm();
         const project = currentApplication?.project;
         const { value } = this.form;
@@ -309,20 +325,9 @@ export class ProjectInformationComponent implements OnInit {
                     const status = res.status;
 
                     if (status) {
-                        this.applicationSignalService.appForm.set({
-                            ...currentApplication,
-                            project: {
-                                ...data,
-                            },
-                        });
-
+                        this.saveCurrentAppForm(data);
                         this.toastr.success('Project Information has been successfully saved', 'SUCCESS!');
-
-                        if (isNavigateNext) {
-                            this.applicationSignalService.navigateNext();
-                        } else {
-                            this.applicationSignalService.navigateBack();
-                        }
+                        this.applicationSignalService.navigateNext();
                     } else {
                         this.toastr.error(
                             `An error occurred while saving Project Information. Please try again.`,
@@ -347,8 +352,6 @@ export class ProjectInformationComponent implements OnInit {
             selectedItems: [],
         });
         this.onChangeSelectedItem([], 'duration');
-        // this.resetBeneficiary();
-        // this.resetProjLoc();
     }
 
     resetBeneficiary() {
@@ -359,20 +362,18 @@ export class ProjectInformationComponent implements OnInit {
         this.projectLoc.reset();
     }
 
-    processForm(isNavigateNext?: boolean) {
+    handleNext() {
         this.submitted = true;
         const { status } = this.form;
         if (status === 'VALID') {
-            this.saveFormValue(isNavigateNext);
+            this.saveFormValue();
         }
     }
 
-    handleNext() {
-        this.processForm(true);
-    }
-
     handleBack() {
-        this.processForm();
+        const { value } = this.form;
+        this.saveCurrentAppForm(value);
+        this.applicationSignalService.navigateBack();
     }
 
     saveAttachment(ev: any) {
@@ -382,7 +383,7 @@ export class ProjectInformationComponent implements OnInit {
                 table_pk: currentApplication?.pk,
                 table_name: 'applications',
                 document_pk: ev.pk,
-                type: 'project_information'
+                type: 'project_information',
             })
             .subscribe({
                 next: (data: any) => {

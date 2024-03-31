@@ -7,6 +7,7 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { ToastrService } from 'ngx-toastr';
 import { DocumentService } from 'src/app/services/document.service';
 import * as _ from '../../../../../utilities/globals';
+import { ProjectProposal } from 'src/app/interfaces/_application.interface';
 
 interface ProposedActivity {
     id: number;
@@ -37,8 +38,8 @@ export class ProposedActivitiesTimelinesComponent {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService,
-        private documentService: DocumentService,
-    ) { }
+        private documentService: DocumentService
+    ) {}
 
     ngOnInit() {
         this.getDurationOpts();
@@ -75,7 +76,7 @@ export class ProposedActivitiesTimelinesComponent {
 
     setForm() {
         const currentApplication = this.applicationSignalService.appForm();
-        const currentProposal = currentApplication?.application_proposal;
+        const currentProposal = currentApplication?.project?.project_proposal;
         this.form = this.formBuilder.group({
             monitor: [currentProposal?.monitor ?? '', Validators.required],
             budget_request_usd: [currentProposal?.budget_request_usd ?? ''],
@@ -93,7 +94,8 @@ export class ProposedActivitiesTimelinesComponent {
     initialActivities() {
         this.activities = this.form.get('application_proposal_activity') as FormArray;
         const currentApplication = this.applicationSignalService.appForm();
-        const currentActivities = currentApplication?.application_proposal?.application_proposal_activity ?? [];
+        const currentProposal = currentApplication?.project?.project_proposal;
+        const currentActivities = currentProposal?.project_proposal_activity ?? [];
         currentActivities.forEach((act) => {
             this.activities.push(this.createFormActivities(act?.pk, act.name, act.duration));
         });
@@ -114,7 +116,7 @@ export class ProposedActivitiesTimelinesComponent {
 
     onDelActivity(idx: number) {
         const currentApplication = this.applicationSignalService.appForm();
-        const proposal = currentApplication?.application_proposal;
+        const proposal = currentApplication?.project?.project_proposal;
         const proposalPk = proposal?.pk ?? null;
         const tempActPk = this.activities.at(idx).get('pk')?.value;
         const activityPk = typeof tempActPk === 'string' || !tempActPk ? null : tempActPk;
@@ -145,7 +147,7 @@ export class ProposedActivitiesTimelinesComponent {
     handleOnSelect($event: string[], idx: number) {
         const name = this.activities?.at(idx)?.get('name')?.value;
         const currentApplication = this.applicationSignalService.appForm();
-        const activities = currentApplication?.application_proposal?.application_proposal_activity ?? [];
+        const activities = currentApplication?.project?.project_proposal?.project_proposal_activity ?? [];
         const activity = activities?.at(idx);
         this.activities?.at(idx)?.setValue({
             pk: activity?.pk ?? '',
@@ -169,37 +171,44 @@ export class ProposedActivitiesTimelinesComponent {
         }
     }
 
-    saveFormValue(isNavigateNext?: boolean) {
+    saveCurrentAppForm(data: ProjectProposal) {
+        const currentApplication = this.applicationSignalService.appForm();
+        const project = currentApplication?.project;
+        const projectProposal = project?.project_proposal;
+        this.applicationSignalService.appForm.set({
+            ...currentApplication,
+            project: {
+                ...project,
+                project_proposal: {
+                    ...data,
+                    pk: data?.pk ?? projectProposal?.pk,
+                    project_proposal_activity: [...(data?.project_proposal_activity ?? [])],
+                },
+            },
+        });
+    }
+
+    saveFormValue() {
         const { value } = this.form;
         const currentApplication = this.applicationSignalService.appForm();
-        const proposal = currentApplication?.application_proposal;
+        const currentProject = currentApplication?.project;
+        const projectProposal = currentProject?.project_proposal;
 
         this.applicationService
             .saveApplicationProposal({
-                pk: proposal?.pk,
-                application_pk: currentApplication?.pk,
+                pk: projectProposal?.pk,
+                project_pk: currentProject?.pk,
                 ...value,
-                application_proposal_activity: value?.application_proposal_activity ?? [],
+                project_proposal_activity: value?.application_proposal_activity ?? [],
             })
             .subscribe({
                 next: (res: any) => {
                     const data = res?.data;
                     const status = res.status;
                     if (status) {
-                        this.applicationSignalService.appForm.set({
-                            ...currentApplication,
-                            application_proposal: {
-                                ...data,
-                            },
-                        });
-
+                        this.saveCurrentAppForm(data);
                         this.toastr.success('Application Proposal has been successfully saved', 'SUCCESS!');
-
-                        if (isNavigateNext) {
-                            this.applicationSignalService.navigateNext();
-                        } else {
-                            this.applicationSignalService.navigateBack();
-                        }
+                        this.applicationSignalService.navigateNext();
                     } else {
                         this.toastr.error(
                             `An error occurred while saving Application Proposal. Please try again.`,
@@ -220,23 +229,23 @@ export class ProposedActivitiesTimelinesComponent {
 
     handleReset() {
         this.form.reset();
-        // this.activities.clear();
-    }
-
-    processForm(isNavigateNext?: boolean) {
-        this.submitted = true;
-        const { status } = this.form;
-        if (status === 'VALID') {
-            this.saveFormValue(isNavigateNext);
-        }
     }
 
     handleNext() {
-        this.processForm(true);
+        this.submitted = true;
+        const { status } = this.form;
+        if (status === 'VALID') {
+            this.saveFormValue();
+        }
     }
 
     handleBack() {
-        this.processForm();
+        const { value } = this.form;
+        this.saveCurrentAppForm({
+            ...value,
+            project_proposal_activity: value?.application_proposal_activity ?? [],
+        });
+        this.applicationSignalService.navigateBack();
     }
 
     saveAttachment(ev: any) {
@@ -246,7 +255,7 @@ export class ProposedActivitiesTimelinesComponent {
                 table_pk: currentApplication?.pk,
                 table_name: 'applications',
                 document_pk: ev.pk,
-                type: 'proposed_activities_and_timeline'
+                type: 'proposed_activities_and_timeline',
             })
             .subscribe({
                 next: (data: any) => {

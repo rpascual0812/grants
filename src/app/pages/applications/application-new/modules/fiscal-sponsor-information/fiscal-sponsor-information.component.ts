@@ -5,6 +5,7 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import * as _ from '../../../../../utilities/globals';
 import { DocumentService } from 'src/app/services/document.service';
+import { PartnerFiscalSponsor } from 'src/app/interfaces/_application.interface';
 
 @Component({
     selector: 'app-fiscal-sponsor-information',
@@ -23,8 +24,8 @@ export class FiscalSponsorInformationComponent {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService,
-        private documentService: DocumentService,
-    ) { }
+        private documentService: DocumentService
+    ) {}
 
     ngOnInit() {
         this.setForm();
@@ -41,9 +42,8 @@ export class FiscalSponsorInformationComponent {
 
     setForm() {
         const currentApplication = this.applicationSignalService.appForm();
-        const appFiscalSponsor = currentApplication?.application_fiscal_sponsor;
+        const appFiscalSponsor = currentApplication?.partner?.partner_fiscal_sponsor;
         this.form = this.formBuilder.group({
-            application_pk: [currentApplication?.pk],
             pk: [appFiscalSponsor?.pk],
             name: [appFiscalSponsor?.name ?? ''],
             address: [appFiscalSponsor?.address ?? ''],
@@ -63,11 +63,29 @@ export class FiscalSponsorInformationComponent {
         return this.form.controls;
     }
 
-    saveFormValue(isNavigateNext?: boolean) {
+    saveCurrentAppForm(data: PartnerFiscalSponsor) {
         const currentApplication = this.applicationSignalService.appForm();
+        const partner = currentApplication?.partner;
+        const partnerFiscalSponsor = partner?.partner_fiscal_sponsor;
+        this.applicationSignalService.appForm.set({
+            ...currentApplication,
+            partner: {
+                ...partner,
+                partner_fiscal_sponsor: {
+                    ...data,
+                    pk: data?.pk ?? partnerFiscalSponsor?.pk,
+                },
+            },
+        });
+    }
+
+    saveFormValue() {
+        const currentApplication = this.applicationSignalService.appForm();
+        const partner = currentApplication?.partner;
         const { value } = this.form;
         this.applicationService
             .saveApplicationFiscalSponsor({
+                partner_pk: partner?.pk,
                 ...value,
             })
             .subscribe({
@@ -75,20 +93,9 @@ export class FiscalSponsorInformationComponent {
                     const data = res?.data;
                     const status = res.status;
                     if (status) {
-                        this.applicationSignalService.appForm.set({
-                            ...currentApplication,
-                            application_fiscal_sponsor: {
-                                ...data,
-                            },
-                        });
-
+                        this.saveCurrentAppForm(data);
                         this.toastr.success('Fiscal Sponsor Information has been successfully saved', 'SUCCESS!');
-
-                        if (isNavigateNext) {
-                            this.applicationSignalService.navigateNext();
-                        } else {
-                            this.applicationSignalService.navigateBack();
-                        }
+                        this.applicationSignalService.navigateNext();
                     } else {
                         this.toastr.error(
                             `An error occurred while saving Fiscal Sponsor Information. Please try again.`,
@@ -111,20 +118,18 @@ export class FiscalSponsorInformationComponent {
         this.form.reset();
     }
 
-    processForm(isNavigateNext?: boolean) {
+    handleNext() {
         this.submitted = true;
         const { status } = this.form;
         if (status === 'VALID') {
-            this.saveFormValue(isNavigateNext);
+            this.saveFormValue();
         }
     }
 
-    handleNext() {
-        this.processForm(true);
-    }
-
     handleBack() {
-        this.processForm();
+        const { value } = this.form;
+        this.saveCurrentAppForm(value);
+        this.applicationSignalService.navigateBack();
     }
 
     saveAttachment(ev: any) {
@@ -134,7 +139,7 @@ export class FiscalSponsorInformationComponent {
                 table_pk: currentApplication?.pk,
                 table_name: 'applications',
                 document_pk: ev.pk,
-                type: 'fiscal_sponsor_information'
+                type: 'fiscal_sponsor_information',
             })
             .subscribe({
                 next: (data: any) => {

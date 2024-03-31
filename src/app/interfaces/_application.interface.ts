@@ -10,10 +10,8 @@ export interface Application {
     archived?: boolean;
     partner?: Partner;
     project?: Project;
-    application_proposal?: ApplicationProposal;
-    application_fiscal_sponsor?: ApplicationFiscalSponsor;
     application_nonprofit_equivalency_determination?: ApplicationNonProfitEquivalencyDetermination;
-    application_reference?: ApplicationReference[];
+    // application_reference?: ApplicationReference[];
     reviews?: Review[];
     documents?: Document[];
     recommendations?: Recommendation[];
@@ -30,6 +28,7 @@ export interface Partner {
     date_created?: Date;
     archived?: boolean;
     organization?: Organization;
+    partner_fiscal_sponsor?: PartnerFiscalSponsor;
     contacts?: Contact[];
 }
 
@@ -55,13 +54,14 @@ export interface Organization {
     fisherfolks?: boolean;
     mission?: string;
     vision?: string;
+    partner_organization_reference?: ProjectOrganizationReference[];
     description?: string;
     country_pk?: number;
     project_website?: string;
     date_created?: Date;
 }
 
-export interface ApplicationFiscalSponsor {
+export interface PartnerFiscalSponsor {
     pk?: number;
     application_pk?: number;
     name?: string;
@@ -115,7 +115,8 @@ export interface Project {
     status_pk?: number;
     type_pk?: number;
     date_created?: Date;
-    project_beneficiary: ProjectBeneficiary[];
+    project_proposal?: ProjectProposal;
+    project_beneficiary?: ProjectBeneficiary[];
     project_location?: ProjectLocation[];
 }
 
@@ -145,7 +146,7 @@ export interface OperatedFor {
     education_purpose?: boolean;
 }
 
-export interface ApplicationProposal {
+export interface ProjectProposal {
     pk?: number;
     application_pk?: number;
     monitor?: string;
@@ -153,10 +154,10 @@ export interface ApplicationProposal {
     budget_request_other?: string;
     budget_request_other_currency?: string;
     date_created?: Date;
-    application_proposal_activity?: ApplicationProposalActivity[];
+    project_proposal_activity?: ProjectProposalActivity[];
 }
 
-export interface ApplicationProposalActivity {
+export interface ProjectProposalActivity {
     pk?: number;
     application_proposal_pk?: number;
     name?: string;
@@ -164,7 +165,7 @@ export interface ApplicationProposalActivity {
     date_created?: Date;
 }
 
-export interface ApplicationReference {
+export interface ProjectOrganizationReference {
     pk?: number;
     application_pk?: number;
     name?: string;

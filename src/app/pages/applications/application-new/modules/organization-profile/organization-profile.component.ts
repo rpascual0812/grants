@@ -1,3 +1,4 @@
+import { Organization } from './../../../../../interfaces/_application.interface';
 import { Component, EventEmitter, OnInit, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -8,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { DocumentService } from 'src/app/services/document.service';
 import * as _ from '../../../../../utilities/globals';
+import { Partner } from 'src/app/interfaces/_application.interface';
 
 type SelectItem = {
     pk: number;
@@ -41,7 +43,7 @@ export class OrganizationProfileComponent implements OnInit {
         private applicationService: ApplicationService,
         private documentService: DocumentService,
         private toastr: ToastrService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.setForm();
@@ -174,7 +176,29 @@ export class OrganizationProfileComponent implements OnInit {
         this.form.controls[key].setValue(value === 'true' ? true : false);
     }
 
-    saveFormValue(isNavigateNext?: boolean) {
+    saveCurrentAppForm(data: Partner) {
+        const currentApplication = this.applicationSignalService.appForm();
+        const partner = currentApplication?.partner;
+        const organization = partner?.organization;
+        const partnerOrganizationReference = organization?.partner_organization_reference ?? [];
+        const partnerFiscalSponsor = partner?.partner_fiscal_sponsor;
+        this.applicationSignalService.appForm.set({
+            ...currentApplication,
+            partner: {
+                ...currentApplication?.partner,
+                organization: {
+                    ...data,
+                    pk: organization?.pk,
+                    partner_organization_reference: [...partnerOrganizationReference],
+                },
+                partner_fiscal_sponsor: {
+                    ...partnerFiscalSponsor,
+                },
+            },
+        });
+    }
+
+    saveFormValue() {
         this.processing = true;
         const currentApplication = this.applicationSignalService.appForm();
         const { value } = this.form;
@@ -188,23 +212,9 @@ export class OrganizationProfileComponent implements OnInit {
                     const data = res?.data;
                     const status = res.status;
                     if (status) {
-                        this.applicationSignalService.appForm.set({
-                            ...currentApplication,
-                            partner: {
-                                ...currentApplication?.partner,
-                                organization: {
-                                    ...data,
-                                },
-                            },
-                        });
-
+                        this.saveCurrentAppForm(data);
                         this.toastr.success('Organization Profile has been successfully saved', 'SUCCESS!');
-
-                        if (isNavigateNext) {
-                            this.applicationSignalService.navigateNext();
-                        } else {
-                            this.applicationSignalService.navigateBack();
-                        }
+                        this.applicationSignalService.navigateNext();
                     } else {
                         this.toastr.error(
                             `An error occurred while saving Proponent Information. Please try again.`,
@@ -223,20 +233,17 @@ export class OrganizationProfileComponent implements OnInit {
             });
     }
 
-    processForm(isNavigateNext?: boolean) {
-        this.submitted = true;
+    handleNext() {
         const { status } = this.form;
         if (status === 'VALID') {
-            this.saveFormValue(isNavigateNext);
+            this.saveFormValue();
         }
     }
 
-    handleNext() {
-        this.processForm(true);
-    }
-
     handleBack() {
-        this.processForm();
+        const { value } = this.form;
+        this.saveCurrentAppForm(value);
+        this.applicationSignalService.navigateBack();
     }
 
     handleReset() {
@@ -258,7 +265,7 @@ export class OrganizationProfileComponent implements OnInit {
                 table_pk: currentApplication?.pk,
                 table_name: 'applications',
                 document_pk: ev.pk,
-                type: 'organization_profile'
+                type: 'organization_profile',
             })
             .subscribe({
                 next: (data: any) => {

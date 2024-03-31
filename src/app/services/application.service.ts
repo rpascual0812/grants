@@ -2,9 +2,9 @@ import { Injectable, Signal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as _ from '../utilities/globals';
 import {
-    ApplicationFiscalSponsor,
-    ApplicationProposal,
-    ApplicationReference,
+    PartnerFiscalSponsor,
+    ProjectProposal,
+    ProjectOrganizationReference,
     Organization,
     Partner,
     Project,
@@ -59,7 +59,7 @@ export class ApplicationService {
         return this.http.post(`${_.BASE_URL}/application/partner_organization`, data);
     }
 
-    saveApplicationFiscalSponsor(data: ApplicationFiscalSponsor) {
+    saveApplicationFiscalSponsor(data: PartnerFiscalSponsor) {
         return this.http.post(`${_.BASE_URL}/application/fiscal_sponsor`, data);
     }
 
@@ -71,13 +71,13 @@ export class ApplicationService {
         return this.http.post(`${_.BASE_URL}/application/project`, data);
     }
 
-    saveApplicationProposal(data: ApplicationProposal) {
+    saveApplicationProposal(data: ProjectProposal) {
         return this.http.post(`${_.BASE_URL}/application/proposal`, data);
     }
 
     saveAppReference(data: {
-        application_pk?: number,
-        application_reference: ApplicationReference[]
+        partner_organization_pk?: number,
+        partner_organization_reference: ProjectOrganizationReference[]
     }) {
         return this.http.post(`${_.BASE_URL}/application/reference`, data);
     }
