@@ -15,103 +15,64 @@
                                     <div class="col-12 col-md-8">
                                         <div class="form-group my-3">
                                             <label class="font-weight-bold text-dark">Project Title</label>
-                                            <input
-                                                formControlName="title"
-                                                type="text"
-                                                class="form-control border rounded-1 p-1"
-                                                required
-                                            />
+                                            <input formControlName="title" type="text"
+                                                class="form-control border rounded-1 p-1" required />
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-4">
                                         <div class="form-group my-3">
                                             <label class="font-weight-bold text-dark">Duration</label>
-                                            <app-select
-                                                class="shadow-none"
-                                                [arr]="durationOpts"
+                                            <app-select class="shadow-none" [arr]="durationOpts"
                                                 (onSelectEvent)="onChangeSelectedItem($event, 'duration')"
                                                 (onDeSelectEvent)="onChangeSelectedItem($event, 'duration')"
                                                 [defaultSelectedInArr]="
                                                     durationOpts.includes(form.controls['duration'].value ?? '')
                                                         ? form.controls['duration'].value
                                                         : null
-                                                "
-                                            ></app-select>
+                                                "></app-select>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark"
-                                        >Background/What is the problem to be addressed?</label
-                                    >
-                                    <textarea
-                                        type="text"
-                                        rows="5"
-                                        class="form-control border rounded-1 p-2"
-                                        style="resize: none"
-                                        required
-                                        formControlName="background"
-                                    ></textarea>
+                                    <label class="font-weight-bold text-dark">Background/What is the problem to be
+                                        addressed?</label>
+                                    <textarea type="text" rows="5" class="form-control border rounded-1 p-2"
+                                        style="resize: none" required formControlName="background"></textarea>
                                 </div>
 
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">Objectives*</label>
-                                    <textarea
-                                        type="text"
-                                        rows="5"
-                                        class="form-control border rounded-1 p-2"
-                                        style="resize: none"
-                                        required
-                                        formControlName="objective"
-                                    ></textarea>
+                                    <textarea type="text" rows="5" class="form-control border rounded-1 p-2"
+                                        style="resize: none" required formControlName="objective"></textarea>
                                 </div>
 
                                 <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark"
-                                        >Expected outputs/How will the proposed project activities improve?</label
-                                    >
-                                    <textarea
-                                        type="text"
-                                        rows="5"
-                                        class="form-control border rounded-1 p-2"
-                                        style="resize: none"
-                                        required
-                                        formControlName="expected_output"
-                                    ></textarea>
+                                    <label class="font-weight-bold text-dark">Expected outputs/How will the proposed
+                                        project activities improve?</label>
+                                    <textarea type="text" rows="5" class="form-control border rounded-1 p-2"
+                                        style="resize: none" required formControlName="expected_output"></textarea>
                                 </div>
 
                                 <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark"
-                                        >How will women and children be involved in the project? How will the benefit or
-                                        be affected by the other project?</label
-                                    >
-                                    <textarea
-                                        type="text"
-                                        rows="5"
-                                        class="form-control border rounded-1 p-2"
-                                        style="resize: none"
-                                        required
-                                        formControlName="how_will_affect"
-                                    ></textarea>
+                                    <label class="font-weight-bold text-dark">How will women and children be involved in
+                                        the project? How will the benefit or
+                                        be affected by the other project?</label>
+                                    <textarea type="text" rows="5" class="form-control border rounded-1 p-2"
+                                        style="resize: none" required formControlName="how_will_affect"></textarea>
                                 </div>
 
                                 <div class="container">
                                     <p class="text-dark font-weight-bold p-0">Project Location</p>
                                     <div *ngIf="submitted && f['project_locations'].errors">
-                                        <div
-                                            *ngIf="f['project_locations'].errors['required']"
-                                            class="text-sm text-danger"
-                                        >
+                                        <div *ngIf="f['project_locations'].errors['required']"
+                                            class="text-sm text-danger">
                                             Project Location is required
                                         </div>
                                     </div>
-                                    <div
-                                        formArrayName="project_locations"
+                                    <div formArrayName="project_locations"
                                         *ngFor="let item of formProjLocations.controls; index as i"
-                                        [attr.data-index]="i"
-                                        class="row align-items-center my-2"
-                                    >
+                                        [attr.data-index]="i" class="row align-items-center my-2">
                                         <ng-container [formGroupName]="i">
                                             <div class="col-12 col-md-2 my-1">
                                                 <p class="font-weight-bold text-dark text-sm p-0 m-0">
@@ -119,91 +80,64 @@
                                                 </p>
                                             </div>
                                             <div class="col-12 col-md-4 my-1">
-                                                <app-select
-                                                    class="shadow-none"
-                                                    [url]="'country'"
-                                                    [listItemKey]="'pk'"
+                                                <app-select class="shadow-none" [url]="'country'" [listItemKey]="'pk'"
                                                     (onSelectEvent)="onModifyProjLoc($event, 'pk', 'country_pk', i)"
                                                     (onDeSelectEvent)="onModifyProjLoc($event, 'pk', 'country_pk', i)"
                                                     [defaultSelectedItemKey]="
                                                         formProjLocations.controls.at(i)?.get('country_pk')?.value ?? ''
-                                                    "
-                                                ></app-select>
-                                                <div
-                                                    *ngIf="
+                                                    "></app-select>
+                                                <div *ngIf="
                                                         submitted &&
                                                         formProjLocations.controls.at(i)?.get('country_pk')?.errors
-                                                    "
-                                                >
-                                                    <div
-                                                        *ngIf="
+                                                    ">
+                                                    <div *ngIf="
                                                             formProjLocations.controls.at(i)?.get('country_pk')?.errors
-                                                        "
-                                                        class="text-sm text-danger"
-                                                    >
+                                                        " class="text-sm text-danger">
                                                         Country is required
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-4 my-1">
-                                                <app-select
-                                                    *ngIf="
+                                                <app-select *ngIf="
                                                         !formProjLocations.controls.at(i)?.get('country_pk')?.value ||
                                                         formProjLocations.controls.at(i)?.get('province_code_url')
                                                             ?.value === provinceUrlFetchStatus.notReady
-                                                    "
-                                                    [arr]="[]"
-                                                    [disabled]="
+                                                    " [arr]="[]" [disabled]="
                                                         isNotValidKeyNumber(
                                                             formProjLocations.controls.at(i)?.get('country_pk')
                                                                 ?.value ?? ''
                                                         )
-                                                    "
-                                                >
+                                                    ">
                                                 </app-select>
-                                                <app-select
-                                                    *ngIf="
+                                                <app-select *ngIf="
                                                         formProjLocations.controls.at(i)?.get('country_pk')?.value &&
                                                         formProjLocations.controls.at(i)?.get('province_code_url')
                                                             ?.value === provinceUrlFetchStatus.ready
-                                                    "
-                                                    class="shadow-none"
-                                                    [disabled]="
+                                                    " class="shadow-none" [disabled]="
                                                         isNotValidKeyNumber(
                                                             formProjLocations.controls.at(i)?.get('country_pk')
                                                                 ?.value ?? ''
                                                         )
-                                                    "
-                                                    [url]="
+                                                    " [url]="
                                                         'province?country_pk=' +
                                                         formProjLocations.controls.at(i)?.get('country_pk')?.value
-                                                    "
-                                                    [listItemKey]="'province_code'"
-                                                    (onSelectEvent)="
+                                                    " [listItemKey]="'province_code'" (onSelectEvent)="
                                                         onModifyProjLoc($event, 'province_code', 'province_code', i)
-                                                    "
-                                                    (onDeSelectEvent)="
+                                                    " (onDeSelectEvent)="
                                                         onModifyProjLoc($event, 'province_code', 'province_code', i)
-                                                    "
-                                                    [defaultSelectedItemKey]="
+                                                    " [defaultSelectedItemKey]="
                                                         formProjLocations.controls.at(i)?.get('province_code')?.value ??
                                                         ''
-                                                    "
-                                                ></app-select>
-                                                <div
-                                                    *ngIf="
+                                                    "></app-select>
+                                                <div *ngIf="
                                                         submitted &&
                                                         formProjLocations.controls.at(i)?.get('province_code')?.errors
-                                                    "
-                                                >
-                                                    <div
-                                                        *ngIf="
+                                                    ">
+                                                    <div *ngIf="
                                                             formProjLocations.controls?.at(i) &&
                                                             formProjLocations.controls?.at(i)?.get('province_code')
                                                                 ?.errors
-                                                        "
-                                                        class="text-sm text-danger"
-                                                    >
+                                                        " class="text-sm text-danger">
                                                         Province is required
                                                     </div>
                                                 </div>
@@ -224,14 +158,10 @@
                                     </button>
 
                                     <div class="form-group my-3">
-                                        <label class="font-weight-bold text-dark"
-                                            >Website of Project/Organization</label
-                                        >
-                                        <input
-                                            formControlName="project_website"
-                                            type="text"
-                                            class="form-control border rounded-1 p-1"
-                                        />
+                                        <label class="font-weight-bold text-dark">Website of
+                                            Project/Organization</label>
+                                        <input formControlName="project_website" type="text"
+                                            class="form-control border rounded-1 p-1" />
                                     </div>
                                 </div>
                             </div>
@@ -242,15 +172,9 @@
                                 <h5 class="card-title">Proposed Activities and Timeline</h5>
                                 <div class="form-group my-3">
                                     <label class="font-weight-bold text-dark">How will you monitor the project?*</label>
-                                    <textarea
-                                        type="text"
-                                        rows="5"
-                                        class="form-control border rounded-1 p-2"
-                                        style="resize: none"
-                                        formControlName="monitor"
-                                        required
-                                        [ngClass]="{ 'is-invalid': submitted && f['monitor'].errors }"
-                                    ></textarea>
+                                    <textarea type="text" rows="5" class="form-control border rounded-1 p-2"
+                                        style="resize: none" formControlName="monitor" required
+                                        [ngClass]="{ 'is-invalid': submitted && f['monitor'].errors }"></textarea>
                                     <div *ngIf="submitted && f['monitor'].errors" class="invalid-feedback">
                                         <div *ngIf="f['monitor'].errors['required']">Field is required</div>
                                     </div>
@@ -259,22 +183,18 @@
                                     <label class="font-weight-bold text-dark">Budget Request</label>
                                     <div class="row">
                                         <div class="col-6">
-                                            <app-input-dropdown
-                                                [data]="usdCurrencies"
+                                            <app-input-dropdown [data]="usdCurrencies"
                                                 [defaultSelected]="usdCurrencies.at(0)?.key"
                                                 [inputValue]="f['budget_request_usd'].value ?? ''"
                                                 (inputValueChange)="onInputValueChange($event, 'budget_request_usd')"
-                                                [disabledDropdown]="true"
-                                            ></app-input-dropdown>
+                                                [disabledDropdown]="true"></app-input-dropdown>
                                         </div>
                                         <div class="col-6">
-                                            <app-input-dropdown
-                                                [data]="availableCurrencies"
+                                            <app-input-dropdown [data]="availableCurrencies"
                                                 [defaultSelected]="otherCurrenciesDefaultSelected.budget_request_other"
                                                 [inputValue]="form.controls['budget_request_other'].value ?? ''"
                                                 (onSelectItem)="onSelectItemDropdown($event, 'budget_request_other')"
-                                                (inputValueChange)="onInputValueChange($event, 'budget_request_other')"
-                                            ></app-input-dropdown>
+                                                (inputValueChange)="onInputValueChange($event, 'budget_request_other')"></app-input-dropdown>
                                         </div>
                                     </div>
                                 </div>
@@ -287,21 +207,13 @@
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group my-3">
-                                            <label class="font-weight-bold text-dark"
-                                                >Your Organization was formed*</label
-                                            >
-                                            <input
-                                                class="form-control border rounded-1 p-1"
-                                                type="number"
-                                                min="1900"
-                                                max="2099"
-                                                step="1"
-                                                #datepickerFull="bsDatepicker"
-                                                bsDatepicker
+                                            <label class="font-weight-bold text-dark">Your Organization was
+                                                formed*</label>
+                                            <input class="form-control border rounded-1 p-1" type="number" min="1900"
+                                                max="2099" step="1" #datepickerFull="bsDatepicker" bsDatepicker
                                                 formControlName="year"
                                                 [ngClass]="{ 'is-invalid': submitted && f['year'].errors }"
-                                                [bsConfig]="{ dateInputFormat: 'YYYY', minMode: 'year' }"
-                                            />
+                                                [bsConfig]="{ dateInputFormat: 'YYYY', minMode: 'year' }" />
                                             <div *ngIf="submitted && f['year'].errors" class="invalid-feedback">
                                                 <div *ngIf="f['year'].errors['required']">Year is required</div>
                                             </div>
@@ -326,21 +238,14 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <input
-                                                    type="number"
-                                                    class="form-control border border-end-0 rounded-1 p-1"
-                                                    required
-                                                    formControlName="financial_last_year_usd"
-                                                    [ngClass]="{
+                                                <input type="number" min="0"
+                                                    class="form-control border border-end-0 rounded-1 p-1" required
+                                                    formControlName="financial_last_year_usd" [ngClass]="{
                                                         'is-invalid': submitted && f['financial_last_year_usd'].errors
-                                                    }"
-                                                    required
-                                                />
+                                                    }" required />
                                                 <div class="border border-start-0 border-end-1 p-1 text-sm">USD</div>
-                                                <div
-                                                    *ngIf="submitted && f['financial_last_year_usd'].errors"
-                                                    class="invalid-feedback"
-                                                >
+                                                <div *ngIf="submitted && f['financial_last_year_usd'].errors"
+                                                    class="invalid-feedback">
                                                     <div *ngIf="f['financial_last_year_usd'].errors['required']">
                                                         Field is required
                                                     </div>
@@ -351,24 +256,17 @@
 
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
-                                            <app-input-dropdown
-                                                [data]="availableCurrencies"
-                                                [defaultSelected]="
+                                            <app-input-dropdown [data]="availableCurrencies" [defaultSelected]="
                                                     otherCurrenciesDefaultSelected.financial_last_year_other
-                                                "
-                                                [inputValue]="f['financial_last_year_other'].value ?? ''"
+                                                " [inputValue]="f['financial_last_year_other'].value ?? ''"
                                                 (onSelectItem)="
                                                     onSelectItemDropdown($event, 'financial_last_year_other')
-                                                "
-                                                (inputValueChange)="
+                                                " (inputValueChange)="
                                                     onInputValueChange($event, 'financial_last_year_other')
-                                                "
-                                            ></app-input-dropdown>
+                                                "></app-input-dropdown>
                                             <div *ngIf="submitted && f['financial_last_year_other'].errors">
-                                                <div
-                                                    class="text-danger text-sm my-1"
-                                                    *ngIf="f['financial_last_year_other'].errors['required']"
-                                                >
+                                                <div class="text-danger text-sm my-1"
+                                                    *ngIf="f['financial_last_year_other'].errors['required']">
                                                     Field is required
                                                 </div>
                                             </div>
@@ -381,20 +279,14 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <input
-                                                    type="number"
-                                                    class="form-control border border-end-0 rounded-1 p-1"
-                                                    required
-                                                    formControlName="financial_current_usd"
-                                                    [ngClass]="{
+                                                <input type="number" min="0"
+                                                    class="form-control border border-end-0 rounded-1 p-1" required
+                                                    formControlName="financial_current_usd" [ngClass]="{
                                                         'is-invalid': submitted && f['financial_current_usd'].errors
-                                                    }"
-                                                />
+                                                    }" />
                                                 <div class="border border-start-0 border-end-1 p-1 text-sm">USD</div>
-                                                <div
-                                                    *ngIf="submitted && f['financial_current_usd'].errors"
-                                                    class="invalid-feedback"
-                                                >
+                                                <div *ngIf="submitted && f['financial_current_usd'].errors"
+                                                    class="invalid-feedback">
                                                     <div *ngIf="f['financial_current_usd'].errors['required']">
                                                         Field is required
                                                     </div>
@@ -404,22 +296,16 @@
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
-                                            <app-input-dropdown
-                                                [data]="availableCurrencies"
-                                                [defaultSelected]="
+                                            <app-input-dropdown [data]="availableCurrencies" [defaultSelected]="
                                                     otherCurrenciesDefaultSelected.financial_current_other
-                                                "
-                                                [inputValue]="f['financial_current_other'].value ?? ''"
+                                                " [inputValue]="f['financial_current_other'].value ?? ''"
                                                 (onSelectItem)="onSelectItemDropdown($event, 'financial_current_other')"
                                                 (inputValueChange)="
                                                     onInputValueChange($event, 'financial_current_other')
-                                                "
-                                            ></app-input-dropdown>
+                                                "></app-input-dropdown>
                                             <div *ngIf="submitted && f['financial_current_other'].errors">
-                                                <div
-                                                    class="text-danger text-sm my-1"
-                                                    *ngIf="f['financial_current_other'].errors['required']"
-                                                >
+                                                <div class="text-danger text-sm my-1"
+                                                    *ngIf="f['financial_current_other'].errors['required']">
                                                     Field is required
                                                 </div>
                                             </div>
@@ -428,20 +314,12 @@
                                 </div>
 
                                 <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark"
-                                        >Officers of the Organization or Community Leaders*</label
-                                    >
-                                    <textarea
-                                        type="text"
-                                        rows="5"
-                                        class="form-control border rounded-1 p-2"
-                                        style="resize: none"
-                                        required
-                                        formControlName="officers"
-                                        [ngClass]="{
+                                    <label class="font-weight-bold text-dark">Officers of the Organization or Community
+                                        Leaders*</label>
+                                    <textarea type="text" rows="5" class="form-control border rounded-1 p-2"
+                                        style="resize: none" required formControlName="officers" [ngClass]="{
                                             'is-invalid': submitted && f['officers'].errors
-                                        }"
-                                    ></textarea>
+                                        }"></textarea>
 
                                     <!-- <div *ngIf="submitted && f['officers'].errors" class="invalid-feedback">
                                         <div *ngIf="f['officers'].errors['required']">Field is required</div>
@@ -449,20 +327,12 @@
                                 </div>
 
                                 <div class="form-group my-3">
-                                    <label class="font-weight-bold text-dark"
-                                        >Name of members of the Board of the government body*</label
-                                    >
-                                    <textarea
-                                        type="text"
-                                        rows="5"
-                                        class="form-control border rounded-1 p-2"
-                                        style="resize: none"
-                                        required
-                                        formControlName="members"
-                                        [ngClass]="{
+                                    <label class="font-weight-bold text-dark">Name of members of the Board of the
+                                        government body*</label>
+                                    <textarea type="text" rows="5" class="form-control border rounded-1 p-2"
+                                        style="resize: none" required formControlName="members" [ngClass]="{
                                             'is-invalid': submitted && f['members'].errors
-                                        }"
-                                    ></textarea>
+                                        }"></textarea>
                                     <!-- <div *ngIf="submitted && f['members'].errors" class="invalid-feedback">
                                         <div *ngIf="f['members'].errors['required']">Field is required</div>
                                     </div> -->

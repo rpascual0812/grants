@@ -44,8 +44,9 @@
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="number" class="form-control border border-end-0 rounded-1 p-1"
-                                            required formControlName="financial_last_year_usd" [ngClass]="{
+                                        <input type="number" min="0"
+                                            class="form-control border border-end-0 rounded-1 p-1" required
+                                            formControlName="financial_last_year_usd" [ngClass]="{
                                                 'is-invalid': submitted && f['financial_last_year_usd'].errors
                                             }" />
                                         <div class="border border-start-0 border-end-1 p-1 text-sm">USD</div>
@@ -93,8 +94,9 @@
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="number" class="form-control border border-end-0 rounded-1 p-1"
-                                            required formControlName="financial_current_usd" [ngClass]="{
+                                        <input type="number" min="0"
+                                            class="form-control border border-end-0 rounded-1 p-1" required
+                                            formControlName="financial_current_usd" [ngClass]="{
                                                 'is-invalid': submitted && f['financial_current_usd'].errors
                                             }" />
                                         <div class="border border-start-0 border-end-1 p-1 text-sm">USD</div>

@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import { ApplicationRead } from 'src/app/interfaces/application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
+import * as _ from '../../../../../utilities/globals';
 
 @Component({
     selector: 'app-medium-grants',
@@ -17,6 +18,8 @@ export class MediumGrantsComponent implements OnInit {
         additional_information: [],
         management_capacity: []
     };
+
+    SERVER: string = _.BASE_URL;
 
     constructor(
         public documentUploaderRef: BsModalRef,
@@ -61,5 +64,40 @@ export class MediumGrantsComponent implements OnInit {
                     console.log('Complete');
                 }
             });
+    }
+
+    deleteAttachment(i: number, type: string) {
+        _.confirmMessage(
+            {
+                title: '<strong>Are you sure you want to delete this attachment?</strong>',
+                icon: 'question',
+                buttons: {
+                    showClose: true,
+                    showCancel: true,
+                    focusConfirm: false,
+                },
+                confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
+            },
+            () => {
+                this.applicationService
+                    .deleteApplicationAttachment({ application_pk: this.currentApplication?.pk, document_pk: this.attachments[type][i].pk })
+                    .subscribe({
+                        next: (data: any) => {
+                            if (data.status) {
+                                this.attachments[type].splice(i, 1);
+                            }
+                        },
+                        error: (error: any) => {
+                            console.log(error);
+                            this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
+                        },
+                        complete: () => {
+                            console.log('Complete');
+                        }
+                    });
+            }
+        );
+
     }
 }
