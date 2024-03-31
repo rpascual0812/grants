@@ -18,6 +18,7 @@ import { ApplicationNonProfitEquivalencyDetermination } from 'src/app/interfaces
     styleUrls: ['./non-profit-equivalency-determination.component.scss'],
 })
 export class NonProfitEquivalencyDeterminationComponent {
+    processing = false;
     form: FormGroup;
     submitted: boolean = false;
     availableCurrencies = OTHER_CURRENCY_LIST;
@@ -43,8 +44,8 @@ export class NonProfitEquivalencyDeterminationComponent {
         public documentUploaderRef: BsModalRef,
         private cdr: ChangeDetectorRef,
         private modalService: BsModalService,
-        private documentService: DocumentService,
-    ) { }
+        private documentService: DocumentService
+    ) {}
 
     ngOnInit(): void {
         this.setForm();
@@ -67,8 +68,6 @@ export class NonProfitEquivalencyDeterminationComponent {
         const currentApplication = this.applicationSignalService.appForm();
         const nonProfitEquivalencyDetermination = currentApplication?.application_nonprofit_equivalency_determination;
         this.form = this.formBuilder.group({
-            pk: [nonProfitEquivalencyDetermination?.pk],
-            application_pk: [currentApplication?.pk],
             year: [nonProfitEquivalencyDetermination?.year, Validators.required],
             financial_last_year_usd: [
                 nonProfitEquivalencyDetermination?.financial_last_year_usd ?? '',
@@ -214,23 +213,30 @@ export class NonProfitEquivalencyDeterminationComponent {
         this.applicationSignalService.appForm.set({
             ...currentApplication,
             application_nonprofit_equivalency_determination: {
+                pk: data?.pk ?? currentApplication?.application_nonprofit_equivalency_determination?.pk,
+                application_pk: currentApplication?.pk,
                 ...data,
             },
         });
     }
 
     saveFormValue() {
+        this.processing = true;
+        const currentApplication = this.applicationSignalService.appForm();
         const { value } = this.form;
         this.applicationService
             .saveApplicationNonProfitEquivalencyDetermination({
+                pk: currentApplication?.application_nonprofit_equivalency_determination?.pk,
+                application_pk: currentApplication?.pk,
                 ...value,
+                operated_for_others: value.operated_for_others ?? '',
             })
             .subscribe({
                 next: (res: any) => {
                     const data = res?.data;
                     const status = res.status;
                     if (status) {
-                        this.saveCurrentAppForm(data)
+                        this.saveCurrentAppForm(data);
                         this.toastr.success(
                             'Non-Profit Equivalency Determination has been successfully saved',
                             'SUCCESS!'
@@ -242,6 +248,7 @@ export class NonProfitEquivalencyDeterminationComponent {
                             'ERROR!'
                         );
                     }
+                    this.processing = false;
                 },
                 error: (err) => {
                     const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
@@ -250,6 +257,7 @@ export class NonProfitEquivalencyDeterminationComponent {
                         `An error occurred while saving Non-Profit Equivalency Determination. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
+                    this.processing = false;
                 },
             });
     }
@@ -270,14 +278,14 @@ export class NonProfitEquivalencyDeterminationComponent {
     }
 
     handleBack() {
-        const { value } = this.form
-        this.saveCurrentAppForm(value)
-        this.applicationSignalService.navigateBack()
+        const { value } = this.form;
+        this.saveCurrentAppForm(value);
+        this.applicationSignalService.navigateBack();
     }
 
     uploadFiles() {
         const initialState: ModalOptions = {
-            class: 'modal-lg'
+            class: 'modal-lg',
         };
         this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
 
@@ -295,7 +303,7 @@ export class NonProfitEquivalencyDeterminationComponent {
                 table_pk: currentApplication?.pk,
                 table_name: 'applications',
                 document_pk: ev.pk,
-                type: 'non_profit_equivalency_legal_registration'
+                type: 'non_profit_equivalency_legal_registration',
             })
             .subscribe({
                 next: (data: any) => {

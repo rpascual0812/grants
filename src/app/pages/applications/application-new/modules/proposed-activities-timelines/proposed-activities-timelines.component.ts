@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InputDropdownValue } from '../input-dropdown/input-dropdown.component';
@@ -8,6 +8,8 @@ import { ToastrService } from 'ngx-toastr';
 import { DocumentService } from 'src/app/services/document.service';
 import * as _ from '../../../../../utilities/globals';
 import { ProjectProposal } from 'src/app/interfaces/_application.interface';
+import { ChangeFieldEventEmitter } from 'src/app/components/select/select.component';
+import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
 interface ProposedActivity {
     id: number;
@@ -21,6 +23,7 @@ interface ProposedActivity {
     styleUrls: ['./proposed-activities-timelines.component.scss'],
 })
 export class ProposedActivitiesTimelinesComponent {
+    processing = false;
     submitted = false;
     form: FormGroup;
     activities: FormArray;
@@ -33,6 +36,8 @@ export class ProposedActivitiesTimelinesComponent {
 
     attachments: any = [];
     SERVER: string = _.BASE_URL;
+    SELECT_DURATION_KEY_PREFIX = 'duration_';
+    selectChangeFieldEventEmitter = new EventEmitter<ChangeFieldEventEmitter>();
 
     constructor(
         private formBuilder: FormBuilder,
@@ -79,9 +84,9 @@ export class ProposedActivitiesTimelinesComponent {
         const currentProposal = currentApplication?.project?.project_proposal;
         this.form = this.formBuilder.group({
             monitor: [currentProposal?.monitor ?? '', Validators.required],
-            budget_request_usd: [currentProposal?.budget_request_usd ?? ''],
-            budget_request_other: [currentProposal?.budget_request_other ?? ''],
-            budget_request_other_currency: [currentProposal?.budget_request_other_currency ?? ''],
+            budget_request_usd: [currentProposal?.budget_request_usd ?? '', Validators.required],
+            budget_request_other: [currentProposal?.budget_request_other ?? '', Validators.required],
+            budget_request_other_currency: [currentProposal?.budget_request_other_currency ?? '', Validators.required],
             application_proposal_activity: this.formBuilder.array([], [Validators.required]),
         });
         const selectedCurrencyKey = currentProposal?.budget_request_other_currency?.split('-').at(0)?.trim();
@@ -189,6 +194,7 @@ export class ProposedActivitiesTimelinesComponent {
     }
 
     saveFormValue() {
+        this.processing = true;
         const { value } = this.form;
         const currentApplication = this.applicationSignalService.appForm();
         const currentProject = currentApplication?.project;
@@ -215,20 +221,27 @@ export class ProposedActivitiesTimelinesComponent {
                             'ERROR!'
                         );
                     }
+                    this.processing = false;
                 },
                 error: (err) => {
-                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
-                    const statusCode = err?.status ? `status: ${err?.status}` : '';
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
                     this.toastr.error(
                         `An error occurred while saving Application Proposal. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
+                    this.processing = false;
                 },
             });
     }
 
     handleReset() {
         this.form.reset();
+        this.activities.controls?.forEach((_item, idx) => {
+            this.selectChangeFieldEventEmitter.emit({
+                selectedItems: [],
+                key: `${this.SELECT_DURATION_KEY_PREFIX}${idx.toString()}`,
+            });
+        });
     }
 
     handleNext() {

@@ -10,6 +10,7 @@ import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { DocumentService } from 'src/app/services/document.service';
 import * as _ from '../../../../../utilities/globals';
 import { Partner } from 'src/app/interfaces/_application.interface';
+import { ChangeFieldEventEmitter } from 'src/app/components/select/select.component';
 
 type SelectItem = {
     pk: number;
@@ -31,8 +32,8 @@ export class OrganizationProfileComponent implements OnInit {
     applicationSignalService = inject(ApplicationSignalService);
     tribeIndicateList = TRIBE_LIST_OPTIONS;
     selectChangeFieldEventEmitter = {
-        organization_pk: new EventEmitter<any>(),
-        country_pk: new EventEmitter<any>(),
+        organization_pk: new EventEmitter<ChangeFieldEventEmitter>(),
+        country_pk: new EventEmitter<ChangeFieldEventEmitter>(),
     };
     attachments: any = [];
     SERVER: string = _.BASE_URL;
@@ -234,6 +235,7 @@ export class OrganizationProfileComponent implements OnInit {
     }
 
     handleNext() {
+        this.submitted = true;
         const { status } = this.form;
         if (status === 'VALID') {
             this.saveFormValue();

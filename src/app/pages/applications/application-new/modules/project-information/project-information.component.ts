@@ -9,6 +9,8 @@ import { ChangeFieldEventEmitter, SelectComponent } from 'src/app/components/sel
 import { ApplicationService } from 'src/app/services/application.service';
 import * as _ from '../../../../../utilities/globals';
 import { Project } from 'src/app/interfaces/_application.interface';
+import { extractErrorMessage, getDurationOpts } from 'src/app/utilities/application.utils';
+import { BENEFICIARY_NAME, BENEFICIARY_TYPE } from 'src/app/utilities/constants';
 
 type SelectItem = {
     pk?: number;
@@ -22,23 +24,13 @@ type ProvinceOpt = {
     name?: string;
 };
 
-const BENEFICIARY_TYPE = ['women', 'men', 'young_women', 'young_men'];
-const BENEFICIARY_NAME = (type: string) => {
-    const mainName = type?.split('_').join(' ');
-    const tempName = type?.split('_');
-    let diffName = type?.split('_')?.at(0);
-    if (tempName.length > 1) {
-        diffName = type?.split('_')?.at(1);
-    }
-    return [mainName, `diffable ${diffName}`, 'other vulnerable sector'];
-};
-
 @Component({
     selector: 'app-project-information',
     templateUrl: './project-information.component.html',
     styleUrls: ['./project-information.component.scss'],
 })
 export class ProjectInformationComponent implements OnInit {
+    processing = false
     form: FormGroup;
     submitted = false;
     durationOpts: string[] = [];
@@ -52,8 +44,14 @@ export class ProjectInformationComponent implements OnInit {
     SERVER: string = _.BASE_URL;
 
     applicationSignalService = inject(ApplicationSignalService);
-    durationSelectChangeFieldEventEmitter = new EventEmitter<ChangeFieldEventEmitter>();
-    provinceSelectChangeFieldEventEmitter = new EventEmitter<ChangeFieldEventEmitter>();
+
+    SELECT_PROVINCE_KEY_PREFIX = 'province_';
+    SELECT_COUNTRY_KEY_PREFIX = 'country_';
+    selectChangeFieldEventEmitter = {
+        durationSelectChangeFieldEventEmitter: new EventEmitter<ChangeFieldEventEmitter>(),
+        countrySelectChangeFieldEventEmitter: new EventEmitter<ChangeFieldEventEmitter>(),
+        provinceSelectChangeFieldEventEmitter: new EventEmitter<ChangeFieldEventEmitter>(),
+    };
 
     constructor(
         private formBuilder: FormBuilder,
@@ -65,7 +63,7 @@ export class ProjectInformationComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.getDurationOpts();
+        this.durationOpts = getDurationOpts();
         this.fetchProvinces();
         this.setForm();
 
@@ -143,12 +141,12 @@ export class ProjectInformationComponent implements OnInit {
         currentProjLoc.forEach((projLoc, idx) => {
             this.projectLoc.push(this.createFormProjLocations(projLoc?.pk, projLoc.country_pk, projLoc.province_code));
             setTimeout(() => {
-                this.provinceSelectChangeFieldEventEmitter.emit({
+                this.selectChangeFieldEventEmitter.provinceSelectChangeFieldEventEmitter.emit({
                     selectedItems: this.provinceOpts?.filter(
                         (province) => province.province_code === projLoc.province_code
                     ),
                     arr: this.getProvinceOpts(projLoc.country_pk as number),
-                    key: idx.toString(),
+                    key: `${this.SELECT_PROVINCE_KEY_PREFIX}${idx.toString()}`,
                 });
             }, 500);
         });
@@ -189,16 +187,6 @@ export class ProjectInformationComponent implements OnInit {
             country_pk: [countryPk ?? '', Validators.required],
             province_code: [provinceCode ?? '', Validators.required],
         });
-    }
-
-    getDurationOpts() {
-        for (let i = 1; i <= 36; i++) {
-            let suffix = 'Months';
-            if (i === 1) {
-                suffix = 'Month';
-            }
-            this.durationOpts.push(`${i} ${suffix}`);
-        }
     }
 
     onAddProjLoc() {
@@ -265,10 +253,10 @@ export class ProjectInformationComponent implements OnInit {
                 province_code: '',
             });
 
-            this.provinceSelectChangeFieldEventEmitter.emit({
+            this.selectChangeFieldEventEmitter.provinceSelectChangeFieldEventEmitter.emit({
                 arr: this.getProvinceOpts(pk as number),
                 selectedItems: [],
-                key: idx.toString(),
+                key: `${this.SELECT_PROVINCE_KEY_PREFIX}${idx.toString()}`,
             });
         } else {
             this.projectLoc.controls.at(idx)?.setValue({
@@ -309,6 +297,7 @@ export class ProjectInformationComponent implements OnInit {
         });
     }
     saveFormValue() {
+        this.processing = true
         const currentApplication = this.applicationSignalService.appForm();
         const project = currentApplication?.project;
         const { value } = this.form;
@@ -322,7 +311,7 @@ export class ProjectInformationComponent implements OnInit {
             .subscribe({
                 next: (res: any) => {
                     const data = res?.data;
-                    const status = res.status;
+                    const status = res?.status;
 
                     if (status) {
                         this.saveCurrentAppForm(data);
@@ -334,32 +323,56 @@ export class ProjectInformationComponent implements OnInit {
                             'ERROR!'
                         );
                     }
+                    this.processing = false
                 },
                 error: (err) => {
-                    const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
-                    const statusCode = err?.status ? `status: ${err?.status}` : '';
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
                     this.toastr.error(
                         `An error occurred while saving Project Information. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
+                    this.processing = false
                 },
             });
     }
 
+    resetAvailableFields() {
+        const manualResetFields = ['project_beneficiary', 'project_location'];
+        const fieldsToReset = Object.keys(this.form.controls).filter((key) => !manualResetFields.includes(key));
+        fieldsToReset.forEach((field) => {
+            this.form.controls[field].reset();
+        });
+    }
     handleReset() {
-        this.form.reset();
-        this.durationSelectChangeFieldEventEmitter.emit({
+        this.resetAvailableFields();
+        this.selectChangeFieldEventEmitter.durationSelectChangeFieldEventEmitter.emit({
             selectedItems: [],
         });
         this.onChangeSelectedItem([], 'duration');
+        this.resetBeneficiary();
+        this.resetProjLoc();
     }
 
     resetBeneficiary() {
-        this.initialBeneficiaries();
+        this.formProjBeneficiary?.controls?.forEach((item, idx) => {
+            item.get('count')?.setValue(0);
+        });
     }
 
     resetProjLoc() {
-        this.projectLoc.reset();
+        this.formProjLocations?.controls?.forEach((item, idx) => {
+            item.get('country_pk')?.setValue('');
+            item.get('province_code')?.setValue('');
+            this.selectChangeFieldEventEmitter.countrySelectChangeFieldEventEmitter.emit({
+                selectedItems: [],
+                key: `${this.SELECT_COUNTRY_KEY_PREFIX}${idx.toString()}`,
+            });
+            this.selectChangeFieldEventEmitter.provinceSelectChangeFieldEventEmitter.emit({
+                arr: [],
+                selectedItems: [],
+                key: `${this.SELECT_PROVINCE_KEY_PREFIX}${idx.toString()}`,
+            });
+        });
     }
 
     handleNext() {
