@@ -11,11 +11,11 @@ import { ApplicationService } from 'src/app/services/application.service';
 })
 export class ApplicationSuccessComponent implements OnInit {
     loading = false;
-    pk: string = '';
+    uuid: string = '';
     application: ApplicationRead | null = null;
 
     constructor(private applicationService: ApplicationService, route: ActivatedRoute, private toastr: ToastrService) {
-        this.pk = route.snapshot.paramMap.get('pk') ?? '';
+        this.uuid = route.snapshot.paramMap.get('uuid') ?? '';
     }
 
     ngOnInit() {
@@ -24,11 +24,13 @@ export class ApplicationSuccessComponent implements OnInit {
 
     fetch() {
         this.loading = true;
-        this.applicationService.fetchOne(this.pk).subscribe({
+        this.applicationService.generated(this.uuid).subscribe({
             next: (res: any) => {
                 const data = res?.data as ApplicationRead;
                 this.application = data;
                 this.loading = false;
+
+                this.sendEmail(data);
             },
             error: (err) => {
                 const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
@@ -38,6 +40,19 @@ export class ApplicationSuccessComponent implements OnInit {
                     'ERROR!'
                 );
                 this.loading = false;
+            },
+        });
+    }
+
+    sendEmail(data: any) {
+        console.log(data);
+        this.applicationService.sendSuccessEmail(data.pk).subscribe({
+            next: (res: any) => {
+
+            },
+            error: (err) => {
+                const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                const statusCode = err?.status ? `status: ${err?.status}` : '';
             },
         });
     }

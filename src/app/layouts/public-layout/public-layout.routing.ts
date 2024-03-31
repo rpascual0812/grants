@@ -9,6 +9,6 @@ export const PublicLayoutRoutes: Routes = [
     { path: 'application/auth', component: ApplicationAuthComponent },
     { path: 'application/status', component: ApplicationStatusComponent },
     { path: 'application/:uuid', component: ApplicationNewComponent },
-    { path: 'application/:pk/success', component: ApplicationSuccessComponent },
+    { path: 'application/:uuid/success', component: ApplicationSuccessComponent },
     { path: 'application/:pk/information', component: ApplicationProjInfoComponent },
 ];
