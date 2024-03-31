@@ -45,7 +45,7 @@ export class ContactInfoReferencesComponent {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.setForm();
@@ -122,7 +122,7 @@ export class ContactInfoReferencesComponent {
         const currentApplication = this.applicationSignalService.appForm();
         this.applicationService
             .saveAppReference({
-                partner_organization_pk: currentApplication?.pk,
+                partner_organization_pk: currentApplication?.partner?.organization?.pk,
                 partner_organization_reference: value?.application_reference,
             })
             .subscribe({
