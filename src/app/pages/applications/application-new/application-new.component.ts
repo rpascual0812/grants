@@ -59,6 +59,6 @@ export class ApplicationNewComponent implements OnInit {
 
     async handleSave() {
         const currentApplication = this.applicationSignalService.appForm();
-        this.router.navigate(['public', 'application', currentApplication?.pk, 'success']);
+        this.router.navigate(['public', 'application', currentApplication?.uuid, 'success']);
     }
 }

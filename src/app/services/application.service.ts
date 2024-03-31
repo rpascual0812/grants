@@ -123,4 +123,8 @@ export class ApplicationService {
     deleteReviewAttachment(data: any) {
         return this.http.delete(`${_.BASE_URL}/application/${data.application_pk}/review/${data.review_pk}/document/${data.document_pk}`);
     }
+
+    sendSuccessEmail(pk: any) {
+        return this.http.post(`${_.BASE_URL}/application/${pk}/success/email`, {});
+    }
 }
