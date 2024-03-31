@@ -7,6 +7,7 @@ import { DocumentService } from 'src/app/services/document.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { ChangeFieldEventEmitter, SelectComponent } from 'src/app/components/select/select.component';
 import { ApplicationService } from 'src/app/services/application.service';
+import * as _ from '../../../../../utilities/globals';
 
 type SelectItem = {
     pk?: number;
@@ -46,6 +47,9 @@ export class ProjectInformationComponent implements OnInit {
     projectLoc: FormArray;
     projBeneficiary: FormArray;
 
+    attachments: any = [];
+    SERVER: string = _.BASE_URL;
+
     applicationSignalService = inject(ApplicationSignalService);
     durationSelectChangeFieldEventEmitter = new EventEmitter<ChangeFieldEventEmitter>();
     provinceSelectChangeFieldEventEmitter = new EventEmitter<ChangeFieldEventEmitter>();
@@ -57,12 +61,22 @@ export class ProjectInformationComponent implements OnInit {
         private applicationService: ApplicationService,
         private toastr: ToastrService,
         public bsModalRef: BsModalRef
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.getDurationOpts();
         this.fetchProvinces();
         this.setForm();
+
+        const currentApplication = this.applicationSignalService.appForm();
+        if (currentApplication?.documents) {
+            currentApplication?.documents.forEach((document: any) => {
+                if (document.type == 'project_information') {
+                    this.attachments.push(document);
+                }
+            });
+            console.log(this.attachments);
+        }
     }
 
     get f() {
@@ -362,12 +376,13 @@ export class ProjectInformationComponent implements OnInit {
     }
 
     saveAttachment(ev: any) {
-        const currentApplication = this.applicationSignalService.application();
+        const currentApplication = this.applicationSignalService.appForm();
         this.documentService
             .save({
-                table_pk: 1,
-                table_name: 'projects',
+                table_pk: currentApplication?.pk,
+                table_name: 'applications',
                 document_pk: ev.pk,
+                type: 'project_information'
             })
             .subscribe({
                 next: (data: any) => {
@@ -379,7 +394,6 @@ export class ProjectInformationComponent implements OnInit {
                 },
                 complete: () => {
                     console.log('Complete');
-                    this.bsModalRef.hide();
                 },
             });
     }

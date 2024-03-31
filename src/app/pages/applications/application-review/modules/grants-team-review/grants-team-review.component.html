@@ -51,7 +51,8 @@
 
                         <div class="row mt-3 mb-3">
                             <div class="md-12" *ngFor="let attachment of review.documents; let i = index">
-                                <a href="javascript:;">{{attachment.original_name}}</a>
+                                <a href="{{SERVER + '/' + attachment.path}}"
+                                    target="_blank">{{attachment.original_name}}</a>
                             </div>
                         </div>
                     </div>

@@ -8,11 +8,11 @@
 
         <div class="row mt-3 mb-3">
             <div class="md-12" *ngFor="let attachment of attachments; let i = index">
-                <a href="javascript:;">{{attachment.original_name}}</a>
+                <a href="{{SERVER + '/' + attachment.path}}" target="_blank">{{attachment.original_name}}</a>
             </div>
         </div>
 
-        <button class="btn p-2 text-dark-blue" (click)="uploadFiles()">
+        <button type="button" class="btn p-2 text-dark-blue" (click)="uploadFiles()">
             <span class="icon icon-sm"><i class="material-icons">add</i></span>
             Attach File
         </button>

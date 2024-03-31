@@ -6,6 +6,8 @@ import { GlobalService } from 'src/app/services/global.service';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ToastrService } from 'ngx-toastr';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
+import { DocumentService } from 'src/app/services/document.service';
+import * as _ from '../../../../../utilities/globals';
 
 type SelectItem = {
     pk: number;
@@ -30,16 +32,30 @@ export class OrganizationProfileComponent implements OnInit {
         organization_pk: new EventEmitter<any>(),
         country_pk: new EventEmitter<any>(),
     };
+    attachments: any = [];
+    SERVER: string = _.BASE_URL;
+
     constructor(
         private formBuilder: FormBuilder,
         private globalService: GlobalService,
         private applicationService: ApplicationService,
+        private documentService: DocumentService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.setForm();
         this.fetchOrgList();
+
+        const currentApplication = this.applicationSignalService.appForm();
+        if (currentApplication?.documents) {
+            currentApplication?.documents.forEach((document: any) => {
+                if (document.type == 'organization_profile') {
+                    this.attachments.push(document);
+                }
+            });
+            console.log(this.attachments);
+        }
     }
 
     get f() {
@@ -233,5 +249,28 @@ export class OrganizationProfileComponent implements OnInit {
         this.selectChangeFieldEventEmitter.country_pk.emit({
             selectedItems: [],
         });
+    }
+
+    saveAttachment(ev: any) {
+        const currentApplication = this.applicationSignalService.appForm();
+        this.documentService
+            .save({
+                table_pk: currentApplication?.pk,
+                table_name: 'applications',
+                document_pk: ev.pk,
+                type: 'organization_profile'
+            })
+            .subscribe({
+                next: (data: any) => {
+                    this.toastr.success('The document has been successfully uploaded', 'SUCCESS!');
+                },
+                error: (error: any) => {
+                    console.log(error);
+                    this.toastr.error('An error occurred while uploading the document. Please try again', 'ERROR!');
+                },
+                complete: () => {
+                    console.log('Complete');
+                },
+            });
     }
 }

@@ -16,7 +16,7 @@ export class DocumentService {
     }
 
     save(data: any) {
-        return this.http.post(`${_.BASE_URL}/documents/documentable`, data);
+        return this.http.post(`${_.BASE_URL}/documents`, data);
     }
 
     destroy(pk: any) {

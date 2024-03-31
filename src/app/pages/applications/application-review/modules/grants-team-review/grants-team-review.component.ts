@@ -31,7 +31,7 @@ export class GrantsTeamReviewComponent implements OnInit {
     recommendation: any = '';
 
     content: any;
-    SERVER: string = '';
+    SERVER: string = _.BASE_URL;
 
     constructor(
         public documentUploaderRef: BsModalRef,

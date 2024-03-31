@@ -14,6 +14,9 @@ export interface Application {
     application_fiscal_sponsor?: ApplicationFiscalSponsor;
     application_nonprofit_equivalency_determination?: ApplicationNonProfitEquivalencyDetermination;
     application_reference?: ApplicationReference[];
+    reviews?: Review[];
+    documents?: Document[];
+    recommendations?: Recommendation[];
 }
 
 export interface Partner {
@@ -169,4 +172,35 @@ export interface ApplicationReference {
     email_address?: string;
     organization_name?: string;
     date_created?: Date;
+}
+
+export interface Review {
+    pk?: number;
+    message: string;
+    flag?: string;
+    type: string;
+    resolved?: boolean;
+    created_by?: number;
+    date_created?: Date;
+    archived?: boolean;
+}
+
+export interface Document {
+    pk?: number;
+    filename: string;
+    original_name: string;
+    path: string;
+    size: string;
+    mime_type: string;
+    type: string;
+    archived?: boolean;
+}
+
+export interface Recommendation {
+    pk?: number;
+    application_pk: number;
+    recommendation: string;
+    type: string;
+    created_by?: number;
+    archived?: boolean;
 }

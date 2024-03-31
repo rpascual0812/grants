@@ -36,7 +36,7 @@ export class DueDiligenceFinalReviewComponent {
     recommendation: any = '';
     donor: any = '';
     timeout: any = null;
-    SERVER: string = '';
+    SERVER: string = _.BASE_URL;
 
     constructor(
         public documentUploaderRef: BsModalRef,

@@ -5,6 +5,8 @@ import { InputDropdownValue } from '../input-dropdown/input-dropdown.component';
 import { OTHER_CURRENCY_LIST, USD_CURRENCY } from '../../../../../utilities/constants';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ToastrService } from 'ngx-toastr';
+import { DocumentService } from 'src/app/services/document.service';
+import * as _ from '../../../../../utilities/globals';
 
 interface ProposedActivity {
     id: number;
@@ -28,15 +30,29 @@ export class ProposedActivitiesTimelinesComponent {
     otherCurrenciesDefaultSelected = OTHER_CURRENCY_LIST.at(0)?.key;
     applicationSignalService = inject(ApplicationSignalService);
 
+    attachments: any = [];
+    SERVER: string = _.BASE_URL;
+
     constructor(
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
-        private toastr: ToastrService
-    ) {}
+        private toastr: ToastrService,
+        private documentService: DocumentService,
+    ) { }
 
     ngOnInit() {
         this.getDurationOpts();
         this.setForm();
+
+        const currentApplication = this.applicationSignalService.appForm();
+        if (currentApplication?.documents) {
+            currentApplication?.documents.forEach((document: any) => {
+                if (document.type == 'proposed_activities_and_timeline') {
+                    this.attachments.push(document);
+                }
+            });
+            console.log(this.attachments);
+        }
     }
 
     get f() {
@@ -221,5 +237,28 @@ export class ProposedActivitiesTimelinesComponent {
 
     handleBack() {
         this.processForm();
+    }
+
+    saveAttachment(ev: any) {
+        const currentApplication = this.applicationSignalService.appForm();
+        this.documentService
+            .save({
+                table_pk: currentApplication?.pk,
+                table_name: 'applications',
+                document_pk: ev.pk,
+                type: 'proposed_activities_and_timeline'
+            })
+            .subscribe({
+                next: (data: any) => {
+                    this.toastr.success('The document has been successfully uploaded', 'SUCCESS!');
+                },
+                error: (error: any) => {
+                    console.log(error);
+                    this.toastr.error('An error occurred while uploading the document. Please try again', 'ERROR!');
+                },
+                complete: () => {
+                    console.log('Complete');
+                },
+            });
     }
 }
