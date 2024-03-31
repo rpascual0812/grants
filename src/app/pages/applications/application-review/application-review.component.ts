@@ -53,7 +53,7 @@ export class ApplicationReviewComponent implements OnInit {
                 this.applicationReviewSignalService.applicationReview.set({
                     ...data,
                 });
-                console.log(data);
+
                 this.currentApplication = data;
                 this.loading = false;
             },

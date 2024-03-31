@@ -256,7 +256,38 @@ export class DueDiligenceFinalReviewComponent {
                 this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
             },
         });
+    }
 
-
+    resolve(i: number) {
+        _.confirmMessage(
+            {
+                title: '<strong>Are you sure you want to resolve this review?</strong>',
+                icon: 'question',
+                buttons: {
+                    showClose: true,
+                    showCancel: true,
+                    focusConfirm: false,
+                },
+                confirmButtonText: '<i class="fa fa-thumbs-up"></i> Yes',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
+            },
+            () => {
+                const data = {
+                    application_pk: this.currentApplication?.pk,
+                    review_pk: this.reviews[i].pk
+                }
+                this.applicationService.resolveReview(data).subscribe({
+                    next: (data: any) => {
+                        this.reviews[i].resolved = true;
+                        this.toastr.success(`The review has been resolved sucessfully`);
+                    },
+                    error: (err: HttpErrorResponse) => {
+                        const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                        const statusCode = err?.status ? `status: ${err?.status}` : '';
+                        this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
+                    },
+                });
+            }
+        );
     }
 }
