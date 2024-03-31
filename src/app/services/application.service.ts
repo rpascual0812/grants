@@ -115,4 +115,8 @@ export class ApplicationService {
     resolveReview(data: any) {
         return this.http.post(`${_.BASE_URL}/application/${data.application_pk}/review/${data.review_pk}/resolve`, data);
     }
+
+    deleteApplicationAttachment(data: any) {
+        return this.http.delete(`${_.BASE_URL}/application/${data.application_pk}/document/${data.document_pk}`);
+    }
 }

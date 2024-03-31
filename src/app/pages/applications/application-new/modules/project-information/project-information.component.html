@@ -93,7 +93,7 @@
                                         <label class="col-7 font-weight-bold text-dark text-capitalize">{{
                                             formProjBeneficiary.controls.at(i)?.get('name')?.value }}:</label>
                                         <div class="col-3">
-                                            <input formControlName="count" type="number"
+                                            <input formControlName="count" type="number" min="0"
                                                 class="form-control border rounded-1 p-1" [ngClass]="{
                                                     'is-invalid':
                                                         submitted && formProjBeneficiary.at(i).get('count')?.errors
@@ -110,7 +110,7 @@
                                         <label class="col-7 font-weight-bold text-dark text-capitalize">{{
                                             formProjBeneficiary.controls.at(i + 3)?.get('name')?.value }}:</label>
                                         <div class="col-3">
-                                            <input formControlName="count" type="number"
+                                            <input formControlName="count" type="number" min="0"
                                                 class="form-control border rounded-1 p-1" [ngClass]="{
                                                     'is-invalid':
                                                         submitted && formProjBeneficiary.at(i + 3).get('count')?.errors
@@ -131,7 +131,7 @@
                                         <label class="col-7 font-weight-bold text-dark text-capitalize">{{
                                             formProjBeneficiary.controls.at(i + 6)?.get('name')?.value }}:</label>
                                         <div class="col-3">
-                                            <input formControlName="count" type="number"
+                                            <input formControlName="count" type="number" min="0"
                                                 class="form-control border rounded-1 p-1" [ngClass]="{
                                                     'is-invalid':
                                                         submitted && formProjBeneficiary.at(i + 6).get('count')?.errors
@@ -149,7 +149,7 @@
                                         <label class="col-7 font-weight-bold text-dark text-capitalize">{{
                                             formProjBeneficiary.controls.at(i + 9)?.get('name')?.value }}:</label>
                                         <div class="col-3">
-                                            <input formControlName="count" type="number"
+                                            <input formControlName="count" type="number" min="0"
                                                 class="form-control border rounded-1 p-1" [ngClass]="{
                                                     'is-invalid':
                                                         submitted && formProjBeneficiary.at(i + 9).get('count')?.errors
