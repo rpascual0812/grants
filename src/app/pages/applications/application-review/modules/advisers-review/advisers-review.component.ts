@@ -18,9 +18,7 @@ import * as _ from '../../../../../utilities/globals';
 })
 export class AdvisersReviewComponent implements OnInit {
     @Input() currentApplication: ApplicationRead | null
-    reviews: any = {
-        advisers_review: [],
-    };
+    reviews: any = [];
     dateNow = DateTime.now().toFormat('LLLL dd, yyyy');
     user: any = {};
 
@@ -47,9 +45,7 @@ export class AdvisersReviewComponent implements OnInit {
 
         if (this.currentApplication?.reviews) {
             this.currentApplication?.reviews.forEach(review => {
-                if (this.reviews[review.type]) {
-                    this.reviews[review.type].push(review);
-                }
+                this.reviews.push(review);
             });
         }
 
@@ -99,7 +95,7 @@ export class AdvisersReviewComponent implements OnInit {
                 .subscribe({
                     next: (data: any) => {
                         data.data.user = this.user;
-                        this.reviews.advisers_review.push(data.data);
+                        this.reviews.push(data.data);
                         this.clear();
                         this.toastr.success('Your review has been successfully saved', 'SUCCESS!');
                     },
@@ -136,7 +132,7 @@ export class AdvisersReviewComponent implements OnInit {
     }
 
     delete(i: number) {
-        const review = this.reviews.advisers_review[i];
+        const review = this.reviews[i];
         _.confirmMessage(
             {
                 title: '<strong>Are you sure you want to delete this application?</strong>',
@@ -152,7 +148,7 @@ export class AdvisersReviewComponent implements OnInit {
             () => {
                 this.applicationService.destroyReview(review.pk).subscribe({
                     next: (data: any) => {
-                        this.reviews.advisers_review.splice(i, 1);
+                        this.reviews.splice(i, 1);
                     },
                     error: (err: HttpErrorResponse) => {
                         const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
@@ -238,4 +234,37 @@ export class AdvisersReviewComponent implements OnInit {
         );
     }
 
+    deleteAttachment(review_index: number, document_index: number, type: string) {
+        _.confirmMessage(
+            {
+                title: '<strong>Are you sure you want to delete this attachment?</strong>',
+                icon: 'question',
+                buttons: {
+                    showClose: true,
+                    showCancel: true,
+                    focusConfirm: false,
+                },
+                confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
+            },
+            () => {
+                this.applicationService
+                    .deleteReviewAttachment({ application_pk: this.currentApplication?.pk, review_pk: this.reviews[review_index].pk, document_pk: this.reviews[review_index].documents[document_index].pk })
+                    .subscribe({
+                        next: (data: any) => {
+                            if (data.status) {
+                                this.reviews[review_index].documents.splice(document_index, 1);
+                            }
+                        },
+                        error: (error: any) => {
+                            console.log(error);
+                            this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
+                        },
+                        complete: () => {
+                            console.log('Complete');
+                        }
+                    });
+            }
+        );
+    }
 }
