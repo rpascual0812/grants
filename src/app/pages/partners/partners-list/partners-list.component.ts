@@ -1,8 +1,14 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { PartnerRead } from 'src/app/interfaces/application.interface';
+// import { PartnerRead } from 'src/app/interfaces/application.interface';
 import { PartnerService } from 'src/app/services/partner.service';
 import * as _ from '../../../utilities/globals';
 import { GRANT_TYPES, THEMATIC_AREAS } from 'src/app/utilities/constants';
+import { Application, Partner } from 'src/app/interfaces/_application.interface';
+
+interface PartnerRead extends Partner {
+    grand_total_amount?: number;
+    application?: Application[];
+}
 
 type SelectItem = {
     pk: number;
@@ -14,7 +20,7 @@ type Filter = {
     type_pk: number | null;
 };
 
-interface Partner {
+interface TableObj {
     [key: string]: any;
 }
 
@@ -26,22 +32,22 @@ interface Partner {
 })
 export class PartnersListComponent implements OnInit {
     tableSizes: any = _.TABLE_SIZES;
-    grantTypes = GRANT_TYPES
-    thematicAreas = THEMATIC_AREAS
+    grantTypes = GRANT_TYPES;
+    thematicAreas = THEMATIC_AREAS;
 
     loading = false;
     oneAtATime = true;
-    partnersList: Partner[] = [];
+    partnersList: TableObj[] = [];
 
     page: number = 1;
-    tableSize: number = 10
+    tableSize: number = 10;
 
     filter: Filter = {
         organization_pk: null,
         type_pk: null,
     };
 
-    constructor(private partnerService: PartnerService) { }
+    constructor(private partnerService: PartnerService) {}
 
     ngOnInit() {
         this.fetch();
@@ -83,7 +89,6 @@ export class PartnersListComponent implements OnInit {
         const currentIdx = this.partnersList.findIndex((partner) => partner['id'] === id);
         this.partnersList[currentIdx]['expanded'] = $event;
     }
-
 
     onTableSizeChange(event: any) {
         this.tableSize = event.target.value;

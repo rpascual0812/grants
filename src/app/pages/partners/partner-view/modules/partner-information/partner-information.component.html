@@ -7,7 +7,7 @@
                     <p class="text-sm font-weight-bold text-dark">Name of community/organization</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <p class="text-sm font-weight-bold text-secondary">The Grants Corporation</p>
+                    <p class="text-sm font-weight-bold text-secondary">{{ partner?.name }}</p>
                 </div>
             </div>
             <div class="row">
@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <p class="text-sm font-weight-bold text-secondary">
-                        123 Blk. 1 Lot 2 Jose Rizal Street, Rizal Subdivision, Quezon City, Philippines
+                        {{ partner?.address }}
                     </p>
                 </div>
             </div>
@@ -25,7 +25,7 @@
                     <p class="text-sm font-weight-bold text-dark">Contact Number</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <p class="text-sm font-weight-bold text-secondary">09123123</p>
+                    <p class="text-sm font-weight-bold text-secondary">{{ partner?.contact_number }}</p>
                 </div>
             </div>
             <div class="row">
@@ -33,7 +33,7 @@
                     <p class="text-sm font-weight-bold text-dark">Email Address</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <p class="text-sm font-weight-bold text-secondary">thegranseedcorporation@gmail.com</p>
+                    <p class="text-sm font-weight-bold text-secondary">{{ partner?.email_address }}</p>
                 </div>
             </div>
             <div class="row">
@@ -41,7 +41,7 @@
                     <p class="text-sm font-weight-bold text-dark">Website</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <p class="text-sm font-weight-bold text-secondary">www.thegrantseedcorporation.com</p>
+                    <p class="text-sm font-weight-bold text-secondary">{{ partner?.website }}</p>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
                     <p class="text-sm font-weight-bold text-dark">Contact Person</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <p class="text-sm font-weight-bold text-secondary">Jose Mari Chan</p>
+                    <p class="text-sm font-weight-bold text-secondary">{{ partner?.contacts?.at(0)?.name }}</p>
                 </div>
             </div>
             <div class="row">
@@ -64,7 +64,9 @@
                     <p class="text-sm font-weight-bold text-dark">Contact Number (Contact Person)</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <p class="text-sm font-weight-bold text-secondary">09123456789</p>
+                    <p class="text-sm font-weight-bold text-secondary">
+                        {{ partner?.contacts?.at(0)?.contact_number }}
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -72,7 +74,7 @@
                     <p class="text-sm font-weight-bold text-dark">Email Address (Contact Person)</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <p class="text-sm font-weight-bold text-secondary">josemarichan@gmail.com</p>
+                    <p class="text-sm font-weight-bold text-secondary">{{ partner?.contacts?.at(0)?.email_address }}</p>
                 </div>
             </div>
         </div>

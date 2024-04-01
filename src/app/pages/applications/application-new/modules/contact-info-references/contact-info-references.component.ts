@@ -1,36 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { ProjectOrganizationReference } from 'src/app/interfaces/_application.interface';
+import { PartnerOrganizationReference } from 'src/app/interfaces/_application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
+import { REFERENCES_FACTORY } from 'src/app/utilities/constants';
 
-const referencesFactory = () => {
-    return [
-        {
-            pk: '',
-            name: '',
-            contact_number: '',
-            email_address: '',
-            organization_name: '',
-        },
-        {
-            pk: '',
-            name: '',
-            contact_number: '',
-            email_address: '',
-            organization_name: '',
-        },
-        {
-            pk: '',
-            name: '',
-            contact_number: '',
-            email_address: '',
-            organization_name: '',
-        },
-    ];
-};
+
 @Component({
     selector: 'app-contact-info-references',
     templateUrl: './contact-info-references.component.html',
@@ -47,7 +24,7 @@ export class ContactInfoReferencesComponent {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.setForm();
@@ -72,7 +49,7 @@ export class ContactInfoReferencesComponent {
         this.contactReferences = this.form.get('application_reference') as FormArray;
         const currentApplication = this.applicationSignalService?.appForm();
         const partnerOrgReferences = currentApplication?.partner?.organization?.partner_organization_reference ?? [];
-        const currentReferences = partnerOrgReferences.length > 0 ? partnerOrgReferences : referencesFactory();
+        const currentReferences = partnerOrgReferences.length > 0 ? partnerOrgReferences : REFERENCES_FACTORY();
         currentReferences.forEach((ref) => {
             this.contactReferences.push(
                 this.createFormBeneficiaries(
@@ -102,7 +79,7 @@ export class ContactInfoReferencesComponent {
         });
     }
 
-    saveCurrentAppForm(data: ProjectOrganizationReference[]) {
+    saveCurrentAppForm(data: PartnerOrganizationReference[]) {
         const currentApplication = this.applicationSignalService.appForm();
         const partner = currentApplication?.partner;
         const organization = partner?.organization;

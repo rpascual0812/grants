@@ -17,11 +17,11 @@ export const MainLayoutRoutes: Routes = [
     { path: 'applications', component: ApplicationsComponent, canActivate: [authGuard] },
     { path: 'applications/:number/review', component: ApplicationReviewComponent, canActivate: [authGuard] },
     { path: 'partners', component: PartnersComponent, canActivate: [authGuard] },
-    { path: 'partner/:pk/information', component: PartnerViewComponent, canActivate: [authGuard] },
+    { path: 'partner/:partnerId/information', component: PartnerViewComponent, canActivate: [authGuard] },
     { path: 'reports', component: ReportsComponent, canActivate: [authGuard] },
     { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
     {
         path: 'settings',
-        loadChildren: () => import('../../pages/settings/settings.module').then(m => m.SettingsModule)
+        loadChildren: () => import('../../pages/settings/settings.module').then((m) => m.SettingsModule),
     },
 ];

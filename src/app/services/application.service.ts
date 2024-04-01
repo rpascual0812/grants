@@ -4,7 +4,7 @@ import * as _ from '../utilities/globals';
 import {
     PartnerFiscalSponsor,
     ProjectProposal,
-    ProjectOrganizationReference,
+    PartnerOrganizationReference,
     Organization,
     Partner,
     Project,
@@ -77,7 +77,7 @@ export class ApplicationService {
 
     saveAppReference(data: {
         partner_organization_pk?: number,
-        partner_organization_reference: ProjectOrganizationReference[]
+        partner_organization_reference: PartnerOrganizationReference[]
     }) {
         return this.http.post(`${_.BASE_URL}/application/reference`, data);
     }

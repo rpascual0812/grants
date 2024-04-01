@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
+import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
 export const MAX_STEP = 7;
 export const INITIAL_STEP = 1;
@@ -46,8 +47,7 @@ export class ApplicationNewComponent implements OnInit {
                 this.applicationSignalService.loadingInitialAppForm.set(false);
             },
             error: (err) => {
-                const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
-                const statusCode = err?.status ? `status: ${err?.status}` : '';
+                const { statusCode, errorMessage } = extractErrorMessage(err);
                 this.toastr.error(
                     `An error occurred while saving grant application. ${statusCode} ${errorMessage} Please try again.`,
                     'ERROR!'

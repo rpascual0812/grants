@@ -56,6 +56,11 @@ export const OTHER_CURRENCY_LIST = [
     },
 ];
 
+export const getOtherCurrencyKey = (otherCurrencyLabel: string) => {
+    const key = otherCurrencyLabel?.split('-').at(0)?.trim() ?? '';
+    return OTHER_CURRENCY_LIST.find((currency) => currency?.key?.includes(key))?.key;
+};
+
 export const PROVINCE_URL_FETCH_STATUS = {
     notReady: 'notReady',
     ready: 'ready',
@@ -91,4 +96,30 @@ export const BENEFICIARY_NAME = (type: string) => {
         diffName = type?.split('_')?.at(1);
     }
     return [mainName, `diffable ${diffName}`, 'other vulnerable sector'];
+};
+
+export const REFERENCES_FACTORY = () => {
+    return [
+        {
+            pk: '',
+            name: '',
+            contact_number: '',
+            email_address: '',
+            organization_name: '',
+        },
+        {
+            pk: '',
+            name: '',
+            contact_number: '',
+            email_address: '',
+            organization_name: '',
+        },
+        {
+            pk: '',
+            name: '',
+            contact_number: '',
+            email_address: '',
+            organization_name: '',
+        },
+    ];
 };
