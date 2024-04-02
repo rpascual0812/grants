@@ -45,7 +45,6 @@ export class ApplicationSuccessComponent implements OnInit {
     }
 
     sendEmail(data: any) {
-        console.log(data);
         this.applicationService.sendSuccessEmail(data.pk).subscribe({
             next: (res: any) => {
 
