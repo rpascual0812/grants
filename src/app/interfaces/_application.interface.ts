@@ -53,11 +53,27 @@ export interface Organization {
     fisherfolks?: boolean;
     mission?: string;
     vision?: string;
+    partner_organization_bank?: PartnerOrganizationBank;
+    partner_organization_other_information?: PartnerOrganizationOtherInformation;
     partner_organization_reference?: PartnerOrganizationReference[];
     description?: string;
     country_pk?: number;
     project_website?: string;
     date_created?: Date;
+}
+
+export interface PartnerOrganizationBank {
+    pk?: number;
+    partner_organization_pk?: number;
+    account_name?: string;
+    account_number?: string;
+    bank_name?: string;
+    bank_branch?: string;
+    bank_address?: string;
+    swift_code?: string;
+    created_by?: number;
+    date_created?: Date;
+    archived?: boolean;
 }
 
 export interface PartnerFiscalSponsor {
@@ -74,6 +90,7 @@ export interface PartnerFiscalSponsor {
     bank_name?: string;
     bank_branch?: string;
     bank_address?: string;
+    swift_code?: string;
     date_created?: Date;
 }
 
@@ -100,6 +117,22 @@ export interface ApplicationNonProfitEquivalencyDetermination {
     upon_dissolution?: boolean;
     is_controlled_by?: boolean;
     date_created?: Date;
+}
+
+export interface PartnerOrganizationOtherInformation {
+    pk?: number;
+    has_project?: boolean;
+    has_financial_policy?: boolean;
+    has_financial_policy_no_reason?: string;
+    has_financial_system?: boolean;
+    has_financial_system_no_reason?: string;
+    audit_financial_available?: boolean;
+    has_reviewed_financial_system?: boolean;
+    recommendation?: string;
+    created_by?: number;
+    date_created?: Date;
+    partner_organization_pk?: number;
+    archived?: boolean;
 }
 
 export interface Project {

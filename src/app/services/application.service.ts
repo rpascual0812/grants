@@ -8,6 +8,8 @@ import {
     Organization,
     Partner,
     Project,
+    PartnerOrganizationBank,
+    PartnerOrganizationOtherInformation,
 } from '../interfaces/_application.interface';
 import { ApplicationNonprofitEquivalencyDeterminationRead } from '../interfaces/application.interface';
 @Injectable({
@@ -17,7 +19,7 @@ export class ApplicationService {
     public navigate_next = signal(false);
     public navigate_back = signal(false);
 
-    constructor(public http: HttpClient) { }
+    constructor(public http: HttpClient) {}
 
     fetch(filters?: any) {
         return this.http.get(`${_.BASE_URL}/application`, { params: filters });
@@ -31,11 +33,13 @@ export class ApplicationService {
         return this.http.get(`${_.BASE_URL}/application/${uuid}/generated`);
     }
 
-    review(number: any) { // this is the application review page
+    review(number: any) {
+        // this is the application review page
         return this.http.get(`${_.BASE_URL}/application/${number}/review`, { params: { reviews: true } });
     }
 
-    reviews(pk: any, type: string) { // this is the reviews of each applications
+    reviews(pk: any, type: string) {
+        // this is the reviews of each applications
         return this.http.get(`${_.BASE_URL}/application/${pk}/reviews`, { params: { type } });
     }
 
@@ -76,10 +80,18 @@ export class ApplicationService {
     }
 
     saveAppReference(data: {
-        partner_organization_pk?: number,
-        partner_organization_reference: PartnerOrganizationReference[]
+        partner_organization_pk?: number;
+        partner_organization_reference: PartnerOrganizationReference[];
     }) {
         return this.http.post(`${_.BASE_URL}/application/reference`, data);
+    }
+
+    savePartnerOrgBank(data: PartnerOrganizationBank) {
+        return this.http.post(`${_.BASE_URL}/application/organization_bank_account`, data);
+    }
+
+    savePartnerOtherInfo(data: PartnerOrganizationOtherInformation) {
+        return this.http.post(`${_.BASE_URL}/application/organization_other_information`, data);
     }
 
     deleteAppProposalAct(params: { proposalPk: number; activityPk: number }) {
@@ -113,15 +125,22 @@ export class ApplicationService {
     }
 
     resolveReview(data: any) {
-        return this.http.post(`${_.BASE_URL}/application/${data.application_pk}/review/${data.review_pk}/resolve`, data);
+        return this.http.post(
+            `${_.BASE_URL}/application/${data.application_pk}/review/${data.review_pk}/resolve`,
+            data
+        );
     }
 
     deleteApplicationAttachment(data: any) {
-        return this.http.delete(`${_.BASE_URL}/application/${data.application_pk}/document/${data.document_pk}`, { params: { type: data.type } });
+        return this.http.delete(`${_.BASE_URL}/application/${data.application_pk}/document/${data.document_pk}`, {
+            params: { type: data.type },
+        });
     }
 
     deleteReviewAttachment(data: any) {
-        return this.http.delete(`${_.BASE_URL}/application/${data.application_pk}/review/${data.review_pk}/document/${data.document_pk}`);
+        return this.http.delete(
+            `${_.BASE_URL}/application/${data.application_pk}/review/${data.review_pk}/document/${data.document_pk}`
+        );
     }
 
     sendSuccessEmail(pk: any) {
