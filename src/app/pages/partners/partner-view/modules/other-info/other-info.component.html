@@ -7,7 +7,9 @@
                     <p class="text-sm font-weight-bold text-dark">Account Name</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <p class="text-sm font-weight-bold text-secondary">The Grants Corporation</p>
+                    <p class="text-sm font-weight-bold text-secondary">
+                        {{ partner?.organization?.partner_organization_bank?.account_name }}
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -15,7 +17,9 @@
                     <p class="text-sm font-weight-bold text-dark">Account Number</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <p class="text-sm font-weight-bold text-secondary">12345678910</p>
+                    <p class="text-sm font-weight-bold text-secondary">
+                        {{ partner?.organization?.partner_organization_bank?.account_number }}
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -23,7 +27,10 @@
                     <p class="text-sm font-weight-bold text-dark">Bank name and branch</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <p class="text-sm font-weight-bold text-secondary">New Era</p>
+                    <p class="text-sm font-weight-bold text-secondary">
+                        {{ partner?.organization?.partner_organization_bank?.bank_name }} -
+                        {{ partner?.organization?.partner_organization_bank?.bank_branch }}
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -31,7 +38,9 @@
                     <p class="text-sm font-weight-bold text-dark">Bank complete address</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <p class="text-sm font-weight-bold text-secondary">Lorem, ipsum dolor sit amet consectetur</p>
+                    <p class="text-sm font-weight-bold text-secondary">
+                        {{ partner?.organization?.partner_organization_bank?.bank_address }}
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -39,7 +48,9 @@
                     <p class="text-sm font-weight-bold text-dark">SWIFT code</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <p class="text-sm font-weight-bold text-secondary">Lorem, ipsum dolor sit amet consectetur</p>
+                    <p class="text-sm font-weight-bold text-secondary">
+                        {{ partner?.organization?.partner_organization_bank?.swift_code }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -159,7 +170,9 @@
                     <p class="text-sm font-weight-bold text-dark">SWIFT code</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <p class="text-sm font-weight-bold text-secondary">Lorem, ipsum dolor</p>
+                    <p class="text-sm font-weight-bold text-secondary">
+                        {{ partner?.partner_fiscal_sponsor?.swift_code }}
+                    </p>
                 </div>
             </div>
 
@@ -188,7 +201,7 @@
                     >
                 </div>
                 <div class="col-12 col-md-2">
-                    <app-select [arr]="['Yes', 'No']"></app-select>
+                    {{ partner?.organization?.partner_organization_other_information?.has_project ? 'Yes' : 'No' }}
                 </div>
             </div>
         </div>
@@ -199,15 +212,17 @@
                     <label class="font-weight-bold text-dark">Proponent has financial policy</label>
                 </div>
                 <div class="col-12 col-md-2">
-                    <app-select [arr]="['Yes', 'No']"></app-select>
+                    {{
+                        partner?.organization?.partner_organization_other_information?.has_financial_policy
+                            ? 'Yes'
+                            : 'No'
+                    }}
                 </div>
             </div>
 
             <label class="font-weight-bold text-dark">If no, what is the practice</label>
             <p class="text-secondary">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit corporis aut, voluptas itaque
-                reprehenderit, eos sunt similique temporibus nihil cum dolores accusamus velit quaerat dolorum debitis
-                maxime repudiandae vero provident!
+                {{ partner?.organization?.partner_organization_other_information?.has_financial_policy_no_reason }}
             </p>
         </div>
 
@@ -217,15 +232,17 @@
                     <label class="font-weight-bold text-dark">Proponent has financial system</label>
                 </div>
                 <div class="col-12 col-md-2">
-                    <app-select [arr]="['Yes', 'No']"></app-select>
+                    {{
+                        partner?.organization?.partner_organization_other_information?.has_financial_system
+                            ? 'Yes'
+                            : 'No'
+                    }}
                 </div>
             </div>
 
             <label class="font-weight-bold text-dark">If no, what is the practice</label>
             <p class="text-secondary">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit corporis aut, voluptas itaque
-                reprehenderit, eos sunt similique temporibus nihil cum dolores accusamus velit quaerat dolorum debitis
-                maxime repudiandae vero provident!
+                {{ partner?.organization?.partner_organization_other_information?.has_financial_system_no_reason }}
             </p>
         </div>
 
@@ -238,9 +255,7 @@
                         etc.</label
                     >
                     <p class="text-secondary m-0 p-0">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cupiditate nisi, ipsam deserunt
-                        nesciunt voluptas enim mollitia eius aperiam blanditiis, molestias at a accusantium cum esse
-                        vel. Laboriosam reiciendis qui voluptas.
+                        {{ partner?.organization?.partner_organization_other_information?.recommendation }}
                     </p>
                 </div>
             </div>
@@ -254,7 +269,11 @@
                     </label>
                 </div>
                 <div class="col-12 col-md-2">
-                    <app-select [arr]="['Yes', 'No']"></app-select>
+                    {{
+                        partner?.organization?.partner_organization_other_information?.audit_financial_available
+                            ? 'Yes'
+                            : 'No'
+                    }}
                 </div>
 
                 <div class="d-flex flex-wrap gap-2">
@@ -276,7 +295,13 @@
                     >
                 </div>
                 <div class="col-12 col-md-2">
-                    <app-select [arr]="['Yes', 'No']"></app-select>
+                    <p class="text-secondary">
+                        {{
+                            partner?.organization?.partner_organization_other_information?.has_reviewed_financial_system
+                                ? 'Yes'
+                                : 'No'
+                        }}
+                    </p>
                 </div>
             </div>
         </div>

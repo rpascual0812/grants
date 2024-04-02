@@ -57,6 +57,7 @@ export class FiscalSponsorInformationComponent {
             bank_name: [appFiscalSponsor?.bank_name ?? ''],
             bank_branch: [appFiscalSponsor?.bank_branch ?? ''],
             bank_address: [appFiscalSponsor?.bank_address ?? ''],
+            swift_code: [appFiscalSponsor?.swift_code ?? ''],
         });
     }
 
