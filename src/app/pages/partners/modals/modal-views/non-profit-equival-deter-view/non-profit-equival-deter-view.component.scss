@@ -1,0 +1,16 @@
+.bool-opt-container {
+    width: 80px;
+    /* remove the original arrow */
+    .form-select {
+        background-image: none;
+    }
+
+    select + i.material-icons {
+        float: right;
+        margin-top: -41px;
+        margin-right: -10px;
+        pointer-events: none;
+        padding-right: 5px;
+        font-size: 40px;
+    }
+}

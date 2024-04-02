@@ -1,0 +1,21 @@
+<div class="modal-header bg-gray-300">
+    <h4 class="modal-title pull-left text-dark">{{ this.modalTitle }}</h4>
+    <button type="button" class="btn btn-default pull-right" aria-label="Close" (click)="this.bsModalRef.hide()">
+        <i class="material-icons">close</i>
+    </button>
+</div>
+
+<div>
+    <ng-container *ngIf="section === 'partnerInformation'">
+        <app-partner-info-view [partner]="partner"></app-partner-info-view>
+    </ng-container>
+    <ng-container *ngIf="section === 'organizationProfile'">
+        <app-org-profile-view [partner]="partner"></app-org-profile-view>
+    </ng-container>
+    <ng-container *ngIf="section === 'nonProfitEquivalencyDetermination'">
+        <app-non-profit-equival-deter-view [partner]="partner"></app-non-profit-equival-deter-view>
+    </ng-container>
+    <ng-container *ngIf="section === 'otherInfo'">
+        <app-org-bank-account [partner]="partner"></app-org-bank-account>
+    </ng-container>
+</div>

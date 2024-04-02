@@ -11,8 +11,8 @@ export class PartnerService {
     return this.http.get(`${_.BASE_URL}/partner`, { params: filters });
   }
 
-  fetchOne(pk: any) {
-    return this.http.get(`${_.BASE_URL}/partner/${pk}`);
+  fetchOne(partnerId: string) {
+    return this.http.get(`${_.BASE_URL}/partner/${partnerId}`);
   }
 
   save(data: any) {

@@ -11,7 +11,6 @@ export interface Application {
     partner?: Partner;
     project?: Project;
     application_nonprofit_equivalency_determination?: ApplicationNonProfitEquivalencyDetermination;
-    // application_reference?: ApplicationReference[];
     reviews?: Review[];
     documents?: Document[];
     recommendations?: Recommendation[];
@@ -54,7 +53,7 @@ export interface Organization {
     fisherfolks?: boolean;
     mission?: string;
     vision?: string;
-    partner_organization_reference?: ProjectOrganizationReference[];
+    partner_organization_reference?: PartnerOrganizationReference[];
     description?: string;
     country_pk?: number;
     project_website?: string;
@@ -165,7 +164,7 @@ export interface ProjectProposalActivity {
     date_created?: Date;
 }
 
-export interface ProjectOrganizationReference {
+export interface PartnerOrganizationReference {
     pk?: number;
     application_pk?: number;
     name?: string;

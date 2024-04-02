@@ -1,61 +1,63 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Partner } from 'src/app/interfaces/_application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
-import { ApplicationSignalService } from 'src/app/services/application.signal.service';
+import { PartnerForm } from 'src/app/services/partner.signal.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
+import { OnHiddenData } from '../../../partner-view/partner-view.component';
 
 @Component({
-    selector: 'app-proponent-information',
-    templateUrl: './proponent-information.component.html',
-    styleUrls: ['./proponent-information.component.scss'],
+    selector: 'app-partner-info-view',
+    templateUrl: './partner-info-view.component.html',
+    styleUrls: ['./partner-info-view.component.scss'],
 })
-export class ProponentInformationComponent {
-    initialLoading = true;
+export class PartnerInfoViewComponent implements OnInit {
+    @Input() partner: PartnerForm | null = null;
+    processing = false;
+    submitted = false;
     form: FormGroup;
-    submitted: boolean = false;
-    processing: boolean = false;
-    applicationSignalService = inject(ApplicationSignalService);
 
     constructor(
+        public bsModalRef: BsModalRef,
+        private modalService: BsModalService,
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
     ) {}
 
-    appFormEffect = effect(() => {
-        this.initialLoading = this.applicationSignalService.loadingInitialAppForm();
-        if (!this.initialLoading) {
-            this.setForm();
-        }
-    });
+    ngOnInit() {
+        this.setForm();
+    }
 
     get f() {
         return this.form.controls;
     }
 
     setForm() {
-        const currentApplication = this.applicationSignalService.appForm();
-        const contact = currentApplication?.partner?.contacts?.at(0);
-        const partnerId = currentApplication?.partner?.partner_id;
+        const contact = this.partner?.contacts?.at(0);
+        const partnerId = this.partner?.partner_id;
         this.form = this.formBuilder.group({
             partner_id: [partnerId],
-            name: [currentApplication?.partner?.name ?? '', Validators.required],
-            address: [currentApplication?.partner?.address ?? '', Validators.required],
-            contact_number: [currentApplication?.partner?.contact_number ?? '', Validators.required],
-            email_address: [currentApplication?.partner?.email_address ?? '', Validators.email],
-            website: [currentApplication?.partner?.website ?? ''],
+            name: [this.partner?.name ?? '', Validators.required],
+            address: [this.partner?.address ?? '', Validators.required],
+            contact_number: [this.partner?.contact_number ?? '', Validators.required],
+            email_address: [this.partner?.email_address ?? '', Validators.email],
+            website: [this.partner?.website ?? ''],
             contact_person_name: [contact?.name ?? '', Validators.required],
             contact_person_number: [contact?.contact_number ?? '', Validators.required],
             contact_person_email_address: [contact?.email_address ?? '', [Validators.required, Validators.email]],
         });
     }
 
+    handleClose() {
+        this.bsModalRef.hide();
+    }
+
     saveFormValue() {
-        this.processing = true;
-        const currentApplication = this.applicationSignalService.appForm();
         const { value } = this.form;
+
         this.applicationService
             .saveApplicationPartner({
                 partner_id: value.partner_id,
@@ -77,23 +79,15 @@ export class ProponentInformationComponent {
                     const status = res?.status;
                     const data = res?.data as Partner;
                     if (status) {
-                        this.applicationSignalService.appForm.set({
-                            ...currentApplication,
-                            partner: {
-                                ...data,
-                                organization: {
-                                    ...currentApplication?.partner?.organization,
-                                },
-                                partner_fiscal_sponsor: {
-                                    ...currentApplication?.partner?.partner_fiscal_sponsor,
-                                }
-                            },
-                        });
-                        this.toastr.success('Proponent Information has been successfully saved', 'SUCCESS!');
-                        this.applicationSignalService.navigateNext();
+                        this.bsModalRef.onHidden?.next({
+                            isSaved: true,
+                            data,
+                        } as OnHiddenData);
+                        this.bsModalRef.hide();
+                        this.toastr.success(`Partner's Information has been successfully saved`, 'SUCCESS!');
                     } else {
                         this.toastr.error(
-                            `An error occurred while saving Proponent Information. Please try again.`,
+                            `An error occurred while saving Partner's Information. Please try again.`,
                             'ERROR!'
                         );
                     }
@@ -102,7 +96,7 @@ export class ProponentInformationComponent {
                 error: (err) => {
                     const { statusCode, errorMessage } = extractErrorMessage(err);
                     this.toastr.error(
-                        `An error occurred while saving Proponent Information. ${statusCode} ${errorMessage} Please try again.`,
+                        `An error occurred while saving Partner's Information. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
                     this.processing = false;
@@ -110,15 +104,11 @@ export class ProponentInformationComponent {
             });
     }
 
-    handleNext() {
+    handleSave() {
         this.submitted = true;
         const { status } = this.form;
         if (status === 'VALID') {
             this.saveFormValue();
         }
-    }
-
-    handleResetForm() {
-        this.form.reset();
     }
 }

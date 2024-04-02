@@ -1,0 +1,355 @@
+<div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="handleSave()">
+        <h4 class="text-dark">Organization Profile</h4>
+        <div class="form-group my-3">
+            <label class="font-weight-bold text-dark">Kind of Organization*</label>
+            <app-select
+                *ngIf="!orgListLoading"
+                [ngClass]="{ 'is-invalid': submitted && f['organization_pk'].errors }"
+                (onSelectEvent)="onChangeSelectedItem($event, 'organization_pk')"
+                (onDeSelectEvent)="onChangeSelectedItem($event, 'organization_pk')"
+                [defaultSelectedItemKey]="form.controls['organization_pk'].value"
+                [arr]="orgList"
+                [changeFieldEventEmitter]="selectChangeFieldEventEmitter.organization_pk"
+            ></app-select>
+            <div *ngIf="submitted && f['organization_pk'].errors" class="invalid-feedback">
+                <div *ngIf="f['organization_pk'].errors['required']">Kind of Organization is required</div>
+            </div>
+        </div>
+        <ng-container *ngIf="selectedOrganization === 'Community/informal'">
+            <div class="form-group my-3">
+                <label class="font-weight-bold text-dark">If indigenous/ethnic, please indicate tribe</label>
+                <input formControlName="tribe" type="text" class="form-control border rounded-1 p-1" />
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-between my-3">
+                <div>
+                    <label class="font-weight-bold text-dark">Women's organization?</label>
+                </div>
+
+                <div>
+                    <div class="bool-opt-container">
+                        <select
+                            #boolOptWomensOrg
+                            formControlName="womens_organization"
+                            class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
+                            (change)="onChangeSelectedBoolOpt(boolOptWomensOrg.value, 'womens_organization')"
+                        >
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <i class="material-icons">arrow_drop_down</i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-between my-3">
+                <div>
+                    <label class="font-weight-bold text-dark">Differently-abled organization?</label>
+                </div>
+
+                <div>
+                    <div class="bool-opt-container">
+                        <select
+                            #boolOptDiffAbledOrg
+                            formControlName="differently_abled_organization"
+                            class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
+                            (change)="
+                                onChangeSelectedBoolOpt(boolOptDiffAbledOrg.value, 'differently_abled_organization')
+                            "
+                        >
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <i class="material-icons">arrow_drop_down</i>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container
+            *ngIf="
+                selectedOrganization === 'Non-Government organization' ||
+                selectedOrganization === 'Local organization/People\'s organization'
+            "
+        >
+            <div class="form-group my-3">
+                <label class="font-weight-bold text-dark">If indigenous/ethnic, please indicate tribe</label>
+                <input formControlName="tribe" type="text" class="form-control border rounded-1 p-1" />
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-between my-3">
+                <div>
+                    <label class="font-weight-bold text-dark">Women's organization?</label>
+                </div>
+
+                <div>
+                    <div class="bool-opt-container">
+                        <select
+                            #boolOptWomenOrg
+                            formControlName="womens_organization"
+                            class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
+                            (change)="onChangeSelectedBoolOpt(boolOptWomenOrg.value, 'womens_organization')"
+                        >
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <i class="material-icons">arrow_drop_down</i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-between my-3">
+                <div>
+                    <label class="font-weight-bold text-dark">Differently-abled organization?</label>
+                </div>
+
+                <div>
+                    <div class="bool-opt-container">
+                        <select
+                            #boolOptDiffAbledOrg
+                            formControlName="differently_abled_organization"
+                            class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
+                            (change)="
+                                onChangeSelectedBoolOpt(boolOptDiffAbledOrg.value, 'differently_abled_organization')
+                            "
+                        >
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <i class="material-icons">arrow_drop_down</i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-between my-3">
+                <div>
+                    <label class="font-weight-bold text-dark">Farmers group?</label>
+                </div>
+
+                <div>
+                    <div class="bool-opt-container">
+                        <select
+                            #boolOptFarmersGrp
+                            formControlName="farmers_group"
+                            class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
+                            (change)="onChangeSelectedBoolOpt(boolOptFarmersGrp.value, 'farmers_group')"
+                        >
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <i class="material-icons">arrow_drop_down</i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-between my-3">
+                <div>
+                    <label class="font-weight-bold text-dark">Fisherfolks?</label>
+                </div>
+
+                <div>
+                    <div class="bool-opt-container">
+                        <select
+                            #boolOptFisherfolks
+                            formControlName="fisherfolks"
+                            class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
+                            (change)="onChangeSelectedBoolOpt(boolOptFisherfolks.value, 'fisherfolks')"
+                        >
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        <i class="material-icons">arrow_drop_down</i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group my-3">
+                <label class="font-weight-bold text-dark">Other sectoral group, please indicate:</label>
+                <input formControlName="other_sectoral_group" type="text" class="form-control border rounded-1 p-1" />
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="selectedOrganization === 'Other organizations'">
+            <div class="form-group my-3">
+                <label class="font-weight-bold text-dark">Please Indicate:</label>
+                <app-select
+                    (onSelectEvent)="onChangeSelectedItem($event, 'tribe')"
+                    (onDeSelectEvent)="onChangeSelectedItem($event, 'tribe')"
+                    [defaultSelectedInArr]="
+                        tribeIndicateList.includes(form.controls['tribe'].value ?? '')
+                            ? form.controls['tribe'].value
+                            : tribeIndicateList.at(0)
+                    "
+                    [arr]="tribeIndicateList"
+                ></app-select>
+            </div>
+        </ng-container>
+
+        <div class="form-group my-3">
+            <label class="font-weight-bold text-dark">Mission</label>
+            <textarea
+                type="text"
+                rows="5"
+                class="form-control border rounded-1 p-2"
+                style="resize: none"
+                formControlName="mission"
+            ></textarea>
+        </div>
+
+        <div class="form-group my-3">
+            <label class="font-weight-bold text-dark">Vision</label>
+            <textarea
+                type="text"
+                rows="5"
+                class="form-control border rounded-1 p-2"
+                style="resize: none"
+                formControlName="vision"
+            ></textarea>
+        </div>
+
+        <div class="form-group my-3">
+            <label class="font-weight-bold text-dark">What does your community/organization do?*</label>
+            <textarea
+                type="text"
+                rows="5"
+                class="form-control border rounded-1 p-2"
+                style="resize: none"
+                formControlName="description"
+                required
+                [ngClass]="{ 'is-invalid': submitted && f['description'].errors }"
+            ></textarea>
+            <div *ngIf="submitted && f['description'].errors" class="invalid-feedback">
+                <div *ngIf="f['description'].errors['required']">Field is required</div>
+            </div>
+        </div>
+
+        <div class="form-group my-3">
+            <label class="font-weight-bold text-dark">Country*</label>
+            <app-select
+                [url]="'country'"
+                (onSelectEvent)="onChangeSelectedItem($event, 'country_pk')"
+                (onDeSelectEvent)="onChangeSelectedItem($event, 'country_pk')"
+                [defaultSelectedItemKey]="form.controls['country_pk'].value"
+                [ngClass]="{ 'is-invalid': submitted && f['country_pk'].errors }"
+                [changeFieldEventEmitter]="selectChangeFieldEventEmitter.country_pk"
+            ></app-select>
+            <div *ngIf="submitted && f['country_pk'].errors" class="invalid-feedback">
+                <div *ngIf="f['country_pk'].errors['required']">Country is required</div>
+            </div>
+        </div>
+
+        <div class="form-group my-3">
+            <label class="font-weight-bold text-dark">Website of Project/Organization</label>
+            <input type="text" class="form-control border rounded-1 p-1" formControlName="project_website" />
+        </div>
+
+        <h4 class="text-dark">References</h4>
+
+        <div
+            formArrayName="application_reference"
+            *ngFor="let item of formContactReferences.controls; index as i"
+            [attr.data-index]="i"
+            class="row"
+        >
+            <ng-container [formGroupName]="i">
+                <div class="col-12 col-md-3">
+                    <div class="form-group my-3">
+                        <label class="font-weight-bold text-dark">Person {{ i + 1 }}</label>
+                        <input
+                            formControlName="name"
+                            type="text"
+                            class="form-control border rounded-1 p-1"
+                            [ngClass]="{
+                                'is-invalid': submitted && formContactReferences.at(i).get('name')?.errors
+                            }"
+                        />
+                        <div *ngIf="submitted && formContactReferences.at(i).get('name')?.errors">
+                            <div
+                                *ngIf="formContactReferences.at(i).get('name')?.errors?.['required']"
+                                class="text-sm text-danger"
+                            >
+                                Person Name is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="form-group my-3">
+                        <label class="font-weight-bold text-dark">Contact</label>
+                        <input
+                            formControlName="contact_number"
+                            type="tel"
+                            class="form-control border rounded-1 p-1"
+                            [ngClass]="{
+                                'is-invalid': submitted && formContactReferences.at(i).get('contact_number')?.errors
+                            }"
+                        />
+                        <div *ngIf="submitted && formContactReferences.at(i).get('contact_number')?.errors">
+                            <div
+                                *ngIf="formContactReferences.at(i).get('contact_number')?.errors?.['required']"
+                                class="text-sm text-danger"
+                            >
+                                Contact Number is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="form-group my-3">
+                        <label class="font-weight-bold text-dark">Email Address</label>
+                        <input
+                            formControlName="email_address"
+                            type="email"
+                            class="form-control border rounded-1 p-1"
+                            [ngClass]="{
+                                'is-invalid': submitted && formContactReferences.at(i).get('email_address')?.errors
+                            }"
+                        />
+                        <div *ngIf="submitted && formContactReferences.at(i).get('email_address')?.errors">
+                            <div
+                                *ngIf="formContactReferences.at(i).get('email_address')?.errors?.['email']"
+                                class="text-sm text-danger"
+                            >
+                                Invalid email
+                            </div>
+
+                            <div
+                                *ngIf="formContactReferences.at(i).get('email_address')?.errors?.['required']"
+                                class="text-sm text-danger"
+                            >
+                                Email is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="form-group my-3">
+                        <label class="font-weight-bold text-dark">Organization Name</label>
+                        <input
+                            formControlName="organization_name"
+                            type="text"
+                            class="form-control border rounded-1 p-1"
+                            [ngClass]="{
+                                'is-invalid': submitted && formContactReferences.at(i).get('organization_name')?.errors
+                            }"
+                        />
+                        <div *ngIf="submitted && formContactReferences.at(i).get('organization_name')?.errors">
+                            <div
+                                *ngIf="formContactReferences.at(i).get('organization_name')?.errors?.['required']"
+                                class="text-sm text-danger"
+                            >
+                                Organization Name is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" (click)="handleClose()" type="button">Cancel</button>
+            <button type="button" class="btn btn-dark-blue" (click)="handleSave()">Save</button>
+        </div>
+    </form>
+</div>
