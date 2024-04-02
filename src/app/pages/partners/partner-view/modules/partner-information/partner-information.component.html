@@ -84,60 +84,12 @@
             <div>
                 <h4 class="text-dark">Attach Documents</h4>
                 <div class="d-flex flex-wrap flex-row gap-2 my-3">
-                    <p class="text-dark p-0 m-0">
+                    <span class="text-dark p-0 m-0" *ngFor="let attachment of partner?.documents; let i = index">
                         <span class="position-relative top-5">
                             <i class="material-icons">attach_file</i>
                         </span>
-                        docoumentssample1.pdf
-                    </p>
-                    <p class="text-dark p-0 m-0">
-                        <span class="position-relative top-5">
-                            <i class="material-icons">attach_file</i>
-                        </span>
-                        docoumentssample1.pdf
-                    </p>
-                    <p class="text-dark p-0 m-0">
-                        <span class="position-relative top-5">
-                            <i class="material-icons">attach_file</i>
-                        </span>
-                        docoumentssample1.pdf
-                    </p>
-                    <p class="text-dark p-0 m-0">
-                        <span class="position-relative top-5">
-                            <i class="material-icons">attach_file</i>
-                        </span>
-                        docoumentssample1.pdf
-                    </p>
-                    <p class="text-dark p-0 m-0">
-                        <span class="position-relative top-5">
-                            <i class="material-icons">attach_file</i>
-                        </span>
-                        docoumentssample1.pdf
-                    </p>
-                    <p class="text-dark p-0 m-0">
-                        <span class="position-relative top-5">
-                            <i class="material-icons">attach_file</i>
-                        </span>
-                        docoumentssample1.pdf
-                    </p>
-                    <p class="text-dark p-0 m-0">
-                        <span class="position-relative top-5">
-                            <i class="material-icons">attach_file</i>
-                        </span>
-                        docoumentssample1.pdf
-                    </p>
-                    <p class="text-dark p-0 m-0">
-                        <span class="position-relative top-5">
-                            <i class="material-icons">attach_file</i>
-                        </span>
-                        docoumentssample1.pdf
-                    </p>
-                    <p class="text-dark p-0 m-0">
-                        <span class="position-relative top-5">
-                            <i class="material-icons">attach_file</i>
-                        </span>
-                        docoumentssample1.pdf
-                    </p>
+                        {{ attachment['original_name'] }}
+                    </span>
                 </div>
             </div>
         </div>

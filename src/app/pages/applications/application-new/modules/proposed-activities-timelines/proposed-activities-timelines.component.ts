@@ -44,7 +44,7 @@ export class ProposedActivitiesTimelinesComponent {
         private applicationService: ApplicationService,
         private toastr: ToastrService,
         private documentService: DocumentService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.getDurationOpts();
