@@ -29,6 +29,8 @@ export interface Partner {
     organization?: Organization;
     partner_fiscal_sponsor?: PartnerFiscalSponsor;
     contacts?: Contact[];
+    projects?: Project[];
+    documents?: []
 }
 
 export interface Contact {
