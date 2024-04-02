@@ -7,7 +7,7 @@ import { Application, Partner } from 'src/app/interfaces/_application.interface'
 
 interface PartnerRead extends Partner {
     grand_total_amount?: number;
-    application?: Application[];
+    applications?: Application[];
 }
 
 type SelectItem = {
@@ -47,7 +47,7 @@ export class PartnersListComponent implements OnInit {
         type_pk: null,
     };
 
-    constructor(private partnerService: PartnerService) {}
+    constructor(private partnerService: PartnerService) { }
 
     ngOnInit() {
         this.fetch();
@@ -68,7 +68,7 @@ export class PartnersListComponent implements OnInit {
                         location: item.address,
                         grand_total_amount: item.grand_total_amount,
                         expanded: false,
-                        applications: item?.application?.filter((app) => !!app?.project?.title) ?? [],
+                        applications: item?.applications?.filter((app) => !!app?.project?.title) ?? [],
                     }));
                     this.loading = false;
                 },
