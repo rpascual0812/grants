@@ -30,7 +30,7 @@ export interface Partner {
     partner_nonprofit_equivalency_determination?: PartnerNonProfitEquivalencyDetermination;
     contacts?: Contact[];
     projects?: Project[];
-    documents?: []
+    documents?: Document[];
 }
 
 export interface Contact {

@@ -44,7 +44,7 @@ export class OrganizationProfileComponent implements OnInit {
         private applicationService: ApplicationService,
         private documentService: DocumentService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.setForm();
@@ -57,7 +57,6 @@ export class OrganizationProfileComponent implements OnInit {
                     this.attachments.push(document);
                 }
             });
-            console.log(this.attachments);
         }
     }
 

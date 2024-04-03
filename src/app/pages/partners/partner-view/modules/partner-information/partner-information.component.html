@@ -91,6 +91,9 @@
                         {{ attachment['original_name'] }}
                     </span>
                 </div>
+                <div *ngIf="partner?.documents?.length == 0" class="text-center">
+                    No documents found.
+                </div>
             </div>
         </div>
     </div>
