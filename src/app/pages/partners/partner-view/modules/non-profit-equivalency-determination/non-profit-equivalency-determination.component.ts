@@ -4,6 +4,9 @@ import { PartnerForm, PartnerSignalService } from 'src/app/services/partner.sign
 import { getOtherCurrencyKey } from 'src/app/utilities/constants';
 import { PartnerEditModalComponent } from '../../../modals/partner-edit-modal/partner-edit-modal.component';
 import { OnHiddenData } from '../../partner-view.component';
+import * as _ from '../../../../../utilities/globals';
+import { PartnerService } from 'src/app/services/partner.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-non-profit-equivalency-determination',
@@ -14,8 +17,15 @@ export class NonProfitEquivalencyDeterminationComponent implements OnInit {
     bsModalRef?: BsModalRef;
     partner: PartnerForm | null = null;
     partnerSignalService = inject(PartnerSignalService);
+    SERVER: string = _.BASE_URL;
+    attachments: any = [];
 
-    constructor(private modalService: BsModalService, private changeDetection: ChangeDetectorRef) {}
+    constructor(
+        private modalService: BsModalService,
+        private changeDetection: ChangeDetectorRef,
+        private partnerService: PartnerService,
+        private toastr: ToastrService,
+    ) { }
 
     partnerSignalEffect = effect(
         () => {
@@ -31,6 +41,13 @@ export class NonProfitEquivalencyDeterminationComponent implements OnInit {
 
     ngOnInit() {
         this.partner = this.partnerSignalService.partnerForm();
+
+        const documents = this.partner?.documents ?? [];
+        documents.forEach(doc => {
+            if (doc.type == 'non_profit_equivalency_legal_registration') {
+                this.attachments.push(doc);
+            }
+        });
     }
 
     parseOtherCurrency(currencyOther: string) {
@@ -53,5 +70,37 @@ export class NonProfitEquivalencyDeterminationComponent implements OnInit {
             }
         });
         this.partnerSignalService.editSectionKey.set(null);
+    }
+
+    deleteAttachment(i: number, type: string) {
+        _.confirmMessage(
+            {
+                title: '<strong>Are you sure you want to delete this attachment?</strong>',
+                icon: 'question',
+                buttons: {
+                    showClose: true,
+                    showCancel: true,
+                    focusConfirm: false,
+                },
+                confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
+            },
+            () => {
+                this.partnerService
+                    .deleteAttachment(this.attachments[i].pk)
+                    .subscribe({
+                        next: (data: any) => {
+                            this.attachments.splice(i, 1);
+                        },
+                        error: (error: any) => {
+                            console.log(error);
+                            this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
+                        },
+                        complete: () => {
+                            console.log('Complete');
+                        }
+                    });
+            }
+        );
     }
 }

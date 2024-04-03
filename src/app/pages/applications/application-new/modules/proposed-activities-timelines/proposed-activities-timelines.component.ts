@@ -57,7 +57,6 @@ export class ProposedActivitiesTimelinesComponent {
                     this.attachments.push(document);
                 }
             });
-            console.log(this.attachments);
         }
     }
 

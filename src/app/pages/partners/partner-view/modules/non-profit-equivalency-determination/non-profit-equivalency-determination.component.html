@@ -23,10 +23,10 @@
                         USD |
                         {{ partner?.partner_nonprofit_equivalency_determination?.financial_last_year_usd | number }}
                         {{
-                            parseOtherCurrency(
-                                partner?.partner_nonprofit_equivalency_determination
-                                    ?.financial_last_year_other_currency ?? ''
-                            )
+                        parseOtherCurrency(
+                        partner?.partner_nonprofit_equivalency_determination
+                        ?.financial_last_year_other_currency ?? ''
+                        )
                         }}
                     </p>
                 </div>
@@ -53,10 +53,10 @@
                         USD |
                         {{ partner?.partner_nonprofit_equivalency_determination?.financial_current_other | number }}
                         {{
-                            parseOtherCurrency(
-                                partner?.partner_nonprofit_equivalency_determination
-                                    ?.financial_current_other_currency ?? ''
-                            )
+                        parseOtherCurrency(
+                        partner?.partner_nonprofit_equivalency_determination
+                        ?.financial_current_other_currency ?? ''
+                        )
                         }}
                     </p>
                 </div>
@@ -80,60 +80,19 @@
                     <div>
                         <h4 class="text-dark">Legal registration</h4>
                         <div class="d-flex flex-wrap flex-row gap-2 my-3">
-                            <p class="text-dark p-0 m-0">
+                            <p class="text-dark p-0 m-0" *ngFor="let attachment of attachments; let i = index">
                                 <span class="position-relative top-5">
                                     <i class="material-icons">attach_file</i>
                                 </span>
-                                docoumentssample1.pdf
+
+                                <a href="{{SERVER + '/' + attachment.path}}"
+                                    target="_blank">{{attachment.original_name}}</a> <a
+                                    (click)="deleteAttachment(i, 'non_profit_equivalency_legal_registration')"><i
+                                        class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                             </p>
-                            <p class="text-dark p-0 m-0">
-                                <span class="position-relative top-5">
-                                    <i class="material-icons">attach_file</i>
-                                </span>
-                                docoumentssample1.pdf
-                            </p>
-                            <p class="text-dark p-0 m-0">
-                                <span class="position-relative top-5">
-                                    <i class="material-icons">attach_file</i>
-                                </span>
-                                docoumentssample1.pdf
-                            </p>
-                            <p class="text-dark p-0 m-0">
-                                <span class="position-relative top-5">
-                                    <i class="material-icons">attach_file</i>
-                                </span>
-                                docoumentssample1.pdf
-                            </p>
-                            <p class="text-dark p-0 m-0">
-                                <span class="position-relative top-5">
-                                    <i class="material-icons">attach_file</i>
-                                </span>
-                                docoumentssample1.pdf
-                            </p>
-                            <p class="text-dark p-0 m-0">
-                                <span class="position-relative top-5">
-                                    <i class="material-icons">attach_file</i>
-                                </span>
-                                docoumentssample1.pdf
-                            </p>
-                            <p class="text-dark p-0 m-0">
-                                <span class="position-relative top-5">
-                                    <i class="material-icons">attach_file</i>
-                                </span>
-                                docoumentssample1.pdf
-                            </p>
-                            <p class="text-dark p-0 m-0">
-                                <span class="position-relative top-5">
-                                    <i class="material-icons">attach_file</i>
-                                </span>
-                                docoumentssample1.pdf
-                            </p>
-                            <p class="text-dark p-0 m-0">
-                                <span class="position-relative top-5">
-                                    <i class="material-icons">attach_file</i>
-                                </span>
-                                docoumentssample1.pdf
-                            </p>
+                        </div>
+                        <div *ngIf="attachments.length == 0" class="text-center">
+                            No documents found.
                         </div>
                     </div>
                 </div>
@@ -176,57 +135,33 @@
         <h4 class="text-dark">The organization is operated exclusively for</h4>
         <div class="row gap-0 my-3">
             <div class="form-check col-12 col-md-6 col-lg-4 px-2">
-                <input
-                    disabled
-                    class="form-check-input"
-                    type="checkbox"
-                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.charitable"
-                />
+                <input disabled class="form-check-input" type="checkbox"
+                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.charitable" />
                 <label class="form-check-label text-dark font-weight-bold">charitable</label>
             </div>
             <div class="form-check col-12 col-md-6 col-lg-4 px-2">
-                <input
-                    disabled
-                    class="form-check-input"
-                    type="checkbox"
-                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.cultural"
-                />
+                <input disabled class="form-check-input" type="checkbox"
+                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.cultural" />
                 <label class="form-check-label text-dark font-weight-bold">cultural</label>
             </div>
             <div class="form-check col-12 col-md-6 col-lg-4 px-2">
-                <input
-                    disabled
-                    class="form-check-input"
-                    type="checkbox"
-                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.education_purpose"
-                />
+                <input disabled class="form-check-input" type="checkbox"
+                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.education_purpose" />
                 <label class="form-check-label text-dark font-weight-bold">educational purpose</label>
             </div>
             <div class="form-check col-12 col-md-6 col-lg-4 px-2">
-                <input
-                    disabled
-                    class="form-check-input"
-                    type="checkbox"
-                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.literacy"
-                />
+                <input disabled class="form-check-input" type="checkbox"
+                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.literacy" />
                 <label class="form-check-label text-dark font-weight-bold">literacy</label>
             </div>
             <div class="form-check col-12 col-md-6 col-lg-4 px-2">
-                <input
-                    disabled
-                    class="form-check-input"
-                    type="checkbox"
-                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.religious"
-                />
+                <input disabled class="form-check-input" type="checkbox"
+                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.religious" />
                 <label class="form-check-label text-dark font-weight-bold">religious</label>
             </div>
             <div class="form-check col-12 col-md-6 col-lg-4 px-2">
-                <input
-                    disabled
-                    class="form-check-input"
-                    type="checkbox"
-                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.scientific"
-                />
+                <input disabled class="form-check-input" type="checkbox"
+                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.scientific" />
                 <label class="form-check-label text-dark font-weight-bold">scientific</label>
             </div>
 
@@ -242,11 +177,10 @@
             <div class="form-group my-3">
                 <div class="row">
                     <div class="col-12 col-md-10">
-                        <label class="font-weight-bold text-dark"
-                            >Does any part of the assets of your organization, now or planned for the future, inure to
+                        <label class="font-weight-bold text-dark">Does any part of the assets of your organization, now
+                            or planned for the future, inure to
                             the benefit of private individuals, other than in the form of services which your
-                            organization is authorized to provide?*</label
-                        >
+                            organization is authorized to provide?*</label>
                     </div>
                     <div class="col-12 col-md-2">
                         <p class="text-secondary">
@@ -264,11 +198,10 @@
             <div class="form-group my-3">
                 <div class="row">
                     <div class="col-12 col-md-10">
-                        <label class="font-weight-bold text-dark"
-                            >Does your organization make any payments to any of its officers or members of its Board of
+                        <label class="font-weight-bold text-dark">Does your organization make any payments to any of its
+                            officers or members of its Board of
                             Directors or other governing body, other than reasonable compensation for services to the
-                            organization?*</label
-                        >
+                            organization?*</label>
                     </div>
                     <div class="col-12 col-md-2">
                         <p class="text-secondary">
@@ -286,10 +219,9 @@
             <div class="form-group my-3">
                 <div class="row">
                     <div class="col-12 col-md-10">
-                        <label class="font-weight-bold text-dark"
-                            >Upon dissolution, are the assets of the organization required to be distributed for
-                            charitable, educational, scientific, religious, medical or literary purposes?*</label
-                        >
+                        <label class="font-weight-bold text-dark">Upon dissolution, are the assets of the organization
+                            required to be distributed for
+                            charitable, educational, scientific, religious, medical or literary purposes?*</label>
                     </div>
                     <div class="col-12 col-md-2">
                         <p class="text-secondary">
@@ -302,8 +234,8 @@
             <div class="form-group my-3">
                 <div class="row">
                     <div class="col-12 col-md-10">
-                        <label class="font-weight-bold text-dark"
-                            >Is your organization controlled by or operated in connection with any other organization?*
+                        <label class="font-weight-bold text-dark">Is your organization controlled by or operated in
+                            connection with any other organization?*
                         </label>
                     </div>
                     <div class="col-12 col-md-2">

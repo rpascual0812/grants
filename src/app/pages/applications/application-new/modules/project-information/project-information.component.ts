@@ -60,7 +60,7 @@ export class ProjectInformationComponent implements OnInit {
         private applicationService: ApplicationService,
         private toastr: ToastrService,
         public bsModalRef: BsModalRef
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.durationOpts = getDurationOpts();
@@ -74,7 +74,6 @@ export class ProjectInformationComponent implements OnInit {
                     this.attachments.push(document);
                 }
             });
-            console.log(this.attachments);
         }
     }
 
