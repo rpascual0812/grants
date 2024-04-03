@@ -10,7 +10,7 @@ import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import * as _ from '../../../../../utilities/globals';
 import { DocumentService } from 'src/app/services/document.service';
-import { ApplicationNonProfitEquivalencyDetermination } from 'src/app/interfaces/_application.interface';
+import { PartnerNonProfitEquivalencyDetermination } from 'src/app/interfaces/_application.interface';
 
 @Component({
     selector: 'app-non-profit-equivalency-determination',
@@ -66,7 +66,8 @@ export class NonProfitEquivalencyDeterminationComponent {
 
     setForm() {
         const currentApplication = this.applicationSignalService.appForm();
-        const nonProfitEquivalencyDetermination = currentApplication?.application_nonprofit_equivalency_determination;
+        const nonProfitEquivalencyDetermination =
+            currentApplication?.partner?.partner_nonprofit_equivalency_determination;
         this.form = this.formBuilder.group({
             year: [nonProfitEquivalencyDetermination?.year, Validators.required],
             financial_last_year_usd: [
@@ -137,7 +138,8 @@ export class NonProfitEquivalencyDeterminationComponent {
 
     initialCurrenciesDefaultSelected() {
         const currentApplication = this.applicationSignalService.appForm();
-        const nonProfitEquivalencyDetermination = currentApplication?.application_nonprofit_equivalency_determination;
+        const nonProfitEquivalencyDetermination =
+            currentApplication?.partner?.partner_nonprofit_equivalency_determination;
 
         const selectedCurrencyLastYearKey = nonProfitEquivalencyDetermination?.financial_last_year_other_currency
             ?.split('-')
@@ -190,10 +192,18 @@ export class NonProfitEquivalencyDeterminationComponent {
 
     onChangeSelectedBoolOpt(value: string, key: string) {
         this.form.controls[key].setValue(value === 'true' ? true : false);
+        this.configureDescription(key, value);
+    }
+
+    configureDescription(key: string, value: string) {
         if (['any_assets', 'any_payments'].includes(key)) {
-            value === 'true'
-                ? this.onAddDescriptionValidations(`${key}_description`)
-                : this.onRemoveDescriptionValidations(`${key}_description`);
+            if (value === 'false') {
+                this.form.controls[`${key}_description`].setValue('');
+                this.onRemoveDescriptionValidations(`${key}_description`);
+            }
+            if (value === 'true') {
+                this.onAddDescriptionValidations(`${key}_description`);
+            }
         }
     }
 
@@ -208,14 +218,19 @@ export class NonProfitEquivalencyDeterminationComponent {
         this.form?.controls[key]?.updateValueAndValidity();
     }
 
-    saveCurrentAppForm(data: ApplicationNonProfitEquivalencyDetermination) {
+    saveCurrentAppForm(data: PartnerNonProfitEquivalencyDetermination) {
         const currentApplication = this.applicationSignalService.appForm();
+        const partner = currentApplication?.partner;
+        const nonProfitEquivalencyDetermination = partner?.partner_nonprofit_equivalency_determination;
         this.applicationSignalService.appForm.set({
             ...currentApplication,
-            application_nonprofit_equivalency_determination: {
-                pk: data?.pk ?? currentApplication?.application_nonprofit_equivalency_determination?.pk,
-                application_pk: currentApplication?.pk,
-                ...data,
+            partner: {
+                ...partner,
+                partner_nonprofit_equivalency_determination: {
+                    pk: data?.pk ?? nonProfitEquivalencyDetermination?.pk,
+                    partner_pk: partner?.pk,
+                    ...data,
+                },
             },
         });
     }
@@ -223,11 +238,13 @@ export class NonProfitEquivalencyDeterminationComponent {
     saveFormValue() {
         this.processing = true;
         const currentApplication = this.applicationSignalService.appForm();
+        const partner = currentApplication?.partner;
+        const nonProfitEquivalencyDetermination = partner?.partner_nonprofit_equivalency_determination;
         const { value } = this.form;
         this.applicationService
             .saveApplicationNonProfitEquivalencyDetermination({
-                pk: currentApplication?.application_nonprofit_equivalency_determination?.pk,
-                application_pk: currentApplication?.pk,
+                pk: nonProfitEquivalencyDetermination?.pk,
+                partner_pk: partner?.pk,
                 ...value,
                 operated_for_others: value.operated_for_others ?? '',
             })

@@ -86,7 +86,10 @@ export class ProponentInformationComponent {
                                 },
                                 partner_fiscal_sponsor: {
                                     ...currentApplication?.partner?.partner_fiscal_sponsor,
-                                }
+                                },
+                                partner_nonprofit_equivalency_determination: {
+                                    ...currentApplication?.partner?.partner_nonprofit_equivalency_determination,
+                                },
                             },
                         });
                         this.toastr.success('Proponent Information has been successfully saved', 'SUCCESS!');
