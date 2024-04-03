@@ -189,7 +189,7 @@ export class OrganizationProfileComponent implements OnInit {
                 ...currentApplication?.partner,
                 organization: {
                     ...data,
-                    pk: organization?.pk,
+                    pk: organization?.pk ?? data?.pk,
                     partner_organization_reference: [...partnerOrganizationReference],
                 },
                 partner_fiscal_sponsor: {

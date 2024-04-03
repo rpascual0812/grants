@@ -89,8 +89,8 @@ export class ContactInfoReferencesComponent {
                 ...partner,
                 organization: {
                     ...organization,
-                    partner_organization_reference: [...data],
                     pk: organization?.pk,
+                    partner_organization_reference: [...data],
                 },
             },
         });
