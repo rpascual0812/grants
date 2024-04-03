@@ -8,10 +8,7 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <p class="text-sm font-weight-bold text-secondary">
-                        {{
-                            partner?.application?.at(0)?.application_nonprofit_equivalency_determination?.year
-                                | date : 'yyyy'
-                        }}
+                        {{ partner?.partner_nonprofit_equivalency_determination?.year | date : 'yyyy' }}
                     </p>
                 </div>
             </div>
@@ -22,18 +19,12 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <p class="text-sm font-weight-bold text-secondary">
-                        {{
-                            partner?.application?.at(0)?.application_nonprofit_equivalency_determination
-                                ?.financial_last_year_usd | number
-                        }}
+                        {{ partner?.partner_nonprofit_equivalency_determination?.financial_last_year_usd | number }}
                         USD |
-                        {{
-                            partner?.application?.at(0)?.application_nonprofit_equivalency_determination
-                                ?.financial_last_year_usd | number
-                        }}
+                        {{ partner?.partner_nonprofit_equivalency_determination?.financial_last_year_usd | number }}
                         {{
                             parseOtherCurrency(
-                                partner?.application?.at(0)?.application_nonprofit_equivalency_determination
+                                partner?.partner_nonprofit_equivalency_determination
                                     ?.financial_last_year_other_currency ?? ''
                             )
                         }}
@@ -47,10 +38,7 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <p class="text-sm font-weight-bold text-secondary">
-                        {{
-                            partner?.application?.at(0)?.application_nonprofit_equivalency_determination
-                                ?.financial_last_year_source
-                        }}
+                        {{ partner?.partner_nonprofit_equivalency_determination?.financial_last_year_source }}
                     </p>
                 </div>
             </div>
@@ -61,18 +49,12 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <p class="text-sm font-weight-bold text-secondary">
-                        {{
-                            partner?.application?.at(0)?.application_nonprofit_equivalency_determination
-                                ?.financial_current_usd | number
-                        }}
+                        {{ partner?.partner_nonprofit_equivalency_determination?.financial_current_usd | number }}
                         USD |
-                        {{
-                            partner?.application?.at(0)?.application_nonprofit_equivalency_determination
-                                ?.financial_current_other | number
-                        }}
+                        {{ partner?.partner_nonprofit_equivalency_determination?.financial_current_other | number }}
                         {{
                             parseOtherCurrency(
-                                partner?.application?.at(0)?.application_nonprofit_equivalency_determination
+                                partner?.partner_nonprofit_equivalency_determination
                                     ?.financial_current_other_currency ?? ''
                             )
                         }}
@@ -86,10 +68,7 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <p class="text-sm font-weight-bold text-secondary">
-                        {{
-                            partner?.application?.at(0)?.application_nonprofit_equivalency_determination
-                                ?.financial_current_source
-                        }}
+                        {{ partner?.partner_nonprofit_equivalency_determination?.financial_current_source }}
                     </p>
                 </div>
             </div>
@@ -171,7 +150,7 @@
                 </div>
                 <div class="col-12">
                     <p class="text-sm font-weight-bold text-secondary m-0 p-0">
-                        {{ partner?.application?.at(0)?.application_nonprofit_equivalency_determination?.officers }}
+                        {{ partner?.partner_nonprofit_equivalency_determination?.officers }}
                     </p>
                 </div>
             </div>
@@ -186,7 +165,7 @@
                 </div>
                 <div class="col-12">
                     <p class="text-sm font-weight-bold text-secondary m-0 p-0">
-                        {{ partner?.application?.at(0)?.application_nonprofit_equivalency_determination?.members }}
+                        {{ partner?.partner_nonprofit_equivalency_determination?.members }}
                     </p>
                 </div>
             </div>
@@ -201,10 +180,7 @@
                     disabled
                     class="form-check-input"
                     type="checkbox"
-                    [checked]="
-                        partner?.application?.at(0)?.application_nonprofit_equivalency_determination?.operated_for
-                            ?.charitable
-                    "
+                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.charitable"
                 />
                 <label class="form-check-label text-dark font-weight-bold">charitable</label>
             </div>
@@ -213,10 +189,7 @@
                     disabled
                     class="form-check-input"
                     type="checkbox"
-                    [checked]="
-                        partner?.application?.at(0)?.application_nonprofit_equivalency_determination?.operated_for
-                            ?.cultural
-                    "
+                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.cultural"
                 />
                 <label class="form-check-label text-dark font-weight-bold">cultural</label>
             </div>
@@ -225,10 +198,7 @@
                     disabled
                     class="form-check-input"
                     type="checkbox"
-                    [checked]="
-                        partner?.application?.at(0)?.application_nonprofit_equivalency_determination?.operated_for
-                            ?.education_purpose
-                    "
+                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.education_purpose"
                 />
                 <label class="form-check-label text-dark font-weight-bold">educational purpose</label>
             </div>
@@ -237,10 +207,7 @@
                     disabled
                     class="form-check-input"
                     type="checkbox"
-                    [checked]="
-                        partner?.application?.at(0)?.application_nonprofit_equivalency_determination?.operated_for
-                            ?.literacy
-                    "
+                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.literacy"
                 />
                 <label class="form-check-label text-dark font-weight-bold">literacy</label>
             </div>
@@ -249,10 +216,7 @@
                     disabled
                     class="form-check-input"
                     type="checkbox"
-                    [checked]="
-                        partner?.application?.at(0)?.application_nonprofit_equivalency_determination?.operated_for
-                            ?.religious
-                    "
+                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.religious"
                 />
                 <label class="form-check-label text-dark font-weight-bold">religious</label>
             </div>
@@ -261,10 +225,7 @@
                     disabled
                     class="form-check-input"
                     type="checkbox"
-                    [checked]="
-                        partner?.application?.at(0)?.application_nonprofit_equivalency_determination?.operated_for
-                            ?.scientific
-                    "
+                    [checked]="partner?.partner_nonprofit_equivalency_determination?.operated_for?.scientific"
                 />
                 <label class="form-check-label text-dark font-weight-bold">scientific</label>
             </div>
@@ -272,10 +233,7 @@
             <div class="col-12">
                 <label class="text-dark font-weight-bold">others</label>
                 <p class="text-secondary text-sm p-0 m-0">
-                    {{
-                        partner?.application?.at(0)?.application_nonprofit_equivalency_determination
-                            ?.operated_for_others
-                    }}
+                    {{ partner?.partner_nonprofit_equivalency_determination?.operated_for_others }}
                 </p>
             </div>
         </div>
@@ -292,21 +250,14 @@
                     </div>
                     <div class="col-12 col-md-2">
                         <p class="text-secondary">
-                            {{
-                                partner?.application?.at(0)?.application_nonprofit_equivalency_determination?.any_assets
-                                    ? 'Yes'
-                                    : 'No'
-                            }}
+                            {{ partner?.partner_nonprofit_equivalency_determination?.any_assets ? 'Yes' : 'No' }}
                         </p>
                     </div>
                 </div>
 
                 <label class="font-weight-bold text-dark">If yes please explain</label>
                 <p class="text-secondary">
-                    {{
-                        partner?.application?.at(0)?.application_nonprofit_equivalency_determination
-                            ?.any_assets_description
-                    }}
+                    {{ partner?.partner_nonprofit_equivalency_determination?.any_assets_description }}
                 </p>
             </div>
 
@@ -321,22 +272,14 @@
                     </div>
                     <div class="col-12 col-md-2">
                         <p class="text-secondary">
-                            {{
-                                partner?.application?.at(0)?.application_nonprofit_equivalency_determination
-                                    ?.any_payments
-                                    ? 'Yes'
-                                    : 'No'
-                            }}
+                            {{ partner?.partner_nonprofit_equivalency_determination?.any_payments ? 'Yes' : 'No' }}
                         </p>
                     </div>
                 </div>
 
                 <label class="font-weight-bold text-dark">If yes please explain</label>
                 <p class="text-secondary">
-                    {{
-                        partner?.application?.at(0)?.application_nonprofit_equivalency_determination
-                            ?.any_payments_description
-                    }}
+                    {{ partner?.partner_nonprofit_equivalency_determination?.any_payments_description }}
                 </p>
             </div>
 
@@ -350,12 +293,7 @@
                     </div>
                     <div class="col-12 col-md-2">
                         <p class="text-secondary">
-                            {{
-                                partner?.application?.at(0)?.application_nonprofit_equivalency_determination
-                                    ?.upon_dissolution
-                                    ? 'Yes'
-                                    : 'No'
-                            }}
+                            {{ partner?.partner_nonprofit_equivalency_determination?.upon_dissolution ? 'Yes' : 'No' }}
                         </p>
                     </div>
                 </div>
@@ -370,12 +308,7 @@
                     </div>
                     <div class="col-12 col-md-2">
                         <p class="text-secondary">
-                            {{
-                                partner?.application?.at(0)?.application_nonprofit_equivalency_determination
-                                    ?.is_controlled_by
-                                    ? 'Yes'
-                                    : 'No'
-                            }}
+                            {{ partner?.partner_nonprofit_equivalency_determination?.is_controlled_by ? 'Yes' : 'No' }}
                         </p>
                     </div>
                 </div>

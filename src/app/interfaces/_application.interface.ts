@@ -10,7 +10,6 @@ export interface Application {
     archived?: boolean;
     partner?: Partner;
     project?: Project;
-    application_nonprofit_equivalency_determination?: ApplicationNonProfitEquivalencyDetermination;
     reviews?: Review[];
     documents?: Document[];
     recommendations?: Recommendation[];
@@ -28,6 +27,7 @@ export interface Partner {
     archived?: boolean;
     organization?: Organization;
     partner_fiscal_sponsor?: PartnerFiscalSponsor;
+    partner_nonprofit_equivalency_determination?: PartnerNonProfitEquivalencyDetermination;
     contacts?: Contact[];
     projects?: Project[];
     documents?: []
@@ -96,9 +96,9 @@ export interface PartnerFiscalSponsor {
     date_created?: Date;
 }
 
-export interface ApplicationNonProfitEquivalencyDetermination {
+export interface PartnerNonProfitEquivalencyDetermination {
     pk?: number;
-    application_pk?: number;
+    partner_pk?: number;
     year?: Date;
     financial_last_year_usd?: string;
     financial_last_year_other?: string;

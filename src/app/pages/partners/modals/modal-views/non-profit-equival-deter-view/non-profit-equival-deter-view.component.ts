@@ -47,8 +47,7 @@ export class NonProfitEquivalDeterViewComponent implements OnInit {
         return this.form.controls;
     }
     setForm() {
-        const currentApplication = this.partner?.application?.at(0);
-        const nonProfitEquivalencyDetermination = currentApplication?.application_nonprofit_equivalency_determination;
+        const nonProfitEquivalencyDetermination = this.partner?.partner_nonprofit_equivalency_determination;
         this.form = this.formBuilder.group({
             year: [nonProfitEquivalencyDetermination?.year, Validators.required],
             financial_last_year_usd: [
@@ -118,8 +117,7 @@ export class NonProfitEquivalDeterViewComponent implements OnInit {
     }
 
     initialCurrenciesDefaultSelected() {
-        const currentApplication = this.partner?.application?.at(0);
-        const nonProfitEquivalencyDetermination = currentApplication?.application_nonprofit_equivalency_determination;
+        const nonProfitEquivalencyDetermination = this.partner?.partner_nonprofit_equivalency_determination;
 
         const selectedCurrencyLastYearKey = nonProfitEquivalencyDetermination?.financial_last_year_other_currency
             ?.split('-')
@@ -172,10 +170,18 @@ export class NonProfitEquivalDeterViewComponent implements OnInit {
 
     onChangeSelectedBoolOpt(value: string, key: string) {
         this.form.controls[key].setValue(value === 'true' ? true : false);
+        this.configureDescription(key, value)
+    }
+
+    configureDescription(key: string, value: string) {
         if (['any_assets', 'any_payments'].includes(key)) {
-            value === 'true'
-                ? this.onAddDescriptionValidations(`${key}_description`)
-                : this.onRemoveDescriptionValidations(`${key}_description`);
+            if (value === 'false') {
+                this.form.controls[`${key}_description`].setValue('');
+                this.onRemoveDescriptionValidations(`${key}_description`);
+            }
+            if (value === 'true') {
+                this.onAddDescriptionValidations(`${key}_description`);
+            }
         }
     }
 
@@ -192,12 +198,12 @@ export class NonProfitEquivalDeterViewComponent implements OnInit {
 
     saveFormValue() {
         this.processing = true;
-        const currentApplication = this.partner?.application?.at(0);
+        const nonProfitEquivalDeterViewComponent = this.partner?.partner_nonprofit_equivalency_determination;
         const { value } = this.form;
         this.applicationService
             .saveApplicationNonProfitEquivalencyDetermination({
-                pk: currentApplication?.application_nonprofit_equivalency_determination?.pk,
-                application_pk: currentApplication?.pk,
+                pk: nonProfitEquivalDeterViewComponent?.pk,
+                partner_pk: this.partner?.pk,
                 ...value,
                 operated_for_others: value.operated_for_others ?? '',
             })
@@ -206,24 +212,13 @@ export class NonProfitEquivalDeterViewComponent implements OnInit {
                     const data = res?.data;
                     const status = res.status;
                     if (status) {
-                        const application = this.partner?.application?.map((app, idx) => {
-                            if (idx === 0) {
-                                return {
-                                    ...app,
-                                    application_nonprofit_equivalency_determination: {
-                                        ...data,
-                                    },
-                                };
-                            }
-                            return {
-                                ...app,
-                            };
-                        });
                         this.bsModalRef.onHidden?.next({
                             isSaved: true,
                             data: {
                                 ...this.partner,
-                                application: [...(application ?? [])],
+                                partner_nonprofit_equivalency_determination: {
+                                    ...data,
+                                },
                             },
                         } as OnHiddenData);
                         this.bsModalRef.hide();
