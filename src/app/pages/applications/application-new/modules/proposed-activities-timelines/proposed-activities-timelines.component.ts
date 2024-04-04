@@ -17,6 +17,7 @@ interface ProposedActivity {
     duration: string;
 }
 
+const DOCUMENT_TYPE = 'proposed_activities_and_timeline';
 @Component({
     selector: 'app-proposed-activities-timelines',
     templateUrl: './proposed-activities-timelines.component.html',
@@ -50,12 +51,9 @@ export class ProposedActivitiesTimelinesComponent {
         this.durationOpts = getDurationOpts();
         this.setForm();
         const currentApplication = this.applicationSignalService.appForm();
-        if (currentApplication?.documents) {
-            currentApplication?.documents.forEach((document: any) => {
-                if (document.type == 'proposed_activities_and_timeline') {
-                    this.attachments.push(document);
-                }
-            });
+        const documents = currentApplication?.documents ?? [];
+        if (documents?.length > 0) {
+            this.attachments = documents?.filter((item) => item.type === DOCUMENT_TYPE);
         }
     }
 
@@ -261,6 +259,7 @@ export class ProposedActivitiesTimelinesComponent {
             })
             .subscribe({
                 next: (data: any) => {
+                    this.applicationSignalService.setDocuments(this.attachments, DOCUMENT_TYPE);
                     this.toastr.success('The document has been successfully uploaded', 'SUCCESS!');
                 },
                 error: (error: any) => {
@@ -271,5 +270,9 @@ export class ProposedActivitiesTimelinesComponent {
                     console.log('Complete');
                 },
             });
+    }
+
+    onRemoveAttachment(ev: any) {
+        this.applicationSignalService.removeDocument(ev);
     }
 }

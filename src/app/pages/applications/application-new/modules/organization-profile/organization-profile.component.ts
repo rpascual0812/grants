@@ -1,4 +1,4 @@
-import { Organization } from './../../../../../interfaces/_application.interface';
+import { Document } from './../../../../../interfaces/_application.interface';
 import { Component, EventEmitter, OnInit, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -16,6 +16,8 @@ type SelectItem = {
     pk: number;
     name: string;
 };
+
+const DOCUMENT_TYPE = 'organization_profile';
 
 @Component({
     selector: 'app-organization-profile',
@@ -35,7 +37,7 @@ export class OrganizationProfileComponent implements OnInit {
         organization_pk: new EventEmitter<ChangeFieldEventEmitter>(),
         country_pk: new EventEmitter<ChangeFieldEventEmitter>(),
     };
-    attachments: any = [];
+    attachments: Document[] = [];
     SERVER: string = _.BASE_URL;
 
     constructor(
@@ -44,19 +46,17 @@ export class OrganizationProfileComponent implements OnInit {
         private applicationService: ApplicationService,
         private documentService: DocumentService,
         private toastr: ToastrService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.setForm();
         this.fetchOrgList();
 
+        this.attachments = [];
         const currentApplication = this.applicationSignalService.appForm();
-        if (currentApplication?.documents) {
-            currentApplication?.documents.forEach((document: any) => {
-                if (document.type == 'organization_profile') {
-                    this.attachments.push(document);
-                }
-            });
+        const documents = currentApplication?.documents ?? [];
+        if (documents.length > 0) {
+            this.attachments = documents?.filter((document) => document?.type === DOCUMENT_TYPE) ?? [];
         }
     }
 
@@ -265,6 +265,7 @@ export class OrganizationProfileComponent implements OnInit {
             })
             .subscribe({
                 next: (data: any) => {
+                    this.applicationSignalService.setDocuments(this.attachments, DOCUMENT_TYPE);
                     this.toastr.success('The document has been successfully uploaded', 'SUCCESS!');
                 },
                 error: (error: any) => {
@@ -275,5 +276,9 @@ export class OrganizationProfileComponent implements OnInit {
                     console.log('Complete');
                 },
             });
+    }
+
+    onRemoveAttachment(ev: any) {
+        this.applicationSignalService.removeDocument(ev);
     }
 }

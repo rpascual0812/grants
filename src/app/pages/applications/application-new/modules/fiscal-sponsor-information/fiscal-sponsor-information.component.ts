@@ -8,6 +8,8 @@ import { DocumentService } from 'src/app/services/document.service';
 import { PartnerFiscalSponsor } from 'src/app/interfaces/_application.interface';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
+const DOCUMENT_TYPE = 'fiscal_sponsor_information';
+
 @Component({
     selector: 'app-fiscal-sponsor-information',
     templateUrl: './fiscal-sponsor-information.component.html',
@@ -33,12 +35,9 @@ export class FiscalSponsorInformationComponent {
         this.setForm();
 
         const currentApplication = this.applicationSignalService.appForm();
-        if (currentApplication?.documents) {
-            currentApplication?.documents.forEach((document: any) => {
-                if (document.type == 'fiscal_sponsor_information') {
-                    this.attachments.push(document);
-                }
-            });
+        const documents = currentApplication?.documents ?? [];
+        if (documents?.length > 0) {
+            this.attachments = documents?.filter((item) => item.type === DOCUMENT_TYPE);
         }
     }
 
@@ -151,6 +150,7 @@ export class FiscalSponsorInformationComponent {
             })
             .subscribe({
                 next: (data: any) => {
+                    this.applicationSignalService.setDocuments(this.attachments, DOCUMENT_TYPE);
                     this.toastr.success('The document has been successfully uploaded', 'SUCCESS!');
                 },
                 error: (error: any) => {
@@ -161,5 +161,9 @@ export class FiscalSponsorInformationComponent {
                     console.log('Complete');
                 },
             });
+    }
+
+    onRemoveAttachment(ev: any) {
+        this.applicationSignalService.removeDocument(ev);
     }
 }

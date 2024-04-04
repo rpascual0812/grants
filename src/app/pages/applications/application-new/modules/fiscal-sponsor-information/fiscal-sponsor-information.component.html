@@ -122,6 +122,7 @@
                 <app-attach-documents
                     [inputAttachments]="attachments"
                     (onFileAttached)="saveAttachment($event)"
+                    (onRemoveFileAttached)="onRemoveAttachment($event)"
                 ></app-attach-documents>
 
                 <button

@@ -10,7 +10,9 @@ import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import * as _ from '../../../../../utilities/globals';
 import { DocumentService } from 'src/app/services/document.service';
-import { PartnerNonProfitEquivalencyDetermination } from 'src/app/interfaces/_application.interface';
+import { Document, PartnerNonProfitEquivalencyDetermination } from 'src/app/interfaces/_application.interface';
+
+const DOCUMENT_TYPE = 'non_profit_equivalency_legal_registration';
 
 @Component({
     selector: 'app-non-profit-equivalency-determination',
@@ -51,12 +53,9 @@ export class NonProfitEquivalencyDeterminationComponent {
         this.setForm();
 
         const currentApplication = this.applicationSignalService.appForm();
-        if (currentApplication?.partner?.documents) {
-            currentApplication?.partner?.documents?.forEach((document: any) => {
-                if (document.type == 'non_profit_equivalency_legal_registration') {
-                    this.attachments.push(document);
-                }
-            });
+        const documents = currentApplication?.partner?.documents ?? [];
+        if (documents?.length > 0) {
+            this.attachments = documents?.filter((item) => item.type === DOCUMENT_TYPE);
         }
     }
 
@@ -325,6 +324,7 @@ export class NonProfitEquivalencyDeterminationComponent {
             })
             .subscribe({
                 next: (data: any) => {
+                    this.applicationSignalService.setDocuments(this.attachments, DOCUMENT_TYPE);
                     this.toastr.success('The document has been successfully uploaded', 'SUCCESS!');
                 },
                 error: (error: any) => {
@@ -335,5 +335,75 @@ export class NonProfitEquivalencyDeterminationComponent {
                     console.log('Complete');
                 },
             });
+    }
+
+    setPartnerDocuments(currentAttachments: Document[], documentType: string) {
+        const currentApplication = this.applicationSignalService.appForm();
+        const documents = currentApplication?.partner?.documents;
+
+        const attachments =
+            currentAttachments.map((attachment: any) => ({
+                ...attachment,
+                type: documentType,
+            })) ?? [];
+
+        const consolidatedDocuments = [...(documents ?? []), ...attachments];
+        const uniqDocuments = this.applicationSignalService?.removeDocumentDuplicates(consolidatedDocuments);
+
+        this.applicationSignalService.appForm.set({
+            ...currentApplication,
+            partner: {
+                ...currentApplication?.partner,
+                documents: [...(uniqDocuments ?? [])],
+            },
+        });
+    }
+
+    deleteAttachment(index: number) {
+        _.confirmMessage(
+            {
+                title: '<strong>Are you sure you want to delete this attachment?</strong>',
+                icon: 'question',
+                buttons: {
+                    showClose: true,
+                    showCancel: true,
+                    focusConfirm: false,
+                },
+                confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
+            },
+            () => {
+                this.documentService.destroy(this.attachments[index].pk).subscribe({
+                    next: (data: any) => {
+                        if (data.status) {
+                            const toBeRemoved = this.attachments.at(index);
+                            this.attachments.splice(index, 1);
+                            this.removeDocument(toBeRemoved);
+                            this.cdr.detectChanges();
+                        }
+                    },
+                    error: (error: any) => {
+                        console.log(error);
+                        this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
+                    },
+                    complete: () => {
+                        console.log('Complete');
+                    },
+                });
+            }
+        );
+    }
+
+    removeDocument(documentToBeRemoved: Partial<Document>) {
+        const currentApplication = this.applicationSignalService.appForm();
+        const documents = currentApplication?.partner?.documents;
+        const uniqDocuments = documents?.filter((document) => document?.pk !== documentToBeRemoved?.pk);
+        this.applicationSignalService.appForm.set({
+            ...currentApplication,
+            partner: {
+                ...currentApplication?.partner,
+                documents: [...(uniqDocuments ?? [])],
+            },
+        });
     }
 }

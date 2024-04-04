@@ -7,10 +7,11 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
     selector: 'app-attach-documents',
     templateUrl: './attach-documents.component.html',
-    styleUrls: ['./attach-documents.component.scss']
+    styleUrls: ['./attach-documents.component.scss'],
 })
 export class AttachDocumentsComponent implements OnInit {
     @Output() onFileAttached: EventEmitter<any> = new EventEmitter();
+    @Output() onRemoveFileAttached: EventEmitter<Partial<Document>> = new EventEmitter();
     @Input() inputAttachments: any = [];
     attachments: any = [];
     SERVER: string = _.BASE_URL;
@@ -20,8 +21,8 @@ export class AttachDocumentsComponent implements OnInit {
         private cdr: ChangeDetectorRef,
         private modalService: BsModalService,
         private documentService: DocumentService,
-        private toastr: ToastrService,
-    ) { }
+        private toastr: ToastrService
+    ) {}
 
     ngOnInit() {
         this.attachments = this.inputAttachments;
@@ -29,7 +30,7 @@ export class AttachDocumentsComponent implements OnInit {
 
     uploadFiles() {
         const initialState: ModalOptions = {
-            class: 'modal-lg'
+            class: 'modal-lg',
         };
         this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
 
@@ -54,22 +55,23 @@ export class AttachDocumentsComponent implements OnInit {
                 cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
             },
             () => {
-                this.documentService
-                    .destroy(this.attachments[index].pk)
-                    .subscribe({
-                        next: (data: any) => {
-                            if (data.status) {
-                                this.attachments[index].splice(index, 1);
-                            }
-                        },
-                        error: (error: any) => {
-                            console.log(error);
-                            this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
-                        },
-                        complete: () => {
-                            console.log('Complete');
+                this.documentService.destroy(this.attachments[index].pk).subscribe({
+                    next: (data: any) => {
+                        if (data.status) {
+                            const toBeRemoved = this.attachments.at(index)
+                            this.attachments.splice(index, 1);
+                            this.onRemoveFileAttached.emit(toBeRemoved);
+                            this.cdr.detectChanges();
                         }
-                    });
+                    },
+                    error: (error: any) => {
+                        console.log(error);
+                        this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
+                    },
+                    complete: () => {
+                        console.log('Complete');
+                    },
+                });
             }
         );
     }
