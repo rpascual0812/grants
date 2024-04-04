@@ -74,8 +74,9 @@ export class FiscalSponsorInformationComponent {
             partner: {
                 ...partner,
                 partner_fiscal_sponsor: {
-                    ...data,
                     pk: data?.pk ?? partnerFiscalSponsor?.pk,
+                    ...partner?.partner_fiscal_sponsor,
+                    ...data,
                 },
             },
         });

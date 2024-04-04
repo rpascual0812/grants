@@ -45,18 +45,12 @@ export class NonProfitEquivalencyDeterminationComponent {
         private cdr: ChangeDetectorRef,
         private modalService: BsModalService,
         private documentService: DocumentService
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.setForm();
 
         const currentApplication = this.applicationSignalService.appForm();
-        if (currentApplication?.documents) {
-            currentApplication?.documents.forEach((document: any) => {
-
-            });
-        }
-
         if (currentApplication?.partner?.documents) {
             currentApplication?.partner?.documents?.forEach((document: any) => {
                 if (document.type == 'non_profit_equivalency_legal_registration') {
@@ -235,6 +229,7 @@ export class NonProfitEquivalencyDeterminationComponent {
                 partner_nonprofit_equivalency_determination: {
                     pk: data?.pk ?? nonProfitEquivalencyDetermination?.pk,
                     partner_pk: partner?.pk,
+                    ...partner?.partner_nonprofit_equivalency_determination,
                     ...data,
                 },
             },

@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Partner } from 'src/app/interfaces/_application.interface';
 import { PartnerService } from 'src/app/services/partner.service';
 import { PartnerForm, PartnerSignalService } from 'src/app/services/partner.signal.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
@@ -28,6 +27,7 @@ export class PartnerViewComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.partnerSignalService.loadingInitialPartnerForm.set(true);
         this.fetch();
     }
 

@@ -180,19 +180,14 @@ export class OrganizationProfileComponent implements OnInit {
         const currentApplication = this.applicationSignalService.appForm();
         const partner = currentApplication?.partner;
         const organization = partner?.organization;
-        const partnerOrganizationReference = organization?.partner_organization_reference ?? [];
-        const partnerFiscalSponsor = partner?.partner_fiscal_sponsor;
         this.applicationSignalService.appForm.set({
             ...currentApplication,
             partner: {
                 ...currentApplication?.partner,
                 organization: {
-                    ...data,
                     pk: organization?.pk ?? data?.pk,
-                    partner_organization_reference: [...partnerOrganizationReference],
-                },
-                partner_fiscal_sponsor: {
-                    ...partnerFiscalSponsor,
+                    ...organization,
+                    ...data,
                 },
             },
         });

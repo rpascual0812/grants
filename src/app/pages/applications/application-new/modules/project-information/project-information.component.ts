@@ -30,7 +30,7 @@ type ProvinceOpt = {
     styleUrls: ['./project-information.component.scss'],
 })
 export class ProjectInformationComponent implements OnInit {
-    processing = false
+    processing = false;
     form: FormGroup;
     submitted = false;
     durationOpts: string[] = [];
@@ -60,7 +60,7 @@ export class ProjectInformationComponent implements OnInit {
         private applicationService: ApplicationService,
         private toastr: ToastrService,
         public bsModalRef: BsModalRef
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.durationOpts = getDurationOpts();
@@ -283,20 +283,17 @@ export class ProjectInformationComponent implements OnInit {
     saveCurrentAppForm(data: Project) {
         const currentApplication = this.applicationSignalService.appForm();
         const project = currentApplication?.project;
-        const projectProposal = project?.project_proposal;
         this.applicationSignalService.appForm.set({
             ...currentApplication,
             project: {
-                ...data,
                 pk: data?.pk ?? project?.pk,
-                project_proposal: {
-                    ...projectProposal,
-                },
+                ...project,
+                ...data,
             },
         });
     }
     saveFormValue() {
-        this.processing = true
+        this.processing = true;
         const currentApplication = this.applicationSignalService.appForm();
         const project = currentApplication?.project;
         const { value } = this.form;
@@ -322,7 +319,7 @@ export class ProjectInformationComponent implements OnInit {
                             'ERROR!'
                         );
                     }
-                    this.processing = false
+                    this.processing = false;
                 },
                 error: (err) => {
                     const { statusCode, errorMessage } = extractErrorMessage(err);
@@ -330,7 +327,7 @@ export class ProjectInformationComponent implements OnInit {
                         `An error occurred while saving Project Information. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
-                    this.processing = false
+                    this.processing = false;
                 },
             });
     }
