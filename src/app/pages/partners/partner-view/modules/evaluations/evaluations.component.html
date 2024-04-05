@@ -1,26 +1,77 @@
 <div>
-    <h4 class="text-dark">Evaluations</h4>
-    <div *ngFor="let evaluation of evaluations" class="card my-2">
-        <div class="card-header bg-dark-blue">
-            <div class="d-flex flex-row justify-content-between align-items-center">
-                <h4 class="text-white">{{ evaluation?.['date'] }} - {{ evaluation?.['user'] }}</h4>
-                <button
-                    class="btn btn-icon-only btn-danger rounded-circle"
-                    (click)="handleDeleteEvaluation(evaluation?.['id'] ?? '')"
-                >
-                    <span class="position-relative bottom-10 end-10"><i class="material-icons">delete</i></span>
-                </button>
+    <div class="assessment-container my-3 overflow-x-auto">
+        <div style="min-width: 1000px">
+            <div class="row mx-0">
+                <div class="col-2">
+                    <p class="text-dark font-weight-bold text-sm p-0 m-0">Date</p>
+                </div>
+
+                <div class="col-1">
+                    <p class="text-dark font-weight-bold text-sm p-0 m-0">Donor Project</p>
+                </div>
+
+                <div class="col-1">
+                    <p class="text-dark font-weight-bold text-sm p-0 m-0">Thematic Area</p>
+                </div>
+
+                <div class="col-4">
+                    <p class="text-dark font-weight-bold text-sm p-0 m-0">Contribution/Results</p>
+                </div>
+
+                <div class="col-2">
+                    <p class="text-dark font-weight-bold text-sm p-0 m-0">Reviewing Officer</p>
+                </div>
+
+                <div class="col-2">
+                    <!-- spacer -->
+                </div>
             </div>
-        </div>
-        <div class="card-body">
-            <p>{{ evaluation?.['content'] }}</p>
+
+            <div *ngFor="let item of partnerAssessments; index as i" 
+                class="row align-items-center mx-0 my-3"
+                [ngClass]="{ 'border-top border-secondary': i !== 0 }"
+            >
+                <div class="col-2">
+                    <p class="text-secondary text-sm my-1 p-0">
+                        {{ item.date_created | date : 'dd-MMMM-YYYY' }}
+                    </p>
+                </div>
+
+                <div class="col-1">
+                    <p class="text-secondary text-sm my-1 p-0"></p>
+                </div>
+
+                <div class="col-1">
+                    <p class="text-secondary text-sm my-1 p-0"></p>
+                </div>
+
+                <div class="col-4">
+                    <p class="text-secondary text-sm my-1 p-0">{{ item.message }}</p>
+                </div>
+
+                <div class="col-2">
+                    <p class="text-secondary text-sm my-1 p-0">
+                        {{ item.user?.first_name }} {{ item?.user?.last_name }}
+                    </p>
+                </div>
+
+                <div class="col-2">
+                    <button
+                        class="btn btn-icon-only my-1"
+                        *ngIf="item?.created_by === user?.pk"
+                        (click)="handleEdit(item?.pk)"
+                    >
+                        <i class="material-icons">edit</i>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="d-flex justify-content-end mt-5">
         <div class="d-flex flex-wrap flex-row gap-1 align-items-center">
-            <p class="text-dark font-weight-bold p-0 m-0">Add Evaluation</p>
-            <button class="btn btn-icon-only btn-info rounded-circle" (click)="handleAddEvaluation()">
+            <p class="text-dark font-weight-bold p-0 m-0">Add Assessment</p>
+            <button class="btn btn-icon-only btn-info rounded-circle" (click)="handleAdd()">
                 <span class="position-relative bottom-10 end-10"><i class="material-icons">add</i></span>
             </button>
         </div>

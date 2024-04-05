@@ -18,4 +18,7 @@
     <ng-container *ngIf="section === 'otherInfo'">
         <app-org-bank-account [partner]="partner"></app-org-bank-account>
     </ng-container>
+    <ng-container *ngIf="section === 'assessment'">
+        <app-assessment [partnerAssessment]="partnerAssessment"></app-assessment>
+    </ng-container>
 </div>

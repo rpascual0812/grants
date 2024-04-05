@@ -19,6 +19,7 @@
             <div class="my-5">
                 <accordion [isAnimated]="true">
                     <accordion-group
+                        [isOpen]="currentExpanded.has('partnerInformation')"
                         (isOpenChange)="handleIsOpenChange($event, 'partnerInformation')"
                         [panelClass]="
                             currentExpanded.has('partnerInformation')
@@ -100,9 +101,6 @@
 
                             <div class="pull-right float-right">
                                 <div class="d-flex flex flex-row">
-                                    <button class="btn btn-icon-only" (click)="handleOnEdit($event, 'projects')">
-                                        <i class="material-icons">edit</i>
-                                    </button>
                                     <button class="btn btn-icon-only">
                                         <i class="material-icons">{{
                                             currentExpanded.has('projects') ? 'expand_less' : 'expand_more'
@@ -115,9 +113,9 @@
                     </accordion-group>
 
                     <accordion-group
-                        (isOpenChange)="handleIsOpenChange($event, 'evaluation')"
+                        (isOpenChange)="handleIsOpenChange($event, 'assessment')"
                         [panelClass]="
-                            currentExpanded.has('evaluation')
+                            currentExpanded.has('assessment')
                                 ? 'custom-accordion-expanded w-100'
                                 : 'custom-accordion-collapsed w-100'
                         "
@@ -125,17 +123,17 @@
                     >
                         <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                             <div class="pull-left float-left">
-                                <p class="text-dark text-sm font-weight-bold m-0 p-0">Evaluations</p>
+                                <p class="text-dark text-sm font-weight-bold m-0 p-0">Assessment</p>
                             </div>
 
                             <div class="pull-right float-right">
                                 <div class="d-flex flex flex-row">
-                                    <button class="btn btn-icon-only" (click)="handleOnEdit($event, 'evaluation')">
+                                    <!-- <button class="btn btn-icon-only" (click)="handleOnEdit($event, 'assessment')">
                                         <i class="material-icons">edit</i>
-                                    </button>
+                                    </button> -->
                                     <button class="btn btn-icon-only">
                                         <i class="material-icons">{{
-                                            currentExpanded.has('evaluation') ? 'expand_less' : 'expand_more'
+                                            currentExpanded.has('assessment') ? 'expand_less' : 'expand_more'
                                         }}</i>
                                     </button>
                                 </div>

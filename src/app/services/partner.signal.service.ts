@@ -1,8 +1,9 @@
 import { Injectable, signal } from '@angular/core';
-import { Application, Partner } from '../interfaces/_application.interface';
+import { Application, Partner, PartnerAssessment } from '../interfaces/_application.interface';
 
 export interface PartnerForm extends Partner {
     application?: Application[];
+    partnerAssessment?: PartnerAssessment;
 }
 
 @Injectable({
