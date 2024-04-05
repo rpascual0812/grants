@@ -224,7 +224,9 @@
             <div class="col-12 col-lg-6">
 
                 <app-attach-documents [inputAttachments]="attachments"
-                    (onFileAttached)="saveAttachment($event)"></app-attach-documents>
+                    (onFileAttached)="saveAttachment($event)"
+                    (onRemoveFileAttached)="onRemoveAttachment($event)"
+                    ></app-attach-documents>
 
                 <button class="btn bg-info text-white w-100 text-capitalize my-3" type="button" (click)="handleReset()"
                     [disabled]="processing">

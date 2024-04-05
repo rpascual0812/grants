@@ -22,7 +22,7 @@ export class ProponentInformationComponent {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     appFormEffect = effect(() => {
         this.initialLoading = this.applicationSignalService.loadingInitialAppForm();
@@ -52,13 +52,27 @@ export class ProponentInformationComponent {
         });
     }
 
+    saveCurrentAppForm(data: Partner) {
+        const currentApplication = this.applicationSignalService.appForm();
+        const partner = currentApplication?.partner
+        this.applicationSignalService.appForm.set({
+            ...currentApplication,
+            partner: {
+                ...partner,
+                ...data,
+            },
+        });
+    }
+
+
     saveFormValue() {
         this.processing = true;
         const currentApplication = this.applicationSignalService.appForm();
+        const partnerId = currentApplication?.partner?.partner_id;
         const { value } = this.form;
         this.applicationService
             .saveApplicationPartner({
-                partner_id: value.partner_id,
+                partner_id: partnerId,
                 name: value.name,
                 address: value.address,
                 contact_number: value.contact_number,
@@ -77,21 +91,7 @@ export class ProponentInformationComponent {
                     const status = res?.status;
                     const data = res?.data as Partner;
                     if (status) {
-                        this.applicationSignalService.appForm.set({
-                            ...currentApplication,
-                            partner: {
-                                ...data,
-                                organization: {
-                                    ...currentApplication?.partner?.organization,
-                                },
-                                partner_fiscal_sponsor: {
-                                    ...currentApplication?.partner?.partner_fiscal_sponsor,
-                                },
-                                partner_nonprofit_equivalency_determination: {
-                                    ...currentApplication?.partner?.partner_nonprofit_equivalency_determination,
-                                },
-                            },
-                        });
+                        this.saveCurrentAppForm(data)
                         this.toastr.success('Proponent Information has been successfully saved', 'SUCCESS!');
                         this.applicationSignalService.navigateNext();
                     } else {

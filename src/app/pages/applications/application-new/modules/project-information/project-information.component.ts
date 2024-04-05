@@ -8,7 +8,7 @@ import { GlobalService } from 'src/app/services/global.service';
 import { ChangeFieldEventEmitter, SelectComponent } from 'src/app/components/select/select.component';
 import { ApplicationService } from 'src/app/services/application.service';
 import * as _ from '../../../../../utilities/globals';
-import { Project } from 'src/app/interfaces/_application.interface';
+import { Document, Project } from 'src/app/interfaces/_application.interface';
 import { extractErrorMessage, getDurationOpts } from 'src/app/utilities/application.utils';
 import { BENEFICIARY_NAME, BENEFICIARY_TYPE } from 'src/app/utilities/constants';
 
@@ -24,13 +24,15 @@ type ProvinceOpt = {
     name?: string;
 };
 
+const DOCUMENT_TYPE = 'project_information'
+
 @Component({
     selector: 'app-project-information',
     templateUrl: './project-information.component.html',
     styleUrls: ['./project-information.component.scss'],
 })
 export class ProjectInformationComponent implements OnInit {
-    processing = false
+    processing = false;
     form: FormGroup;
     submitted = false;
     durationOpts: string[] = [];
@@ -60,7 +62,7 @@ export class ProjectInformationComponent implements OnInit {
         private applicationService: ApplicationService,
         private toastr: ToastrService,
         public bsModalRef: BsModalRef
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.durationOpts = getDurationOpts();
@@ -68,12 +70,9 @@ export class ProjectInformationComponent implements OnInit {
         this.setForm();
 
         const currentApplication = this.applicationSignalService.appForm();
-        if (currentApplication?.documents) {
-            currentApplication?.documents.forEach((document: any) => {
-                if (document.type == 'project_information') {
-                    this.attachments.push(document);
-                }
-            });
+        const documents = currentApplication?.documents ?? []
+        if (documents?.length > 0) {
+            this.attachments = documents?.filter(item => item.type === DOCUMENT_TYPE)
         }
     }
 
@@ -283,20 +282,17 @@ export class ProjectInformationComponent implements OnInit {
     saveCurrentAppForm(data: Project) {
         const currentApplication = this.applicationSignalService.appForm();
         const project = currentApplication?.project;
-        const projectProposal = project?.project_proposal;
         this.applicationSignalService.appForm.set({
             ...currentApplication,
             project: {
-                ...data,
                 pk: data?.pk ?? project?.pk,
-                project_proposal: {
-                    ...projectProposal,
-                },
+                ...project,
+                ...data,
             },
         });
     }
     saveFormValue() {
-        this.processing = true
+        this.processing = true;
         const currentApplication = this.applicationSignalService.appForm();
         const project = currentApplication?.project;
         const { value } = this.form;
@@ -322,7 +318,7 @@ export class ProjectInformationComponent implements OnInit {
                             'ERROR!'
                         );
                     }
-                    this.processing = false
+                    this.processing = false;
                 },
                 error: (err) => {
                     const { statusCode, errorMessage } = extractErrorMessage(err);
@@ -330,7 +326,7 @@ export class ProjectInformationComponent implements OnInit {
                         `An error occurred while saving Project Information. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
-                    this.processing = false
+                    this.processing = false;
                 },
             });
     }
@@ -399,6 +395,7 @@ export class ProjectInformationComponent implements OnInit {
             })
             .subscribe({
                 next: (data: any) => {
+                    this.applicationSignalService.setDocuments(this.attachments, DOCUMENT_TYPE);
                     this.toastr.success('The document has been successfully uploaded', 'SUCCESS!');
                 },
                 error: (error: any) => {
@@ -409,5 +406,9 @@ export class ProjectInformationComponent implements OnInit {
                     console.log('Complete');
                 },
             });
+    }
+
+    onRemoveAttachment(ev: any) {
+        this.applicationSignalService.removeDocument(ev);
     }
 }

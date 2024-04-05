@@ -9,7 +9,7 @@ import { DocumentService } from 'src/app/services/document.service';
 import * as _ from '../../../../../utilities/globals';
 import { ProjectProposal } from 'src/app/interfaces/_application.interface';
 import { ChangeFieldEventEmitter } from 'src/app/components/select/select.component';
-import { extractErrorMessage } from 'src/app/utilities/application.utils';
+import { extractErrorMessage, getDurationOpts } from 'src/app/utilities/application.utils';
 
 interface ProposedActivity {
     id: number;
@@ -17,6 +17,7 @@ interface ProposedActivity {
     duration: string;
 }
 
+const DOCUMENT_TYPE = 'proposed_activities_and_timeline';
 @Component({
     selector: 'app-proposed-activities-timelines',
     templateUrl: './proposed-activities-timelines.component.html',
@@ -44,19 +45,15 @@ export class ProposedActivitiesTimelinesComponent {
         private applicationService: ApplicationService,
         private toastr: ToastrService,
         private documentService: DocumentService
-    ) { }
+    ) {}
 
     ngOnInit() {
-        this.getDurationOpts();
+        this.durationOpts = getDurationOpts();
         this.setForm();
-
         const currentApplication = this.applicationSignalService.appForm();
-        if (currentApplication?.documents) {
-            currentApplication?.documents.forEach((document: any) => {
-                if (document.type == 'proposed_activities_and_timeline') {
-                    this.attachments.push(document);
-                }
-            });
+        const documents = currentApplication?.documents ?? [];
+        if (documents?.length > 0) {
+            this.attachments = documents?.filter((item) => item.type === DOCUMENT_TYPE);
         }
     }
 
@@ -66,16 +63,6 @@ export class ProposedActivitiesTimelinesComponent {
 
     get formActivities() {
         return <FormArray>this.form.get('application_proposal_activity');
-    }
-
-    getDurationOpts() {
-        for (let i = 1; i <= 36; i++) {
-            let suffix = 'Months';
-            if (i === 1) {
-                suffix = 'Month';
-            }
-            this.durationOpts.push(`${i} ${suffix}`);
-        }
     }
 
     setForm() {
@@ -184,9 +171,10 @@ export class ProposedActivitiesTimelinesComponent {
             project: {
                 ...project,
                 project_proposal: {
-                    ...data,
                     pk: data?.pk ?? projectProposal?.pk,
                     project_proposal_activity: [...(data?.project_proposal_activity ?? [])],
+                    ...projectProposal,
+                    ...data,
                 },
             },
         });
@@ -271,6 +259,7 @@ export class ProposedActivitiesTimelinesComponent {
             })
             .subscribe({
                 next: (data: any) => {
+                    this.applicationSignalService.setDocuments(this.attachments, DOCUMENT_TYPE);
                     this.toastr.success('The document has been successfully uploaded', 'SUCCESS!');
                 },
                 error: (error: any) => {
@@ -281,5 +270,9 @@ export class ProposedActivitiesTimelinesComponent {
                     console.log('Complete');
                 },
             });
+    }
+
+    onRemoveAttachment(ev: any) {
+        this.applicationSignalService.removeDocument(ev);
     }
 }
