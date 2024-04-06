@@ -38,9 +38,7 @@ export class ProponentInformationComponent {
     setForm() {
         const currentApplication = this.applicationSignalService.appForm();
         const contact = currentApplication?.partner?.contacts?.at(0);
-        const partnerId = currentApplication?.partner?.partner_id;
         this.form = this.formBuilder.group({
-            partner_id: [partnerId],
             name: [currentApplication?.partner?.name ?? '', Validators.required],
             address: [currentApplication?.partner?.address ?? '', Validators.required],
             contact_number: [currentApplication?.partner?.contact_number ?? '', Validators.required],
@@ -68,11 +66,12 @@ export class ProponentInformationComponent {
     saveFormValue() {
         this.processing = true;
         const currentApplication = this.applicationSignalService.appForm();
-        const partnerId = currentApplication?.partner?.partner_id;
+        const partner = currentApplication?.partner;
         const { value } = this.form;
         this.applicationService
             .saveApplicationPartner({
-                partner_id: partnerId,
+                pk: partner?.pk,
+                partner_id: partner?.partner_id,
                 name: value.name,
                 address: value.address,
                 contact_number: value.contact_number,
