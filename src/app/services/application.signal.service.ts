@@ -1,5 +1,4 @@
 import { Injectable, signal, inject } from '@angular/core';
-import { INITIAL_STEP, MAX_STEP } from '../pages/applications/application-new/application-new.component';
 import { Application, Document } from '../interfaces/_application.interface';
 
 @Injectable({
@@ -17,14 +16,12 @@ export class ApplicationSignalService {
 
     navigateNext() {
         const currentStep = this.currentNavStep();
-        // const nextStep = currentStep < MAX_STEP ? currentStep + 1 : currentStep;
         const nextStep = currentStep < this.MAX_STEP ? currentStep + 1 : currentStep;
         this.currentNavStep.set(nextStep);
     }
 
     navigateBack() {
         const currentNavStep = this.currentNavStep();
-        // const backStep = currentNavStep > INITIAL_STEP ? currentNavStep - 1 : currentNavStep;
         const backStep = currentNavStep > this.INITIAL_STEP ? currentNavStep - 1 : currentNavStep;
         this.currentNavStep.set(backStep);
     }
