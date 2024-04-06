@@ -11,6 +11,7 @@ import { NonProfitEquivalDeterViewComponent } from './modals/modal-views/non-pro
 import { InputDropdownModule } from '../applications/application-new/modules/input-dropdown/input-dropdown.module';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { OrgBankAccountComponent } from './modals/modal-views/org-bank-account/org-bank-account.component';
+import { AssessmentComponent } from './modals/modal-views/assessment/assessment.component';
 
 @NgModule({
     declarations: [
@@ -20,6 +21,7 @@ import { OrgBankAccountComponent } from './modals/modal-views/org-bank-account/o
         OrgProfileViewComponent,
         NonProfitEquivalDeterViewComponent,
         OrgBankAccountComponent,
+        AssessmentComponent,
     ],
     imports: [
         FormsModule,

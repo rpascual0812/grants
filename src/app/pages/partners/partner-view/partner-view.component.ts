@@ -28,6 +28,7 @@ export class PartnerViewComponent implements OnInit {
 
     ngOnInit() {
         this.partnerSignalService.loadingInitialPartnerForm.set(true);
+        this.currentExpanded.add('partnerInformation')
         this.fetch();
     }
 

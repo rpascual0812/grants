@@ -239,3 +239,29 @@ export interface Recommendation {
     created_by?: number;
     archived?: boolean;
 }
+
+export interface PartnerAssessment {
+    pk?: number;
+    partner_pk?: number;
+    message?: string;
+    created_by?: number;
+    date_created?: Date;
+    date_updated?: Date;
+    archived?: boolean;
+    user?: User;
+}
+
+export interface User {
+    pk?: number;
+    account_pk?: number;
+    uuid?: string;
+    unique_id?: string;
+    last_name?: string;
+    first_name?: string;
+    middle_name?: string;
+    gender_pk?: number;
+    birthdate?: Date;
+    mobile_number?: string;
+    email_address?: string;
+    archived?: boolean;
+}
