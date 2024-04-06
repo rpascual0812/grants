@@ -26,6 +26,8 @@ export class ApplicationNewComponent implements OnInit {
         private route: ActivatedRoute
     ) {
         this.uuid = this.route.snapshot.paramMap.get('uuid') ?? '';
+        this.applicationSignalService.INITIAL_STEP = INITIAL_STEP;
+        this.applicationSignalService.MAX_STEP = MAX_STEP;
     }
 
     appSignalEffect = effect(() => {
@@ -59,6 +61,7 @@ export class ApplicationNewComponent implements OnInit {
 
     async handleSave() {
         const currentApplication = this.applicationSignalService.appForm();
+        this.applicationSignalService.appForm.set(null);
         this.router.navigate(['public', 'application', currentApplication?.uuid, 'success']);
     }
 }
