@@ -30,8 +30,9 @@
                         <div class="d-flex flex-column flex-md-row gap-1 align-items-md-center">
                             <p class="m-0">
                                 Flag:
-                                <span *ngIf="review.flag == 'needs_resolution'">Needs Resolution</span>
-                                <span *ngIf="review.flag == 'grantee'">Grantee</span>
+                                <span *ngIf="review.needs_resolution">Needs Resolution</span>
+                                <span class="mx-2" *ngIf="review.needs_resolution && review.grantee">|</span>
+                                <span *ngIf="review.grantee">Grantee</span>
                                 <span class="badge text-bg-danger text-white mx-2" *ngIf="!review.resolved">Not Yet
                                     Started</span>
                                 <span class="badge text-bg-success text-white mx-2" *ngIf="review.resolved">Marked as
@@ -60,8 +61,7 @@
                     </div>
                     <div class="d-flex justify-content-end">
                         <button (click)="resolve(i)" class="btn btn-outline-secondary btn-white p-1"
-                            *ngIf="!review.resolved">Mark as
-                            Resolved</button>
+                            *ngIf="review.needs_resolution && !review.resolved">Mark as Resolved</button>
                     </div>
                     <!-- <div class="restricted">
                         <div class="position-relative">
@@ -127,13 +127,14 @@
                                 </div>
                                 <div class="form-check m-0 p-1">
                                     <input id="grants_team_review-needs-resolution" class="form-check-input"
-                                        type="radio" name="flag" formControlName="flag" value="needs_resolution" />
+                                        type="checkbox" name="needs_resolution" formControlName="needs_resolution"
+                                        value="needs_resolution" />
                                     <label class="form-check-label text-dark font-weight-bold"
                                         for="grants_team_review-needs-resolution">Needs Resolution</label>
                                 </div>
                                 <div class="form-check m-0 p-1">
-                                    <input id="grants_team_review-grantee" class="form-check-input" type="radio"
-                                        name="flag" formControlName="flag" value="grantee" />
+                                    <input id="grants_team_review-grantee" class="form-check-input" type="checkbox"
+                                        name="grantee" formControlName="grantee" value="grantee" />
                                     <label class="form-check-label text-dark font-weight-bold"
                                         for="grants_team_review-grantee">Grantee</label>
                                 </div>

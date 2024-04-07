@@ -6,13 +6,24 @@ export interface Application {
     partner_pk?: number;
     created_by?: number;
     date_created?: Date;
-    status_pk?: number;
+    status?: string;
     archived?: boolean;
+    needs_resolution?: boolean;
+    grantee?: boolean;
     partner?: Partner;
     project?: Project;
     reviews?: Review[];
+    statuses?: ApplicationStatus[];
     documents?: Document[];
     recommendations?: Recommendation[];
+    donor?: string;
+}
+
+export interface ApplicationStatus {
+    pk?: number;
+    partner_pk?: number;
+    status?: string;
+    archived?: boolean;
 }
 
 export interface Partner {
@@ -60,7 +71,19 @@ export interface Organization {
     partner_organization_reference?: PartnerOrganizationReference[];
     description?: string;
     country_pk?: number;
+    country?: Country;
     project_website?: string;
+    date_created?: Date;
+}
+
+export interface Country {
+    pk?: number;
+    name?: string;
+    code?: string;
+    dial_code?: string;
+    currency?: string;
+    currency_symbol?: string;
+    currency_code?: string;
     date_created?: Date;
 }
 
@@ -152,6 +175,14 @@ export interface Project {
     project_proposal?: ProjectProposal;
     project_beneficiary?: ProjectBeneficiary[];
     project_location?: ProjectLocation[];
+    type?: Type;
+}
+
+export interface Type {
+    pk?: number;
+    name: string;
+    description?: string;
+    date_created?: Date;
 }
 
 export interface ProjectBeneficiary {

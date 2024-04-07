@@ -8,6 +8,7 @@ import { Country } from 'src/app/interfaces/country.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { GlobalService } from 'src/app/services/global.service';
 import * as _ from '../../../utilities/globals';
+import { Application } from 'src/app/interfaces/_application.interface';
 
 type GrantTypeItem = {
     pk?: number;
@@ -23,7 +24,7 @@ export class ApplicationReviewComponent implements OnInit {
     submitted: boolean = false;
     loading: boolean = false;
     applicationNumber: string = '';
-    currentApplication: ApplicationRead | null = null;
+    currentApplication: Application | null = null;
     countryList: Country[] = [];
 
     form: FormGroup;
@@ -49,7 +50,7 @@ export class ApplicationReviewComponent implements OnInit {
         this.loading = true;
         this.applicationService.review(this.applicationNumber).subscribe({
             next: (res: any) => {
-                const data: ApplicationRead = res?.data ?? null;
+                const data: Application = res?.data ?? null;
                 this.applicationReviewSignalService.applicationReview.set({
                     ...data,
                 });

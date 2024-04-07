@@ -23,7 +23,7 @@ export class OrgBankAccountComponent implements OnInit {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.setForm();

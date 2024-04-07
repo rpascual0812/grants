@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { ApplicationService } from 'src/app/services/application.service';
-import { ApplicationRead } from 'src/app/interfaces/application.interface';
+import { Application } from 'src/app/interfaces/_application.interface';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import * as _ from '../../../../../utilities/globals';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -19,7 +19,7 @@ import { formatDate } from '@angular/common';
     encapsulation: ViewEncapsulation.None
 })
 export class GrantsTeamReviewComponent implements OnInit {
-    @Input() currentApplication: ApplicationRead | null
+    @Input() currentApplication: Application | null
     reviews: any = [];
     dateNow = DateTime.now().toFormat('LLLL dd, yyyy');
     user: any = {};
@@ -71,7 +71,8 @@ export class GrantsTeamReviewComponent implements OnInit {
         this.form = this.formBuilder.group({
             pk: [''],
             message: ['', Validators.required],
-            flag: [''],
+            needs_resolution: [false],
+            grantee: [false],
             application_pk: [''],
             type: ['grants_team_review'],
             documents: ['']

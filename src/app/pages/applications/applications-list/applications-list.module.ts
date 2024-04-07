@@ -1,13 +1,13 @@
-import { ContractFinalizationModule } from './modules/contract-finalization/contract-finalization.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApplicationsListComponent } from './applications-list.component';
-import { GrantApplicationModule } from './modules/grant-application/grant-application.module';
-import { FundReleaseModule } from './modules/fund-release/fund-release.module';
+import { NgbdSortableHeaderDirective } from '../../../directives/ngbd-sortable-header.directive';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [ApplicationsListComponent],
-  exports: [ApplicationsListComponent],
-  imports: [CommonModule, GrantApplicationModule, ContractFinalizationModule, FundReleaseModule],
+    declarations: [ApplicationsListComponent],
+    exports: [ApplicationsListComponent],
+    imports: [CommonModule, NgbdSortableHeaderDirective, NgxPaginationModule, RouterModule],
 })
 export class ApplicationsListModule { }

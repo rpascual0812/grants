@@ -1,10 +1,10 @@
 import { Injectable, signal } from '@angular/core';
-import { ApplicationRead } from '../interfaces/application.interface';
+import { Application } from '../interfaces/_application.interface';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ApplicationReviewSignalService {
-    public applicationReview = signal<ApplicationRead | null>(null);
-    constructor() {}
+    public applicationReview = signal<Application | null>(null);
+    constructor() { }
 }

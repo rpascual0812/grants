@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, effe
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
-import { ApplicationRead } from 'src/app/interfaces/application.interface';
+import { Application } from 'src/app/interfaces/_application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import * as _ from '../../../../../utilities/globals';
 
@@ -12,7 +12,7 @@ import * as _ from '../../../../../utilities/globals';
     styleUrls: ['./medium-grants.component.scss']
 })
 export class MediumGrantsComponent implements OnInit {
-    @Input() currentApplication: ApplicationRead | null
+    @Input() currentApplication: Application | null
 
     attachments: any = {
         additional_information: [],
