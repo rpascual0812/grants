@@ -35,6 +35,8 @@ export class ApplicationNewComponent implements OnInit {
         if (this.applicationSignalService.submitSave()) {
             this.handleSave();
         }
+    },{
+        allowSignalWrites: true
     });
 
     ngOnInit() {
