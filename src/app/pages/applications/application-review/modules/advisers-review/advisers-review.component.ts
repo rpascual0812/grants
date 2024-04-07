@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { DateTime } from 'luxon';
 import { ToastrService } from 'ngx-toastr';
@@ -18,6 +18,7 @@ import * as _ from '../../../../../utilities/globals';
 })
 export class AdvisersReviewComponent implements OnInit {
     @Input() currentApplication: Application | null
+    @Output() recommendationSaved = new EventEmitter<boolean>();
     reviews: any = [];
     dateNow = DateTime.now().toFormat('LLLL dd, yyyy');
     user: any = {};
@@ -170,6 +171,7 @@ export class AdvisersReviewComponent implements OnInit {
         this.applicationService.updateRecommendation(recommendation).subscribe({
             next: (data: any) => {
                 this.toastr.success(`Your recommendation has been successfully saved.`);
+                this.recommendationSaved.emit(true);
             },
             error: (err: HttpErrorResponse) => {
                 const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';

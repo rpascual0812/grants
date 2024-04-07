@@ -146,19 +146,17 @@
                 </div>
             </div>
 
-            <app-medium-grants
+            <app-medium-grants [currentApplication]="currentApplication"></app-medium-grants>
+            <app-grants-team-review (recommendationSaved)="fetch()"
                 *ngIf="['Received Proposals','Grants Team Review','Advisers Review','Budget Review and Finalization','Due Diligence Final Review'].includes(currentApplication?.status ?? '')"
-                [currentApplication]="currentApplication"></app-medium-grants>
-            <app-grants-team-review
-                *ngIf="['Grants Team Review','Advisers Review','Budget Review and Finalization','Due Diligence Final Review'].includes(currentApplication?.status ?? '')"
                 [currentApplication]="currentApplication"></app-grants-team-review>
-            <app-advisers-review
+            <app-advisers-review (recommendationSaved)="fetch()"
                 *ngIf="['Advisers Review','Budget Review and Finalization','Due Diligence Final Review'].includes(currentApplication?.status ?? '')"
                 [currentApplication]="currentApplication"></app-advisers-review>
-            <app-budget-review-finalization
+            <app-budget-review-finalization (recommendationSaved)="fetch()"
                 *ngIf="['Budget Review and Finalization','Due Diligence Final Review'].includes(currentApplication?.status ?? '')"
                 [currentApplication]="currentApplication"></app-budget-review-finalization>
-            <app-due-diligence-final-review
+            <app-due-diligence-final-review (recommendationSaved)="fetch()"
                 *ngIf="['Due Diligence Final Review'].includes(currentApplication?.status ?? '')"
                 [currentApplication]="currentApplication"></app-due-diligence-final-review>
         </ng-container>

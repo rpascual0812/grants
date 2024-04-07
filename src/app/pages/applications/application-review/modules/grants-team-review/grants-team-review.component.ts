@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from 'src/app/services/user.service';
 import { DateTime } from 'luxon';
@@ -19,7 +19,8 @@ import { formatDate } from '@angular/common';
     encapsulation: ViewEncapsulation.None
 })
 export class GrantsTeamReviewComponent implements OnInit {
-    @Input() currentApplication: Application | null
+    @Input() currentApplication: Application | null;
+    @Output() recommendationSaved = new EventEmitter<boolean>();
     reviews: any = [];
     dateNow = DateTime.now().toFormat('LLLL dd, yyyy');
     user: any = {};
@@ -178,6 +179,7 @@ export class GrantsTeamReviewComponent implements OnInit {
         this.applicationService.updateRecommendation(recommendation).subscribe({
             next: (data: any) => {
                 this.toastr.success(`Your recommendation has been successfully saved.`);
+                this.recommendationSaved.emit(true);
             },
             error: (err: HttpErrorResponse) => {
                 const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';

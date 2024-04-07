@@ -116,7 +116,7 @@ export class ApplicationsListComponent {
                     const received_proposals = data.filter((d: any) => d.status == 'Received Proposals');
                     const grants_team_review = data.filter((d: any) => d.status == 'Grants Team Review');
                     const advisers_review = data.filter((d: any) => d.status == 'Advisers Review');
-                    const due_diligence = data.filter((d: any) => d.status == 'Due Diligence (Medium Grants)');
+                    const due_diligence = data.filter((d: any) => d.status == 'Due Diligence Final Review');
                     const budget_review = data.filter((d: any) => d.status == 'Budget Review and Finalization');
                     const financial_management_capacity = data.filter((d: any) => d.status == 'Financial Management Capacity');
 
