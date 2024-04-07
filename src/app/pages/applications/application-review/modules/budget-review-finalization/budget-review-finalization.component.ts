@@ -4,7 +4,7 @@ import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { AppReviewOrgBankAccntInfoModalComponent } from '../../../modals/app-review-org-bank-accnt-info-modal/app-review-org-bank-accnt-info-modal.component';
 import { AppReviewFiscalSponsorBankDetailModalComponent } from '../../../modals/app-review-fiscal-sponsor-bank-detail-modal/app-review-fiscal-sponsor-bank-detail-modal.component';
 import { ApplicationReviewSignalService } from 'src/app/services/appliaction-review.signal.service';
-import { ApplicationRead } from 'src/app/interfaces/application.interface';
+import { Application } from 'src/app/interfaces/_application.interface';
 import { DateTime } from 'luxon';
 import { UserService } from 'src/app/services/user.service';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
@@ -21,7 +21,7 @@ import * as _ from '../../../../../utilities/globals';
 export class BudgetReviewFinalizationComponent implements OnInit {
     bsModalRef?: BsModalRef;
     applicationReviewSignalService = inject(ApplicationReviewSignalService);
-    @Input() currentApplication: ApplicationRead | null
+    @Input() currentApplication: Application | null
 
     dateNow = DateTime.now().toFormat('LLLL dd, yyyy');
     user: any = {};

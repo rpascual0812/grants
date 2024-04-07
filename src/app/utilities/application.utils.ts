@@ -1,4 +1,4 @@
-import { ApplicationRead } from '../interfaces/application.interface';
+import { Application } from '../interfaces/_application.interface';
 
 // Interfaces or Types
 export type TransformApplicationForList = ReturnType<typeof transformApplicationForList>;
@@ -10,7 +10,7 @@ export interface ApiError extends Error {
     status?: string;
 }
 
-export const transformApplicationForList = (applications: ApplicationRead[]) => {
+export const transformApplicationForList = (applications: Application[]) => {
     return applications.map((app) => ({
         applicationPk: app.pk as number,
         applicationNumber: app.number as string,
@@ -19,10 +19,10 @@ export const transformApplicationForList = (applications: ApplicationRead[]) => 
         partner: app?.partner?.name ?? '',
         title: app?.project?.title ?? '',
         applicationDate: app?.date_created as Date,
-        proposedBudget: app?.application_proposal?.budget_request_usd ?? '',
-        proposedBudgetOther: app?.application_proposal?.budget_request_other ?? '',
+        proposedBudget: app?.project?.project_proposal?.budget_request_usd ?? '',
+        proposedBudgetOther: app?.project?.project_proposal?.budget_request_other ?? '',
         proposedBudgetOtherCurrency:
-            app?.application_proposal?.budget_request_other_currency?.split('-')?.at(0)?.trim() ?? '',
+            app?.project?.project_proposal?.budget_request_other_currency?.split('-')?.at(0)?.trim() ?? '',
     }));
 };
 

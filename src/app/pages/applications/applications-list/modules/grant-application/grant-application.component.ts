@@ -1,7 +1,6 @@
 import { Component, OnInit, QueryList, ViewChildren, effect, inject } from '@angular/core';
 import { NgbdSortableHeaderDirective, SortEvent } from '../../../../../directives/ngbd-sortable-header.directive';
 import { ApplicationService } from 'src/app/services/application.service';
-import { ApplicationRead } from 'src/app/interfaces/application.interface';
 import { TransformApplicationForList, compare, transformApplicationForList } from 'src/app/utilities/application.utils';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -11,6 +10,7 @@ import {
     LinkGeneratorSignalService,
 } from 'src/app/services/link-generator.signal.service';
 import { ApplicationListSignalService } from 'src/app/services/application-list.signal.service';
+import { Application } from 'src/app/interfaces/_application.interface';
 
 type TableObj = {
     list: TransformApplicationForList;
@@ -19,9 +19,9 @@ type TableObj = {
 };
 
 type GrantApplicationTableObj = {
-    urgentGrants: TableObj;
-    advisersReview: TableObj;
+    proposals: TableObj;
     grantsTeamReview: TableObj;
+    advisersReview: TableObj;
     dueDiligence: TableObj;
     budgetReviewAndFinalization: TableObj;
     financialManagementCapacity: TableObj;
@@ -36,7 +36,7 @@ export class GrantApplicationComponent implements OnInit {
     isLoading = true;
     tableSizes: any = _.TABLE_SIZES;
     grantApplication: GrantApplicationTableObj = {
-        urgentGrants: {
+        proposals: {
             list: [],
             page: 1,
             tableSize: 10,
@@ -110,18 +110,19 @@ export class GrantApplicationComponent implements OnInit {
             .subscribe({
                 next: (res: any) => {
                     const data = res?.data ?? [];
-                    this.grantApplication.urgentGrants.list = transformApplicationForList(data as ApplicationRead[]);
+                    console.log(data);
+                    this.grantApplication.proposals.list = transformApplicationForList(data as Application[]);
                     this.grantApplication.grantsTeamReview.list = transformApplicationForList(
-                        data as ApplicationRead[]
+                        data as Application[]
                     );
-                    this.grantApplication.advisersReview.list = transformApplicationForList(data as ApplicationRead[]);
-                    this.grantApplication.dueDiligence.list = transformApplicationForList(data as ApplicationRead[]);
+                    this.grantApplication.advisersReview.list = transformApplicationForList(data as Application[]);
+                    this.grantApplication.dueDiligence.list = transformApplicationForList(data as Application[]);
 
                     this.grantApplication.budgetReviewAndFinalization.list = transformApplicationForList(
-                        data as ApplicationRead[]
+                        data as Application[]
                     );
                     this.grantApplication.financialManagementCapacity.list = transformApplicationForList(
-                        data as ApplicationRead[]
+                        data as Application[]
                     );
                     this.isLoading = false;
                     this.linkGeneratorSignalService.linkGeneratorData.set(null);
@@ -170,7 +171,7 @@ export class GrantApplicationComponent implements OnInit {
                     next: (data: any) => {
                         const status = data?.status;
                         if (status) {
-                            this.grantApplication.urgentGrants.list = this.grantApplication.urgentGrants.list.filter(
+                            this.grantApplication.proposals.list = this.grantApplication.proposals.list.filter(
                                 (item) => item.applicationPk !== application.applicationPk
                             );
                             this.grantApplication.grantsTeamReview.list =
