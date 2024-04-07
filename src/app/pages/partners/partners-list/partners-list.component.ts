@@ -1,13 +1,16 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-// import { PartnerRead } from 'src/app/interfaces/application.interface';
+import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { PartnerService } from 'src/app/services/partner.service';
 import * as _ from '../../../utilities/globals';
 import { GRANT_TYPES, THEMATIC_AREAS } from 'src/app/utilities/constants';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { PartnerAddComponent } from '../modals/partner-add/partner-add.component';
+import { OnHiddenData } from '../partner-view/partner-view.component';
 import { Application, Partner } from 'src/app/interfaces/_application.interface';
 
-interface PartnerRead extends Partner {
-    grand_total_amount?: number;
+interface PartnerList extends Partner {
     applications?: Application[];
+    expanded?: boolean;
+    grand_total_amount?: number;
 }
 
 type SelectItem = {
@@ -18,11 +21,8 @@ type SelectItem = {
 type Filter = {
     organization_pk: number | null;
     type_pk: number | null;
+    keyword?: string | null;
 };
-
-interface TableObj {
-    [key: string]: any;
-}
 
 @Component({
     selector: 'app-partners-list',
@@ -37,7 +37,7 @@ export class PartnersListComponent implements OnInit {
 
     loading = false;
     oneAtATime = true;
-    partnersList: TableObj[] = [];
+    partnersList: PartnerList[] = [];
 
     page: number = 1;
     tableSize: number = 10;
@@ -45,9 +45,16 @@ export class PartnersListComponent implements OnInit {
     filter: Filter = {
         organization_pk: null,
         type_pk: null,
+        keyword: '',
     };
 
-    constructor(private partnerService: PartnerService) { }
+    bsModalRef?: BsModalRef;
+
+    constructor(
+        private partnerService: PartnerService,
+        private modalService: BsModalService,
+        private changeDetection: ChangeDetectorRef
+    ) {}
 
     ngOnInit() {
         this.fetch();
@@ -61,12 +68,9 @@ export class PartnersListComponent implements OnInit {
             })
             .subscribe({
                 next: (response: any) => {
-                    const data: PartnerRead[] = response?.data ?? [];
+                    const data: PartnerList[] = response?.data ?? [];
                     this.partnersList = data.map((item, idx: number) => ({
-                        partner: item?.name ?? '',
-                        id: item?.partner_id,
-                        location: item.address,
-                        grand_total_amount: item.grand_total_amount,
+                        ...item,
                         expanded: false,
                         applications: item?.applications?.filter((app) => !!app?.project?.title) ?? [],
                     }));
@@ -81,13 +85,39 @@ export class PartnersListComponent implements OnInit {
     onChangeSelectedItem(item: SelectItem[] | string[], key: string) {
         const extractedItem = item?.at(0);
         const pk = (extractedItem as SelectItem)?.pk ?? '';
-        this.filter[key as keyof typeof this.filter] = pk;
-        this.fetch(this.filter);
+        const tempKey = key as keyof Filter;
+        if (tempKey === 'organization_pk' || tempKey === 'type_pk') {
+            this.filter[tempKey] = pk;
+            this.fetch(this.filter);
+        }
     }
 
-    handleIsOpenChange($event: boolean, id: string) {
-        const currentIdx = this.partnersList.findIndex((partner) => partner['id'] === id);
+    handleSearchKeyword() {
+        this.fetch(this.filter)
+    }
+
+    handleClearKeyword() {
+        this.filter.keyword = ''
+        this.fetch(this.filter)
+    }
+
+    handleIsOpenChange($event: boolean, pk?: number) {
+        const currentIdx = this.partnersList.findIndex((partner) => partner?.pk === pk);
         this.partnersList[currentIdx]['expanded'] = $event;
+    }
+
+    handleAddPartner() {
+        this.bsModalRef = this.modalService.show(PartnerAddComponent, {
+            class: 'modal-xl',
+            backdrop: 'static',
+            keyboard: false,
+        });
+        this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: OnHiddenData) => {
+            if (data?.pk && isSaved) {
+                this.partnersList = [data, ...this.partnersList];
+                this.changeDetection?.detectChanges();
+            }
+        });
     }
 
     onTableSizeChange(event: any) {

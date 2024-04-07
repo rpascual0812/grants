@@ -10,6 +10,13 @@ import { RouterModule } from '@angular/router';
 @NgModule({
     declarations: [PartnersListComponent],
     exports: [PartnersListComponent],
-    imports: [CommonModule, FormsModule, NgxPaginationModule, AccordionModule.forRoot(), SelectModule, RouterModule],
+    imports: [
+        CommonModule, 
+        FormsModule, 
+        NgxPaginationModule, 
+        AccordionModule.forRoot(), 
+        SelectModule, 
+        RouterModule,
+    ],
 })
 export class PartnersListModule {}

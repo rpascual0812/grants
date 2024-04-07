@@ -1,0 +1,30 @@
+<div class="modal-header bg-gray-300">
+    <h4 class="modal-title pull-left text-dark">Add Partner</h4>
+    <button type="button" class="btn btn-default pull-right" aria-label="Close" (click)="handleClose()">
+        <i class="material-icons">close</i>
+    </button>
+</div>
+
+<div class="modal-content">
+    <div class="container my-1">
+        <ng-container *ngIf="step === 1">
+            <app-proponent-information></app-proponent-information>
+        </ng-container>
+        <ng-container *ngIf="step === 2">
+            <app-organization-profile></app-organization-profile>
+        </ng-container>
+        <ng-container *ngIf="step === 3">
+            <app-non-profit-equivalency-determination></app-non-profit-equivalency-determination>
+        </ng-container>
+        <ng-container *ngIf="step === 4">
+            <app-fiscal-sponsor-information></app-fiscal-sponsor-information>
+        </ng-container>
+        <ng-container *ngIf="step === 5">
+            <app-contact-info-references></app-contact-info-references>
+        </ng-container>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-white" (click)="handleClose()" type="button">Close</button>
+</div>
