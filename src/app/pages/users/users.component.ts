@@ -35,6 +35,8 @@ export class UsersComponent implements OnInit {
     entry!: ViewContainerRef;
     sub!: Subscription;
 
+    timeout: any = null;
+
     constructor(
         private userService: UserService,
         private formBuilder: FormBuilder,
@@ -70,6 +72,13 @@ export class UsersComponent implements OnInit {
                     console.log('Complete');
                 }
             });
+    }
+
+    search() {
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+            this.fetch();
+        }, 1000);
     }
 
     fetch() {

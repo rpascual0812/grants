@@ -15,6 +15,7 @@ import { ApplicationReviewModule } from 'src/app/pages/applications/application-
 import { GrantsModule } from 'src/app/pages/grants/grants.module';
 import { LinksModule } from 'src/app/pages/settings/links/links.module';
 import { GrantViewModule } from 'src/app/pages/grants/grant-view/grant-view.module';
+import { DonorModule } from 'src/app/pages/donor/donor.module';
 
 @NgModule({
     imports: [
@@ -31,6 +32,7 @@ import { GrantViewModule } from 'src/app/pages/grants/grant-view/grant-view.modu
         PartnersModule,
         PartnerViewModule,
         UsersModule,
+        DonorModule,
         RolesModule,
         LinksModule
     ],
