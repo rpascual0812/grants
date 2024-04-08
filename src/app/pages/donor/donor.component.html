@@ -1,6 +1,6 @@
 <div class="container-fluid mb-3">
     <nav aria-label="breadcrumb">
-        <h4 class="font-weight-bolder mb-0 mb-5">Users & Roles</h4>
+        <h4 class="font-weight-bolder mb-0 mb-5">Donors</h4>
     </nav>
     <div class="row mb-4">
         <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
@@ -13,9 +13,9 @@
                         </div>
                     </div>
                     <div class="col-lg-8 col-5 my-auto text-end">
-                        <button class="btn btn-sm bg-grant-primary text-sm text-white" (click)="userModal(null)">
+                        <button class="btn btn-sm bg-grant-primary text-sm text-white" (click)="openModal(null)">
                             <i class="material-icons text-sm">add_circle</i>
-                            Add User
+                            Add a donor
                         </button>
                     </div>
                 </div>
@@ -27,19 +27,13 @@
                             <thead>
                                 <tr>
                                     <th class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Username</th>
+                                        Name</th>
                                     <th
                                         class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Unique ID</th>
+                                        Code</th>
                                     <th
                                         class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Full Name</th>
-                                    <th
-                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Email</th>
-                                    <th
-                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Roles</th>
+                                        Status</th>
                                     <th
                                         class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                     </th>
@@ -47,52 +41,36 @@
                             </thead>
                             <tbody>
                                 <tr
-                                    *ngFor="let user of users| paginate : { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.count }; let i = index">
+                                    *ngFor="let donor of donors| paginate : { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.count }; let i = index">
                                     <td scope="row">
                                         <div class="d-flex px-2 py-1">
-                                            <span class="mb-0 text-sm">{{user.account.username}}</span>
+                                            <span class="mb-0 text-sm">{{donor.name}}</span>
                                         </div>
                                     </td>
                                     <td scope="row">
                                         <div class="d-flex px-2 py-1">
-                                            <span class="mb-0 text-sm">{{user.unique_id}}</span>
+                                            <span class="mb-0 text-sm">{{donor.code}}</span>
                                         </div>
                                     </td>
                                     <td class="w-25 align-middle text-sm">
-                                        <span class="text-xs">{{user.first_name}}
-                                            {{user.last_name}}</span>
-                                    </td>
-                                    <td class="w-25 align-middle text-center text-sm">
-                                        <span class="text-xs">{{user.email_address}}</span>
-                                    </td>
-                                    <td class="w-15 align-middle text-center text-sm">
-                                        <app-select url="roles" [multiple]="true" [limitSelection]="2"
-                                            [itemsShowLimit]="3" placeholder="Please select"></app-select>
+                                        <a class="btn btn-link {{ donor.active ? 'text-success' : 'text-danger' }} text-gradient px-2 mb-0 text-xs"
+                                            href="javascript:;" (click)="suspend(donor)"
+                                            [title]="donor.active ? 'Set as inactive' : 'Set as active'">
+                                            <i class="material-icons text-lg me-2">{{ donor.active ?
+                                                'done' : 'close' }}</i>
+                                        </a>
                                     </td>
                                     <td class="w-20 opacity-7">
                                         <div class="ms-auto text-end">
                                             <a class="btn btn-link text-dark text-gradient px-3 mb-0 text-xs"
-                                                href="javascript:;" (click)="userModal(user)">
+                                                href="javascript:;" (click)="openModal(donor)">
                                                 <i class="material-icons text-sm me-2">edit</i>Edit
                                             </a>
-                                            <a class="btn btn-link text-dark text-gradient px-3 mb-0 text-xs"
-                                                href="javascript:;" (click)="resetPasswordModal(user)">
-                                                <i class="material-icons text-sm me-2">key</i>Reset Password
-                                            </a>
-                                            <a class="btn btn-link text-dark text-gradient px-3 mb-0 text-xs"
-                                                href="javascript:;" (click)="showLogs(user)" title="Show Logs">
-                                                <i class="material-icons text-sm me-2">history</i>
-                                            </a>
-                                            <a class="btn btn-link {{ user.account.active ? 'text-warning' : 'text-primary' }} text-gradient px-2 mb-0 text-xs"
-                                                href="javascript:;" (click)="suspend(user)"
-                                                [title]="user.account.active ? 'Lock account' : 'Unlock account'">
-                                                <i class="material-icons text-lg me-2">{{ user.account.active ?
-                                                    'lock_open' : 'lock' }}</i>
-                                            </a>
-                                            <a class="btn btn-link {{ user.account.archived ? 'text-primary' : 'text-danger' }} text-gradient px-2 mb-0 text-xs"
-                                                href="javascript:;" (click)="deactivate(user)"
-                                                [title]="user.account.archived ? 'Activate account' : 'Deactivate account'">
-                                                <i class="fa fa-{{ user.account.archived ?
+
+                                            <a class="btn btn-link {{ donor.archived ? 'text-primary' : 'text-danger' }} text-gradient px-2 mb-0 text-xs"
+                                                href="javascript:;" (click)="deactivate(donor)"
+                                                [title]="donor.archived ? 'Activate account' : 'Deactivate account'">
+                                                <i class="fa fa-{{ donor.archived ?
                                                     'undo'
                                                     : 'trash' }}"></i>
                                             </a>
@@ -110,7 +88,7 @@
                                             <div>
                                                 <select (change)="onTableSizeChange($event)"
                                                     class="form-control form-control-sm pagination-select">
-                                                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                                                    <option *ngFor="let size of tableSizes" [value]="size">
                                                         {{ size }}
                                                     </option>
                                                 </select>
