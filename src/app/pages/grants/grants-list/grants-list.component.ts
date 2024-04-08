@@ -6,9 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./grants-list.component.scss']
 })
 export class GrantsListComponent {
-  @Input() filter: Set<string>
-  
-  getCurrentSelectedFilter() {
-    return Array.from(this.filter)
-  }
+  @Input() filter: string
 }

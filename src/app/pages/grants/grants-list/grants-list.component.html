@@ -1,7 +1,4 @@
 <div class="content">
-    <app-grant-application *ngIf="getCurrentSelectedFilter().includes('grantApplication')"></app-grant-application>
-    <app-contract-finalization
-        *ngIf="getCurrentSelectedFilter().includes('contractFinalization')"
-    ></app-contract-finalization>
-    <app-fund-release  *ngIf="getCurrentSelectedFilter().includes('fundRelease')"></app-fund-release>
+    <app-contract-finalization *ngIf="filter === 'contractFinalization'"></app-contract-finalization>
+    <app-fund-release *ngIf="filter === 'fundRelease'"></app-fund-release>
 </div>
