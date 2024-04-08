@@ -1,12 +1,20 @@
-import { Component, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { ApplicationService } from 'src/app/services/application.service';
+import { Component, OnInit, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { NgbdSortableHeaderDirective, SortEvent } from 'src/app/directives/ngbd-sortable-header.directive';
+import { extractErrorMessage } from 'src/app/utilities/application.utils';
+import { Application } from 'src/app/interfaces/_application.interface';
+import { ToastrService } from 'ngx-toastr';
+import { getOtherCurrencyKey } from 'src/app/utilities/constants';
 
 interface Grant {
+    pk: number;
     partnerId: string;
     partner: string;
     title: string;
     applicationDate: Date;
     proposedBudget: number;
+    proposedBudgetOther: number;
+    proposedBudgetOtherCurrency: string;
     donorProject: string;
     expanded: boolean;
 }
@@ -26,24 +34,54 @@ const compare = (v1: ColumnObj, v2: ColumnObj) => {
     styleUrls: ['./fund-release.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class FundReleaseComponent {
+export class FundReleaseComponent implements OnInit {
+    loading = false;
     fundRelease: Grant[] = [];
     closingGrant: Grant[] = [];
     page: number = 1;
     @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective<Grant>>;
 
-    constructor() {
-        for (let i = 1; i <= 12; i++) {
-            this.fundRelease.push({
-                partnerId: `${i}${new Date().getTime()}`,
-                title: `Project Proposal Title - ${i}`,
-                partner: `Organization Name - ${i}`,
-                applicationDate: new Date(`2024-${i}-1`),
-                proposedBudget: 100,
-                donorProject: `Random Donor Project - ${i}`,
-                expanded: false,
-            });
-        }
+    constructor(private applicationService: ApplicationService, private toastr: ToastrService) {}
+
+    ngOnInit() {
+        this.fetch()
+    }
+
+    fetch() {
+        this.loading = true;
+        this.applicationService.fetch().subscribe({
+            next: (res: any) => {
+                const status = res?.status;
+                const data = (res?.data ?? []) as Application[];
+                if (status) {
+                    const tempData: Grant[] = data?.map((item) => ({
+                        pk: item?.pk as number,
+                        partnerId: item?.partner?.partner_id ?? '',
+                        partner: item?.partner?.name ?? '',
+                        title: item?.project?.title ?? '',
+                        applicationDate: item?.date_created as Date,
+                        proposedBudget: parseInt(item?.project?.project_proposal?.budget_request_usd ?? ''),
+                        proposedBudgetOther: parseInt(item?.project?.project_proposal?.budget_request_other ?? ''),
+                        proposedBudgetOtherCurrency:
+                            getOtherCurrencyKey(item?.project?.project_proposal?.budget_request_other_currency ?? '') ??
+                            '',
+                        donorProject: '',
+                        expanded: false,
+                    }));
+                    this.fundRelease = tempData;
+                    this.closingGrant = tempData;
+                }
+                this.loading = false;
+            },
+            error: (err) => {
+                const { statusCode, errorMessage } = extractErrorMessage(err);
+                this.toastr.error(
+                    `An error occurred while fetching Application. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+                this.loading = false;
+            },
+        });
     }
 
     onSort({ column, direction }: SortEvent<Grant>) {

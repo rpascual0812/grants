@@ -1,407 +1,417 @@
 <div>
-    <div class="card my-2">
-        <div class="card-header py-2" style="background-color: #0b2cb5">
-            <h5 class="text-white text-center">Fund Release</h5>
-        </div>
-        <div class="card-body overflow-auto p-0 m-0">
-            <table class="table" style="table-layout: fixed">
-                <thead>
-                    <tr style="background-color: #474ca5">
-                        <th class="p-2 text-white" style="width: 180px" scope="col">Partner ID</th>
-                        <th
-                            class="p-2 text-white"
-                            style="width: 175px"
-                            scope="col"
-                            sortable="partner"
-                            (sort)="onSort($event)"
-                        >
-                            Partner
-                        </th>
-                        <th
-                            class="p-2 text-white"
-                            style="width: 135px"
-                            scope="col"
-                            sortable="title"
-                            (sort)="onSort($event)"
-                        >
-                            Title
-                        </th>
-                        <th
-                            class="p-2 text-white"
-                            style="width: 115px"
-                            scope="col"
-                            sortable="applicationDate"
-                            (sort)="onSort($event)"
-                        >
-                            Approved Date
-                        </th>
-                        <th
-                            class="p-2 text-white"
-                            style="width: 130px"
-                            scope="col"
-                            sortable="proposedBudget"
-                            (sort)="onSort($event)"
-                        >
-                            Approved Budget
-                        </th>
-                        <th
-                            class="p-2 text-white"
-                            style="width: 150px"
-                            scope="col"
-                            sortable="donorProject"
-                            (sort)="onSort($event)"
-                        >
-                            Donor/Project
-                        </th>
-                        <th class="p-2" style="width: 162px" scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <accordion [isAnimated]="true">
-                        <tr
-                            class="border-0"
-                            *ngFor="let item of fundRelease | paginate : { itemsPerPage: 10, currentPage: page }"
-                        >
-                            <accordion-group
-                                style="width: 1295px !important"
-                                [panelClass]="item?.['expanded'] ? 'custom-accordion-expanded' : 'custom-accordion-collapsed'"
-                                (isOpenChange)="handleIsOpenChange($event, item.partnerId)"
-                            >
-                                <button class="btn p-0 m-0" accordion-heading>
-                                    <th
-                                        class="text-dark font-weight-bold text-start text-wrap"
-                                        style="width: 215px"
-                                        scope="row"
-                                    >
-                                        {{ item.partnerId }}
-                                    </th>
-                                    <td class="text-dark font-weight-light text-wrap text-start" style="width: 215px">
-                                        {{ item.partner }}
-                                    </td>
-                                    <td class="text-dark font-weight-light text-wrap text-start" style="width: 215px">
-                                        {{ item.title }}
-                                    </td>
-                                    <td class="text-dark font-weight-light text-wrap text-start" style="width: 100px">
-                                        {{ item.applicationDate | date : 'shortDate' }}
-                                    </td>
-                                    <td class="text-dark font-weight-light text-wrap text-start" style="width: 150px">
-                                        {{ item.proposedBudget | number }} USD | 7501175 IDR
-                                    </td>
-                                    <td class="text-dark font-weight-light text-wrap text-start" style="width: 150px">
-                                        {{ item.donorProject }}
-                                    </td>
-                                    <td class="text-dark font-weight-light">
-                                        <div class="d-flex flex-wrap gap-2 align-items-center">
-                                            <button
-                                                class="btn btn-default text-info p-1 m-0 text-xs"
-                                                (click)="handleReview($event)"
-                                            >
-                                                Review
-                                            </button>
-                                            <button
-                                                class="btn btn-default text-danger p-1 m-0 text-xs"
-                                                (click)="handleDelete($event)"
-                                            >
-                                                Delete
-                                            </button>
-                                            <button class="btn btn-icon-only p-0">
-                                                <i class="material-icons">
-                                                    {{ item.expanded ? 'expand_less' : 'expand_more' }}</i
-                                                >
-                                            </button>
-                                        </div>
-                                    </td>
-                                </button>
-                                <div class="card p-0">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <p class="text-dark text-sm m-0 p-0">Available Tranches</p>
-                                            </div>
-                                            <div class="col-2">
-                                                <p class="text-dark text-sm m-0 p-0">Amount</p>
-                                            </div>
-                                            <div class="col-3">
-                                                <p class="text-dark text-sm m-0 p-0">Status</p>
-                                            </div>
-                                            <div class="col-3">
-                                                <p class="text-dark text-sm m-0 p-0">Date</p>
-                                            </div>
-                                        </div>
-                                        <div class="w-100 border border-top-1 border-dark my-1"></div>
-                                        <div class="row my-1">
-                                            <div class="col-4">
-                                                <div class="trench-container">
-                                                    <p class="text-dark text-sm m-0 p-0 text-wrap">
-                                                        1st Tranche - lorem ipsum
-                                                    </p>
-                                                    <div class="d-flex flex-wrap flex-row gap-1">
-                                                        <div class="d-flex flex-column">
-                                                            <div class="form-check p-0 m-0">
-                                                                <label
-                                                                    class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                    >Acknowledgement</label
-                                                                >
-                                                                <input class="form-check-input" type="checkbox" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex flex-column">
-                                                            <div class="form-check p-0 m-0">
-                                                                <label
-                                                                    class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                    >Official Receipt</label
-                                                                >
-                                                                <input class="form-check-input" type="checkbox" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex flex-column">
-                                                            <p class="text-dark font-weight-bold pt-2 m-0 text-xs">
-                                                                Interim Report
-                                                            </p>
-                                                            <div class="form-check p-0 m-0">
-                                                                <label
-                                                                    class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                    >Narrative</label
-                                                                >
-                                                                <input class="form-check-input" type="checkbox" />
-                                                            </div>
-                                                            <div class="form-check p-0 m-0">
-                                                                <label
-                                                                    class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                    >Financial</label
-                                                                >
-                                                                <input class="form-check-input" type="checkbox" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-2">
-                                                <div class="trench-container d-flex flex-wrap flex-column">
-                                                    <p class="text-dark text-sm m-0 p-0">100000</p>
-                                                    <div class="form-check p-0 m-0">
-                                                        <label
-                                                            class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                            >Next Tranche Request</label
-                                                        >
-                                                        <input class="form-check-input" type="checkbox" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <p class="text-dark text-sm m-0 p-0">Released</p>
-                                            </div>
-                                            <div class="col-2">
-                                                <p class="text-dark text-sm m-0 p-0">July 5, 2022</p>
-                                            </div>
-                                            <div class="col-1">
-                                                <button class="btn btn-default text-info p-0">Review</button>
-                                            </div>
-                                        </div>
-                                        <div class="row my-1">
-                                            <div class="col-4">
-                                                <div class="trench-container">
-                                                    <p class="text-dark text-sm m-0 p-0 text-wrap">
-                                                        2nd Tranche - lorem ipsum
-                                                    </p>
-                                                    <div class="d-flex flex-wrap flex-row gap-1">
-                                                        <div class="d-flex flex-column">
-                                                            <div class="form-check p-0 m-0">
-                                                                <label
-                                                                    class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                    >Acknowledgement</label
-                                                                >
-                                                                <input class="form-check-input" type="checkbox" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex flex-column">
-                                                            <div class="form-check p-0 m-0">
-                                                                <label
-                                                                    class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                    >Official Receipt</label
-                                                                >
-                                                                <input class="form-check-input" type="checkbox" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex flex-column">
-                                                            <p class="text-dark font-weight-bold pt-2 m-0 text-xs">
-                                                                Interim Report
-                                                            </p>
-                                                            <div class="form-check p-0 m-0">
-                                                                <label
-                                                                    class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                    >Narrative</label
-                                                                >
-                                                                <input class="form-check-input" type="checkbox" />
-                                                            </div>
-                                                            <div class="form-check p-0 m-0">
-                                                                <label
-                                                                    class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                    >Financial</label
-                                                                >
-                                                                <input class="form-check-input" type="checkbox" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-2">
-                                                <div class="trench-container d-flex flex-wrap flex-column">
-                                                    <p class="text-dark text-sm m-0 p-0">100000</p>
-                                                    <div class="form-check p-0 m-0">
-                                                        <label
-                                                            class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                            >Next Tranche Request</label
-                                                        >
-                                                        <input class="form-check-input" type="checkbox" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <p class="text-dark text-sm m-0 p-0">Released</p>
-                                            </div>
-                                            <div class="col-2">
-                                                <p class="text-dark text-sm m-0 p-0">July 5, 2022</p>
-                                            </div>
-                                            <div class="col-1">
-                                                <button class="btn btn-default text-info p-0">Review</button>
-                                            </div>
-                                        </div>
-                                        <div class="row my-1">
-                                            <div class="col-4">
-                                                <div class="trench-container">
-                                                    <p class="text-dark text-sm m-0 p-0 text-wrap">
-                                                        3rd Tranche - lorem ipsum
-                                                    </p>
-                                                    <div class="d-flex flex-wrap flex-row gap-1">
-                                                        <div class="d-flex flex-column">
-                                                            <div class="form-check p-0 m-0">
-                                                                <label
-                                                                    class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                    >Acknowledgement</label
-                                                                >
-                                                                <input class="form-check-input" type="checkbox" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex flex-column">
-                                                            <div class="form-check p-0 m-0">
-                                                                <label
-                                                                    class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                    >Official Receipt</label
-                                                                >
-                                                                <input class="form-check-input" type="checkbox" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex flex-column">
-                                                            <p class="text-dark font-weight-bold pt-2 m-0 text-xs">
-                                                                Interim Report
-                                                            </p>
-                                                            <div class="form-check p-0 m-0">
-                                                                <label
-                                                                    class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                    >Narrative</label
-                                                                >
-                                                                <input class="form-check-input" type="checkbox" />
-                                                            </div>
-                                                            <div class="form-check p-0 m-0">
-                                                                <label
-                                                                    class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                    >Financial</label
-                                                                >
-                                                                <input class="form-check-input" type="checkbox" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-2">
-                                                <div class="trench-container d-flex flex-wrap flex-column">
-                                                    <p class="text-dark text-sm m-0 p-0">100000</p>
-                                                    <div class="form-check p-0 m-0">
-                                                        <label
-                                                            class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                            >Next Tranche Request</label
-                                                        >
-                                                        <input class="form-check-input" type="checkbox" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <p class="text-dark text-sm m-0 p-0">Released</p>
-                                            </div>
-                                            <div class="col-2">
-                                                <p class="text-dark text-sm m-0 p-0">July 5, 2022</p>
-                                            </div>
-                                            <div class="col-1">
-                                                <button class="btn btn-default text-info p-0">Review</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </accordion-group>
-                        </tr>
-                    </accordion>
-                </tbody>
-            </table>
-            <div *ngIf="fundRelease.length <= 0" class="text-center">
-                <p class="text-danger w-100 font-weight-bold">There are no queued applications at this stage</p>
-            </div>
-            <div class="my-3">
-                <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
-            </div>
+    <div class="container text-center my-5"  *ngIf="loading">
+        <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
     </div>
 
-    <div class="card my-2">
-        <div class="card-header py-2" style="background-color: #0b2cb5">
-            <h5 class="text-white text-center">Completed Grants</h5>
-        </div>
-        <div class="card-body overflow-auto p-0 m-0">
-            <table class="table">
-                <thead>
-                    <tr style="background-color: #474ca5">
-                        <th class="p-2 text-white" scope="col">Partner ID</th>
-                        <th class="p-2 text-white" scope="col" sortable="partner" (sort)="onSort($event)">Partner</th>
-                        <th class="p-2 text-white" scope="col" sortable="title" (sort)="onSort($event)">Title</th>
-                        <th class="p-2 text-white" scope="col" sortable="applicationDate" (sort)="onSort($event)">
-                            Approved Date
-                        </th>
-                        <th class="p-2 text-white" scope="col" sortable="proposedBudget" (sort)="onSort($event)">
-                            Approved Budget
-                        </th>
-                        <th class="p-2" scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of closingGrant | paginate : { itemsPerPage: 10, currentPage: page }">
-                        <th class="text-dark font-weight-bold" scope="row">
-                            {{ item.partnerId }}
-                        </th>
-                        <td class="text-dark font-weight-light">
-                            {{ item.partner }}
-                        </td>
-                        <td class="text-dark font-weight-light">
-                            {{ item.title }}
-                        </td>
-                        <td class="text-dark font-weight-light">
-                            {{ item.applicationDate | date : 'shortDate' }}
-                        </td>
-                        <td class="text-dark font-weight-light">
-                            {{ item.proposedBudget | number }} USD | 7501175 IDR
-                        </td>
-                        <td class="text-dark font-weight-light">
-                            <button class="btn btn-default text-info">Review</button>
-                            <button class="btn btn-default text-danger">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div *ngIf="closingGrant.length <= 0" class="text-center">
-                <p class="text-danger w-100 font-weight-bold">There are no queued applications at this stage</p>
+    <ng-container *ngIf="!loading">
+        <div class="card my-2">
+            <div class="card-header py-2" style="background-color: #0b2cb5">
+                <h5 class="text-white text-center">Fund Release</h5>
             </div>
-            <div class="my-3">
-                <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
+            <div class="card-body overflow-auto p-0 m-0">
+                <table class="table" style="table-layout: fixed">
+                    <thead>
+                        <tr style="background-color: #474ca5">
+                            <th class="p-2 text-white" style="width: 180px" scope="col">Partner ID</th>
+                            <th
+                                class="p-2 text-white"
+                                style="width: 175px"
+                                scope="col"
+                                sortable="partner"
+                                (sort)="onSort($event)"
+                            >
+                                Partner
+                            </th>
+                            <th
+                                class="p-2 text-white"
+                                style="width: 135px"
+                                scope="col"
+                                sortable="title"
+                                (sort)="onSort($event)"
+                            >
+                                Title
+                            </th>
+                            <th
+                                class="p-2 text-white"
+                                style="width: 115px"
+                                scope="col"
+                                sortable="applicationDate"
+                                (sort)="onSort($event)"
+                            >
+                                Approved Date
+                            </th>
+                            <th
+                                class="p-2 text-white"
+                                style="width: 130px"
+                                scope="col"
+                                sortable="proposedBudget"
+                                (sort)="onSort($event)"
+                            >
+                                Approved Budget
+                            </th>
+                            <th
+                                class="p-2 text-white"
+                                style="width: 150px"
+                                scope="col"
+                                sortable="donorProject"
+                                (sort)="onSort($event)"
+                            >
+                                Donor/Project
+                            </th>
+                            <th class="p-2" style="width: 162px" scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <accordion [isAnimated]="true">
+                            <tr
+                                class="border-0"
+                                *ngFor="let item of fundRelease | paginate : { itemsPerPage: 10, currentPage: page }"
+                            >
+                                <accordion-group
+                                    style="width: 1295px !important"
+                                    [panelClass]="item?.['expanded'] ? 'custom-accordion-expanded' : 'custom-accordion-collapsed'"
+                                    (isOpenChange)="handleIsOpenChange($event, item.partnerId)"
+                                >
+                                    <button class="btn p-0 m-0" accordion-heading>
+                                        <th
+                                            class="text-dark font-weight-bold text-start text-wrap"
+                                            style="width: 215px"
+                                            scope="row"
+                                        >
+                                            {{ item.partnerId }}
+                                        </th>
+                                        <td class="text-dark font-weight-light text-wrap text-start" style="width: 215px">
+                                            {{ item.partner }}
+                                        </td>
+                                        <td class="text-dark font-weight-light text-wrap text-start" style="width: 215px">
+                                            {{ item.title }}
+                                        </td>
+                                        <td class="text-dark font-weight-light text-wrap text-start" style="width: 100px">
+                                            {{ item.applicationDate | date : 'shortDate' }}
+                                        </td>
+                                        <td class="text-dark font-weight-light text-wrap text-start" style="width: 150px">
+                                            {{ item.proposedBudget | number }} USD | {{ item.proposedBudgetOther | number }} {{ item.proposedBudgetOtherCurrency }}
+                                        </td>
+                                        <td class="text-dark font-weight-light text-wrap text-start" style="width: 150px">
+                                            {{ item.donorProject }}
+                                        </td>
+                                        <td class="text-dark font-weight-light">
+                                            <div class="d-flex flex-wrap gap-2 align-items-center">
+                                                <button
+                                                    class="btn btn-default text-info p-1 m-0 text-xs"
+                                                    [routerLink]="['/grant', item.pk]"
+                                                    (click)="handleReview($event)"
+                                                >
+                                                    Review
+                                                </button>
+                                                <button
+                                                    class="btn btn-default text-danger p-1 m-0 text-xs"
+                                                    (click)="handleDelete($event)"
+                                                >
+                                                    Delete
+                                                </button>
+                                                <button class="btn btn-icon-only p-0">
+                                                    <i class="material-icons">
+                                                        {{ item.expanded ? 'expand_less' : 'expand_more' }}</i
+                                                    >
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </button>
+                                    <div class="card p-0">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <p class="text-dark text-sm m-0 p-0">Available Tranches</p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p class="text-dark text-sm m-0 p-0">Amount</p>
+                                                </div>
+                                                <div class="col-3">
+                                                    <p class="text-dark text-sm m-0 p-0">Status</p>
+                                                </div>
+                                                <div class="col-3">
+                                                    <p class="text-dark text-sm m-0 p-0">Date</p>
+                                                </div>
+                                            </div>
+                                            <div class="w-100 border border-top-1 border-dark my-1"></div>
+                                            <div class="row my-1">
+                                                <div class="col-4">
+                                                    <div class="trench-container">
+                                                        <p class="text-dark text-sm m-0 p-0 text-wrap">
+                                                            1st Tranche - lorem ipsum
+                                                        </p>
+                                                        <div class="d-flex flex-wrap flex-row gap-1">
+                                                            <div class="d-flex flex-column">
+                                                                <div class="form-check p-0 m-0">
+                                                                    <label
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                        >Acknowledgement</label
+                                                                    >
+                                                                    <input class="form-check-input" type="checkbox" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex flex-column">
+                                                                <div class="form-check p-0 m-0">
+                                                                    <label
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                        >Official Receipt</label
+                                                                    >
+                                                                    <input class="form-check-input" type="checkbox" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex flex-column">
+                                                                <p class="text-dark font-weight-bold pt-2 m-0 text-xs">
+                                                                    Interim Report
+                                                                </p>
+                                                                <div class="form-check p-0 m-0">
+                                                                    <label
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                        >Narrative</label
+                                                                    >
+                                                                    <input class="form-check-input" type="checkbox" />
+                                                                </div>
+                                                                <div class="form-check p-0 m-0">
+                                                                    <label
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                        >Financial</label
+                                                                    >
+                                                                    <input class="form-check-input" type="checkbox" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="trench-container d-flex flex-wrap flex-column">
+                                                        <p class="text-dark text-sm m-0 p-0">100000</p>
+                                                        <div class="form-check p-0 m-0">
+                                                            <label
+                                                                class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                >Next Tranche Request</label
+                                                            >
+                                                            <input class="form-check-input" type="checkbox" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <p class="text-dark text-sm m-0 p-0">Released</p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p class="text-dark text-sm m-0 p-0">July 5, 2022</p>
+                                                </div>
+                                                <div class="col-1">
+                                                    <button class="btn btn-default text-info p-0">Review</button>
+                                                </div>
+                                            </div>
+                                            <div class="row my-1">
+                                                <div class="col-4">
+                                                    <div class="trench-container">
+                                                        <p class="text-dark text-sm m-0 p-0 text-wrap">
+                                                            2nd Tranche - lorem ipsum
+                                                        </p>
+                                                        <div class="d-flex flex-wrap flex-row gap-1">
+                                                            <div class="d-flex flex-column">
+                                                                <div class="form-check p-0 m-0">
+                                                                    <label
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                        >Acknowledgement</label
+                                                                    >
+                                                                    <input class="form-check-input" type="checkbox" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex flex-column">
+                                                                <div class="form-check p-0 m-0">
+                                                                    <label
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                        >Official Receipt</label
+                                                                    >
+                                                                    <input class="form-check-input" type="checkbox" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex flex-column">
+                                                                <p class="text-dark font-weight-bold pt-2 m-0 text-xs">
+                                                                    Interim Report
+                                                                </p>
+                                                                <div class="form-check p-0 m-0">
+                                                                    <label
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                        >Narrative</label
+                                                                    >
+                                                                    <input class="form-check-input" type="checkbox" />
+                                                                </div>
+                                                                <div class="form-check p-0 m-0">
+                                                                    <label
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                        >Financial</label
+                                                                    >
+                                                                    <input class="form-check-input" type="checkbox" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="trench-container d-flex flex-wrap flex-column">
+                                                        <p class="text-dark text-sm m-0 p-0">100000</p>
+                                                        <div class="form-check p-0 m-0">
+                                                            <label
+                                                                class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                >Next Tranche Request</label
+                                                            >
+                                                            <input class="form-check-input" type="checkbox" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <p class="text-dark text-sm m-0 p-0">Released</p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p class="text-dark text-sm m-0 p-0">July 5, 2022</p>
+                                                </div>
+                                                <div class="col-1">
+                                                    <button class="btn btn-default text-info p-0">Review</button>
+                                                </div>
+                                            </div>
+                                            <div class="row my-1">
+                                                <div class="col-4">
+                                                    <div class="trench-container">
+                                                        <p class="text-dark text-sm m-0 p-0 text-wrap">
+                                                            3rd Tranche - lorem ipsum
+                                                        </p>
+                                                        <div class="d-flex flex-wrap flex-row gap-1">
+                                                            <div class="d-flex flex-column">
+                                                                <div class="form-check p-0 m-0">
+                                                                    <label
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                        >Acknowledgement</label
+                                                                    >
+                                                                    <input class="form-check-input" type="checkbox" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex flex-column">
+                                                                <div class="form-check p-0 m-0">
+                                                                    <label
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                        >Official Receipt</label
+                                                                    >
+                                                                    <input class="form-check-input" type="checkbox" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex flex-column">
+                                                                <p class="text-dark font-weight-bold pt-2 m-0 text-xs">
+                                                                    Interim Report
+                                                                </p>
+                                                                <div class="form-check p-0 m-0">
+                                                                    <label
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                        >Narrative</label
+                                                                    >
+                                                                    <input class="form-check-input" type="checkbox" />
+                                                                </div>
+                                                                <div class="form-check p-0 m-0">
+                                                                    <label
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                        >Financial</label
+                                                                    >
+                                                                    <input class="form-check-input" type="checkbox" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="trench-container d-flex flex-wrap flex-column">
+                                                        <p class="text-dark text-sm m-0 p-0">100000</p>
+                                                        <div class="form-check p-0 m-0">
+                                                            <label
+                                                                class="form-check-label font-weight-bold text-dark mx-1 text-xs"
+                                                                >Next Tranche Request</label
+                                                            >
+                                                            <input class="form-check-input" type="checkbox" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <p class="text-dark text-sm m-0 p-0">Released</p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p class="text-dark text-sm m-0 p-0">July 5, 2022</p>
+                                                </div>
+                                                <div class="col-1">
+                                                    <button class="btn btn-default text-info p-0">Review</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </accordion-group>
+                            </tr>
+                        </accordion>
+                    </tbody>
+                </table>
+                <div *ngIf="fundRelease.length <= 0" class="text-center">
+                    <p class="text-danger w-100 font-weight-bold">There are no queued applications at this stage</p>
+                </div>
+                <div class="my-3">
+                    <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
+                </div>
             </div>
         </div>
-    </div>
+    
+        <div class="card my-2">
+            <div class="card-header py-2" style="background-color: #0b2cb5">
+                <h5 class="text-white text-center">Completed Grants</h5>
+            </div>
+            <div class="card-body overflow-auto p-0 m-0">
+                <table class="table">
+                    <thead>
+                        <tr style="background-color: #474ca5">
+                            <th class="p-2 text-white" scope="col">Partner ID</th>
+                            <th class="p-2 text-white" scope="col" sortable="partner" (sort)="onSort($event)">Partner</th>
+                            <th class="p-2 text-white" scope="col" sortable="title" (sort)="onSort($event)">Title</th>
+                            <th class="p-2 text-white" scope="col" sortable="applicationDate" (sort)="onSort($event)">
+                                Approved Date
+                            </th>
+                            <th class="p-2 text-white" scope="col" sortable="proposedBudget" (sort)="onSort($event)">
+                                Approved Budget
+                            </th>
+                            <th class="p-2" scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of closingGrant | paginate : { itemsPerPage: 10, currentPage: page }">
+                            <th class="text-dark font-weight-bold" scope="row">
+                                {{ item.partnerId }}
+                            </th>
+                            <td class="text-dark font-weight-light">
+                                {{ item.partner }}
+                            </td>
+                            <td class="text-dark font-weight-light">
+                                {{ item.title }}
+                            </td>
+                            <td class="text-dark font-weight-light">
+                                {{ item.applicationDate | date : 'shortDate' }}
+                            </td>
+                            <td class="text-dark font-weight-light">
+                                {{ item.proposedBudget | number }} USD | {{ item.proposedBudgetOther | number }} {{ item.proposedBudgetOtherCurrency }}
+                            </td>
+                            <td class="text-dark font-weight-light">
+                                <button class="btn btn-default text-info" [routerLink]="['/grant', item.pk]">Review</button>
+                                <button class="btn btn-default text-danger">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="closingGrant.length <= 0" class="text-center">
+                    <p class="text-danger w-100 font-weight-bold">There are no queued applications at this stage</p>
+                </div>
+                <div class="my-3">
+                    <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
 </div>

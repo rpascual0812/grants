@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { LinkGeneratorComponent } from 'src/app/components/link-generator/link-generator.component';
 import { ApplicationService } from 'src/app/services/application.service';
 
 import * as _ from '../../../utilities/globals';
 import { NewLinkModalComponent } from './new-link-modal/new-link-modal.component';
+import { extractErrorMessage } from 'src/app/utilities/application.utils';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-links',
@@ -13,6 +14,7 @@ import { NewLinkModalComponent } from './new-link-modal/new-link-modal.component
     styleUrls: ['./links.component.scss']
 })
 export class LinksComponent {
+    loading = false
     bsModalRef?: BsModalRef;
     @ViewChild(LinkGeneratorComponent) linkGeneratorComponent: LinkGeneratorComponent;
 
@@ -26,6 +28,7 @@ export class LinksComponent {
     constructor(
         private applicationService: ApplicationService,
         private modalService: BsModalService,
+        private toastr: ToastrService
     ) {
 
     }
@@ -35,14 +38,21 @@ export class LinksComponent {
     }
 
     fetch() {
+        this.loading = true
         this.applicationService.fetch(this.filters).subscribe({
             next: (res: any) => {
                 const data = res?.data ?? [];
                 this.applications = data;
                 this.pagination.count = res.total;
+                this.loading = false
             },
             error: (err) => {
-                console.log(err);
+                const {errorMessage, statusCode} = extractErrorMessage(err)
+                this.toastr.error(
+                    `An error occurred while fetching Applications. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+                this.loading = false
             },
         });
     }
