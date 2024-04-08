@@ -1,15 +1,20 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
-import {
-    NgbdSortableHeaderDirective,
-    SortEvent,
-} from 'src/app/directives/ngbd-sortable-header.directive';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { NgbdSortableHeaderDirective, SortEvent } from 'src/app/directives/ngbd-sortable-header.directive';
+import { Application } from 'src/app/interfaces/_application.interface';
+import { ApplicationService } from 'src/app/services/application.service';
+import { extractErrorMessage } from 'src/app/utilities/application.utils';
+import { getOtherCurrencyKey } from 'src/app/utilities/constants';
 
 interface Grant {
+    pk: number;
     partnerId: string;
     partner: string;
     title: string;
     applicationDate: Date;
     proposedBudget: number;
+    proposedBudgetOther: number;
+    proposedBudgetOtherCurrency: string;
     donorProject: string;
 }
 
@@ -25,7 +30,8 @@ const compare = (v1: string | number | Date, v2: string | number | Date) => {
     templateUrl: './contract-finalization.component.html',
     styleUrls: ['./contract-finalization.component.scss'],
 })
-export class ContractFinalizationComponent {
+export class ContractFinalizationComponent implements OnInit {
+    loading = false;
     contractPreparation: Grant[] = [];
     finalApproval: Grant[] = [];
     partnerSigning: Grant[] = [];
@@ -33,17 +39,47 @@ export class ContractFinalizationComponent {
     page: number = 1;
     @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective<Grant>>;
 
-    constructor() {
-        for (let i = 1; i <= 12; i++) {
-            this.contractPreparation.push({
-                partnerId: `${i}${new Date().getTime()}`,
-                title: `Project Proposal Title - ${i}`,
-                partner: `Organization Name - ${i}`,
-                applicationDate: new Date(`2024-${i}-1`),
-                proposedBudget: 100,
-                donorProject: `Random Donor Project - ${i}`
-            });
-        }
+    constructor(private applicationService: ApplicationService, private toastr: ToastrService) {}
+
+    ngOnInit() {
+        this.fetch();
+    }
+
+    fetch() {
+        this.loading = true;
+        this.applicationService.fetch().subscribe({
+            next: (res: any) => {
+                const status = res?.status;
+                const data = (res?.data ?? []) as Application[];
+                if (status) {
+                    const tempData: Grant[] = data?.map((item) => ({
+                        pk: item?.pk as number,
+                        partnerId: item?.partner?.partner_id ?? '',
+                        partner: item?.partner?.name ?? '',
+                        title: item?.project?.title ?? '',
+                        applicationDate: item?.date_created as Date,
+                        proposedBudget: parseInt(item?.project?.project_proposal?.budget_request_usd ?? ''),
+                        proposedBudgetOther: parseInt(item?.project?.project_proposal?.budget_request_other ?? ''),
+                        proposedBudgetOtherCurrency: getOtherCurrencyKey(
+                            item?.project?.project_proposal?.budget_request_other_currency ?? ''
+                        ) ?? '',
+                        donorProject: '',
+                    }));
+                    this.contractPreparation = tempData;
+                    this.finalApproval = tempData;
+                    this.partnerSigning = tempData;
+                }
+                this.loading = false;
+            },
+            error: (err) => {
+                const { statusCode, errorMessage } = extractErrorMessage(err)
+                this.toastr.error(
+                    `An error occurred while fetching Application. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+                this.loading = false;
+            },
+        });
     }
 
     onSort({ column, direction }: SortEvent<Grant>) {

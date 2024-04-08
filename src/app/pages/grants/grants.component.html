@@ -8,8 +8,8 @@
                     style="min-height: 40px">
                     <div *ngFor="let filter of filterSelections" class="form-check">
                         <input #checkbox id="{{ filter.label }}" class="form-check-input" type="checkbox"
-                            (click)="handleCheckedFilterSelect(checkbox.checked, filter.id)"
-                            [checked]="selectedFilterIds.has(filter.id)" />
+                            (click)="handleCheckedFilterSelect(filter.id)"
+                            [checked]="selectedFilterIds === filter.id" />
                         <label for="{{ filter.label }}" class="form-check-label font-weight-bold mb-0">{{
                             filter.label
                             }}</label>
@@ -22,7 +22,7 @@
             <button class="btn btn-dark-blue">Apply</button>
         </div>
 
-        <ng-container *ngIf="selectedFilterIds.has('fundRelease')">
+        <ng-container *ngIf="selectedFilterIds === 'fundRelease'">
             <div class="row">
                 <div class="col-10">
                     <input class="form-control border border-1 rounded p-2 my-3" placeholder="Partner Name"

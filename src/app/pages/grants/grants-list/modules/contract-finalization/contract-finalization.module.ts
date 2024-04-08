@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ContractFinalizationComponent } from './contract-finalization.component';
 import { NgbdSortableHeaderDirective } from 'src/app/directives/ngbd-sortable-header.directive';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -16,7 +17,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
   imports: [
     CommonModule,
     NgbdSortableHeaderDirective,
-    NgxPaginationModule
+    NgxPaginationModule,
+    RouterModule,
   ]
 })
 export class ContractFinalizationModule { }

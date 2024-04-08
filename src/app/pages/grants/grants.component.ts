@@ -15,7 +15,7 @@ export class GrantsComponent implements OnInit {
         { label: 'Contract Finalization', id: 'contractFinalization', checked: false },
         { label: 'Fund Release', id: 'fundRelease', checked: false },
     ];
-    selectedFilterIds: Set<string> = new Set();
+    selectedFilterIds = 'contractFinalization'
     activeDonors: Record<string, string>[] = [];
     selectedActiveDonorId = '';
 
@@ -45,8 +45,8 @@ export class GrantsComponent implements OnInit {
                 font: {
                     weight: 'bold',
                     size: 30,
-                }
-            }
+                },
+            },
         },
     };
     public pieChartData: ChartData<'pie', number[], string | string[]> = {
@@ -57,9 +57,7 @@ export class GrantsComponent implements OnInit {
             },
         ],
     };
-    public pieChartPlugins = [
-        ChartDataLabels,
-    ];
+    public pieChartPlugins = [ChartDataLabels];
     public pieChartType: ChartType = 'pie';
 
     // Bar Chart
@@ -94,8 +92,8 @@ export class GrantsComponent implements OnInit {
                 font: {
                     weight: 'bold',
                     size: 18,
-                }
-            }
+                },
+            },
         },
         scales: {
             x: {
@@ -103,7 +101,7 @@ export class GrantsComponent implements OnInit {
                 ticks: {
                     font: {
                         size: 18,
-                    }
+                    },
                 },
             },
             y: {
@@ -139,7 +137,6 @@ export class GrantsComponent implements OnInit {
         },
     ];
 
-
     @ViewChild(BaseChartDirective) barChart: BaseChartDirective<'bar'> | undefined;
     public barChartChartOptions: ChartConfiguration['options'] = {
         // We use these empty structures as placeholders for dynamic theming.
@@ -158,8 +155,8 @@ export class GrantsComponent implements OnInit {
                 font: {
                     weight: 'bold',
                     size: 18,
-                }
-            }
+                },
+            },
         },
         scales: {
             x: {
@@ -169,12 +166,11 @@ export class GrantsComponent implements OnInit {
                         size: 14,
                     },
                     callback: (tickValue, index, ticks) => {
-                        console.log(this.barChartData.labels)
-                        const label = this.barChartData.labels?.at(index) ?? ''
+                        const label = this.barChartData.labels?.at(index) ?? '';
                         if (/\s/.test(label as string)) {
-                            return (label as string)?.split(" ");
+                            return (label as string)?.split(' ');
                         }
-                        return label as string
+                        return label as string;
                     },
                 },
             },
@@ -183,13 +179,19 @@ export class GrantsComponent implements OnInit {
                 ticks: {
                     font: {
                         size: 18,
-                    }
+                    },
                 },
             },
         },
     };
     public barChartData: ChartData<'bar'> = {
-        labels: ['Climate related', 'Indigenous', 'Support and Recovery from Pandemic', 'Unrestricted', 'Disability Rights'],
+        labels: [
+            'Climate related',
+            'Indigenous',
+            'Support and Recovery from Pandemic',
+            'Unrestricted',
+            'Disability Rights',
+        ],
         datasets: [
             {
                 backgroundColor: ['rgba(255, 99, 132)', 'rgba(255, 159, 64)', 'rgba(255, 205, 86)'],
@@ -200,18 +202,14 @@ export class GrantsComponent implements OnInit {
         ],
     };
 
-    public barChartPlugins = [
-        ChartDataLabels,
-    ];
+    public barChartPlugins = [ChartDataLabels];
 
     constructor() {
         // mock active donors
         this.init();
     }
 
-    ngOnInit() {
-        this.selectedFilterIds.add('grantApplication');
-    }
+    ngOnInit() {}
 
     init() {
         for (let i = 1; i <= 6; i++) {
@@ -221,19 +219,10 @@ export class GrantsComponent implements OnInit {
                 label: `Global Greengrants Fund/GGF ${i}`,
             });
         }
-        this.selectedFilterIds.add('grantApplication');
     }
 
-    handleCheckedFilterSelect(checked: boolean, id: string) {
-        this.filterSelections = this.filterSelections.map((selection) => ({
-            ...selection,
-            checked: id === selection.id && checked ? true : false,
-        }));
-        if (checked) {
-            this.selectedFilterIds.add(id);
-        } else {
-            this.selectedFilterIds.delete(id);
-        }
+    handleCheckedFilterSelect(id: string) {
+        this.selectedFilterIds = id
     }
 
     handleExpandAccordion($event: boolean, section: string) {
