@@ -14,10 +14,7 @@ const MAX_STEP = 5;
 export class PartnerAddComponent implements OnInit {
     applicationSignalService = inject(ApplicationSignalService);
     step = INITIAL_STEP;
-    constructor(public bsModalRef: BsModalRef) {
-        this.applicationSignalService.INITIAL_STEP = INITIAL_STEP;
-        this.applicationSignalService.MAX_STEP = MAX_STEP;
-    }
+    constructor(public bsModalRef: BsModalRef) {}
 
     appSignalEffect = effect(
         () => {
@@ -33,6 +30,10 @@ export class PartnerAddComponent implements OnInit {
     );
 
     ngOnInit() {
+        this.step = INITIAL_STEP;
+        this.applicationSignalService.INITIAL_STEP = this.step;
+        this.applicationSignalService.MAX_STEP = MAX_STEP;
+        this.applicationSignalService.appForm.set(null);
         this.applicationSignalService.loadingInitialAppForm.set(false);
     }
 
@@ -47,7 +48,9 @@ export class PartnerAddComponent implements OnInit {
                 },
             } as OnHiddenData);
         }
+        // Resets form
+        this.applicationSignalService.submitSave.set(false);
+        this.applicationSignalService.currentNavStep.set(INITIAL_STEP);
         this.bsModalRef.hide();
-        this.applicationSignalService.appForm.set(null);
     }
 }

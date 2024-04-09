@@ -95,7 +95,7 @@
                     >
                         <div class="pull-left float-left">
                             <div class="flex d-flex flex-row gap-1 align-items-center">
-                                <p class="text-xs text-dark font-weight-bold m-0 p-0">{{ item?.name }}</p>
+                                <a class="text-xs text-dark font-weight-bold m-0 p-0" [routerLink]="['/partner', item?.partner_id, 'information']">{{ item?.name }}</a>
                                 <div class="d-flex" style="height: 30px">
                                     <div class="vr"></div>
                                 </div>
@@ -120,9 +120,8 @@
                             </div>
                         </div>
                     </button>
-                    <button
-                        class="btn card text-start w-100 text-capitalize"
-                        [routerLink]="['/partner', item?.partner_id, 'information']"
+                    <div
+                        class="card text-start w-100 text-capitalize p-2"
                     >
                         <div class="card-body w-100 p-0">
                             <div class="row">
@@ -169,7 +168,7 @@
                                 <p class="text-center">No applications found.</p>
                             </div>
                         </div>
-                    </button>
+                    </div>
                 </accordion-group>
             </accordion>
         </div>
