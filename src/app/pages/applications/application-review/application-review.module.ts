@@ -21,7 +21,7 @@ import { DueDiligenceFinalReviewModule } from './modules/due-diligence-final-rev
         GrantsTeamReviewModule,
         AdvisersReviewModule,
         BudgetReviewFinalizationModule,
-        DueDiligenceFinalReviewModule
+        DueDiligenceFinalReviewModule,
     ]
 })
 export class ApplicationReviewModule { }

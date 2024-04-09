@@ -1,56 +1,80 @@
-<div class="modal-header bg-gray-300">
-    <h4 class="modal-title pull-left text-dark">Organizational Bank Account Information</h4>
-    <button type="button" class="btn btn-default pull-right" aria-label="Close" (click)="this.bsModalRef.hide()">
-        <i class="material-icons">close</i>
-    </button>
+<div>
+    <div class="modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Organizational Bank Account Information</h4>
+                <button type="button" style="font-size: 20px !important; line-height: normal !important;"
+                    class="btn-close close btn-close-white" aria-label="Close" (click)="bsModalRef.hide()">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="row gap-0 align-items-center mt-3">
+                        <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Organizational bank
+                            account</label>
+                        <div class="col-8">
+                            <select class="form-select bg-white p-1 border border-1 rounded w-20"
+                                [(ngModel)]="isHidden">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row" *ngIf="isHidden == 'yes'">
+                        <form [formGroup]="form" class="text-start" (ngSubmit)="submit()">
+                            <div class="row gap-0 align-items-center my-3">
+                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Account Name</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="account_name" />
+                                </div>
+                            </div>
+                            <div class="row gap-0 align-items-center my-3">
+                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Account Number</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="account_number" />
+                                </div>
+                            </div>
+                            <div class="row gap-0 align-items-center my-3">
+                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Bank name</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="bank_name" />
+                                </div>
+                            </div>
+                            <div class="row gap-0 align-items-center my-3">
+                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Bank branch</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="bank_branch" />
+                                </div>
+                            </div>
+                            <div class="row gap-0 align-items-center my-3">
+                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Bank complete
+                                    address</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="bank_address" />
+                                </div>
+                            </div>
+                            <div class="row gap-0 align-items-center my-3">
+                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">SWIFT code</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="swift_code" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" (click)="this.bsModalRef.hide()">Cancel</button>
+                <button type="button" class="btn btn-dark-blue" (click)="submit()">Save</button>
+            </div>
+        </div>
+    </div>
 </div>
-
-<form>
-    <div class="modal-body bg-gray-300">
-        <div class="row gap-0 align-items-center my-3">
-            <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Organizational bank account</label>
-            <div class="col-8">
-                <select class="form-select bg-white p-1 border border-1 rounded w-20">
-                    <option selected>Yes</option>
-                    <option [value]="false">No</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="row gap-0 align-items-center my-3">
-            <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Account Name</label>
-            <div class="col-8">
-                <input type="text" class="form-control border rounded-1 p-1 bg-white" />
-            </div>
-        </div>
-        <div class="row gap-0 align-items-center my-3">
-            <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Account Number</label>
-            <div class="col-8">
-                <input type="text" class="form-control border rounded-1 p-1 bg-white" />
-            </div>
-        </div>
-        <div class="row gap-0 align-items-center my-3">
-            <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Bank name and branch</label>
-            <div class="col-8">
-                <input type="text" class="form-control border rounded-1 p-1 bg-white" />
-            </div>
-        </div>
-        <div class="row gap-0 align-items-center my-3">
-            <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Bank complete address</label>
-            <div class="col-8">
-                <input type="text" class="form-control border rounded-1 p-1 bg-white" />
-            </div>
-        </div>
-        <div class="row gap-0 align-items-center my-3">
-            <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">SWIFT code</label>
-            <div class="col-8">
-                <input type="text" class="form-control border rounded-1 p-1 bg-white" />
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-footer bg-gray-300">
-        <button type="button" class="btn btn-white" (click)="this.bsModalRef.hide()">Cancel</button>
-        <button type="button" class="btn btn-dark-blue" (click)="this.bsModalRef.hide()">Save</button>
-    </div>
-</form>

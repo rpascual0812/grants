@@ -117,6 +117,7 @@ export interface PartnerFiscalSponsor {
     bank_address?: string;
     swift_code?: string;
     date_created?: Date;
+    documents: Document[];
 }
 
 export interface PartnerNonProfitEquivalencyDetermination {
