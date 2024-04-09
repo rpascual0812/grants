@@ -6,6 +6,7 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { PartnerForm } from 'src/app/services/partner.signal.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { OnHiddenData } from '../../../partner-view/partner-view.component';
+import { PartnerOrganizationOtherInformation } from 'src/app/interfaces/_application.interface';
 
 @Component({
     selector: 'app-org-bank-account',
@@ -23,7 +24,7 @@ export class OrgBankAccountComponent implements OnInit {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.setForm();
@@ -67,16 +68,49 @@ export class OrgBankAccountComponent implements OnInit {
                 recommendation: [partnerOrgOtherInfo?.recommendation ?? ''],
             }),
         });
+        this.initialPartnerOrgOtherInfo(partnerOrgOtherInfo);
     }
 
     get f() {
         return this.form.controls;
     }
 
+    initialPartnerOrgOtherInfo(partnerOrgOtherInfo?: PartnerOrganizationOtherInformation) {
+        const fields = ['has_financial_policy', 'has_financial_system'];
+        fields.forEach((field) => {
+            const value = partnerOrgOtherInfo?.[field as keyof typeof partnerOrgOtherInfo] ?? false ? 'true' : 'false';
+            this.configureDescription(field, value);
+        });
+    }
+
     onChangeSelectedBoolOpt(value: string, key: string) {
         this.form.controls?.['partner_organization_other_information']
             ?.get(key)
             ?.setValue(value === 'true' ? true : false);
+        this.configureDescription(key, value);
+    }
+
+    configureDescription(key: string, value: string) {
+        if (['has_financial_policy', 'has_financial_system'].includes(key)) {
+            if (value === 'true') {
+                this.form.controls?.['partner_organization_other_information']?.get(`${key}_no_reason`)?.setValue('');
+                this.onRemoveDescriptionValidations(`${key}_no_reason`);
+            }
+            if (value === 'false') {
+                this.onAddDescriptionValidations(`${key}_no_reason`);
+            }
+        }
+    }
+
+    onAddDescriptionValidations(key: string) {
+        this.form?.controls?.['partner_organization_other_information']?.get(key)?.addValidators(Validators.required);
+        this.form?.controls?.['partner_organization_other_information']?.get(key)?.updateValueAndValidity();
+    }
+
+    onRemoveDescriptionValidations(key: string) {
+        this.form?.controls?.['partner_organization_other_information']?.get(key)?.setErrors(null);
+        this.form?.controls?.['partner_organization_other_information']?.get(key)?.clearValidators();
+        this.form?.controls?.['partner_organization_other_information']?.get(key)?.updateValueAndValidity();
     }
 
     saveFiscalSponsorForm() {

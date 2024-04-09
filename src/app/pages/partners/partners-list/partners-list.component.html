@@ -42,18 +42,18 @@
                 <div class="d-flex border rounded-2 p-1">
                     <input
                         type="text"
-                        style="width: 260px"
+                        style="width: 280px"
                         class="form-control text-dark p-1"
                         placeholder="Type here..."
                         [(ngModel)]="filter['keyword']"
                         #ctrl="ngModel"
                     />
                     <button
-                        *ngIf="(filter?.keyword?.length ?? 0) > 0"
+                        [disabled]="(filter?.keyword?.length ?? 0) === 0"
                         class="btn btn-icon-only"
                         (click)="handleClearKeyword()"
                     >
-                        <i class="material-icons mb-1">cancel</i>
+                        <i class="material-icons mb-1" [hidden]="(filter?.keyword?.length ?? 0) === 0">cancel</i>
                     </button>
                 </div>
 
@@ -95,7 +95,11 @@
                     >
                         <div class="pull-left float-left">
                             <div class="flex d-flex flex-row gap-1 align-items-center">
-                                <a class="text-xs text-dark font-weight-bold m-0 p-0" [routerLink]="['/partner', item?.partner_id, 'information']">{{ item?.name }}</a>
+                                <a
+                                    class="text-xs text-dark font-weight-bold m-0 p-0"
+                                    [routerLink]="['/partner', item?.partner_id, 'information']"
+                                    >{{ item?.name }}</a
+                                >
                                 <div class="d-flex" style="height: 30px">
                                     <div class="vr"></div>
                                 </div>
@@ -120,9 +124,7 @@
                             </div>
                         </div>
                     </button>
-                    <div
-                        class="card text-start w-100 text-capitalize p-2"
-                    >
+                    <div class="card text-start w-100 text-capitalize p-2">
                         <div class="card-body w-100 p-0">
                             <div class="row">
                                 <div class="col-4">

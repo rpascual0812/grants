@@ -91,7 +91,6 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <p class="text-sm font-weight-bold text-secondary">
-
                         {{ partner?.partner_fiscal_sponsor?.person_in_charge }}
                     </p>
                 </div>
@@ -202,7 +201,14 @@
                     >
                 </div>
                 <div class="col-12 col-md-2">
-                    {{ partner?.organization?.partner_organization_other_information?.has_project ? 'Yes' : 'No' }}
+                    <ng-container
+                        *ngIf="
+                            typeOf(partner?.organization?.partner_organization_other_information?.has_project) ===
+                            'boolean'
+                        "
+                    >
+                        {{ partner?.organization?.partner_organization_other_information?.has_project ? 'Yes' : 'No' }}
+                    </ng-container>
                 </div>
             </div>
         </div>
@@ -213,11 +219,19 @@
                     <label class="font-weight-bold text-dark">Proponent has financial policy</label>
                 </div>
                 <div class="col-12 col-md-2">
-                    {{
-                        partner?.organization?.partner_organization_other_information?.has_financial_policy
-                            ? 'Yes'
-                            : 'No'
-                    }}
+                    <ng-container
+                        *ngIf="
+                            typeOf(
+                                partner?.organization?.partner_organization_other_information?.has_financial_policy
+                            ) === 'boolean'
+                        "
+                    >
+                        {{
+                            partner?.organization?.partner_organization_other_information?.has_financial_policy
+                                ? 'Yes'
+                                : 'No'
+                        }}
+                    </ng-container>
                 </div>
             </div>
 
@@ -233,11 +247,19 @@
                     <label class="font-weight-bold text-dark">Proponent has financial system</label>
                 </div>
                 <div class="col-12 col-md-2">
-                    {{
-                        partner?.organization?.partner_organization_other_information?.has_financial_system
-                            ? 'Yes'
-                            : 'No'
-                    }}
+                    <ng-container
+                        *ngIf="
+                            typeOf(
+                                partner?.organization?.partner_organization_other_information?.has_financial_system
+                            ) === 'boolean'
+                        "
+                    >
+                        {{
+                            partner?.organization?.partner_organization_other_information?.has_financial_system
+                                ? 'Yes'
+                                : 'No'
+                        }}
+                    </ng-container>
                 </div>
             </div>
 
@@ -270,11 +292,19 @@
                     </label>
                 </div>
                 <div class="col-12 col-md-2">
-                    {{
-                        partner?.organization?.partner_organization_other_information?.audit_financial_available
-                            ? 'Yes'
-                            : 'No'
-                    }}
+                    <ng-container
+                        *ngIf="
+                            typeOf(
+                                partner?.organization?.partner_organization_other_information?.audit_financial_available
+                            ) === 'boolean'
+                        "
+                    >
+                        {{
+                            partner?.organization?.partner_organization_other_information?.audit_financial_available
+                                ? 'Yes'
+                                : 'No'
+                        }}
+                    </ng-container>
                 </div>
 
                 <div class="d-flex flex-wrap gap-2">
@@ -297,11 +327,21 @@
                 </div>
                 <div class="col-12 col-md-2">
                     <p class="text-secondary">
-                        {{
-                            partner?.organization?.partner_organization_other_information?.has_reviewed_financial_system
-                                ? 'Yes'
-                                : 'No'
-                        }}
+                        <ng-container
+                            *ngIf="
+                                typeOf(
+                                    partner?.organization?.partner_organization_other_information
+                                        ?.has_reviewed_financial_system
+                                ) === 'boolean'
+                            "
+                        >
+                            {{
+                                partner?.organization?.partner_organization_other_information
+                                    ?.has_reviewed_financial_system
+                                    ? 'Yes'
+                                    : 'No'
+                            }}
+                        </ng-container>
                     </p>
                 </div>
             </div>
