@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { BudgetReviewFinalizationComponent } from './budget-review-finalization.component';
 import { AppReviewOrgBankAccntInfoModalComponent } from '../../../modals/app-review-org-bank-accnt-info-modal/app-review-org-bank-accnt-info-modal.component';
 import { SelectModule } from 'src/app/components/select/select.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -14,6 +15,11 @@ import { SelectModule } from 'src/app/components/select/select.module';
         AppReviewOtherInfoModalComponent,
     ],
     exports: [BudgetReviewFinalizationComponent],
-    imports: [CommonModule, SelectModule],
+    imports: [
+        CommonModule,
+        SelectModule,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
 })
-export class BudgetReviewFinalizationModule {}
+export class BudgetReviewFinalizationModule { }

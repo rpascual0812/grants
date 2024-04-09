@@ -71,18 +71,37 @@ export class BudgetReviewFinalizationComponent implements OnInit {
     }
 
     handleShowModal(key: 'orgBankAccntInfo' | 'fiscalSponsorBankDetail' | 'otherInfo') {
-        const initialState: any = this.currentApplication;
+        const initialState: ModalOptions = {
+            class: 'modal-lg',
+            initialState: {
+                currentApplication: this.currentApplication
+            }
+        };
+
         switch (key) {
             case 'orgBankAccntInfo':
-                this.bsModalRef = this.modalService.show(AppReviewOrgBankAccntInfoModalComponent, { initialState });
+                this.bsModalRef = this.modalService.show(AppReviewOrgBankAccntInfoModalComponent, initialState);
+                this.bsModalRef.content.callback.subscribe((res: any) => {
+                    // this.currentApplication?.partner?.organization?.partner_organization_bank = res;
+
+                    this.cdr.detectChanges();
+                });
                 break;
             case 'fiscalSponsorBankDetail':
-                this.bsModalRef = this.modalService.show(AppReviewFiscalSponsorBankDetailModalComponent, {
-                    initialState,
+                this.bsModalRef = this.modalService.show(AppReviewFiscalSponsorBankDetailModalComponent, initialState);
+                this.bsModalRef.content.callback.subscribe((res: any) => {
+                    console.log(res);
+
+                    this.cdr.detectChanges();
                 });
                 break;
             case 'otherInfo':
-                this.bsModalRef = this.modalService.show(AppReviewOtherInfoModalComponent, { initialState });
+                this.bsModalRef = this.modalService.show(AppReviewOtherInfoModalComponent, initialState);
+                this.bsModalRef.content.callback.subscribe((res: any) => {
+                    console.log(res);
+
+                    this.cdr.detectChanges();
+                });
                 break;
         }
     }
