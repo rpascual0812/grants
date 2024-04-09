@@ -175,14 +175,14 @@
                             [ngClass]="{
                                 'is-invalid':
                                     submitted &&
-                                    f['partner_organization_other_information']?.get('has_financial_policy_no_reason')
+                                    f['partner_organization_other_information'].get('has_financial_policy_no_reason')
                                         ?.errors
                             }"
                         ></textarea>
                         <div
                             *ngIf="
                                 submitted &&
-                                f['partner_organization_other_information']?.get('has_financial_policy_no_reason')
+                                f['partner_organization_other_information'].get('has_financial_policy_no_reason')
                                     ?.errors
                             "
                             class="invalid-feedback"
@@ -190,7 +190,7 @@
                             <div
                                 *ngIf="
                                     f['partner_organization_other_information']
-                                        ?.get('has_financial_policy_no_reason')
+                                        .get('has_financial_policy_no_reason')
                                         ?.getError('required')
                                 "
                             >
@@ -231,14 +231,14 @@
                             [ngClass]="{
                                 'is-invalid':
                                     submitted &&
-                                    f['partner_organization_other_information']?.get('has_financial_system_no_reason')
+                                    f['partner_organization_other_information'].get('has_financial_system_no_reason')
                                         ?.errors
                             }"
                         ></textarea>
                         <div
                             *ngIf="
                                 submitted &&
-                                f['partner_organization_other_information']?.get('has_financial_system_no_reason')
+                                f['partner_organization_other_information'].get('has_financial_system_no_reason')
                                     ?.errors
                             "
                             class="invalid-feedback"
@@ -246,7 +246,7 @@
                             <div
                                 *ngIf="
                                     f['partner_organization_other_information']
-                                        ?.get('has_financial_system_no_reason')
+                                        .get('has_financial_system_no_reason')
                                         ?.getError('required')
                                 "
                             >
