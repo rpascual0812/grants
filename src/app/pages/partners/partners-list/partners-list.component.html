@@ -49,11 +49,11 @@
                         #ctrl="ngModel"
                     />
                     <button
-                        [disabled]="(filter?.keyword?.length ?? 0) === 0"
+                        [disabled]="(filter.keyword?.length ?? 0) === 0"
                         class="btn btn-icon-only"
                         (click)="handleClearKeyword()"
                     >
-                        <i class="material-icons mb-1" [hidden]="(filter?.keyword?.length ?? 0) === 0">cancel</i>
+                        <i class="material-icons mb-1" [hidden]="(filter.keyword?.length ?? 0) === 0">cancel</i>
                     </button>
                 </div>
 
