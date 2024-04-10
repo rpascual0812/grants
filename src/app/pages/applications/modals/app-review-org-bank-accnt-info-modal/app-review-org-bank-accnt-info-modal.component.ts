@@ -27,8 +27,8 @@ export class AppReviewOrgBankAccntInfoModalComponent {
         private modalService: BsModalService,
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
-        private toastr: ToastrService,
-    ) { }
+        private toastr: ToastrService
+    ) {}
 
     ngOnInit(): void {
         this.setForm();
@@ -37,18 +37,20 @@ export class AppReviewOrgBankAccntInfoModalComponent {
     setForm() {
         this.bank_account = this.currentApplication?.partner?.organization?.partner_organization_bank;
         this.form = this.formBuilder.group({
-            pk: [this.bank_account.pk ?? ''],
+            pk: [this.bank_account?.pk ?? ''],
             partner_organization_pk: [this.currentApplication?.partner?.organization?.pk ?? ''],
-            account_name: [this.bank_account.account_name ?? '', Validators.required],
-            account_number: [this.bank_account.account_number ?? '', Validators.required],
-            bank_name: [this.bank_account.bank_name ?? '', Validators.required],
-            bank_branch: [this.bank_account.bank_branch ?? '', Validators.required],
-            bank_address: [this.bank_account.bank_address ?? '', Validators.required],
-            swift_code: [this.bank_account.swift_code ?? '', Validators.required],
+            account_name: [this.bank_account?.account_name ?? '', Validators.required],
+            account_number: [this.bank_account?.account_number ?? '', Validators.required],
+            bank_name: [this.bank_account?.bank_name ?? '', Validators.required],
+            bank_branch: [this.bank_account?.bank_branch ?? '', Validators.required],
+            bank_address: [this.bank_account?.bank_address ?? '', Validators.required],
+            swift_code: [this.bank_account?.swift_code ?? '', Validators.required],
         });
     }
 
-    get f() { return this.form.controls; }
+    get f() {
+        return this.form.controls;
+    }
 
     submit() {
         this.loading = true;
@@ -60,23 +62,32 @@ export class AppReviewOrgBankAccntInfoModalComponent {
 
         this.form.get('pk')?.patchValue(this.bank_account.pk);
 
-        this.applicationService
-            .savePartnerOrgBank(this.form.value)
-            .subscribe({
-                next: (data: any) => {
-                    this.callback.emit({ ...this.bank_account });
-                    this.toastr.success('The Organizational Bank Account Information has been successfully ' + (this.bank_account.pk ? 'updated' : 'added'), 'SUCCESS!');
-                },
-                error: (error: any) => {
-                    console.log(error);
-                    this.toastr.error('An error occurred while updating the Organizational Bank Account Information. Please try again', 'ERROR!');
-                    setTimeout(() => { this.loading = false; }, 500);
-                },
-                complete: () => {
-                    console.log('Complete');
-                    setTimeout(() => { this.loading = false; }, 500);
-                    this.bsModalRef.hide();
-                }
-            });
+        this.applicationService.savePartnerOrgBank(this.form.value).subscribe({
+            next: (data: any) => {
+                this.callback.emit({ ...this.bank_account });
+                this.toastr.success(
+                    'The Organizational Bank Account Information has been successfully ' +
+                        (this.bank_account.pk ? 'updated' : 'added'),
+                    'SUCCESS!'
+                );
+            },
+            error: (error: any) => {
+                console.log(error);
+                this.toastr.error(
+                    'An error occurred while updating the Organizational Bank Account Information. Please try again',
+                    'ERROR!'
+                );
+                setTimeout(() => {
+                    this.loading = false;
+                }, 500);
+            },
+            complete: () => {
+                console.log('Complete');
+                setTimeout(() => {
+                    this.loading = false;
+                }, 500);
+                this.bsModalRef.hide();
+            },
+        });
     }
 }
