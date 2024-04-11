@@ -1,0 +1,261 @@
+<div class="container">
+    <div class="row my-3">
+        <div class="col-12 col-md-4">
+            <h5 class="text-dark">
+                Next Report Due
+                <span class="badge text-xs text-bg-danger text-white mx-2">10-Jul-2022</span>
+            </h5>
+
+            <h5 class="text-dark">
+                Last Trenche Date
+                <span class="badge text-xs text-bg-danger text-white mx-2">10-Jul-2022</span>
+            </h5>
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="card bg-danger">
+                <div class="card-title p-1 mb-0">
+                    <h5 class="text-white px-2 m-0">Overdue Report</h5>
+                </div>
+                <div class="card-body px-2 py-2">
+                    <div class="bg-white p-2 rounded">
+                        <div class="d-flex flex-wrap flex-row gap-1">
+                            <p class="text-dark font-weight-bold">Amount Released</p>
+                            <p class="text-dark">{{ 10000 | number }} USD</p>
+                        </div>
+                        <div class="d-flex flex-wrap flex-row gap-1">
+                            <div class="form-check m-0 p-1">
+                                <label class="form-check-label text-dark font-weight-bold mx-1">Acknowledgement</label>
+                                <input class="form-check-input" type="checkbox" />
+                            </div>
+                            <div class="form-check m-0 p-1">
+                                <label class="form-check-label text-dark font-weight-bold mx-1">Official Receipt</label>
+                                <input class="form-check-input" type="checkbox" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tranche-container">
+        <div class="row">
+            <div class="col-4">
+                <h5 class="text-dark">1st Tranche</h5>
+                <div class="d-flex flex-wrap flex-row align-items-center justify-content-between">
+                    <p class="text-secondary m-0 p-0">10-Jul-2022 | {{ 10000 | number }} USD</p>
+                    <button class="btn btn-icon-only">
+                        <i class="material-icons">edit</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap flex-row">
+                            <button class="btn btn-dark-blue m-1">edit deadline</button>
+                            <button class="btn btn-dark-blue m-1">edit value</button>
+                        </div>
+
+                        <div class="my-2">
+                            <p class="m-0 p-0" style="text-decoration: underline">release date</p>
+                            <p class="text-secondary m-0 p-0">10-Jul-2022</p>
+                        </div>
+
+                        <div class="my-2">
+                            <p class="m-0 p-0" style="text-decoration: underline">release amount</p>
+                            <p class="text-secondary m-0 p-0">PHP {{ 10000 | number }}</p>
+                        </div>
+
+                        <div class="my-2">
+                            <p class="m-0 p-0" style="text-decoration: underline">release amount</p>
+                            <p class="text-secondary m-0 p-0">PHP {{ 10000 | number }}</p>
+                        </div>
+
+                        <div class="my-2">
+                            <p class="m-0 p-0" style="text-decoration: underline">attached bank receipt</p>
+                            <p class="text-secondary m-0 p-0">link123.com</p>
+                        </div>
+
+                        <div class="my-2">
+                            <p class="m-0 p-0" style="text-decoration: underline">grantee's acknowledgement</p>
+                            <div class="form-check m-0 p-1">
+                                <input class="form-check-input" type="checkbox" />
+                                <label class="form-check-label font-weight-light mx-1">10-Jul-2022</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-8">
+                <div class="card bg-dark-blue">
+                    <h6 class="text-white p-3">
+                        Interim report due <span class="font-weight-light">10-Jul-2022</span>
+                    </h6>
+                </div>
+
+                <div class="card my-3">
+                    <div class="d-flex flex-wrap flex-row p-2 align-items-center">
+                        <p class="mx-2 p-0" style="text-decoration: underline">interim narrative report</p>
+                        <button class="btn btn-info btn-icon-only btn-rounded">
+                            <span class="position-relative bottom-10 end-10"><i class="material-icons">add</i></span>
+                        </button>
+                    </div>
+
+                    <div class="row p-3 align-items-center">
+                        <div class="col-12 col-md-3">
+                            <a style="text-decoration: underline" class="">http://www.example.edu</a>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <p class="p-0 m-0">10-Jul-2022</p>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <select class="form-select px-3 border border-1 ronded-1 text-secondary text-md">
+                                <option value="true">Status</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <button class="btn btn-danger btn-icon-only btn-rounded">
+                                <span class="position-relative bottom-10 end-10"
+                                    ><i class="material-icons">delete</i></span
+                                >
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row p-3 align-items-center">
+                        <div class="col-12 col-md-3">
+                            <a style="text-decoration: underline" class="">http://www.example.edu</a>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <p class="p-0 m-0">10-Jul-2022</p>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <select class="form-select px-3 border border-1 ronded-1 text-secondary text-md">
+                                <option value="true">Status</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <button class="btn btn-danger btn-icon-only btn-rounded">
+                                <span class="position-relative bottom-10 end-10"
+                                    ><i class="material-icons">delete</i></span
+                                >
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card my-3">
+                    <div class="d-flex flex-wrap flex-row p-2 align-items-center">
+                        <p class="mx-2 p-0" style="text-decoration: underline">interim financial report</p>
+                        <button class="btn btn-info btn-icon-only btn-rounded">
+                            <span class="position-relative bottom-10 end-10"><i class="material-icons">add</i></span>
+                        </button>
+                    </div>
+
+                    <div class="row p-3 align-items-center">
+                        <div class="col-12 col-md-3">
+                            <a style="text-decoration: underline" class="">http://www.example.edu</a>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <p class="p-0 m-0">10-Jul-2022</p>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <select class="form-select px-3 border border-1 ronded-1 text-secondary text-md">
+                                <option value="true">Status</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <button class="btn btn-danger btn-icon-only btn-rounded">
+                                <span class="position-relative bottom-10 end-10"
+                                    ><i class="material-icons">delete</i></span
+                                >
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row p-3 align-items-center">
+                        <div class="col-12 col-md-3">
+                            <a style="text-decoration: underline" class="">http://www.example.edu</a>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <p class="p-0 m-0">10-Jul-2022</p>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <select class="form-select px-3 border border-1 ronded-1 text-secondary text-md">
+                                <option value="true">Status</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <button class="btn btn-danger btn-icon-only btn-rounded">
+                                <span class="position-relative bottom-10 end-10"
+                                    ><i class="material-icons">delete</i></span
+                                >
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-gray-400">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <h5 class="text-dark">
+                            Liquidation
+                            <span class="font-weight-light">24-Sept-2022</span>
+                        </h5>
+                        <div class="container bg-white rounded">
+                            <p class="text-secondary p-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam autem voluptatum modi sint libero iure praesentium nostrum reprehenderit nam eius, ratione excepturi obcaecati ipsam, illo earum necessitatibus cupiditate! Impedit, fugit.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-2">
+                        <h5 class="text-dark">
+                            Amount
+                        </h5>
+                        <p class="text-dark">USD {{ 199234 | number }}</p>
+                        <p class="text-dark">IDR {{ 2988510000 | number }}</p>
+                    </div>
+
+                    <div class="col-12 col-md-2">
+                        <h5 class="text-dark">
+                            Attachment
+                        </h5>
+                        <p class="text-dark">
+                            <span>
+                                <i class="material-icons">attach_file</i>
+                            </span>
+                            document.pdf
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="card bg-gray-500 my-3">
+            <div class="card-body">
+                <div class="d-flex flex-wrap flex-row justify-content-between">
+                    <h6 class="text-white">
+                        1st Tranche | Liquidation Total
+                    </h6>
+
+                    <h6 class="text-white font-weight-light">
+                        USD {{ 199234 | number }} | IDR {{ 2988819419 | number }}
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

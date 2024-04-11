@@ -2,6 +2,13 @@
     <div class="custom-banner shadow">
         <h4 class="text-white p-4">Grants Application</h4>
     </div>
+
+    <div class="container text-center my-5" *ngIf="initialLoading">
+        <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
     <div class="container py-4">
         <app-proponent-information *ngIf="step === 1"></app-proponent-information>
         <app-organization-profile *ngIf="step === 2"></app-organization-profile>
