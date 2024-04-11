@@ -88,7 +88,7 @@
                         <span class="position-relative top-5">
                             <i class="material-icons">attach_file</i>
                         </span>
-                        {{ attachment['original_name'] }}
+                        <a href="{{SERVER + '/' + attachment.path}}" target="_blank">{{attachment.original_name}}</a>
                     </span>
                 </div>
                 <div *ngIf="partner?.documents?.length == 0" class="text-center">

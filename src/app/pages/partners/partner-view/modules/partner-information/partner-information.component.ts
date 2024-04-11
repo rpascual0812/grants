@@ -3,6 +3,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PartnerForm, PartnerSignalService } from 'src/app/services/partner.signal.service';
 import { PartnerEditModalComponent } from '../../../modals/partner-edit-modal/partner-edit-modal.component';
 import { OnHiddenData } from '../../partner-view.component';
+import * as _ from '../../../../../utilities/globals';
+
 @Component({
     selector: 'app-partner-information',
     templateUrl: './partner-information.component.html',
@@ -12,8 +14,9 @@ export class PartnerInformationComponent implements OnInit {
     bsModalRef?: BsModalRef;
     partner: PartnerForm | null = null;
     partnerSignalService = inject(PartnerSignalService);
+    SERVER: string = _.BASE_URL;
 
-    constructor(private modalService: BsModalService, private changeDetection: ChangeDetectorRef) {}
+    constructor(private modalService: BsModalService, private changeDetection: ChangeDetectorRef) { }
 
     partnerSignalEffect = effect(
         () => {
