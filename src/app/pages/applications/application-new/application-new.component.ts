@@ -15,7 +15,7 @@ export const INITIAL_STEP = 1;
 })
 export class ApplicationNewComponent implements OnInit {
     applicationSignalService = inject(ApplicationSignalService);
-    loading = false;
+    initialLoading = false
     step = INITIAL_STEP;
     uuid = '';
 
@@ -31,6 +31,7 @@ export class ApplicationNewComponent implements OnInit {
     }
 
     appSignalEffect = effect(() => {
+        this.initialLoading = this.applicationSignalService.loadingInitialAppForm()
         this.step = this.applicationSignalService.currentNavStep();
         if (this.applicationSignalService.submitSave()) {
             this.handleSave();

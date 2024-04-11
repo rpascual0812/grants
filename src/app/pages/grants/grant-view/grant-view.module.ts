@@ -6,12 +6,17 @@ import { AssessmentModule } from './modules/assessment/assessment.module';
 import { ActivitiesTimelineModule } from './modules/activities-timeline/activities-timeline.module';
 import { ProjectInformationModule } from './modules/project-information/project-information.module';
 import { ReviewModule } from './modules/review/review.module';
+import { GrantTabLayoutModule } from './modules/grant-tab-layout/grant-tab-layout.module';
+import { FundingReleaseComponent } from './modules/grant-tab-views/funding-release/funding-release.component';
+import { GoalsComponent } from './modules/grant-tab-views/goals/goals.component';
 
 
 
 @NgModule({
   declarations: [
-    GrantViewComponent
+    GrantViewComponent,
+    FundingReleaseComponent,
+    GoalsComponent
   ],
   exports: [
     GrantViewComponent
@@ -23,6 +28,7 @@ import { ReviewModule } from './modules/review/review.module';
     ProjectInformationModule,
     ActivitiesTimelineModule,
     ReviewModule,
+    GrantTabLayoutModule,
   ]
 })
 export class GrantViewModule { }
