@@ -1,11 +1,13 @@
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
-import { Application, PartnerOrganizationOtherInformation } from 'src/app/interfaces/_application.interface';
+import { Application, Document, PartnerOrganizationOtherInformation } from 'src/app/interfaces/_application.interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ToastrService } from 'ngx-toastr';
 import { DocumentService } from 'src/app/services/document.service';
+import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
+import * as _ from '../../../../utilities/globals';
 
 @Component({
     selector: 'app-app-review-other-info-modal',
@@ -23,6 +25,7 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
     submitted: boolean = false;
 
     attachments: any = [];
+    SERVER: string = _.BASE_URL;
     humanResources: Record<string, string | boolean>[] = [];
     selectedDesignation = 'Finance Officer';
 
@@ -37,10 +40,11 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
         public documentUploaderRef: BsModalRef,
         private cdr: ChangeDetectorRef,
         private documentService: DocumentService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
-        this.attachments = this.currentApplication?.partner?.partner_fiscal_sponsor?.documents;
+        this.attachments = this.currentApplication?.partner?.organization?.partner_organization_other_information?.documents;
+        console.log('attachments', this.attachments);
         this.setForm();
     }
 
@@ -120,7 +124,7 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
                     this.callback.emit({ ...this.otherInformation });
                     this.toastr.success(
                         'The Other Information has been successfully ' +
-                            (this.otherInformation?.pk ? 'updated' : 'added'),
+                        (this.otherInformation?.pk ? 'updated' : 'added'),
                         'SUCCESS!'
                     );
                 },
@@ -198,5 +202,65 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
 
     handleDeleteHumanResource(id: string | boolean) {
         this.humanResources = this.humanResources.filter((item) => item?.['id'] !== id);
+    }
+
+    uploadFiles() {
+        const initialState: ModalOptions = {
+            class: 'modal-lg'
+        };
+        this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
+
+        this.documentUploaderRef.content.document.subscribe((res: any) => {
+            this.attachments.push(res.file);
+            this.form.get('documents')?.patchValue(this.attachments);
+            this.cdr.detectChanges();
+        });
+    }
+
+    deleteAttachment(index: number) {
+        _.confirmMessage(
+            {
+                title: '<strong>Are you sure you want to delete this attachment?</strong>',
+                icon: 'question',
+                buttons: {
+                    showClose: true,
+                    showCancel: true,
+                    focusConfirm: false,
+                },
+                confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
+            },
+            () => {
+                this.documentService.destroy(this.attachments[index].pk).subscribe({
+                    next: (data: any) => {
+                        if (data.status) {
+                            const toBeRemoved = this.attachments.at(index);
+                            this.attachments.splice(index, 1);
+                            this.removeDocument(toBeRemoved);
+                            this.cdr.detectChanges();
+                        }
+                    },
+                    error: (error: any) => {
+                        console.log(error);
+                        this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
+                    },
+                    complete: () => {
+                        console.log('Complete');
+                    },
+                });
+            }
+        );
+    }
+
+    removeDocument(documentToBeRemoved: Partial<Document>) {
+        const currentApplication = this.currentApplication;
+        const documents = currentApplication?.partner?.partner_fiscal_sponsor?.documents;
+        const uniqDocuments = documents?.filter((document) => document?.pk !== documentToBeRemoved?.pk);
+        this.applicationSignalService.appForm.set({
+            ...currentApplication,
+            partner: {
+                ...currentApplication?.partner,
+            },
+        });
     }
 }

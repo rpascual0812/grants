@@ -2,12 +2,8 @@
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title pull-left text-dark">Other Information</h4>
-            <button
-                type="button"
-                class="btn btn-default pull-right"
-                aria-label="Close"
-                (click)="this.bsModalRef.hide()"
-            >
+            <button type="button" class="btn btn-default pull-right" aria-label="Close"
+                (click)="this.bsModalRef.hide()">
                 <i class="material-icons">close</i>
             </button>
         </div>
@@ -15,16 +11,12 @@
         <form [formGroup]="form" (ngSubmit)="submit()">
             <div class="modal-body">
                 <div class="row gap-0 align-items-center my-3">
-                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold"
-                        >Proponent has project/enterprise finance management experience</label
-                    >
+                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold">Proponent has project/enterprise
+                        finance management experience</label>
                     <div class="col-6">
-                        <select
-                            #boolHasProject
-                            formControlName="has_project"
+                        <select #boolHasProject formControlName="has_project"
                             class="form-select bg-white p-1 border border-1 rounded w-20"
-                            (change)="onChangeSelectedBoolOpt(boolHasProject.value, 'has_project')"
-                        >
+                            (change)="onChangeSelectedBoolOpt(boolHasProject.value, 'has_project')">
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                         </select>
@@ -32,40 +24,28 @@
                 </div>
 
                 <div class="row gap-0 align-items-center my-3">
-                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold"
-                        >Proponent has financial policy</label
-                    >
+                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold">Proponent has financial
+                        policy</label>
                     <div class="col-6">
-                        <select
-                            #boolHasFinancialPolicy
-                            formControlName="has_financial_policy"
+                        <select #boolHasFinancialPolicy formControlName="has_financial_policy"
                             class="form-select bg-white p-1 border border-1 rounded w-20"
-                            (change)="onChangeSelectedBoolOpt(boolHasFinancialPolicy.value, 'has_financial_policy')"
-                        >
+                            (change)="onChangeSelectedBoolOpt(boolHasFinancialPolicy.value, 'has_financial_policy')">
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                         </select>
                     </div>
-                    <label class="col-12 text-dark text-sm px-2 m-0 font-weight-bold my-2"
-                        >If no, what is the practice?</label
-                    >
+                    <label class="col-12 text-dark text-sm px-2 m-0 font-weight-bold my-2">If no, what is the
+                        practice?</label>
                     <div class="col-12">
-                        <textarea
-                            type="text"
-                            rows="3"
-                            class="form-control border rounded-1 p-2 bg-white"
+                        <textarea type="text" rows="3" class="form-control border rounded-1 p-2 bg-white"
                             formControlName="has_financial_policy_no_reason"
-                            [readOnly]="boolHasFinancialPolicy.value === 'true'"
-                            [ngClass]="{
+                            [readOnly]="boolHasFinancialPolicy.value === 'false'" [ngClass]="{
                                 'is-invalid': submitted && f['has_financial_policy_no_reason'].errors
-                            }"
-                        ></textarea>
+                            }"></textarea>
                         <div *ngIf="submitted && f['has_financial_policy_no_reason'].errors" class="invalid-feedback">
-                            <div
-                                *ngIf="
+                            <div *ngIf="
                                 f['has_financial_policy_no_reason'].errors?.['required']
-                            "
-                            >
+                            ">
                                 Field is required
                             </div>
                         </div>
@@ -73,34 +53,24 @@
                 </div>
 
                 <div class="row gap-0 align-items-center my-3">
-                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold"
-                        >Proponent has financial system</label
-                    >
+                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold">Proponent has financial
+                        system</label>
                     <div class="col-6">
-                        <select
-                            #boolHasFinancialSystem
-                            formControlName="has_financial_system"
+                        <select #boolHasFinancialSystem formControlName="has_financial_system"
                             class="form-select bg-white p-1 border border-1 rounded w-20"
-                            (change)="onChangeSelectedBoolOpt(boolHasFinancialSystem.value, 'has_financial_system')"
-                        >
+                            (change)="onChangeSelectedBoolOpt(boolHasFinancialSystem.value, 'has_financial_system')">
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                         </select>
                     </div>
-                    <label class="col-12 text-dark text-sm px-2 m-0 font-weight-bold my-2"
-                        >If no financial system, what is the practice?</label
-                    >
+                    <label class="col-12 text-dark text-sm px-2 m-0 font-weight-bold my-2">If no financial system, what
+                        is the practice?</label>
                     <div class="col-12">
-                        <textarea
-                            type="text"
-                            rows="3"
-                            class="form-control border rounded-1 p-2 bg-white"
+                        <textarea type="text" rows="3" class="form-control border rounded-1 p-2 bg-white"
                             formControlName="has_financial_system_no_reason"
-                            [readOnly]="boolHasFinancialSystem.value === 'true'"
-                            [ngClass]="{
+                            [readOnly]="boolHasFinancialSystem.value === 'false'" [ngClass]="{
                                 'is-invalid': submitted && f['has_financial_system_no_reason'].errors
-                            }"
-                        ></textarea>
+                            }"></textarea>
 
                         <div *ngIf="submitted && f['has_financial_system_no_reason'].errors" class="invalid-feedback">
                             <div *ngIf="f['has_financial_system_no_reason'].errors?.['required']">
@@ -115,9 +85,8 @@
                 </div>
 
                 <div class="row gap-0 align-items-center my-3">
-                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold"
-                        >Indicate the position/role(s) that are currently within the organization/community</label
-                    >
+                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold">Indicate the position/role(s) that
+                        are currently within the organization/community</label>
                 </div>
 
                 <div class="row gap-0 align-items-center">
@@ -132,99 +101,64 @@
                 <div *ngFor="let item of humanResources" class="row gap-0 align-items-center my-2">
                     <div class="col-6">
                         <div class="d-flex flex-row flex-wrap gap-1">
-                            <button
-                                class="btn btn-default m-0 text-info p-0 text-xxs"
-                                type="button"
-                                (click)="handleReview(item?.['id'] ?? '')"
-                            >
+                            <button class="btn btn-default m-0 text-info p-0 text-xxs" type="button"
+                                (click)="handleReview(item?.['id'] ?? '')">
                                 {{ !item?.['review'] ? 'Review' : 'Edit' }}
                             </button>
-                            <button
-                                class="btn btn-default m-0 text-danger p-0 text-xxs"
-                                type="button"
-                                (click)="handleDeleteHumanResource(item?.['id']?? '')"
-                            >
+                            <button class="btn btn-default m-0 text-danger p-0 text-xxs" type="button"
+                                (click)="handleDeleteHumanResource(item?.['id']?? '')">
                                 Delete
                             </button>
                             <p *ngIf="!item?.['review']" class="text-dark m-0 text-md">{{ item?.['name']}}</p>
-                            <input
-                                *ngIf="item?.['review']"
-                                type="text"
-                                class="form-control border rounded-1 p-1 bg-white w-55"
-                                [value]="item?.['name']"
-                                (change)="handleChangeEditInput($event, item?.['id'] ?? '')"
-                            />
+                            <input *ngIf="item?.['review']" type="text"
+                                class="form-control border rounded-1 p-1 bg-white w-55" [value]="item?.['name']"
+                                (change)="handleChangeEditInput($event, item?.['id'] ?? '')" />
                         </div>
                     </div>
 
-                    <div
-                        class="col-6 p-0"
-                        [ngStyle]="{
+                    <div class="col-6 p-0" [ngStyle]="{
                         'background-color': item?.['review'] ? 'white' : 'inherit'
-                    }"
-                    >
+                    }">
                         <p *ngIf="!item?.['review']" class="text-dark m-0 text-md">{{ item?.['designation']}}</p>
-                        <app-select
-                            *ngIf="item?.['review']"
-                            class="custom-select p-0"
+                        <app-select *ngIf="item?.['review']" class="custom-select p-0"
                             (onSelectEvent)="handleOnEditSelect($event, item?.['id'] ?? '')"
                             (onDeSelectEvent)="handleOnEditSelect($event, item?.['id'] ?? '')"
                             [defaultSelectedInArr]="item?.['designation']"
-                            [arr]="['Finance Officer', 'Treasurer', 'Finance Manager', 'Accountant']"
-                        ></app-select>
+                            [arr]="['Finance Officer', 'Treasurer', 'Finance Manager', 'Accountant']"></app-select>
                     </div>
                 </div>
 
                 <div class="row gap-0 align-items-center p-1">
                     <div class="col-6">
                         <div class="d-flex flex-row flex-wrap gap-1">
-                            <button
-                                class="btn btn-default m-0 text-info p-0 text-xxs"
-                                type="button"
-                                (click)="handleAddHumanResource(hrInput.value); hrInput.value = ''"
-                            >
+                            <button class="btn btn-default m-0 text-info p-0 text-xxs" type="button"
+                                (click)="handleAddHumanResource(hrInput.value); hrInput.value = ''">
                                 Add
                             </button>
-                            <button
-                                class="btn btn-default m-0 text-danger p-0 text-xxs"
-                                type="button"
-                                (click)="hrInput.value = ''"
-                            >
+                            <button class="btn btn-default m-0 text-danger p-0 text-xxs" type="button"
+                                (click)="hrInput.value = ''">
                                 Cancel
                             </button>
-                            <input
-                                #hrInput
-                                type="text"
-                                style="height: 40px"
-                                class="form-control border rounded-1 p-1 bg-white w-65"
-                            />
+                            <input #hrInput type="text" style="height: 40px"
+                                class="form-control border rounded-1 p-1 bg-white w-65" />
                         </div>
                     </div>
 
                     <div class="col-6 p-0" style="background-color: white">
-                        <app-select
-                            class="custom-select p-0"
-                            (onSelectEvent)="handleOnSelect($event)"
-                            (onDeSelectEvent)="handleOnSelect($event)"
-                            [defaultSelectedInArr]="selectedDesignation"
-                            [arr]="['Finance Officer', 'Treasurer', 'Finance Manager', 'Accountant']"
-                        ></app-select>
+                        <app-select class="custom-select p-0" (onSelectEvent)="handleOnSelect($event)"
+                            (onDeSelectEvent)="handleOnSelect($event)" [defaultSelectedInArr]="selectedDesignation"
+                            [arr]="['Finance Officer', 'Treasurer', 'Finance Manager', 'Accountant']"></app-select>
                     </div>
                 </div>
 
                 <div class="row gap-0 align-items-center my-3">
-                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold"
-                        >For medium, grants, organizational audit or financial statement available</label
-                    >
+                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold">For medium, grants, organizational
+                        audit or financial statement available</label>
                     <div class="col-6">
-                        <select
-                            #boolAuditFinancialAvailable
-                            formControlName="audit_financial_available"
-                            class="form-select bg-white p-1 border border-1 rounded w-20"
-                            (change)="
+                        <select #boolAuditFinancialAvailable formControlName="audit_financial_available"
+                            class="form-select bg-white p-1 border border-1 rounded w-20" (change)="
                                 onChangeSelectedBoolOpt(boolAuditFinancialAvailable.value, 'audit_financial_available')
-                            "
-                        >
+                            ">
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                         </select>
@@ -232,27 +166,37 @@
                 </div>
 
                 <div class="row gap-0 align-items-center my-3">
-                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold"
-                        >Upload Latest Financial Statement</label
-                    >
-                    <div class="input-group custom-file-input col-6">
-                        <input type="file" class="form-control border rounded-1 bg-white w-100"/>
-                        <label class="input-group-text custom-file-icon-container">
-                            <i class="material-icons small">upload</i>
-                        </label>
+                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold">Upload Latest Financial
+                        Statement</label>
+                    <div class="input-group custom-file-input col-8">
+                        <button class="btn btn-white" type="button" (click)="uploadFiles()">
+                            <div class="d-flex flex-column text-start">
+                                <p class="p-0 m-0 text-sm text-dark font-weight-bold">Attach Documents</p>
+                                <p class="p-0 m-0 text-sm text-info font-weight-bold">
+                                    <span class="icon icon-sm">
+                                        <i class="material-icons">add</i>
+                                    </span>
+                                    Attach File
+                                </p>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="row mt-3 mb-3">
+                        <div class="md-12" *ngFor="let attachment of attachments; let i = index">
+                            <a href="{{SERVER + '/' + attachment.path}}"
+                                target="_blank">{{attachment.original_name}}</a> <a (click)="deleteAttachment(i)"><i
+                                    class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row gap-0 align-items-center my-3">
-                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold"
-                        >Grants team has reviewed financial system and conducted due diligence on the proponent</label
-                    >
+                    <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold">Grants team has reviewed financial
+                        system and conducted due diligence on the proponent</label>
                     <div class="col-6">
-                        <select
-                            #boolHasReviewedFinancialSystem
-                            formControlName="has_reviewed_financial_system"
-                            class="form-select bg-white p-1 border border-1 rounded w-20"
-                        >
+                        <select #boolHasReviewedFinancialSystem formControlName="has_reviewed_financial_system"
+                            class="form-select bg-white p-1 border border-1 rounded w-20">
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                         </select>
@@ -262,12 +206,8 @@
                 <div class="row gap-0 align-items-center my-3">
                     <label class="col-12 text-dark text-sm px-2 m-0 font-weight-bold">Recommendation</label>
                     <div class="col-12 my-1">
-                        <textarea
-                            type="text"
-                            rows="3"
-                            class="form-control border rounded-1 p-2 bg-white"
-                            formControlName="recommendation"
-                        ></textarea>
+                        <textarea type="text" rows="3" class="form-control border rounded-1 p-2 bg-white"
+                            formControlName="recommendation"></textarea>
                     </div>
                 </div>
             </div>
