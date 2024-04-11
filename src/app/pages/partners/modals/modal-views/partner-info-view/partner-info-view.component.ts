@@ -8,6 +8,7 @@ import { PartnerForm } from 'src/app/services/partner.signal.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { OnHiddenData } from '../../../partner-view/partner-view.component';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
+import * as _ from '../../../../../utilities/globals';
 
 @Component({
     selector: 'app-partner-info-view',
@@ -21,6 +22,7 @@ export class PartnerInfoViewComponent implements OnInit {
     form: FormGroup;
 
     attachments: any = [];
+    SERVER: string = _.BASE_URL;
 
     constructor(
         public bsModalRef: BsModalRef,
@@ -81,7 +83,7 @@ export class PartnerInfoViewComponent implements OnInit {
                         email_address: value.contact_person_email_address,
                     },
                 ],
-                documents: value?.documents
+                documents: this.attachments
             })
             .subscribe({
                 next: (res: any) => {

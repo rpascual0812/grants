@@ -143,6 +143,7 @@ export interface PartnerNonProfitEquivalencyDetermination {
     upon_dissolution?: boolean;
     is_controlled_by?: boolean;
     date_created?: Date;
+    documents?: [];
 }
 
 export interface PartnerOrganizationOtherInformation {

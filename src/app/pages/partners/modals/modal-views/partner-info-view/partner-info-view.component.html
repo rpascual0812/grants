@@ -93,9 +93,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6" *ngFor="let attachment of attachments; let i = index">
-                                <a href="javascript:;">{{attachment.original_name}}</a> <a
-                                    (click)="attachments.splice(i, 1)"><i
-                                        class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
+                                <a href="{{SERVER + '/' + attachment.path}}"
+                                    target="_blank">{{attachment.original_name}}</a>
                             </div>
 
                             <button class="btn btn-white mt-2" type="button" (click)="uploadFiles()">

@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { InputDropdownValue } from 'src/app/pages/applications/application-new/modules/input-dropdown/input-dropdown.component';
 import { ApplicationService } from 'src/app/services/application.service';
@@ -8,6 +8,8 @@ import { PartnerForm } from 'src/app/services/partner.signal.service';
 import { OTHER_CURRENCY_LIST } from 'src/app/utilities/constants';
 import { OnHiddenData } from '../../../partner-view/partner-view.component';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
+import * as _ from '../../../../../utilities/globals';
+import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 
 @Component({
     selector: 'app-non-profit-equival-deter-view',
@@ -32,14 +34,22 @@ export class NonProfitEquivalDeterViewComponent implements OnInit {
         is_controlled_by: true,
     };
 
+    attachments: any = [];
+    SERVER: string = _.BASE_URL;
+
     constructor(
         public bsModalRef: BsModalRef,
+        private modalService: BsModalService,
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
-        private toastr: ToastrService
-    ) {}
+        private toastr: ToastrService,
+        public documentUploaderRef: BsModalRef,
+        private cdr: ChangeDetectorRef,
+    ) { }
 
     ngOnInit() {
+        this.attachments = this.partner?.partner_nonprofit_equivalency_determination?.documents;
+        console.log(this.attachments);
         this.setForm();
     }
 
@@ -111,6 +121,7 @@ export class NonProfitEquivalDeterViewComponent implements OnInit {
                 education_purpose: [nonProfitEquivalencyDetermination?.operated_for?.education_purpose ?? false],
                 scientific: [nonProfitEquivalencyDetermination?.operated_for?.scientific ?? false],
             }),
+            documents: []
         });
         this.initialDescriptionsRequired();
         this.initialCurrenciesDefaultSelected();
@@ -255,5 +266,18 @@ export class NonProfitEquivalDeterViewComponent implements OnInit {
         if (status === 'VALID') {
             this.saveFormValue();
         }
+    }
+
+    uploadFiles() {
+        const initialState: ModalOptions = {
+            class: 'modal-lg'
+        };
+        this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
+
+        this.documentUploaderRef.content.document.subscribe((res: any) => {
+            this.attachments.push(res.file);
+            this.form.get('documents')?.patchValue(this.attachments);
+            this.cdr.detectChanges();
+        });
     }
 }
