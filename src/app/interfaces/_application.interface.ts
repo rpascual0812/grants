@@ -159,6 +159,7 @@ export interface PartnerOrganizationOtherInformation {
     date_created?: Date;
     partner_organization_pk?: number;
     archived?: boolean;
+    documents: Document[];
 }
 
 export interface Project {
