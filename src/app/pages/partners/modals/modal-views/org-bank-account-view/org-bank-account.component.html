@@ -1,6 +1,6 @@
 <div class="modal-body">
     <form [formGroup]="form" (ngSubmit)="handleSave()">
-        <h4 class="text-dark">Organizational Bank Account</h4>
+        <h4 class="text-dark">Organizational Bank Accountsdfasdf</h4>
         <ng-container formGroupName="partner_organization_bank">
             <div class="form-group my-3">
                 <label class="font-weight-bold text-dark">Account Name</label>
@@ -64,12 +64,8 @@
             <div class="col-12 col-md-6">
                 <div class="form-group my-3">
                     <label class="font-weight-bold text-dark">Email Address</label>
-                    <input
-                        formControlName="email_address"
-                        type="email"
-                        class="form-control border rounded-1 p-1"
-                        [ngClass]="{ 'is-invalid': submitted && f['email_address'].errors }"
-                    />
+                    <input formControlName="email_address" type="email" class="form-control border rounded-1 p-1"
+                        [ngClass]="{ 'is-invalid': submitted && f['email_address'].errors }" />
                     <div *ngIf="submitted && f['email_address'].errors" class="invalid-feedback">
                         <div *ngIf="f['email_address'].errors['email']">Invalid email address</div>
                     </div>
@@ -121,22 +117,39 @@
                 </div>
             </div>
 
+            <div class="col-12 col-md-6">
+                <div class="form-group my-3">
+                    <p>signed agreement between Grantee-Partner and Fiscal Sponsor</p>
+                </div>
+                <div class="md-12" *ngFor="let attachment of agreements; let i = index">
+                    <a href="{{SERVER + '/' + attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
+                        (click)="deleteAgreement(i)"><i class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
+                </div>
+                <button class="btn btn-white mt-2" type="button" (click)="uploadAgreement()">
+                    <div class="d-flex flex-column text-start">
+                        <p class="p-0 m-0 text-sm text-dark font-weight-bold">Attach Documents</p>
+                        <p class="p-0 m-0 text-sm text-info font-weight-bold">
+                            <span class="icon icon-sm">
+                                <i class="material-icons">add</i>
+                            </span>
+                            Attach File
+                        </p>
+                    </div>
+                </button>
+            </div>
+
             <h4 class="text-dark">Other Information</h4>
             <ng-container formGroupName="partner_organization_other_information">
                 <div class="row">
                     <div class="col-12 col-md-10">
-                        <label class="font-weight-bold text-dark"
-                            >Proponent has project/enterprise finance management experience</label
-                        >
+                        <label class="font-weight-bold text-dark">Proponent has project/enterprise finance management
+                            experience</label>
                     </div>
                     <div class="col-12 col-md-2">
                         <div class="bool-opt-container">
-                            <select
-                                #boolHasProject
-                                formControlName="has_project"
+                            <select #boolHasProject formControlName="has_project"
                                 class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
-                                (change)="onChangeSelectedBoolOpt(boolHasProject.value, 'has_project')"
-                            >
+                                (change)="onChangeSelectedBoolOpt(boolHasProject.value, 'has_project')">
                                 <option value="true">Yes</option>
                                 <option value="false">No</option>
                             </select>
@@ -150,12 +163,9 @@
                     </div>
                     <div class="col-12 col-md-2">
                         <div class="bool-opt-container">
-                            <select
-                                #boolHasFinancialPolicy
-                                formControlName="has_financial_policy"
+                            <select #boolHasFinancialPolicy formControlName="has_financial_policy"
                                 class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
-                                (change)="onChangeSelectedBoolOpt(boolHasFinancialPolicy.value, 'has_financial_policy')"
-                            >
+                                (change)="onChangeSelectedBoolOpt(boolHasFinancialPolicy.value, 'has_financial_policy')">
                                 <option value="true">Yes</option>
                                 <option value="false">No</option>
                             </select>
@@ -165,35 +175,24 @@
 
                     <label class="font-weight-bold text-dark">If no, what is the practice</label>
                     <div class="m-2">
-                        <textarea
-                            type="text"
-                            rows="5"
-                            class="form-control border rounded-1 p-2"
-                            style="resize: none"
+                        <textarea type="text" rows="5" class="form-control border rounded-1 p-2" style="resize: none"
                             formControlName="has_financial_policy_no_reason"
-                            [readOnly]="boolHasFinancialPolicy.value === 'true'"
-                            [ngClass]="{
+                            [readOnly]="boolHasFinancialPolicy.value === 'true'" [ngClass]="{
                                 'is-invalid':
                                     submitted &&
                                     f['partner_organization_other_information'].get('has_financial_policy_no_reason')
                                         ?.errors
-                            }"
-                        ></textarea>
-                        <div
-                            *ngIf="
+                            }"></textarea>
+                        <div *ngIf="
                                 submitted &&
                                 f['partner_organization_other_information'].get('has_financial_policy_no_reason')
                                     ?.errors
-                            "
-                            class="invalid-feedback"
-                        >
-                            <div
-                                *ngIf="
+                            " class="invalid-feedback">
+                            <div *ngIf="
                                     f['partner_organization_other_information']
                                         .get('has_financial_policy_no_reason')
                                         ?.getError('required')
-                                "
-                            >
+                                ">
                                 Field is required
                             </div>
                         </div>
@@ -206,12 +205,9 @@
                     </div>
                     <div class="col-12 col-md-2">
                         <div class="bool-opt-container">
-                            <select
-                                #boolHasFinancialSystem
-                                formControlName="has_financial_system"
+                            <select #boolHasFinancialSystem formControlName="has_financial_system"
                                 class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
-                                (change)="onChangeSelectedBoolOpt(boolHasFinancialSystem.value, 'has_financial_system')"
-                            >
+                                (change)="onChangeSelectedBoolOpt(boolHasFinancialSystem.value, 'has_financial_system')">
                                 <option value="true">Yes</option>
                                 <option value="false">No</option>
                             </select>
@@ -221,35 +217,24 @@
 
                     <label class="font-weight-bold text-dark">If no, what is the practice</label>
                     <div class="m-2">
-                        <textarea
-                            type="text"
-                            rows="5"
-                            class="form-control border rounded-1 p-2"
-                            style="resize: none"
+                        <textarea type="text" rows="5" class="form-control border rounded-1 p-2" style="resize: none"
                             formControlName="has_financial_system_no_reason"
-                            [readOnly]="boolHasFinancialSystem.value === 'true'"
-                            [ngClass]="{
+                            [readOnly]="boolHasFinancialSystem.value === 'true'" [ngClass]="{
                                 'is-invalid':
                                     submitted &&
                                     f['partner_organization_other_information'].get('has_financial_system_no_reason')
                                         ?.errors
-                            }"
-                        ></textarea>
-                        <div
-                            *ngIf="
+                            }"></textarea>
+                        <div *ngIf="
                                 submitted &&
                                 f['partner_organization_other_information'].get('has_financial_system_no_reason')
                                     ?.errors
-                            "
-                            class="invalid-feedback"
-                        >
-                            <div
-                                *ngIf="
+                            " class="invalid-feedback">
+                            <div *ngIf="
                                     f['partner_organization_other_information']
                                         .get('has_financial_system_no_reason')
                                         ?.getError('required')
-                                "
-                            >
+                                ">
                                 Field is required
                             </div>
                         </div>
@@ -257,41 +242,49 @@
                 </div>
 
                 <div class="row my-2">
-                    <label class="font-weight-bold text-dark"
-                        >Financial human resources: Indicate the position/role (s) that are currently with the
+                    <label class="font-weight-bold text-dark">Financial human resources: Indicate the position/role (s)
+                        that are currently with the
                         organization/ community, ex: Treasurer, Finance Manager, Accountant, Finance Officer, Cashier,
-                        etc.</label
-                    >
+                        etc.</label>
                     <div class="m-2">
-                        <textarea
-                            type="text"
-                            rows="5"
-                            class="form-control border rounded-1 p-2"
-                            style="resize: none"
-                            formControlName="recommendation"
-                        ></textarea>
+                        <textarea type="text" rows="5" class="form-control border rounded-1 p-2" style="resize: none"
+                            formControlName="recommendation"></textarea>
                     </div>
                 </div>
 
                 <div class="row my-2">
                     <div class="col-12 col-md-10">
-                        <label class="font-weight-bold text-dark"
-                            >For medium grants, organization audit or financial statement available</label
-                        >
+                        <label class="font-weight-bold text-dark">For medium grants, organization audit or financial
+                            statement available</label>
+                        <p>Latest Financial Statement</p>
+                        <div class="md-12" *ngFor="let attachment of financial_statements; let i = index">
+                            <a href="{{SERVER + '/' + attachment.path}}"
+                                target="_blank">{{attachment.original_name}}</a> <a
+                                (click)="deleteFinancialStatement(i)"><i
+                                    class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
+                        </div>
+                        <button class="btn btn-white mt-2" type="button" (click)="uploadFinancialStatement()">
+                            <div class="d-flex flex-column text-start">
+                                <p class="p-0 m-0 text-sm text-dark font-weight-bold">Attach Documents</p>
+                                <p class="p-0 m-0 text-sm text-info font-weight-bold">
+                                    <span class="icon icon-sm">
+                                        <i class="material-icons">add</i>
+                                    </span>
+                                    Attach File
+                                </p>
+                            </div>
+                        </button>
                     </div>
                     <div class="col-12 col-md-2">
                         <div class="bool-opt-container">
-                            <select
-                                #boolAuditFinancialAvailable
-                                formControlName="audit_financial_available"
+                            <select #boolAuditFinancialAvailable formControlName="audit_financial_available"
                                 class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
                                 (change)="
                                     onChangeSelectedBoolOpt(
                                         boolAuditFinancialAvailable.value,
                                         'audit_financial_available'
                                     )
-                                "
-                            >
+                                ">
                                 <option value="true">Yes</option>
                                 <option value="false">No</option>
                             </select>
@@ -302,24 +295,20 @@
 
                 <div class="row my-2">
                     <div class="col-12 col-md-10">
-                        <label class="font-weight-bold text-dark"
-                            >Grants team has reviewed the financial system and conducted due diligence on the
-                            proponent</label
-                        >
+                        <label class="font-weight-bold text-dark">Grants team has reviewed the financial system and
+                            conducted due diligence on the
+                            proponent</label>
                     </div>
                     <div class="col-12 col-md-2">
                         <div class="bool-opt-container">
-                            <select
-                                #boolHasReviewedFinancialSystem
-                                formControlName="has_reviewed_financial_system"
+                            <select #boolHasReviewedFinancialSystem formControlName="has_reviewed_financial_system"
                                 class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
                                 (change)="
                                     onChangeSelectedBoolOpt(
                                         boolHasReviewedFinancialSystem.value,
                                         'has_reviewed_financial_system'
                                     )
-                                "
-                            >
+                                ">
                                 <option value="true">Yes</option>
                                 <option value="false">No</option>
                             </select>

@@ -48,8 +48,7 @@ export class NonProfitEquivalDeterViewComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.attachments = this.partner?.partner_nonprofit_equivalency_determination?.documents;
-        console.log(this.attachments);
+        this.attachments = this.partner?.partner_nonprofit_equivalency_determination?.documents ?? [];
         this.setForm();
     }
 
