@@ -183,9 +183,10 @@
                     </p>
                 </div>
                 <div class="d-flex flex-wrap flex-row my-2 gap-2">
-                    <p class="text-sm font-weight-bold text-dark m-0 p-0">
-                        <i class="material-icons">attach_file</i>documentsample1.pdf
-                    </p>
+                    <div class="md-12" *ngFor="let attachment of agreements; let i = index">
+                        <a href="{{SERVER + '/' + attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
+                            (click)="deleteAgreement(i)"><i class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -196,17 +197,14 @@
         <div class="form-group my-3">
             <div class="row">
                 <div class="col-12 col-md-10">
-                    <label class="font-weight-bold text-dark"
-                        >Proponent has project/enterprise finance management experience</label
-                    >
+                    <label class="font-weight-bold text-dark">Proponent has project/enterprise finance management
+                        experience</label>
                 </div>
                 <div class="col-12 col-md-2">
-                    <ng-container
-                        *ngIf="
+                    <ng-container *ngIf="
                             typeOf(partner?.organization?.partner_organization_other_information?.has_project) ===
                             'boolean'
-                        "
-                    >
+                        ">
                         {{ partner?.organization?.partner_organization_other_information?.has_project ? 'Yes' : 'No' }}
                     </ng-container>
                 </div>
@@ -219,17 +217,15 @@
                     <label class="font-weight-bold text-dark">Proponent has financial policy</label>
                 </div>
                 <div class="col-12 col-md-2">
-                    <ng-container
-                        *ngIf="
+                    <ng-container *ngIf="
                             typeOf(
                                 partner?.organization?.partner_organization_other_information?.has_financial_policy
                             ) === 'boolean'
-                        "
-                    >
+                        ">
                         {{
-                            partner?.organization?.partner_organization_other_information?.has_financial_policy
-                                ? 'Yes'
-                                : 'No'
+                        partner?.organization?.partner_organization_other_information?.has_financial_policy
+                        ? 'Yes'
+                        : 'No'
                         }}
                     </ng-container>
                 </div>
@@ -247,17 +243,15 @@
                     <label class="font-weight-bold text-dark">Proponent has financial system</label>
                 </div>
                 <div class="col-12 col-md-2">
-                    <ng-container
-                        *ngIf="
+                    <ng-container *ngIf="
                             typeOf(
                                 partner?.organization?.partner_organization_other_information?.has_financial_system
                             ) === 'boolean'
-                        "
-                    >
+                        ">
                         {{
-                            partner?.organization?.partner_organization_other_information?.has_financial_system
-                                ? 'Yes'
-                                : 'No'
+                        partner?.organization?.partner_organization_other_information?.has_financial_system
+                        ? 'Yes'
+                        : 'No'
                         }}
                     </ng-container>
                 </div>
@@ -272,11 +266,10 @@
         <div class="form-group my-3">
             <div class="row">
                 <div class="col-12">
-                    <label class="font-weight-bold text-dark"
-                        >Financial human resources: Indicate the position/role (s) that are currently with the
+                    <label class="font-weight-bold text-dark">Financial human resources: Indicate the position/role (s)
+                        that are currently with the
                         organization/ community, ex: Treasurer, Finance Manager, Accountant, Finance Officer, Cashier,
-                        etc.</label
-                    >
+                        etc.</label>
                     <p class="text-secondary m-0 p-0">
                         {{ partner?.organization?.partner_organization_other_information?.recommendation }}
                     </p>
@@ -287,32 +280,30 @@
         <div class="form-group my-3">
             <div class="row">
                 <div class="col-12 col-md-10">
-                    <label class="font-weight-bold text-dark"
-                        >For medium grants, organization audit or financial statement available
+                    <label class="font-weight-bold text-dark">For medium grants, organization audit or financial
+                        statement available
                     </label>
                 </div>
                 <div class="col-12 col-md-2">
-                    <ng-container
-                        *ngIf="
+                    <ng-container *ngIf="
                             typeOf(
                                 partner?.organization?.partner_organization_other_information?.audit_financial_available
                             ) === 'boolean'
-                        "
-                    >
+                        ">
                         {{
-                            partner?.organization?.partner_organization_other_information?.audit_financial_available
-                                ? 'Yes'
-                                : 'No'
+                        partner?.organization?.partner_organization_other_information?.audit_financial_available
+                        ? 'Yes'
+                        : 'No'
                         }}
                     </ng-container>
                 </div>
 
                 <div class="d-flex flex-wrap gap-2">
-                    <p class="text-dark text-sm m-0 p-0">upload here latest FS</p>
-                    <p class="text-dark m-0 p-0">
-                        <i class="material-icons">attach_file</i>
-                        documentsample1.pdf
-                    </p>
+                    <p>Latest Financial Statement</p>
+                    <div class="md-12" *ngFor="let attachment of financial_statements; let i = index">
+                        <a href="{{SERVER + '/' + attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
+                            (click)="deleteAgreement(i)"><i class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -320,26 +311,23 @@
         <div class="form-group my-3">
             <div class="row">
                 <div class="col-12 col-md-10">
-                    <label class="font-weight-bold text-dark"
-                        >Grants team has reviewed the financial system and conducted due diligence on the
-                        proponent</label
-                    >
+                    <label class="font-weight-bold text-dark">Grants team has reviewed the financial system and
+                        conducted due diligence on the
+                        proponent</label>
                 </div>
                 <div class="col-12 col-md-2">
                     <p class="text-secondary">
-                        <ng-container
-                            *ngIf="
+                        <ng-container *ngIf="
                                 typeOf(
                                     partner?.organization?.partner_organization_other_information
                                         ?.has_reviewed_financial_system
                                 ) === 'boolean'
-                            "
-                        >
+                            ">
                             {{
-                                partner?.organization?.partner_organization_other_information
-                                    ?.has_reviewed_financial_system
-                                    ? 'Yes'
-                                    : 'No'
+                            partner?.organization?.partner_organization_other_information
+                            ?.has_reviewed_financial_system
+                            ? 'Yes'
+                            : 'No'
                             }}
                         </ng-container>
                     </p>

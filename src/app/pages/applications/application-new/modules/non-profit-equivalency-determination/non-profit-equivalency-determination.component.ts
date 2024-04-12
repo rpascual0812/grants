@@ -47,16 +47,13 @@ export class NonProfitEquivalencyDeterminationComponent {
         private cdr: ChangeDetectorRef,
         private modalService: BsModalService,
         private documentService: DocumentService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.setForm();
 
         const currentApplication = this.applicationSignalService.appForm();
-        const documents = currentApplication?.partner?.documents ?? [];
-        if (documents?.length > 0) {
-            this.attachments = documents?.filter((item) => item.type === DOCUMENT_TYPE);
-        }
+        this.attachments = currentApplication?.partner?.partner_nonprofit_equivalency_determination?.documents ?? [];
     }
 
     get f() {
@@ -130,6 +127,7 @@ export class NonProfitEquivalencyDeterminationComponent {
                 education_purpose: [nonProfitEquivalencyDetermination?.operated_for?.education_purpose ?? false],
                 scientific: [nonProfitEquivalencyDetermination?.operated_for?.scientific ?? false],
             }),
+            documents: ['']
         });
         this.initialDescriptionsRequired();
         this.initialCurrenciesDefaultSelected();
@@ -308,33 +306,9 @@ export class NonProfitEquivalencyDeterminationComponent {
 
         this.documentUploaderRef.content.document.subscribe((res: any) => {
             this.attachments.push(res.file);
-            this.saveAttachment(res.file);
+            this.form.get('documents')?.patchValue(this.attachments);
             this.cdr.detectChanges();
         });
-    }
-
-    saveAttachment(ev: any) {
-        const currentApplication = this.applicationSignalService.appForm();
-        this.documentService
-            .save({
-                table_pk: currentApplication?.partner?.pk,
-                table_name: 'partners',
-                document_pk: ev.pk,
-                type: 'non_profit_equivalency_legal_registration',
-            })
-            .subscribe({
-                next: (data: any) => {
-                    this.applicationSignalService.setDocuments(this.attachments, DOCUMENT_TYPE);
-                    this.toastr.success('The document has been successfully uploaded', 'SUCCESS!');
-                },
-                error: (error: any) => {
-                    console.log(error);
-                    this.toastr.error('An error occurred while uploading the document. Please try again', 'ERROR!');
-                },
-                complete: () => {
-                    console.log('Complete');
-                },
-            });
     }
 
     setPartnerDocuments(currentAttachments: Document[], documentType: string) {

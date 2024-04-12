@@ -41,11 +41,7 @@ export class NonProfitEquivalencyDeterminationComponent implements OnInit {
 
     ngOnInit() {
         this.partner = this.partnerSignalService.partnerForm();
-
-        const documents = this.partner?.partner_nonprofit_equivalency_determination?.documents ?? [];
-        documents.forEach(doc => {
-            this.attachments.push(doc);
-        });
+        this.attachments = this.partner?.partner_nonprofit_equivalency_determination?.documents ?? [];
     }
 
     parseOtherCurrency(currencyOther: string) {
