@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import { Application } from 'src/app/interfaces/_application.interface';
+import { Application, PartnerOrganizationBank } from 'src/app/interfaces/_application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class AppReviewOrgBankAccntInfoModalComponent {
 
     filters: any = {};
     form: FormGroup;
-    bank_account: any = {};
+    bank_account: PartnerOrganizationBank | undefined = undefined;
     currentApplication: Application = {};
 
     loading: boolean = false;
@@ -28,7 +28,7 @@ export class AppReviewOrgBankAccntInfoModalComponent {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.setForm();
@@ -60,14 +60,14 @@ export class AppReviewOrgBankAccntInfoModalComponent {
             return;
         }
 
-        this.form.get('pk')?.patchValue(this.bank_account.pk);
+        this.form.get('pk')?.patchValue(this.bank_account?.pk);
 
         this.applicationService.savePartnerOrgBank(this.form.value).subscribe({
             next: (data: any) => {
                 this.callback.emit({ ...this.bank_account });
                 this.toastr.success(
                     'The Organizational Bank Account Information has been successfully ' +
-                        (this.bank_account.pk ? 'updated' : 'added'),
+                    (this.bank_account?.pk ? 'updated' : 'added'),
                     'SUCCESS!'
                 );
             },

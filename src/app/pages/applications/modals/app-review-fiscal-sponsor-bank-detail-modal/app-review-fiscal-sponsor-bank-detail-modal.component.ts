@@ -7,7 +7,7 @@ import { ApplicationService } from 'src/app/services/application.service';
 import * as _ from '../../../../utilities/globals';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import { DocumentService } from 'src/app/services/document.service';
-import { Document } from 'src/app/interfaces/_application.interface';
+import { Document, PartnerFiscalSponsor } from 'src/app/interfaces/_application.interface';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class AppReviewFiscalSponsorBankDetailModalComponent {
 
     filters: any = {};
     form: FormGroup;
-    fiscal_sponsor: any = {};
+    fiscal_sponsor: PartnerFiscalSponsor | undefined = undefined;
 
     loading: boolean = false;
     submitted: boolean = false;
@@ -53,21 +53,22 @@ export class AppReviewFiscalSponsorBankDetailModalComponent {
 
     setForm() {
         this.fiscal_sponsor = this.currentApplication?.partner?.partner_fiscal_sponsor;
+        console.log(this.fiscal_sponsor);
         this.form = this.formBuilder.group({
-            pk: [this.fiscal_sponsor.pk ?? ''],
+            pk: [this.fiscal_sponsor?.pk ?? ''],
             partner_pk: [this.currentApplication?.partner?.pk ?? ''],
-            name: [this.fiscal_sponsor.name ?? '', Validators.required],
-            address: [this.fiscal_sponsor.address ?? '', Validators.required],
-            head: [this.fiscal_sponsor.head ?? '', Validators.required],
-            person_in_charge: [this.fiscal_sponsor.person_in_charge ?? '', Validators.required],
-            contact_number: [this.fiscal_sponsor.contact_number ?? '', Validators.required],
-            email_address: [this.fiscal_sponsor.email_address ?? '', Validators.required],
-            bank_account_name: [this.fiscal_sponsor.bank_account_name ?? '', Validators.required],
-            account_number: [this.fiscal_sponsor.account_number ?? '', Validators.required],
-            bank_name: [this.fiscal_sponsor.bank_name ?? '', Validators.required],
-            bank_branch: [this.fiscal_sponsor.bank_branch ?? '', Validators.required],
-            bank_address: [this.fiscal_sponsor.bank_address ?? '', Validators.required],
-            swift_code: [this.fiscal_sponsor.swift_code ?? '', Validators.required],
+            name: [this.fiscal_sponsor?.name ?? '', Validators.required],
+            address: [this.fiscal_sponsor?.address ?? '', Validators.required],
+            head: [this.fiscal_sponsor?.head ?? '', Validators.required],
+            person_in_charge: [this.fiscal_sponsor?.person_in_charge ?? '', Validators.required],
+            contact_number: [this.fiscal_sponsor?.contact_number ?? '', Validators.required],
+            email_address: [this.fiscal_sponsor?.email_address ?? '', Validators.required],
+            bank_account_name: [this.fiscal_sponsor?.bank_account_name ?? '', Validators.required],
+            account_number: [this.fiscal_sponsor?.account_number ?? '', Validators.required],
+            bank_name: [this.fiscal_sponsor?.bank_name ?? '', Validators.required],
+            bank_branch: [this.fiscal_sponsor?.bank_branch ?? '', Validators.required],
+            bank_address: [this.fiscal_sponsor?.bank_address ?? '', Validators.required],
+            swift_code: [this.fiscal_sponsor?.swift_code ?? '', Validators.required],
             documents: ['']
         });
     }
@@ -82,14 +83,14 @@ export class AppReviewFiscalSponsorBankDetailModalComponent {
             return;
         }
 
-        this.form.get('pk')?.patchValue(this.fiscal_sponsor.pk);
+        this.form.get('pk')?.patchValue(this.fiscal_sponsor?.pk);
 
         this.applicationService
             .saveApplicationFiscalSponsor(this.form.value)
             .subscribe({
                 next: (data: any) => {
                     this.callback.emit({ ...this.fiscal_sponsor });
-                    this.toastr.success('The Fiscal Sponsor Bank Details has been successfully ' + (this.fiscal_sponsor.pk ? 'updated' : 'added'), 'SUCCESS!');
+                    this.toastr.success('The Fiscal Sponsor Bank Details has been successfully ' + (this.fiscal_sponsor?.pk ? 'updated' : 'added'), 'SUCCESS!');
                 },
                 error: (error: any) => {
                     console.log(error);
