@@ -47,7 +47,7 @@ export class LinksComponent {
                 this.loading = false
             },
             error: (err) => {
-                const {errorMessage, statusCode} = extractErrorMessage(err)
+                const { errorMessage, statusCode } = extractErrorMessage(err)
                 this.toastr.error(
                     `An error occurred while fetching Applications. ${statusCode} ${errorMessage} Please try again.`,
                     'ERROR!'
@@ -90,7 +90,7 @@ export class LinksComponent {
 
         this.bsModalRef.content.callback.subscribe((res: any) => {
             const data = res.data.data;
-            this.fetch();
+            this.applications.unshift(data);
         });
     }
 }

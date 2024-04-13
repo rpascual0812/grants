@@ -1,4 +1,4 @@
-import { Component, EventEmitter, ViewChild, inject } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild, inject } from '@angular/core';
 import { FormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { v4 as uuidv4 } from 'uuid';
@@ -14,7 +14,7 @@ import { LinkGeneratorRefetchKey, LinkGeneratorSignalService } from 'src/app/ser
 })
 export class LinkGeneratorComponent {
     @ViewChild(SelectComponent) select: SelectComponent;
-    public callback: EventEmitter<any> = new EventEmitter();
+    @Output() callback: EventEmitter<any> = new EventEmitter();
     refetchKey: string = '';
     loading: boolean = false;
     title?: string;
@@ -39,7 +39,7 @@ export class LinkGeneratorComponent {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     get f() {
         return this.form.controls;

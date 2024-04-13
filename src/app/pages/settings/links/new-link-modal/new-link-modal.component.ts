@@ -27,7 +27,13 @@ export class NewLinkModalComponent {
     }
 
     submit() {
+        this.loading = true;
         this.linkGeneratorComponent.refetchKey = APPLICATION_REVIEW_LIST_KEY;
         this.linkGeneratorComponent.submit();
+    }
+
+    saved(ev: any) {
+        this.loading = false;
+        this.callback.emit(ev);
     }
 }
