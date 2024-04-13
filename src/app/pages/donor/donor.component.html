@@ -53,12 +53,12 @@
                                         </div>
                                     </td>
                                     <td class="w-25 align-middle text-sm">
-                                        <a class="btn btn-link {{ donor.active ? 'text-success' : 'text-danger' }} text-gradient px-2 mb-0 text-xs"
-                                            href="javascript:;" (click)="suspend(donor)"
+                                        <span
+                                            class="{{ donor.active ? 'text-success' : 'text-danger' }} text-gradient px-2 mb-0 text-xs"
                                             [title]="donor.active ? 'Set as inactive' : 'Set as active'">
-                                            <i class="material-icons text-lg me-2">{{ donor.active ?
-                                                'done' : 'close' }}</i>
-                                        </a>
+                                            <span>{{ donor.active ? 'Active' :
+                                                'Inactive'}}</span>
+                                        </span>
                                     </td>
                                     <td class="w-20 opacity-7">
                                         <div class="ms-auto text-end">
