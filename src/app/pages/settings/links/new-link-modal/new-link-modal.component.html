@@ -8,10 +8,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <app-link-generator></app-link-generator>
+                <app-link-generator (callback)="saved($event)"></app-link-generator>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-dark-blue" (click)="submit()">{{saveBtnName}}</button>
+                <button type="button" class="btn btn-dark-blue" (click)="submit()" [disabled]="loading">
+                    {{saveBtnName}}
+                    <div class="spinner-border spinner-border-sm" role="status" *ngIf="loading">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </button>
                 <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">{{closeBtnName}}</button>
             </div>
         </div>
