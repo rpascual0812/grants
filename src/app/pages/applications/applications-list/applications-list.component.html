@@ -224,82 +224,6 @@
     </div>
 
     <div class="card my-2">
-        <div class="card-header py-2" style="background-color: #ff6200">
-            <h5 class="text-white text-center">Due Diligence (Medium Grants)</h5>
-        </div>
-        <div class="card-body p-0 m-0">
-            <table class="table">
-                <thead>
-                    <tr style="background-color: #f38520">
-                        <th class="p-2 text-white" scope="col">Partner ID</th>
-                        <th class="p-2 text-white" scope="col" sortable="partner"
-                            (sort)="onSort($event, 'dueDiligence')">
-                            Partner
-                        </th>
-                        <th class="p-2 text-white" scope="col" sortable="title" (sort)="onSort($event, 'dueDiligence')">
-                            Title
-                        </th>
-                        <th class="p-2 text-white" scope="col" sortable="applicationDate"
-                            (sort)="onSort($event, 'dueDiligence')">
-                            Application Date
-                        </th>
-                        <th class="p-2 text-white" scope="col" sortable="proposedBudget"
-                            (sort)="onSort($event, 'dueDiligence')">
-                            Proposed Budget
-                        </th>
-                        <th class="p-2" scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="
-                            let item of grantApplication.dueDiligence.list
-                                | paginate
-                                    : {
-                                          itemsPerPage: grantApplication.dueDiligence.tableSize,
-                                          currentPage: grantApplication.dueDiligence.page,
-                                          id: 'dueDiligence'
-                                      }
-                        ">
-                        <th class="font-weight-bold" style="color: #ff6200" scope="row">{{ item.partnerId }}</th>
-                        <td class="text-dark font-weight-light">
-                            {{ item.partner }}
-                        </td>
-                        <td class="text-dark font-weight-light">{{ item.title }}</td>
-                        <td class="text-dark font-weight-light">{{ item.applicationDate | date : 'dd-MMM-YYYY' }}</td>
-                        <td class="text-dark font-weight-light">
-                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD' : '' }}
-                            {{ item?.proposedBudgetOther ? ' | ' + (item?.proposedBudgetOther | number) : '' }}
-                            {{ item?.proposedBudgetOtherCurrency ?? '' }}
-                        </td>
-                        <td>
-                            <button class="btn btn-default text-info"
-                                [routerLink]="['/applications/' + item.applicationNumber + '/review']">
-                                Review
-                            </button>
-                            <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div *ngIf="grantApplication.dueDiligence.list.length <= 0" class="text-center">
-                <p class="text-danger w-100 font-weight-bold">There are no queued applications at this stage</p>
-            </div>
-            <div class="my-3 d-flex justify-content-end">
-                <div>
-                    <select (change)="onTableSizeChange($event, 'dueDiligence')"
-                        class="form-control form-control-sm pagination-select">
-                        <option *ngFor="let size of tableSizes" [value]="size">
-                            {{ size }}
-                        </option>
-                    </select>
-                </div>
-                <pagination-controls (pageChange)="grantApplication.dueDiligence.page = $event"
-                    id="dueDiligence"></pagination-controls>
-            </div>
-        </div>
-    </div>
-
-    <div class="card my-2">
         <div class="card-header py-2" style="background-color: #ff9100">
             <h5 class="text-white text-center">Budget Review and Finalization</h5>
         </div>
@@ -406,14 +330,14 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="
-                            let item of grantApplication.financialManagementCapacity.list
-                                | paginate
-                                    : {
-                                          itemsPerPage: grantApplication.financialManagementCapacity.tableSize,
-                                          currentPage: grantApplication.financialManagementCapacity.page,
-                                          id: 'financialManagementCapacity'
-                                      }
-                        ">
+                                    let item of grantApplication.financialManagementCapacity.list
+                                        | paginate
+                                            : {
+                                                  itemsPerPage: grantApplication.financialManagementCapacity.tableSize,
+                                                  currentPage: grantApplication.financialManagementCapacity.page,
+                                                  id: 'financialManagementCapacity'
+                                              }
+                                ">
                         <th class="font-weight-bold" style="color: #ff9100" scope="row">{{ item.partnerId }}</th>
                         <td class="text-dark font-weight-light">
                             {{ item.partner }}
@@ -451,4 +375,82 @@
             </div>
         </div>
     </div>
+
+    <div class="card my-2">
+        <div class="card-header py-2" style="background-color: #ff6200">
+            <h5 class="text-white text-center">Due Diligence (Medium Grants)</h5>
+        </div>
+        <div class="card-body p-0 m-0">
+            <table class="table">
+                <thead>
+                    <tr style="background-color: #f38520">
+                        <th class="p-2 text-white" scope="col">Partner ID</th>
+                        <th class="p-2 text-white" scope="col" sortable="partner"
+                            (sort)="onSort($event, 'dueDiligence')">
+                            Partner
+                        </th>
+                        <th class="p-2 text-white" scope="col" sortable="title" (sort)="onSort($event, 'dueDiligence')">
+                            Title
+                        </th>
+                        <th class="p-2 text-white" scope="col" sortable="applicationDate"
+                            (sort)="onSort($event, 'dueDiligence')">
+                            Application Date
+                        </th>
+                        <th class="p-2 text-white" scope="col" sortable="proposedBudget"
+                            (sort)="onSort($event, 'dueDiligence')">
+                            Proposed Budget
+                        </th>
+                        <th class="p-2" scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="
+                                let item of grantApplication.dueDiligence.list
+                                    | paginate
+                                        : {
+                                              itemsPerPage: grantApplication.dueDiligence.tableSize,
+                                              currentPage: grantApplication.dueDiligence.page,
+                                              id: 'dueDiligence'
+                                          }
+                            ">
+                        <th class="font-weight-bold" style="color: #ff6200" scope="row">{{ item.partnerId }}</th>
+                        <td class="text-dark font-weight-light">
+                            {{ item.partner }}
+                        </td>
+                        <td class="text-dark font-weight-light">{{ item.title }}</td>
+                        <td class="text-dark font-weight-light">{{ item.applicationDate | date : 'dd-MMM-YYYY' }}</td>
+                        <td class="text-dark font-weight-light">
+                            {{ item.proposedBudget | number }} {{ item?.proposedBudget ? 'USD' : '' }}
+                            {{ item?.proposedBudgetOther ? ' | ' + (item?.proposedBudgetOther | number) : '' }}
+                            {{ item?.proposedBudgetOtherCurrency ?? '' }}
+                        </td>
+                        <td>
+                            <button class="btn btn-default text-info"
+                                [routerLink]="['/applications/' + item.applicationNumber + '/review']">
+                                Review
+                            </button>
+                            <button class="btn btn-default text-danger" (click)="remove(item)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div *ngIf="grantApplication.dueDiligence.list.length <= 0" class="text-center">
+                <p class="text-danger w-100 font-weight-bold">There are no queued applications at this stage</p>
+            </div>
+            <div class="my-3 d-flex justify-content-end">
+                <div>
+                    <select (change)="onTableSizeChange($event, 'dueDiligence')"
+                        class="form-control form-control-sm pagination-select">
+                        <option *ngFor="let size of tableSizes" [value]="size">
+                            {{ size }}
+                        </option>
+                    </select>
+                </div>
+                <pagination-controls (pageChange)="grantApplication.dueDiligence.page = $event"
+                    id="dueDiligence"></pagination-controls>
+            </div>
+        </div>
+    </div>
+
+
 </div>

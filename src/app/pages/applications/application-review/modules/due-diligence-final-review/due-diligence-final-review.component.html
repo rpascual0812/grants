@@ -28,8 +28,9 @@
                 <div class="d-flex flex-column flex-md-row gap-1 align-items-md-center">
                     <p class="m-0">
                         Flag:
-                        <span *ngIf="review.flag == 'needs_resolution'">Needs Resolution</span>
-                        <span *ngIf="review.flag == 'grantee'">Grantee</span>
+                        <span *ngIf="review.needs_resolution">Needs Resolution</span>
+                        <span class="mx-2" *ngIf="review.needs_resolution && review.grantee">|</span>
+                        <span *ngIf="review.grantee">Grantee</span>
                         <span class="badge text-bg-danger text-white mx-2" *ngIf="!review.resolved">Not Yet
                             Started</span>
                         <span class="badge text-bg-success text-white mx-2" *ngIf="review.resolved">Marked as

@@ -7,6 +7,7 @@ import { GrantsTeamReviewModule } from './modules/grants-team-review/grants-team
 import { AdvisersReviewModule } from './modules/advisers-review/advisers-review.module';
 import { BudgetReviewFinalizationModule } from './modules/budget-review-finalization/budget-review-finalization.module';
 import { DueDiligenceFinalReviewModule } from './modules/due-diligence-final-review/due-diligence-final-review.module';
+import { FinancialManagementCapacityModule } from './modules/financial-management-capacity/financial-management-capacity.module';
 
 
 
@@ -22,6 +23,7 @@ import { DueDiligenceFinalReviewModule } from './modules/due-diligence-final-rev
         AdvisersReviewModule,
         BudgetReviewFinalizationModule,
         DueDiligenceFinalReviewModule,
+        FinancialManagementCapacityModule
     ]
 })
 export class ApplicationReviewModule { }

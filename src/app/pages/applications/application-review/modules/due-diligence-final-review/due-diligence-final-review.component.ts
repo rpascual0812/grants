@@ -54,9 +54,7 @@ export class DueDiligenceFinalReviewComponent {
         this.donor = this.currentApplication?.donor;
 
         if (this.currentApplication?.reviews) {
-            this.currentApplication?.reviews.forEach(review => {
-                this.reviews.push(review);
-            });
+            this.reviews = this.currentApplication?.reviews.filter((review: any) => review.type == 'final_review');
         }
 
         if (this.currentApplication?.recommendations) {
@@ -74,7 +72,8 @@ export class DueDiligenceFinalReviewComponent {
         this.form = this.formBuilder.group({
             pk: [''],
             message: ['', Validators.required],
-            flag: [''],
+            needs_resolution: [false],
+            grantee: [false],
             application_pk: [''],
             type: ['final_review'],
             documents: ['']

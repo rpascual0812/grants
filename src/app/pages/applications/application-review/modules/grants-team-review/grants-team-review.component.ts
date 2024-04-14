@@ -52,9 +52,7 @@ export class GrantsTeamReviewComponent implements OnInit {
         this.SERVER = _.BASE_URL;
 
         if (this.currentApplication?.reviews) {
-            this.currentApplication?.reviews.forEach(review => {
-                this.reviews.push(review);
-            });
+            this.reviews = this.currentApplication?.reviews.filter((review: any) => review.type == 'grants_team_review');
         }
 
         if (this.currentApplication?.recommendations) {

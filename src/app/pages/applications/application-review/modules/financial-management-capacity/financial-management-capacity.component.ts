@@ -12,11 +12,11 @@ import { formatDate } from '@angular/common';
 import * as _ from '../../../../../utilities/globals';
 
 @Component({
-    selector: 'app-advisers-review',
-    templateUrl: './advisers-review.component.html',
-    styleUrls: ['./advisers-review.component.scss']
+    selector: 'app-financial-management-capacity',
+    templateUrl: './financial-management-capacity.component.html',
+    styleUrls: ['./financial-management-capacity.component.scss']
 })
-export class AdvisersReviewComponent implements OnInit {
+export class FinancialManagementCapacityComponent implements OnInit {
     @Input() currentApplication: Application | null
     @Output() recommendationSaved = new EventEmitter<boolean>();
     reviews: any = [];
@@ -45,12 +45,12 @@ export class AdvisersReviewComponent implements OnInit {
         this.fetchUser();
 
         if (this.currentApplication?.reviews) {
-            this.reviews = this.currentApplication?.reviews.filter((review: any) => review.type == 'advisers_review');
+            this.reviews = this.currentApplication?.reviews.filter((review: any) => review.type == 'financial_management_capacity');
         }
 
         if (this.currentApplication?.recommendations) {
             this.currentApplication?.recommendations.forEach(recommendation => {
-                if (recommendation.type == 'advisers_review') {
+                if (recommendation.type == 'financial_management_capacity') {
                     this.recommendation = recommendation.recommendation;
                 }
             });
@@ -66,7 +66,7 @@ export class AdvisersReviewComponent implements OnInit {
             needs_resolution: [false],
             grantee: [false],
             application_pk: [''],
-            type: ['advisers_review'],
+            type: ['financial_management_capacity'],
             documents: ['']
         });
     }
@@ -115,7 +115,7 @@ export class AdvisersReviewComponent implements OnInit {
     clear() {
         this.attachments = [];
         this.form.reset();
-        this.form.get('type')?.patchValue('advisers_review');
+        this.form.get('type')?.patchValue('financial_management_capacity');
     }
 
     uploadFiles() {
@@ -164,7 +164,7 @@ export class AdvisersReviewComponent implements OnInit {
         const recommendation = {
             application_pk: this.currentApplication?.pk,
             recommendation: ev,
-            type: 'advisers_review'
+            type: 'financial_management_capacity'
         }
 
         this.applicationService.updateRecommendation(recommendation).subscribe({
@@ -181,7 +181,7 @@ export class AdvisersReviewComponent implements OnInit {
     }
 
     export() {
-        this.applicationService.reviews(this.currentApplication?.pk, 'advisers_review').subscribe({
+        this.applicationService.reviews(this.currentApplication?.pk, 'financial_management_capacity').subscribe({
             next: (data: any) => {
                 let reviews = '';
                 data.data[0].reviews.forEach((review: any) => {
@@ -192,7 +192,7 @@ export class AdvisersReviewComponent implements OnInit {
                     });
                     reviews += '\n\n\n';
                 });
-                _.exportFile('application/docx', 'Advisers Review.docx', reviews);
+                _.exportFile('application/docx', 'Financial Management Capacity.docx', reviews);
             },
             error: (err: HttpErrorResponse) => {
                 const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
