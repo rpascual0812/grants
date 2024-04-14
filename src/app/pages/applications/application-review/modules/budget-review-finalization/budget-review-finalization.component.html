@@ -107,6 +107,16 @@
                     </button>
                 </div>
             </div>
+            <div class="d-flex justify-content-end">
+                <div>
+                    <h4 class="text-dark">Recommendation</h4>
+                    <ng-select style="--border-color: #034241" class="custom-recommendation-select"
+                        [items]="['Approved for Next Stage', 'Rejected', 'Cancelled']"
+                        [placeholder]="'Choose your recommendation'" (change)="recommendationOnChange($event)"
+                        [(ngModel)]="recommendation">
+                    </ng-select>
+                </div>
+            </div>
         </div>
     </div>
 </div>

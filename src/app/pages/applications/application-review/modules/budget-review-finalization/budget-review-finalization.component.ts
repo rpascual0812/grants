@@ -1,5 +1,5 @@
 import { AppReviewOtherInfoModalComponent } from './../../../modals/app-review-other-info-modal/app-review-other-info-modal.component';
-import { ChangeDetectorRef, Component, Input, OnInit, effect, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, effect, inject } from '@angular/core';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { AppReviewOrgBankAccntInfoModalComponent } from '../../../modals/app-review-org-bank-accnt-info-modal/app-review-org-bank-accnt-info-modal.component';
 import { AppReviewFiscalSponsorBankDetailModalComponent } from '../../../modals/app-review-fiscal-sponsor-bank-detail-modal/app-review-fiscal-sponsor-bank-detail-modal.component';
@@ -21,10 +21,13 @@ import * as _ from '../../../../../utilities/globals';
 export class BudgetReviewFinalizationComponent implements OnInit {
     bsModalRef?: BsModalRef;
     applicationReviewSignalService = inject(ApplicationReviewSignalService);
-    @Input() currentApplication: Application | null
+    @Input() currentApplication: Application | null;
+    @Output() recommendationSaved = new EventEmitter<boolean>();
 
     dateNow = DateTime.now().toFormat('LLLL dd, yyyy');
     user: any = {};
+
+    recommendation: any = '';
 
     attachments: any = {
         original_budget_proposal: [],
@@ -130,6 +133,26 @@ export class BudgetReviewFinalizationComponent implements OnInit {
             });
 
             this.cdr.detectChanges();
+        });
+    }
+
+    recommendationOnChange(ev: any) {
+        const recommendation = {
+            application_pk: this.currentApplication?.pk,
+            recommendation: ev,
+            type: 'advisers_review'
+        }
+
+        this.applicationService.updateRecommendation(recommendation).subscribe({
+            next: (data: any) => {
+                this.toastr.success(`Your recommendation has been successfully saved.`);
+                this.recommendationSaved.emit(true);
+            },
+            error: (err: HttpErrorResponse) => {
+                const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                const statusCode = err?.status ? `status: ${err?.status}` : '';
+                this.toastr.error(`Error trying to remove application. ${statusCode} ${errorMessage} `);
+            },
         });
     }
 }
