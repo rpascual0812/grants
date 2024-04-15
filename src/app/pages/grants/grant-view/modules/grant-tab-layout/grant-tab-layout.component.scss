@@ -2,7 +2,7 @@
     .nav-link {
         background-color: var(--bs-purple) !important;
         color: white !important;
-        margin: 0.2rem;
+        margin: 0 0.2rem !important;
     }
     .nav-link.active {
         background-color: var(--bs-dark-blue) !important;

@@ -9,14 +9,17 @@ import { ReviewModule } from './modules/review/review.module';
 import { GrantTabLayoutModule } from './modules/grant-tab-layout/grant-tab-layout.module';
 import { FundingReleaseComponent } from './modules/grant-tab-views/funding-release/funding-release.component';
 import { GoalsComponent } from './modules/grant-tab-views/goals/goals.component';
-
+import { BeneficiariesComponent } from './modules/grant-tab-views/beneficiaries/beneficiaries.component';
+import { AttendeesComponent } from './modules/grant-tab-views/attendees/attendees.component';
 
 
 @NgModule({
   declarations: [
     GrantViewComponent,
     FundingReleaseComponent,
-    GoalsComponent
+    GoalsComponent,
+    BeneficiariesComponent,
+    AttendeesComponent
   ],
   exports: [
     GrantViewComponent
