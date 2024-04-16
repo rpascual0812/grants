@@ -1,6 +1,6 @@
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
-import { Application, Document, PartnerOrganizationOtherInformation } from 'src/app/interfaces/_application.interface';
+import { Application, Document, FinancialHumanResources, PartnerOrganizationOtherInformation } from 'src/app/interfaces/_application.interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { ApplicationService } from 'src/app/services/application.service';
@@ -26,7 +26,7 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
 
     attachments: any = [];
     SERVER: string = _.BASE_URL;
-    humanResources: Record<string, string | boolean>[] = [];
+    humanResources: any = [];
     selectedDesignation = 'Finance Officer';
 
     applicationSignalService = inject(ApplicationSignalService);
@@ -44,12 +44,13 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
 
     ngOnInit(): void {
         this.attachments = this.currentApplication?.partner?.organization?.partner_organization_other_information?.documents;
-        console.log('attachments', this.attachments);
         this.setForm();
     }
 
     setForm() {
         this.otherInformation = this.currentApplication?.partner?.organization?.partner_organization_other_information;
+        this.humanResources = this.otherInformation?.organization_other_information_financial_human_resources;
+
         this.form = this.formBuilder.group({
             has_project: [this.otherInformation?.has_project ?? false],
             has_financial_policy: [this.otherInformation?.has_financial_policy ?? false],
@@ -60,6 +61,7 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
             has_reviewed_financial_system: [this.otherInformation?.has_reviewed_financial_system ?? false],
             recommendation: [this.otherInformation?.recommendation ?? ''],
             documents: [''],
+            human_resources: ['']
         });
         this.initialPartnerOrgOtherInfo();
     }
@@ -105,8 +107,11 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
     }
 
     submit() {
+        console.log('humanResources', this.humanResources);
         this.loading = true;
         this.submitted = true;
+        this.form.get('human_resources')?.patchValue(this.humanResources);
+
         const { invalid, value } = this.form;
 
         if (invalid) {
@@ -148,14 +153,29 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
             });
     }
 
-    handleAddHumanResource(hrName: string) {
+    handleAddHumanResource() {
         this.humanResources.push({
-            id: new Date().getTime().toString(),
-            name: hrName,
-            designation: this.selectedDesignation,
-            review: false,
+            name: '',
+            designation: '',
         });
     }
+
+    // handleAddHumanResource(hrName: string) {
+    //     if (hrName.replace(/\s/g, '')) {
+    //         this.humanResources.push({
+    //             id: new Date().getTime().toString(),
+    //             name: hrName,
+    //             designation: this.selectedDesignation,
+    //             review: false,
+    //         });
+    //     }
+    //     else {
+    //         this.toastr.error(
+    //             'Please input the name of the financial human resource',
+    //             'ERROR!'
+    //         );
+    //     }
+    // }
 
     handleCancelHumanResource() {
         this.selectedDesignation = 'Finance Officer';
@@ -165,43 +185,17 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
         this.selectedDesignation = $event.at(0) ?? 'Finance Officer';
     }
 
-    handleReview(id: string | boolean) {
-        this.humanResources = this.humanResources.map((item: Record<string, string | boolean>) => {
-            if (item?.['id'] === id) {
-                item['review'] = true;
-            }
-            return {
-                ...item,
-            };
-        });
-    }
-
-    handleChangeEditInput($event: Event, id: string | boolean) {
+    handleChangeEditInput($event: Event, index: number) {
         const value = ($event.target as any).value;
-        this.humanResources = this.humanResources.map((item: Record<string, string | boolean>) => {
-            if (item?.['id'] === id) {
-                item['name'] = value;
-                item['review'] = false;
-            }
-            return {
-                ...item,
-            };
-        });
+        this.humanResources[index]['name'] = value;
     }
 
-    handleOnEditSelect($event: string[], id: string | boolean) {
-        this.humanResources = this.humanResources.map((item: Record<string, string | boolean>) => {
-            if (item?.['id'] === id) {
-                item['designation'] = $event?.at(0) ?? 'Finance Officer';
-            }
-            return {
-                ...item,
-            };
-        });
+    handleOnEditSelect($event: string[], index: number) {
+        this.humanResources[index]['designation'] = $event?.at(0) ?? 'Finance Officer';
     }
 
-    handleDeleteHumanResource(id: string | boolean) {
-        this.humanResources = this.humanResources.filter((item) => item?.['id'] !== id);
+    handleDeleteHumanResource(index: number) {
+        this.humanResources.splice(index, 1);
     }
 
     uploadFiles() {

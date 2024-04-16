@@ -20,7 +20,7 @@ export class AppReviewOrgBankAccntInfoModalComponent {
 
     loading: boolean = false;
     submitted: boolean = false;
-    isHidden: string = 'yes';
+    isHidden: string = 'no';
 
     constructor(
         public bsModalRef: BsModalRef,

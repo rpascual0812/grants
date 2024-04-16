@@ -26,7 +26,7 @@ export class AppReviewFiscalSponsorBankDetailModalComponent {
 
     loading: boolean = false;
     submitted: boolean = false;
-    isHidden: string = 'yes';
+    isHidden: string = 'no';
 
     attachments: any = [];
     SERVER: string = _.BASE_URL;
