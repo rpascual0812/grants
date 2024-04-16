@@ -161,6 +161,17 @@ export interface PartnerOrganizationOtherInformation {
     partner_organization_pk?: number;
     archived?: boolean;
     documents: Document[];
+    organization_other_information_financial_human_resources: FinancialHumanResources[];
+}
+
+export interface FinancialHumanResources {
+    pk?: number;
+    partner_organization_other_information_pk?: number;
+    name?: string;
+    designation?: string;
+    created_by?: number;
+    date_created?: Date;
+    archived?: boolean;
 }
 
 export interface Project {
