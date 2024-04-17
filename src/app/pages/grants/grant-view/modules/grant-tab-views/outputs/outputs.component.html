@@ -1,0 +1,208 @@
+<div class="container">
+    <div class="card my-3">
+        <div class="card-header bg-dark-blue">
+            <h5 class="card-title text-white">Project Objectives</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-1">
+                    <p class="text-dark p-0 m-0">1</p>
+                </div>
+                <div class="col-12 col-md-5">
+                    <p class="text-dark p-0 m-0">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque quaerat ut optio odit
+                        placeat libero excepturi dolore eligendi. Velit, laudantium esse nam incidunt sunt quos laborum
+                        distinctio itaque consequatur dolorem.
+                    </p>
+                </div>
+                <div class="col-12 col-md-3">
+                    <p class="text-dark p-0 m-0">Luna Evergreen</p>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="d-flex flex-row gap-1">
+                        <button class="btn btn-icon-only">
+                            <i class="material-icons">edit</i>
+                        </button>
+                        <button class="btn btn-icon-only btn-danger btn-round">
+                            <i class="material-icons" style="position: relative; top: -2px; left: -2px">delete</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-12 col-md-1">
+                    <p class="text-dark p-0 m-0">2</p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input class="form-control border border-1 p-2" placeholder="Content" />
+                </div>
+                <div class="col-12 col-md-3">
+                    <input class="form-control border border-1 p-2" placeholder="Name of Commentor" />
+                </div>
+                <div class="col-12 col-md-2">
+                    <button class="btn btn-dark-blue">save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-3">
+        <div class="card-header bg-dark-blue">
+            <h5 class="card-title text-white">Actual Output/Results</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-1">
+                    <p class="text-dark p-0 m-0">1</p>
+                </div>
+                <div class="col-12 col-md-5">
+                    <p class="text-dark p-0 m-0">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque quaerat ut optio odit
+                        placeat libero excepturi dolore eligendi. Velit, laudantium esse nam incidunt sunt quos laborum
+                        distinctio itaque consequatur dolorem.
+                    </p>
+                </div>
+                <div class="col-12 col-md-3">
+                    <p class="text-dark p-0 m-0">Luna Evergreen</p>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="d-flex flex-row gap-1">
+                        <button class="btn btn-icon-only">
+                            <i class="material-icons">edit</i>
+                        </button>
+                        <button class="btn btn-icon-only btn-danger btn-round">
+                            <i class="material-icons" style="position: relative; top: -2px; left: -2px">delete</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-12 col-md-1">
+                    <p class="text-dark p-0 m-0">2</p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input class="form-control border border-1 p-2" placeholder="Content" />
+                </div>
+                <div class="col-12 col-md-3">
+                    <input class="form-control border border-1 p-2" placeholder="Name of Commentor" />
+                </div>
+                <div class="col-12 col-md-2">
+                    <button class="btn btn-dark-blue">save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="form-control d-flex flex-wrap flex-row justify-content-between">
+                        <label class="max-width-300">
+                            A. Does this project involve tenure security (If NO proceed to Question B)
+                        </label>
+                        <select
+                            class="border p-1 rounded border-1 ronded-1 text-secondary text-md font-weight-bold max-width-100"
+                            style="height: 50px"
+                        >
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    <div class="form-control">
+                        <label class="form-label">What is form of tenure security?</label>
+                        <app-select
+                            [arr]="[
+                                'Formal recognition advanced',
+                                'Formal recognition beginning phase (filing)',
+                                'Community  mapping (only)',
+                                'Community assertion',
+                                'Community development planning',
+                                'Protection/Conservation/Restoration'
+                            ]"
+                        ></app-select>
+                    </div>
+                    <div class="form-control">
+                        <label class="form-label">Type of area/territory</label>
+                        <app-select
+                            [arr]="[
+                                'Forest',
+                                'Ancestral domain/indigenous (combination/various)',
+                                'Agricultural/agrarian',
+                                'Coastal/marine/mangrove',
+                                'Peatland',
+                                'Other (please specify)'
+                            ]"
+                        ></app-select>
+                    </div>
+                    <div class="form-control">
+                        <label class="form-label">How many hectares are secured</label>
+                        <input class="border border-1 padding form-control p-2" type="number" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="form-control">
+                        <label class="form-label">What is the community product/source of livelihood</label>
+                        <input class="border border-1 padding p-2 form-control" type="text" />
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label">Income Baseline</label>
+                            <input class="border border-1 padding p-2 form-control" type="text" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label">Income Baseline</label>
+                            <input class="border border-1 padding p-2 form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label"># of individuals with increased income</label>
+                            <input class="border border-1 padding p-2 form-control" type="number" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label"># of individuals with increased income</label>
+                            <input class="border border-1 padding p-2 form-control" type="number" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-control d-flex flex-wrap flex-row justify-content-between">
+                        <label class="max-width-500">
+                            C. Does this project Promote disability rights and diffable participation
+                        </label>
+                        <select
+                            class="border p-1 rounded border-1 ronded-1 text-secondary text-md font-weight-bold max-width-100"
+                            style="height: 50px"
+                        >
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    <label class="form-label"> What type of intervention </label>
+                </div>
+                <div class="col-12 col-md-8">
+                    <app-select
+                        [arr]="[
+                            'Rights orientation and other basic orientation',
+                            'increase community participation',
+                            'increase income/economic opportunities',
+                            'Participation in decision-making (planning consultation etc.)',
+                            'Increasing role in decision making',
+                            'Participating in any social-environmental justice activities',
+                            'Others please specify'
+                        ]"
+                    ></app-select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

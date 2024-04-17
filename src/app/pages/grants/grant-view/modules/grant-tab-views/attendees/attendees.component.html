@@ -1,1 +1,56 @@
-<p>attendees works!</p>
+<div class="container">
+    <div>
+        <accordion [isAnimated]="true">
+            <accordion-group
+                *ngFor="let item of mockRandomEvent; index as i"
+                (isOpenChange)="handleIsOpenChange($event, i)"
+                [panelClass]="
+                    currentExpandedIdx === i ? 'custom-accordion-expanded w-100' : 'custom-accordion-collapsed w-100'
+                "
+                class="my-3"
+            >
+                <div class="flex d-flex justify-content-between align-items-center py-2" accordion-heading>
+                    <div class="pull-left float-left">
+                        <p class="text-dark text-sm font-weight-bold m-0 p-0">Random Event {{ i + 1 }}</p>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <div class="row border-dark border-top p-1">
+                        <div class="col-12 col-md-2">
+                            <p class="text-dark font-weight-bold text-sm">
+                                Name: <span class="font-weight-light">Juan Dela Cruz</span>
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <p class="text-dark font-weight-bold text-sm">
+                                Date of Birth: <span class="font-weight-light">June 5, 1989</span>
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <p class="text-dark font-weight-bold text-sm">
+                                Address: <span class="font-weight-light">New Era, Quezon City</span>
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <p class="text-dark font-weight-bold text-sm">
+                                Mobile No: <span class="font-weight-light">+63966984479</span>
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="d-flex flex-row gap-1">
+                                <button class="btn btn-icon-only btn-info btn-round">
+                                    <i class="material-icons" style="position: relative; top: -2px; left: -2px">edit</i>
+                                </button>
+                                <button class="btn btn-icon-only btn-danger btn-round">
+                                    <i class="material-icons" style="position: relative; top: -2px; left: -2px"
+                                        >delete</i
+                                    >
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </accordion-group>
+        </accordion>
+    </div>
+</div>
