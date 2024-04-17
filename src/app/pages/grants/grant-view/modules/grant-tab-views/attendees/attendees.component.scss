@@ -1,0 +1,26 @@
+$borderRadius: 4px;
+$borderLeft: 10px solid #1a237e;
+$marginTop: 1rem;
+$padding: 0.5rem;
+
+.custom-accordion-collapsed {
+    background-color: #fff;
+    border-radius: $borderRadius;
+    border-left: $borderLeft;
+    margin-top: $marginTop;
+    .panel-heading {
+        background-color: #fff;
+        padding: $padding;
+    }
+}
+
+.custom-accordion-expanded {
+    background-color: #dedede;
+    border-radius: $borderRadius;
+    border-left: $borderLeft;
+    margin-top: $marginTop;
+    .panel-heading {
+        background-color: #dedede;
+        padding: $padding;
+    }
+}

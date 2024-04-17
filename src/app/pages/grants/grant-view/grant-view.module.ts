@@ -11,6 +11,11 @@ import { FundingReleaseComponent } from './modules/grant-tab-views/funding-relea
 import { GoalsComponent } from './modules/grant-tab-views/goals/goals.component';
 import { BeneficiariesComponent } from './modules/grant-tab-views/beneficiaries/beneficiaries.component';
 import { AttendeesComponent } from './modules/grant-tab-views/attendees/attendees.component';
+import { OutputsComponent } from './modules/grant-tab-views/outputs/outputs.component';
+import { SelectModule } from 'src/app/components/select/select.module';
+import { CapdevComponent } from './modules/grant-tab-views/capdev/capdev.component';
+import { DocumentationsComponent } from './modules/grant-tab-views/documentations/documentations.component';
+import { LessonsComponent } from './modules/grant-tab-views/lessons/lessons.component';
 
 
 @NgModule({
@@ -19,7 +24,11 @@ import { AttendeesComponent } from './modules/grant-tab-views/attendees/attendee
     FundingReleaseComponent,
     GoalsComponent,
     BeneficiariesComponent,
-    AttendeesComponent
+    AttendeesComponent,
+    OutputsComponent,
+    CapdevComponent,
+    DocumentationsComponent,
+    LessonsComponent,
   ],
   exports: [
     GrantViewComponent
@@ -32,6 +41,7 @@ import { AttendeesComponent } from './modules/grant-tab-views/attendees/attendee
     ActivitiesTimelineModule,
     ReviewModule,
     GrantTabLayoutModule,
+    SelectModule,
   ]
 })
 export class GrantViewModule { }
