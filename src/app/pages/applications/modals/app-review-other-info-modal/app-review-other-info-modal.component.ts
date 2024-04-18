@@ -43,13 +43,13 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.attachments = this.currentApplication?.partner?.organization?.partner_organization_other_information?.documents;
+        this.attachments = this.currentApplication?.partner?.organization?.partner_organization_other_information?.documents ?? [];
         this.setForm();
     }
 
     setForm() {
-        this.otherInformation = this.currentApplication?.partner?.organization?.partner_organization_other_information;
-        this.humanResources = this.otherInformation?.organization_other_information_financial_human_resources;
+        this.otherInformation = this.currentApplication?.partner?.organization?.partner_organization_other_information ?? {};
+        this.humanResources = this.otherInformation?.organization_other_information_financial_human_resources ?? [];
 
         this.form = this.formBuilder.group({
             has_project: [this.otherInformation?.has_project ?? false],
@@ -107,7 +107,6 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
     }
 
     submit() {
-        console.log('humanResources', this.humanResources);
         this.loading = true;
         this.submitted = true;
         this.form.get('human_resources')?.patchValue(this.humanResources);
@@ -118,18 +117,20 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
             return;
         }
 
+        const otherInfo = {
+            partner_organization_pk: this.currentApplication?.partner?.organization?.pk,
+            pk: this.otherInformation?.pk,
+            ...value,
+        }
+
         this.applicationService
-            .savePartnerOtherInfo({
-                partner_organization_pk: this.currentApplication?.partner?.organization?.pk,
-                pk: this.otherInformation?.pk,
-                ...value,
-            })
+            .savePartnerOtherInfo(otherInfo)
             .subscribe({
                 next: (data: any) => {
-                    this.callback.emit({ ...this.otherInformation });
+                    this.callback.emit({ ...otherInfo });
                     this.toastr.success(
                         'The Other Information has been successfully ' +
-                        (this.otherInformation?.pk ? 'updated' : 'added'),
+                        (otherInfo?.pk ? 'updated' : 'added'),
                         'SUCCESS!'
                     );
                 },

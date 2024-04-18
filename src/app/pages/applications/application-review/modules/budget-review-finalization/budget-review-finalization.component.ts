@@ -86,6 +86,18 @@ export class BudgetReviewFinalizationComponent implements OnInit {
                 this.bsModalRef = this.modalService.show(AppReviewOrgBankAccntInfoModalComponent, initialState);
                 this.bsModalRef.content.callback.subscribe((res: any) => {
                     // this.currentApplication?.partner?.organization?.partner_organization_bank = res;
+                    this.currentApplication = {
+                        ...this.currentApplication,
+                        partner: {
+                            ...this.currentApplication?.partner,
+                            organization: {
+                                ...this.currentApplication?.partner?.organization,
+                                partner_organization_bank: {
+                                    ...res
+                                }
+                            }
+                        },
+                    };
 
                     this.cdr.detectChanges();
                 });
@@ -93,7 +105,15 @@ export class BudgetReviewFinalizationComponent implements OnInit {
             case 'fiscalSponsorBankDetail':
                 this.bsModalRef = this.modalService.show(AppReviewFiscalSponsorBankDetailModalComponent, initialState);
                 this.bsModalRef.content.callback.subscribe((res: any) => {
-                    console.log(res);
+                    this.currentApplication = {
+                        ...this.currentApplication,
+                        partner: {
+                            ...this.currentApplication?.partner,
+                            partner_fiscal_sponsor: {
+                                ...res
+                            }
+                        },
+                    };
 
                     this.cdr.detectChanges();
                 });
@@ -101,7 +121,19 @@ export class BudgetReviewFinalizationComponent implements OnInit {
             case 'otherInfo':
                 this.bsModalRef = this.modalService.show(AppReviewOtherInfoModalComponent, initialState);
                 this.bsModalRef.content.callback.subscribe((res: any) => {
-                    console.log(res);
+                    // this.currentApplication?.partner?.organization?.partner_organization_other_information = res;
+                    this.currentApplication = {
+                        ...this.currentApplication,
+                        partner: {
+                            ...this.currentApplication?.partner,
+                            organization: {
+                                ...this.currentApplication?.partner?.organization,
+                                partner_organization_other_information: {
+                                    ...res
+                                }
+                            }
+                        },
+                    };
 
                     this.cdr.detectChanges();
                 });

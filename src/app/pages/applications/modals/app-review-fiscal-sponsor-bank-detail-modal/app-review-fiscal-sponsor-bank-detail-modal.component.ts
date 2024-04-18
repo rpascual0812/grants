@@ -85,11 +85,17 @@ export class AppReviewFiscalSponsorBankDetailModalComponent {
 
         this.form.get('pk')?.patchValue(this.fiscal_sponsor?.pk);
 
+        const fiscalSponsor = {
+            partner_pk: this.currentApplication?.partner?.pk,
+            pk: this.fiscal_sponsor?.pk,
+            ...this.form.value,
+        }
+
         this.applicationService
             .saveApplicationFiscalSponsor(this.form.value)
             .subscribe({
                 next: (data: any) => {
-                    this.callback.emit({ ...this.fiscal_sponsor });
+                    this.callback.emit({ ...fiscalSponsor });
                     this.toastr.success('The Fiscal Sponsor Bank Details has been successfully ' + (this.fiscal_sponsor?.pk ? 'updated' : 'added'), 'SUCCESS!');
                 },
                 error: (error: any) => {
