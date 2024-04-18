@@ -62,12 +62,18 @@ export class AppReviewOrgBankAccntInfoModalComponent {
 
         this.form.get('pk')?.patchValue(this.bank_account?.pk);
 
+        const bankAccount = {
+            partner_organization_pk: this.currentApplication?.partner?.organization?.pk,
+            pk: this.bank_account?.pk,
+            ...this.form.value,
+        }
+
         this.applicationService.savePartnerOrgBank(this.form.value).subscribe({
             next: (data: any) => {
-                this.callback.emit({ ...this.bank_account });
+                this.callback.emit({ ...bankAccount });
                 this.toastr.success(
                     'The Organizational Bank Account Information has been successfully ' +
-                    (this.bank_account?.pk ? 'updated' : 'added'),
+                    (bankAccount?.pk ? 'updated' : 'added'),
                     'SUCCESS!'
                 );
             },

@@ -160,8 +160,8 @@ export interface PartnerOrganizationOtherInformation {
     date_created?: Date;
     partner_organization_pk?: number;
     archived?: boolean;
-    documents: Document[];
-    organization_other_information_financial_human_resources: FinancialHumanResources[];
+    documents?: Document[];
+    organization_other_information_financial_human_resources?: FinancialHumanResources[];
 }
 
 export interface FinancialHumanResources {
