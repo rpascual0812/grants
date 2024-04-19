@@ -13,7 +13,6 @@ export interface Application {
     partner?: Partner;
     project?: Project;
     reviews?: Review[];
-    statuses?: ApplicationStatus[];
     documents?: Document[];
     recommendations?: Recommendation[];
     donor?: string;
@@ -183,7 +182,7 @@ export interface Project {
     objective?: string;
     expected_output?: string;
     how_will_affect?: string;
-    status_pk?: number;
+    status?: string;
     type_pk?: number;
     date_created?: Date;
     project_proposal?: ProjectProposal;
