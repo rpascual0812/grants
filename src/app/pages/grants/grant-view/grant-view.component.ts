@@ -1,10 +1,17 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Application } from 'src/app/interfaces/_application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
+import { GrantSignalService } from 'src/app/services/grant.signal.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
+export type OnHiddenData = {
+    isSaved: boolean;
+    data: {
+        application: Application | null;
+    };
+};
 @Component({
     selector: 'app-grant-view',
     templateUrl: './grant-view.component.html',
@@ -17,6 +24,7 @@ export class GrantViewComponent implements OnInit {
     pk = '';
     currentExpanded = new Set();
 
+    grantSignalService = inject(GrantSignalService);
     constructor(
         private applicationService: ApplicationService,
         private route: ActivatedRoute,
@@ -59,12 +67,10 @@ export class GrantViewComponent implements OnInit {
         } else {
             this.currentExpanded.delete(section);
         }
-
-        console.log(this.currentExpanded);
     }
 
     handleOnEdit($event: MouseEvent, section: string) {
         $event.stopPropagation();
-        console.log('section', section);
+        this.grantSignalService.editSectionKey.set(section);
     }
 }

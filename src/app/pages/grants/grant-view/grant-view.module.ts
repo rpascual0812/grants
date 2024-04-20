@@ -16,6 +16,9 @@ import { SelectModule } from 'src/app/components/select/select.module';
 import { CapdevComponent } from './modules/grant-tab-views/capdev/capdev.component';
 import { DocumentationsComponent } from './modules/grant-tab-views/documentations/documentations.component';
 import { LessonsComponent } from './modules/grant-tab-views/lessons/lessons.component';
+import { ProjectEditModalComponent } from './modals/project-edit-modal/project-edit-modal.component';
+import { ProjInfoViewComponent } from './modals/modal-views/proj-info-view/proj-info-view.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -29,12 +32,16 @@ import { LessonsComponent } from './modules/grant-tab-views/lessons/lessons.comp
     CapdevComponent,
     DocumentationsComponent,
     LessonsComponent,
+    ProjectEditModalComponent,
+    ProjInfoViewComponent,
   ],
   exports: [
     GrantViewComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     AccordionModule.forRoot(),
     AssessmentModule,
     ProjectInformationModule,
