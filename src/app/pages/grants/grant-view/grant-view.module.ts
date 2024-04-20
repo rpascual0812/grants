@@ -19,6 +19,8 @@ import { LessonsComponent } from './modules/grant-tab-views/lessons/lessons.comp
 import { ProjectEditModalComponent } from './modals/project-edit-modal/project-edit-modal.component';
 import { ProjInfoViewComponent } from './modals/modal-views/proj-info-view/proj-info-view.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivitiesAndTimelineViewComponent } from './modals/modal-views/activities-and-timeline-view/activities-and-timeline-view.component';
+import { InputDropdownModule } from '../../applications/application-new/modules/input-dropdown/input-dropdown.module';
 
 
 @NgModule({
@@ -34,6 +36,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     LessonsComponent,
     ProjectEditModalComponent,
     ProjInfoViewComponent,
+    ActivitiesAndTimelineViewComponent,
   ],
   exports: [
     GrantViewComponent
@@ -49,6 +52,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReviewModule,
     GrantTabLayoutModule,
     SelectModule,
+    InputDropdownModule,
   ]
 })
 export class GrantViewModule { }

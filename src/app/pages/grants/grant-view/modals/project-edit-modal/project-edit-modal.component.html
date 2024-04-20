@@ -13,4 +13,8 @@
             [countries]="countries"
         ></app-proj-info-view>
     </ng-container>
+
+    <ng-container *ngIf="section === 'activitiesAndTimeline'">
+        <app-activities-and-timeline-view [application]="application"></app-activities-and-timeline-view>
+    </ng-container>
 </div>
