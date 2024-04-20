@@ -1,7 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { ChangeDetectorRef, Component, Input, OnInit, effect, inject } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Application } from 'src/app/interfaces/_application.interface';
+import { GrantSignalService } from 'src/app/services/grant.signal.service';
 import { getOtherCurrencyKey } from 'src/app/utilities/constants';
+import {
+    ProjectEditModalComponent,
+    ProjectEditModalTitleMapperKey,
+} from '../../modals/project-edit-modal/project-edit-modal.component';
+import { OnHiddenData } from '../../grant-view.component';
 
 @Component({
     selector: 'app-activities-timeline',
@@ -10,12 +16,45 @@ import { getOtherCurrencyKey } from 'src/app/utilities/constants';
 })
 export class ActivitiesTimelineComponent implements OnInit {
     @Input() application: Application | null = null;
+    bsModalRef?: BsModalRef;
+    section: ProjectEditModalTitleMapperKey | null = 'activitiesAndTimeline';
+    grantSignalService = inject(GrantSignalService);
 
-    constructor(private toastr: ToastrService) {}
+    constructor(private modalService: BsModalService, private changeDetection: ChangeDetectorRef) {}
+
+    grantSignalEffect = effect(
+        () => {
+            const section = this.grantSignalService.editSectionKey() as ProjectEditModalTitleMapperKey;
+            if (section === 'activitiesAndTimeline') {
+                this.handleModal();
+            }
+        },
+        {
+            allowSignalWrites: true,
+        }
+    );
 
     ngOnInit() {}
 
     getOtherCurrency(otherCurrency: string) {
         return getOtherCurrencyKey(otherCurrency);
+    }
+
+    handleModal() {
+        this.bsModalRef = this.modalService.show(ProjectEditModalComponent, {
+            class: 'modal-lg',
+            initialState: {
+                application: this.application,
+                section: this.section,
+            },
+        });
+
+        this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: OnHiddenData) => {
+            if (isSaved) {
+                this.application = data?.application;
+                this.changeDetection.detectChanges();
+            }
+        });
+        this.grantSignalService.editSectionKey.set(null);
     }
 }

@@ -4,6 +4,7 @@ import { Application, Country, Province } from 'src/app/interfaces/_application.
 
 export const PROJECT_EDIT_MODAL_TITLE_MAPPER = {
     projectInformation: `Project Information`,
+    activitiesAndTimeline: `Activities and Timeline`,
 };
 
 export type ProjectEditModalTitleMapperKey = keyof typeof PROJECT_EDIT_MODAL_TITLE_MAPPER;
