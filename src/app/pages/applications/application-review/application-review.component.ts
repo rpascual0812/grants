@@ -3,12 +3,10 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ApplicationRead } from 'src/app/interfaces/application.interface';
-import { Country } from 'src/app/interfaces/country.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { GlobalService } from 'src/app/services/global.service';
 import * as _ from '../../../utilities/globals';
-import { Application } from 'src/app/interfaces/_application.interface';
+import { Application, Country } from 'src/app/interfaces/_application.interface';
 
 type GrantTypeItem = {
     pk?: number;

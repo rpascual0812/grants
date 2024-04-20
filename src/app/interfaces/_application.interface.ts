@@ -81,9 +81,12 @@ export interface Country {
     code?: string;
     dial_code?: string;
     currency?: string;
+    currency_name?: string;
     currency_symbol?: string;
     currency_code?: string;
     date_created?: Date;
+    active?: boolean;
+    archived?: boolean;
 }
 
 export interface PartnerOrganizationBank {
@@ -307,5 +310,16 @@ export interface User {
     birthdate?: Date;
     mobile_number?: string;
     email_address?: string;
+    archived?: boolean;
+}
+
+export interface Province {
+    psgc_code?: string;
+    region_code?: number;
+    province_code?: number;
+    name?: string;
+    country_pk?: number;
+    active?: boolean;
+    user_pk?: number;
     archived?: boolean;
 }

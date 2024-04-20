@@ -1,8 +1,8 @@
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApplicationRead } from 'src/app/interfaces/application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
+import { Application } from 'src/app/interfaces/_application.interface';
 
 @Component({
     selector: 'app-application-success',
@@ -12,7 +12,7 @@ import { ApplicationService } from 'src/app/services/application.service';
 export class ApplicationSuccessComponent implements OnInit {
     loading = false;
     uuid: string = '';
-    application: ApplicationRead | null = null;
+    application: Application | null = null;
 
     constructor(private applicationService: ApplicationService, route: ActivatedRoute, private toastr: ToastrService) {
         this.uuid = route.snapshot.paramMap.get('uuid') ?? '';
@@ -26,7 +26,7 @@ export class ApplicationSuccessComponent implements OnInit {
         this.loading = true;
         this.applicationService.generated(this.uuid).subscribe({
             next: (res: any) => {
-                const data = res?.data as ApplicationRead;
+                const data = res?.data as Application;
                 this.application = data;
                 this.loading = false;
 
@@ -46,9 +46,7 @@ export class ApplicationSuccessComponent implements OnInit {
 
     sendEmail(data: any) {
         this.applicationService.sendSuccessEmail(data.pk).subscribe({
-            next: (res: any) => {
-
-            },
+            next: (res: any) => {},
             error: (err) => {
                 const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
                 const statusCode = err?.status ? `status: ${err?.status}` : '';

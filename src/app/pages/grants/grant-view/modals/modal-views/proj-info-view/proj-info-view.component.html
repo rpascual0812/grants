@@ -1,0 +1,231 @@
+<div class="modal-body">
+    <div class="container">
+        <form [formGroup]="form" (ngSubmit)="handleSave()">
+            <div>
+                <div class="row">
+                    <div class="col-12 col-lg-8">
+                        <div class="form-group my-3">
+                            <label class="font-weight-bold text-dark">Project title*</label>
+                            <input
+                                type="text"
+                                class="form-control border rounded-1 p-1"
+                                required
+                                [ngClass]="{ 'is-invalid': submitted && f['title'].errors }"
+                                formControlName="title"
+                            />
+                            <div *ngIf="submitted && f['title'].errors" class="invalid-feedback">
+                                <div *ngIf="f['title'].errors['required']">Project title is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                        <div class="form-group my-3">
+                            <label class="font-weight-bold text-dark">Duration*</label>
+                            <app-select
+                                class="shadow-none"
+                                [arr]="durationOpts"
+                                (onSelectEvent)="onChangeSelectedItem($event, 'duration')"
+                                (onDeSelectEvent)="onChangeSelectedItem($event, 'duration')"
+                                [defaultSelectedInArr]="
+                                    durationOpts.includes(form.controls['duration'].value ?? '')
+                                        ? form.controls['duration'].value
+                                        : null
+                                "
+                                [changeFieldEventEmitter]="
+                                    selectChangeFieldEventEmitter.durationSelectChangeFieldEventEmitter
+                                "
+                            ></app-select>
+                            <div *ngIf="submitted && f['duration'].errors">
+                                <div *ngIf="f['duration'].errors['required']" class="text-sm text-danger">
+                                    Duration is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group my-3">
+                    <label class="font-weight-bold text-dark">Background/What is the problem to be addressed?*</label>
+                    <textarea
+                        type="text"
+                        rows="5"
+                        class="form-control border rounded-1 p-2"
+                        style="resize: none"
+                        required
+                        [ngClass]="{ 'is-invalid': submitted && f['background'].errors }"
+                        formControlName="background"
+                    ></textarea>
+                    <div *ngIf="submitted && f['background'].errors" class="invalid-feedback">
+                        <div *ngIf="f['background'].errors['required']">
+                            Background/What is the problem to be addressed is required
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group my-3">
+                    <label class="font-weight-bold text-dark">Objectives*</label>
+                    <textarea
+                        type="text"
+                        rows="5"
+                        class="form-control border rounded-1 p-2"
+                        style="resize: none"
+                        required
+                        [ngClass]="{ 'is-invalid': submitted && f['objective'].errors }"
+                        formControlName="objective"
+                    ></textarea>
+                    <div *ngIf="submitted && f['objective'].errors" class="invalid-feedback">
+                        <div *ngIf="f['objective'].errors['required']">Objectives is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group my-3">
+                    <label class="font-weight-bold text-dark"
+                        >Expected outputs/How will the proposed project activities improve?*</label
+                    >
+                    <textarea
+                        type="text"
+                        rows="5"
+                        class="form-control border rounded-1 p-2"
+                        style="resize: none"
+                        required
+                        [ngClass]="{ 'is-invalid': submitted && f['expected_output'].errors }"
+                        formControlName="expected_output"
+                    ></textarea>
+                    <div *ngIf="submitted && f['expected_output'].errors" class="invalid-feedback">
+                        <div *ngIf="f['expected_output'].errors['required']">
+                            Expected outputs/How will the proposed project activities improve is required
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group my-3">
+                    <label class="font-weight-bold text-dark"
+                        >How will women and children be involved in the project? How will the benefit or be affected by
+                        the other project*</label
+                    >
+                    <textarea
+                        type="text"
+                        rows="5"
+                        class="form-control border rounded-1 p-2"
+                        style="resize: none"
+                        required
+                        [ngClass]="{ 'is-invalid': submitted && f['how_will_affect'].errors }"
+                        formControlName="how_will_affect"
+                    ></textarea>
+                    <div *ngIf="submitted && f['how_will_affect'].errors" class="invalid-feedback">
+                        <div *ngIf="f['how_will_affect'].errors['required']">Field is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group my-3">
+                    <label class="font-weight-bold text-dark">Website of Project/Organization</label>
+                    <input type="text" class="form-control border rounded-1 p-1" formControlName="project_website" />
+                </div>
+
+                <div class="container">
+                    <p class="text-dark font-weight-bold p-0">Project Location*</p>
+                    <div *ngIf="submitted && f['project_location'].errors">
+                        <div *ngIf="f['project_location'].errors['required']" class="text-sm text-danger">
+                            Project Location is required
+                        </div>
+                    </div>
+                    <div
+                        formArrayName="project_location"
+                        *ngFor="let item of formProjLocations.controls; index as i"
+                        [attr.data-index]="i"
+                        class="row align-items-center my-2"
+                    >
+                        <ng-container [formGroupName]="i">
+                            <div class="col-12 col-md-2 my-1">
+                                <p class="font-weight-bold text-dark text-sm p-0 m-0">
+                                    Location
+                                    {{ i + 1 }}
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-4 my-1">
+                                <app-select
+                                    class="shadow-none"
+                                    [key]="SELECT_COUNTRY_KEY_PREFIX + i.toString()"
+                                    [arr]="countries"
+                                    [listItemKey]="'pk'"
+                                    (onSelectEvent)="onModifyProjLoc($event, 'pk', 'country_pk', i)"
+                                    (onDeSelectEvent)="onModifyProjLoc($event, 'pk', 'country_pk', i)"
+                                    [defaultSelectedItemKey]="
+                                        formProjLocations.controls.at(i)?.get('country_pk')?.value ?? ''
+                                    "
+                                    [changeFieldEventEmitter]="
+                                        selectChangeFieldEventEmitter.countrySelectChangeFieldEventEmitter
+                                    "
+                                ></app-select>
+                                <div *ngIf="submitted && formProjLocations.controls.at(i)?.get('country_pk')?.errors">
+                                    <div
+                                        *ngIf="formProjLocations.controls.at(i)?.get('country_pk')?.errors"
+                                        class="text-sm text-danger"
+                                    >
+                                        Country is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-4 my-1">
+                                <app-select
+                                    [key]="SELECT_PROVINCE_KEY_PREFIX + i.toString()"
+                                    [listItemKey]="'province_code'"
+                                    [changeFieldEventEmitter]="
+                                        selectChangeFieldEventEmitter.provinceSelectChangeFieldEventEmitter
+                                    "
+                                    (onSelectEvent)="onModifyProjLoc($event, 'province_code', 'province_code', i)"
+                                    (onDeSelectEvent)="onModifyProjLoc($event, 'province_code', 'province_code', i)"
+                                    [defaultSelectedItemKey]="
+                                        formProjLocations.controls.at(i)?.get('province_code')?.value ?? ''
+                                    "
+                                >
+                                </app-select>
+                                <div
+                                    *ngIf="submitted && formProjLocations.controls.at(i)?.get('province_code')?.errors"
+                                >
+                                    <div
+                                        *ngIf="
+                                            formProjLocations.controls?.at(i) &&
+                                            formProjLocations.controls?.at(i)?.get('province_code')?.errors
+                                        "
+                                        class="text-sm text-danger"
+                                    >
+                                        Province is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2 my-1">
+                                <button class="btn btn-danger" type="button" (click)="onDelProjLoc(i)">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <button class="btn btn-dark-blue my-3" type="button" (click)="onAddProjLoc()">
+                        <span class="icon icon-sm position-relative" style="bottom: 2px">
+                            <i class="material-icons">add</i>
+                        </span>
+                        Add
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-white"
+                    (click)="handleClose()"
+                    type="button"
+                    [disabled]="processing"
+                >
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-dark-blue" (click)="handleSave()" [disabled]="processing">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

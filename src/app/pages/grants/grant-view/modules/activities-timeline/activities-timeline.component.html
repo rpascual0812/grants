@@ -5,7 +5,11 @@
             <p class="text-dark-blue font-weight-bold">Budget Request</p>
         </div>
         <div class="col-md-10">
-            <p class="text-secondary font-weight-bold">100 USD | 50000 PHP</p>
+            <p class="text-secondary font-weight-bold">
+                {{ application?.project?.project_proposal?.budget_request_usd | number }} USD |
+                {{ application?.project?.project_proposal?.budget_request_other | number }}
+                {{ getOtherCurrency(application?.project?.project_proposal?.budget_request_other_currency ?? '') }}
+            </p>
         </div>
     </div>
     <div class="row">
@@ -14,9 +18,7 @@
         </div>
         <div class="col-md-12">
             <p class="text-secondary font-weight-bold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam amet repellendus impedit dignissimos
-                atque ducimus magnam consequatur, possimus, quod error iure! Debitis earum nulla error dolorem aperiam,
-                eveniet atque facilis?
+                {{ application?.project?.project_proposal?.monitor }}
             </p>
         </div>
     </div>

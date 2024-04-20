@@ -1,0 +1,16 @@
+<div class="modal-header bg-gray-300">
+    <h4 class="modal-title pull-left text-dark">{{ this.modalTitle }}</h4>
+    <button type="button" class="btn btn-default pull-right" aria-label="Close" (click)="this.bsModalRef.hide()">
+        <i class="material-icons">close</i>
+    </button>
+</div>
+
+<div>
+    <ng-container *ngIf="section === 'projectInformation'">
+        <app-proj-info-view
+            [application]="application"
+            [provinces]="provinces"
+            [countries]="countries"
+        ></app-proj-info-view>
+    </ng-container>
+</div>
