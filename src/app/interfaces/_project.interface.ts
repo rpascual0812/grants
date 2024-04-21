@@ -1,9 +1,16 @@
-import { Application, Partner, ProjectBeneficiary, ProjectLocation, ProjectProposal, Type } from "./_application.interface";
+import {
+    Application,
+    Partner,
+    ProjectBeneficiary,
+    ProjectLocation,
+    ProjectProposal,
+    Type,
+} from './_application.interface';
 
 export interface Project {
     pk?: number;
     application_pk?: number;
-    application: Application;
+    application?: Application;
     title?: string;
     duration?: string;
     background?: string;
@@ -12,7 +19,7 @@ export interface Project {
     how_will_affect?: string;
     status?: string;
     type_pk?: number;
-    financial_management_training: boolean;
+    financial_management_training?: boolean;
     date_created?: Date;
     project_proposal?: ProjectProposal;
     project_beneficiary?: ProjectBeneficiary[];
