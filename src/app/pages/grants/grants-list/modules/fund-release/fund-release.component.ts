@@ -5,10 +5,11 @@ import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { Application } from 'src/app/interfaces/_application.interface';
 import { ToastrService } from 'ngx-toastr';
 import { getOtherCurrencyKey } from 'src/app/utilities/constants';
+import { Project } from 'src/app/interfaces/_project.interface';
+import { ProjectService } from 'src/app/services/project.service';
 
 interface Grant {
     pk: number;
-    project_pk: number;
     partnerId: string;
     partner: string;
     title: string;
@@ -18,6 +19,7 @@ interface Grant {
     proposedBudgetOtherCurrency: string;
     donorProject: string;
     expanded: boolean;
+    status: string;
 }
 
 type ColumnObj = string | number | Date;
@@ -42,7 +44,7 @@ export class FundReleaseComponent implements OnInit {
     page: number = 1;
     @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective<Grant>>;
 
-    constructor(private applicationService: ApplicationService, private toastr: ToastrService) { }
+    constructor(private projectService: ProjectService, private toastr: ToastrService) { }
 
     ngOnInit() {
         this.fetch()
@@ -50,29 +52,29 @@ export class FundReleaseComponent implements OnInit {
 
     fetch() {
         this.loading = true;
-        this.applicationService.fetch().subscribe({
+        this.projectService.fetch().subscribe({
             next: (res: any) => {
                 console.log(res);
                 const status = res?.status;
-                const data = (res?.data ?? []) as Application[];
+                const data = (res?.data ?? []) as Project[];
                 if (status) {
-                    const tempData: Grant[] = data?.map((item) => ({
+                    const projects: Grant[] = data?.map((item) => ({
                         pk: item?.pk as number,
-                        project_pk: item?.project?.pk as number,
                         partnerId: item?.partner?.partner_id ?? '',
                         partner: item?.partner?.name ?? '',
-                        title: item?.project?.title ?? '',
+                        title: item?.title ?? '',
                         applicationDate: item?.date_created as Date,
-                        proposedBudget: parseInt(item?.project?.project_proposal?.budget_request_usd ?? ''),
-                        proposedBudgetOther: parseInt(item?.project?.project_proposal?.budget_request_other ?? ''),
+                        proposedBudget: parseInt(item?.project_proposal?.budget_request_usd ?? ''),
+                        proposedBudgetOther: parseInt(item?.project_proposal?.budget_request_other ?? ''),
                         proposedBudgetOtherCurrency:
-                            getOtherCurrencyKey(item?.project?.project_proposal?.budget_request_other_currency ?? '') ??
+                            getOtherCurrencyKey(item?.project_proposal?.budget_request_other_currency ?? '') ??
                             '',
                         donorProject: '',
                         expanded: false,
+                        status: item.status ?? ''
                     }));
-                    this.fundRelease = tempData;
-                    this.closingGrant = tempData;
+                    this.fundRelease = projects.filter(proj => proj.status == 'Fund Release');
+                    this.closingGrant = projects.filter(proj => proj.status == 'Completed');
                 }
                 this.loading = false;
             },
