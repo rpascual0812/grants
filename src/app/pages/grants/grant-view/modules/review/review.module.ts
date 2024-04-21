@@ -3,21 +3,27 @@ import { CommonModule } from '@angular/common';
 import { ReviewComponent } from './review.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-
-
+import { InitialSubmissionModule } from './modules/initial-submission/initial-submission.module';
+import { ContractPreparationModule } from './modules/contract-preparation/contract-preparation.module';
+import { FinalApprovalModule } from './modules/final-approval/final-approval.module';
+import { PartnerSigningModule } from './modules/partner-signing/partner-signing.module';
 
 @NgModule({
-  declarations: [
-    ReviewComponent
-  ],
-  exports: [
-    ReviewComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgSelectModule
-  ]
+    declarations: [
+        ReviewComponent
+    ],
+    exports: [
+        ReviewComponent
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgSelectModule,
+        InitialSubmissionModule,
+        ContractPreparationModule,
+        FinalApprovalModule,
+        PartnerSigningModule
+    ]
 })
 export class ReviewModule { }

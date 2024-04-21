@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { AdvisersReviewComponent } from './advisers-review.component';
+import { ContractPreparationComponent } from './contract-preparation.component';
 
 @NgModule({
-    declarations: [AdvisersReviewComponent],
-    exports: [AdvisersReviewComponent],
+    declarations: [
+        ContractPreparationComponent
+    ],
+    exports: [ContractPreparationComponent],
     imports: [
         CommonModule,
         NgSelectModule,
@@ -14,4 +16,4 @@ import { AdvisersReviewComponent } from './advisers-review.component';
         ReactiveFormsModule,
     ],
 })
-export class AdvisersReviewModule { }
+export class ContractPreparationModule { }
