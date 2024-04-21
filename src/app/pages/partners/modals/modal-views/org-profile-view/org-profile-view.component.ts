@@ -42,7 +42,7 @@ export class OrgProfileViewComponent implements OnInit {
         private globalService: GlobalService,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.setForm();

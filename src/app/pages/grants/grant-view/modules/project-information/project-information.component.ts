@@ -120,7 +120,6 @@ export class ProjectInformationComponent implements OnInit {
 
         this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: OnHiddenData) => {
             if (isSaved) {
-                this.project = data?.project;
                 this.changeDetection.detectChanges();
             }
         });
