@@ -1,5 +1,5 @@
 <div>
-    <div class="container text-center my-5"  *ngIf="loading">
+    <div class="container text-center my-5" *ngIf="loading">
         <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
@@ -31,20 +31,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr
-                            *ngFor="
+                        <tr *ngFor="
                                 let item of contractPreparation | paginate : { itemsPerPage: 10, currentPage: page };
                                 index as i
-                            "
-                        >
+                            ">
                             <th class="text-dark font-weight-bold" scope="row">{{ item.partnerId }}</th>
                             <td class="text-dark font-weight-light">
-                                <span
-                                    style="font-size: 8px"
-                                    class="badge rounded-pill"
-                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }"
-                                    >{{ i === 3 ? 'new' : i }}</span
-                                >
+                                <span style="font-size: 8px" class="badge rounded-pill"
+                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }">{{ i === 3 ? 'new' : i
+                                    }}</span>
                                 {{ item.partner }}
                             </td>
                             <td class="text-dark font-weight-light">{{ item.title }}</td>
@@ -59,7 +54,8 @@
                                 {{ item.donorProject }}
                             </td>
                             <td class="text-dark font-weight-light">
-                                <button class="btn btn-default text-info" [routerLink]="['/grant', item.pk]">
+                                <button class="btn btn-default text-info"
+                                    [routerLink]="['/grant/' + item.project_pk + '/review']">
                                     Review
                                 </button>
                                 <button class="btn btn-default text-danger">Delete</button>
@@ -102,20 +98,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr
-                            *ngFor="
+                        <tr *ngFor="
                                 let item of finalApproval | paginate : { itemsPerPage: 10, currentPage: page };
                                 index as i
-                            "
-                        >
+                            ">
                             <th class="text-dark font-weight-bold" scope="row">{{ item.partnerId }}</th>
                             <td class="text-dark font-weight-light">
-                                <span
-                                    style="font-size: 8px"
-                                    class="badge rounded-pill"
-                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }"
-                                    >{{ i === 3 ? 'new' : i }}</span
-                                >
+                                <span style="font-size: 8px" class="badge rounded-pill"
+                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }">{{ i === 3 ? 'new' : i
+                                    }}</span>
                                 {{ item.partner }}
                             </td>
                             <td class="text-dark font-weight-light">{{ item.title }}</td>
@@ -173,20 +164,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr
-                            *ngFor="
+                        <tr *ngFor="
                                 let item of partnerSigning | paginate : { itemsPerPage: 10, currentPage: page };
                                 index as i
-                            "
-                        >
+                            ">
                             <th class="text-dark font-weight-bold" scope="row">{{ item.partnerId }}</th>
                             <td class="text-dark font-weight-light">
-                                <span
-                                    style="font-size: 8px"
-                                    class="badge rounded-pill"
-                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }"
-                                    >{{ i === 3 ? 'new' : i }}</span
-                                >
+                                <span style="font-size: 8px" class="badge rounded-pill"
+                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }">{{ i === 3 ? 'new' : i
+                                    }}</span>
                                 {{ item.partner }}
                             </td>
                             <td class="text-dark font-weight-light">{{ item.title }}</td>

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import { Application } from 'src/app/interfaces/_application.interface';
+import { Project } from 'src/app/interfaces/_project.interface';
 import { InputDropdownValue } from 'src/app/pages/applications/application-new/modules/input-dropdown/input-dropdown.component';
 import { ApplicationService } from 'src/app/services/application.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
@@ -15,7 +15,7 @@ import { OnHiddenData } from '../../../grant-view.component';
     styleUrls: ['./activities-and-timeline-view.component.scss'],
 })
 export class ActivitiesAndTimelineViewComponent implements OnInit {
-    @Input() application: Application | null;
+    @Input() project: Project | null;
 
     processing = false;
     submitted = false;
@@ -29,7 +29,7 @@ export class ActivitiesAndTimelineViewComponent implements OnInit {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.setForm();
@@ -40,7 +40,7 @@ export class ActivitiesAndTimelineViewComponent implements OnInit {
     }
 
     setForm() {
-        const currentProposal = this.application?.project?.project_proposal;
+        const currentProposal = this.project?.project_proposal;
         this.form = this.formBuilder.group({
             monitor: [currentProposal?.monitor ?? '', Validators.required],
             budget_request_usd: [currentProposal?.budget_request_usd ?? '', Validators.required],
@@ -74,7 +74,7 @@ export class ActivitiesAndTimelineViewComponent implements OnInit {
 
     saveFormValue() {
         const { value } = this.form;
-        const project = this.application?.project;
+        const project = this.project;
         const projectProposal = project?.project_proposal;
         this.applicationService
             .saveApplicationProposal({
@@ -88,19 +88,19 @@ export class ActivitiesAndTimelineViewComponent implements OnInit {
                     const status = res.status;
                     if (status) {
                         this.toastr.success('Activities and Timeline has been successfully saved', 'SUCCESS!');
-                        this.application = {
-                            ...this.application,
-                            project: {
-                                ...this.application?.project,
-                                project_proposal: {
-                                    ...data,
-                                },
-                            },
-                        };
+                        // this.project = {
+                        //     ...this.project,
+                        //     project: {
+                        //         ...this.project?.project,
+                        //         project_proposal: {
+                        //             ...data,
+                        //         },
+                        //     },
+                        // };
                         this.bsModalRef.onHidden?.next({
                             isSaved: true,
                             data: {
-                                application: this.application,
+                                project: this.project,
                             },
                         } as OnHiddenData);
                         this.handleClose();

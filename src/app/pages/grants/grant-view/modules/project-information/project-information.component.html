@@ -13,13 +13,13 @@
                 <p class="text-dark-blue font-weight-bold">Project Title</p>
             </div>
             <div class="col-md-10">
-                <p class="text-secondary font-weight-bold">{{ application?.project?.title }}</p>
+                <p class="text-secondary font-weight-bold">{{ project?.title }}</p>
             </div>
             <div class="col-md-2">
                 <p class="text-dark-blue font-weight-bold">Project duration</p>
             </div>
             <div class="col-md-10">
-                <p class="text-secondary font-weight-bold">{{ application?.project?.duration }}</p>
+                <p class="text-secondary font-weight-bold">{{ project?.duration }}</p>
             </div>
         </div>
 
@@ -29,7 +29,7 @@
             </div>
             <div class="col-md-12">
                 <p class="text-secondary font-weight-bold">
-                    {{ application?.project?.background }}
+                    {{ project?.background }}
                 </p>
             </div>
 
@@ -38,7 +38,7 @@
             </div>
             <div class="col-md-12">
                 <p class="text-secondary font-weight-bold">
-                    {{ application?.project?.objective }}
+                    {{ project?.objective }}
                 </p>
             </div>
 
@@ -49,7 +49,7 @@
             </div>
             <div class="col-md-12">
                 <p class="text-secondary font-weight-bold">
-                    {{ application?.project?.expected_output }}
+                    {{ project?.expected_output }}
                 </p>
             </div>
 
@@ -60,7 +60,7 @@
             </div>
             <div class="col-md-12">
                 <p class="text-secondary font-weight-bold">
-                    {{ application?.project?.how_will_affect }}
+                    {{ project?.how_will_affect }}
                 </p>
             </div>
         </div>
@@ -70,7 +70,7 @@
                 <label class="font-weight-bold text-dark">Website of Project Organization</label>
                 <div class="d-flex gap-1">
                     <p class="text-secondary font-weight-bold">
-                        {{ application?.partner?.organization?.project_website }}
+                        {{ project?.partner?.organization?.project_website }}
                     </p>
                 </div>
             </div>
@@ -80,10 +80,7 @@
             <div class="col-md-6">
                 <p class="text-dark font-weight-bold p-0">Project Location</p>
                 <div class="container">
-                    <div
-                        *ngFor="let item of application?.project?.project_location; index as i"
-                        class="row align-items-center my-2"
-                    >
+                    <div *ngFor="let item of project?.project_location; index as i" class="row align-items-center my-2">
                         <div class="col-12 col-md-2 my-1">
                             <p class="font-weight-bold text-dark text-sm p-0 m-0">Location {{ i + 1 }}</p>
                         </div>

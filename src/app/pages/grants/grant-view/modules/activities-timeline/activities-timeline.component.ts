@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnInit, effect, inject } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Application } from 'src/app/interfaces/_application.interface';
+import { Project } from 'src/app/interfaces/_project.interface';
 import { GrantSignalService } from 'src/app/services/grant.signal.service';
 import { getOtherCurrencyKey } from 'src/app/utilities/constants';
 import {
@@ -15,12 +15,12 @@ import { OnHiddenData } from '../../grant-view.component';
     styleUrls: ['./activities-timeline.component.scss'],
 })
 export class ActivitiesTimelineComponent implements OnInit {
-    @Input() application: Application | null = null;
+    @Input() project: Project | null = null;
     bsModalRef?: BsModalRef;
     section: ProjectEditModalTitleMapperKey | null = 'activitiesAndTimeline';
     grantSignalService = inject(GrantSignalService);
 
-    constructor(private modalService: BsModalService, private changeDetection: ChangeDetectorRef) {}
+    constructor(private modalService: BsModalService, private changeDetection: ChangeDetectorRef) { }
 
     grantSignalEffect = effect(
         () => {
@@ -34,7 +34,7 @@ export class ActivitiesTimelineComponent implements OnInit {
         }
     );
 
-    ngOnInit() {}
+    ngOnInit() { }
 
     getOtherCurrency(otherCurrency: string) {
         return getOtherCurrencyKey(otherCurrency);
@@ -44,14 +44,14 @@ export class ActivitiesTimelineComponent implements OnInit {
         this.bsModalRef = this.modalService.show(ProjectEditModalComponent, {
             class: 'modal-lg',
             initialState: {
-                application: this.application,
+                project: this.project,
                 section: this.section,
             },
         });
 
         this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: OnHiddenData) => {
             if (isSaved) {
-                this.application = data?.application;
+                this.project = data?.project;
                 this.changeDetection.detectChanges();
             }
         });

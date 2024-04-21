@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnInit, effect, inject } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Application, Country, Province } from 'src/app/interfaces/_application.interface';
+import { Project } from 'src/app/interfaces/_project.interface';
 import { GlobalService } from 'src/app/services/global.service';
 import { GrantSignalService } from 'src/app/services/grant.signal.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
@@ -17,7 +18,7 @@ import { OnHiddenData } from '../../grant-view.component';
     styleUrls: ['./project-information.component.scss'],
 })
 export class ProjectInformationComponent implements OnInit {
-    @Input() application: Application | null = null;
+    @Input() project: Project | null = null;
     bsModalRef?: BsModalRef;
     loadingCountryFetch = true;
     loadingProvinceFetch = true;
@@ -31,7 +32,7 @@ export class ProjectInformationComponent implements OnInit {
         private toastr: ToastrService,
         private modalService: BsModalService,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) { }
 
     grantSignalEffect = effect(
         () => {
@@ -110,7 +111,7 @@ export class ProjectInformationComponent implements OnInit {
         this.bsModalRef = this.modalService.show(ProjectEditModalComponent, {
             class: 'modal-lg',
             initialState: {
-                application: this.application,
+                project: this.project,
                 section: this.section,
                 provinces: this.provinces,
                 countries: this.countries,
@@ -119,7 +120,7 @@ export class ProjectInformationComponent implements OnInit {
 
         this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: OnHiddenData) => {
             if (isSaved) {
-                this.application = data?.application;
+                this.project = data?.project;
                 this.changeDetection.detectChanges();
             }
         });

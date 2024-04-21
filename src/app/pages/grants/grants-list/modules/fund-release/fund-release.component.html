@@ -1,5 +1,5 @@
 <div>
-    <div class="container text-center my-5"  *ngIf="loading">
+    <div class="container text-center my-5" *ngIf="loading">
         <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
@@ -15,49 +15,24 @@
                     <thead>
                         <tr style="background-color: #474ca5">
                             <th class="p-2 text-white" style="width: 180px" scope="col">Partner ID</th>
-                            <th
-                                class="p-2 text-white"
-                                style="width: 175px"
-                                scope="col"
-                                sortable="partner"
-                                (sort)="onSort($event)"
-                            >
+                            <th class="p-2 text-white" style="width: 175px" scope="col" sortable="partner"
+                                (sort)="onSort($event)">
                                 Partner
                             </th>
-                            <th
-                                class="p-2 text-white"
-                                style="width: 135px"
-                                scope="col"
-                                sortable="title"
-                                (sort)="onSort($event)"
-                            >
+                            <th class="p-2 text-white" style="width: 135px" scope="col" sortable="title"
+                                (sort)="onSort($event)">
                                 Title
                             </th>
-                            <th
-                                class="p-2 text-white"
-                                style="width: 115px"
-                                scope="col"
-                                sortable="applicationDate"
-                                (sort)="onSort($event)"
-                            >
+                            <th class="p-2 text-white" style="width: 115px" scope="col" sortable="applicationDate"
+                                (sort)="onSort($event)">
                                 Approved Date
                             </th>
-                            <th
-                                class="p-2 text-white"
-                                style="width: 130px"
-                                scope="col"
-                                sortable="proposedBudget"
-                                (sort)="onSort($event)"
-                            >
+                            <th class="p-2 text-white" style="width: 130px" scope="col" sortable="proposedBudget"
+                                (sort)="onSort($event)">
                                 Approved Budget
                             </th>
-                            <th
-                                class="p-2 text-white"
-                                style="width: 150px"
-                                scope="col"
-                                sortable="donorProject"
-                                (sort)="onSort($event)"
-                            >
+                            <th class="p-2 text-white" style="width: 150px" scope="col" sortable="donorProject"
+                                (sort)="onSort($event)">
                                 Donor/Project
                             </th>
                             <th class="p-2" style="width: 162px" scope="col"></th>
@@ -65,57 +40,51 @@
                     </thead>
                     <tbody>
                         <accordion [isAnimated]="true">
-                            <tr
-                                class="border-0"
-                                *ngFor="let item of fundRelease | paginate : { itemsPerPage: 10, currentPage: page }"
-                            >
-                                <accordion-group
-                                    style="width: 1295px !important"
+                            <tr class="border-0"
+                                *ngFor="let item of fundRelease | paginate : { itemsPerPage: 10, currentPage: page }">
+                                <accordion-group style="width: 1295px !important"
                                     [panelClass]="item?.['expanded'] ? 'custom-accordion-expanded' : 'custom-accordion-collapsed'"
-                                    (isOpenChange)="handleIsOpenChange($event, item.partnerId)"
-                                >
+                                    (isOpenChange)="handleIsOpenChange($event, item.partnerId)">
                                     <button class="btn p-0 m-0" accordion-heading>
-                                        <th
-                                            class="text-dark font-weight-bold text-start text-wrap"
-                                            style="width: 215px"
-                                            scope="row"
-                                        >
+                                        <th class="text-dark font-weight-bold text-start text-wrap" style="width: 215px"
+                                            scope="row">
                                             {{ item.partnerId }}
                                         </th>
-                                        <td class="text-dark font-weight-light text-wrap text-start" style="width: 215px">
+                                        <td class="text-dark font-weight-light text-wrap text-start"
+                                            style="width: 215px">
                                             {{ item.partner }}
                                         </td>
-                                        <td class="text-dark font-weight-light text-wrap text-start" style="width: 215px">
+                                        <td class="text-dark font-weight-light text-wrap text-start"
+                                            style="width: 215px">
                                             {{ item.title }}
                                         </td>
-                                        <td class="text-dark font-weight-light text-wrap text-start" style="width: 100px">
+                                        <td class="text-dark font-weight-light text-wrap text-start"
+                                            style="width: 100px">
                                             {{ item.applicationDate | date : 'shortDate' }}
                                         </td>
-                                        <td class="text-dark font-weight-light text-wrap text-start" style="width: 150px">
-                                            {{ item.proposedBudget | number }} USD | {{ item.proposedBudgetOther | number }} {{ item.proposedBudgetOtherCurrency }}
+                                        <td class="text-dark font-weight-light text-wrap text-start"
+                                            style="width: 150px">
+                                            {{ item.proposedBudget | number }} USD | {{ item.proposedBudgetOther |
+                                            number }} {{ item.proposedBudgetOtherCurrency }}
                                         </td>
-                                        <td class="text-dark font-weight-light text-wrap text-start" style="width: 150px">
+                                        <td class="text-dark font-weight-light text-wrap text-start"
+                                            style="width: 150px">
                                             {{ item.donorProject }}
                                         </td>
                                         <td class="text-dark font-weight-light">
                                             <div class="d-flex flex-wrap gap-2 align-items-center">
-                                                <button
-                                                    class="btn btn-default text-info p-1 m-0 text-xs"
-                                                    [routerLink]="['/grant', item.pk]"
-                                                    (click)="handleReview($event)"
-                                                >
+                                                <button class="btn btn-default text-info p-1 m-0 text-xs"
+                                                    [routerLink]="['/grant' + item.project_pk + '/review']"
+                                                    (click)="handleReview($event)">
                                                     Review
                                                 </button>
-                                                <button
-                                                    class="btn btn-default text-danger p-1 m-0 text-xs"
-                                                    (click)="handleDelete($event)"
-                                                >
+                                                <button class="btn btn-default text-danger p-1 m-0 text-xs"
+                                                    (click)="handleDelete($event)">
                                                     Delete
                                                 </button>
                                                 <button class="btn btn-icon-only p-0">
                                                     <i class="material-icons">
-                                                        {{ item.expanded ? 'expand_less' : 'expand_more' }}</i
-                                                    >
+                                                        {{ item.expanded ? 'expand_less' : 'expand_more' }}</i>
                                                 </button>
                                             </div>
                                         </td>
@@ -147,18 +116,15 @@
                                                             <div class="d-flex flex-column">
                                                                 <div class="form-check p-0 m-0">
                                                                     <label
-                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                        >Acknowledgement</label
-                                                                    >
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs">Acknowledgement</label>
                                                                     <input class="form-check-input" type="checkbox" />
                                                                 </div>
                                                             </div>
                                                             <div class="d-flex flex-column">
                                                                 <div class="form-check p-0 m-0">
                                                                     <label
-                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                        >Official Receipt</label
-                                                                    >
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs">Official
+                                                                        Receipt</label>
                                                                     <input class="form-check-input" type="checkbox" />
                                                                 </div>
                                                             </div>
@@ -168,16 +134,12 @@
                                                                 </p>
                                                                 <div class="form-check p-0 m-0">
                                                                     <label
-                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                        >Narrative</label
-                                                                    >
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs">Narrative</label>
                                                                     <input class="form-check-input" type="checkbox" />
                                                                 </div>
                                                                 <div class="form-check p-0 m-0">
                                                                     <label
-                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                        >Financial</label
-                                                                    >
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs">Financial</label>
                                                                     <input class="form-check-input" type="checkbox" />
                                                                 </div>
                                                             </div>
@@ -189,9 +151,8 @@
                                                         <p class="text-dark text-sm m-0 p-0">100000</p>
                                                         <div class="form-check p-0 m-0">
                                                             <label
-                                                                class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                >Next Tranche Request</label
-                                                            >
+                                                                class="form-check-label font-weight-bold text-dark mx-1 text-xs">Next
+                                                                Tranche Request</label>
                                                             <input class="form-check-input" type="checkbox" />
                                                         </div>
                                                     </div>
@@ -216,18 +177,15 @@
                                                             <div class="d-flex flex-column">
                                                                 <div class="form-check p-0 m-0">
                                                                     <label
-                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                        >Acknowledgement</label
-                                                                    >
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs">Acknowledgement</label>
                                                                     <input class="form-check-input" type="checkbox" />
                                                                 </div>
                                                             </div>
                                                             <div class="d-flex flex-column">
                                                                 <div class="form-check p-0 m-0">
                                                                     <label
-                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                        >Official Receipt</label
-                                                                    >
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs">Official
+                                                                        Receipt</label>
                                                                     <input class="form-check-input" type="checkbox" />
                                                                 </div>
                                                             </div>
@@ -237,16 +195,12 @@
                                                                 </p>
                                                                 <div class="form-check p-0 m-0">
                                                                     <label
-                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                        >Narrative</label
-                                                                    >
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs">Narrative</label>
                                                                     <input class="form-check-input" type="checkbox" />
                                                                 </div>
                                                                 <div class="form-check p-0 m-0">
                                                                     <label
-                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                        >Financial</label
-                                                                    >
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs">Financial</label>
                                                                     <input class="form-check-input" type="checkbox" />
                                                                 </div>
                                                             </div>
@@ -258,9 +212,8 @@
                                                         <p class="text-dark text-sm m-0 p-0">100000</p>
                                                         <div class="form-check p-0 m-0">
                                                             <label
-                                                                class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                >Next Tranche Request</label
-                                                            >
+                                                                class="form-check-label font-weight-bold text-dark mx-1 text-xs">Next
+                                                                Tranche Request</label>
                                                             <input class="form-check-input" type="checkbox" />
                                                         </div>
                                                     </div>
@@ -285,18 +238,15 @@
                                                             <div class="d-flex flex-column">
                                                                 <div class="form-check p-0 m-0">
                                                                     <label
-                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                        >Acknowledgement</label
-                                                                    >
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs">Acknowledgement</label>
                                                                     <input class="form-check-input" type="checkbox" />
                                                                 </div>
                                                             </div>
                                                             <div class="d-flex flex-column">
                                                                 <div class="form-check p-0 m-0">
                                                                     <label
-                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                        >Official Receipt</label
-                                                                    >
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs">Official
+                                                                        Receipt</label>
                                                                     <input class="form-check-input" type="checkbox" />
                                                                 </div>
                                                             </div>
@@ -306,16 +256,12 @@
                                                                 </p>
                                                                 <div class="form-check p-0 m-0">
                                                                     <label
-                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                        >Narrative</label
-                                                                    >
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs">Narrative</label>
                                                                     <input class="form-check-input" type="checkbox" />
                                                                 </div>
                                                                 <div class="form-check p-0 m-0">
                                                                     <label
-                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                        >Financial</label
-                                                                    >
+                                                                        class="form-check-label font-weight-bold text-dark mx-1 text-xs">Financial</label>
                                                                     <input class="form-check-input" type="checkbox" />
                                                                 </div>
                                                             </div>
@@ -327,9 +273,8 @@
                                                         <p class="text-dark text-sm m-0 p-0">100000</p>
                                                         <div class="form-check p-0 m-0">
                                                             <label
-                                                                class="form-check-label font-weight-bold text-dark mx-1 text-xs"
-                                                                >Next Tranche Request</label
-                                                            >
+                                                                class="form-check-label font-weight-bold text-dark mx-1 text-xs">Next
+                                                                Tranche Request</label>
                                                             <input class="form-check-input" type="checkbox" />
                                                         </div>
                                                     </div>
@@ -359,7 +304,7 @@
                 </div>
             </div>
         </div>
-    
+
         <div class="card my-2">
             <div class="card-header py-2" style="background-color: #0b2cb5">
                 <h5 class="text-white text-center">Completed Grants</h5>
@@ -369,7 +314,8 @@
                     <thead>
                         <tr style="background-color: #474ca5">
                             <th class="p-2 text-white" scope="col">Partner ID</th>
-                            <th class="p-2 text-white" scope="col" sortable="partner" (sort)="onSort($event)">Partner</th>
+                            <th class="p-2 text-white" scope="col" sortable="partner" (sort)="onSort($event)">Partner
+                            </th>
                             <th class="p-2 text-white" scope="col" sortable="title" (sort)="onSort($event)">Title</th>
                             <th class="p-2 text-white" scope="col" sortable="applicationDate" (sort)="onSort($event)">
                                 Approved Date
@@ -395,10 +341,12 @@
                                 {{ item.applicationDate | date : 'shortDate' }}
                             </td>
                             <td class="text-dark font-weight-light">
-                                {{ item.proposedBudget | number }} USD | {{ item.proposedBudgetOther | number }} {{ item.proposedBudgetOtherCurrency }}
+                                {{ item.proposedBudget | number }} USD | {{ item.proposedBudgetOther | number }} {{
+                                item.proposedBudgetOtherCurrency }}
                             </td>
                             <td class="text-dark font-weight-light">
-                                <button class="btn btn-default text-info" [routerLink]="['/grant', item.pk]">Review</button>
+                                <button class="btn btn-default text-info"
+                                    [routerLink]="['/grant', item.pk]">Review</button>
                                 <button class="btn btn-default text-danger">Delete</button>
                             </td>
                         </tr>

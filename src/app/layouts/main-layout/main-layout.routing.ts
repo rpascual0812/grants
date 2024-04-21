@@ -13,7 +13,7 @@ import { GrantViewComponent } from 'src/app/pages/grants/grant-view/grant-view.c
 export const MainLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
     { path: 'grants', component: GrantsComponent, canActivate: [authGuard] },
-    { path: 'grant/:pk', component: GrantViewComponent, canActivate: [authGuard] },
+    { path: 'grant/:pk/review', component: GrantViewComponent, canActivate: [authGuard] },
     { path: 'applications', component: ApplicationsComponent, canActivate: [authGuard] },
     { path: 'applications/:number/review', component: ApplicationReviewComponent, canActivate: [authGuard] },
     { path: 'partners', component: PartnersComponent, canActivate: [authGuard] },
