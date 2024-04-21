@@ -1,6 +1,4 @@
 <div>
-
-
     <app-initial-submission [project]="project" (recommendationSaved)="recommendationSaved()"
         *ngIf="['', 'Initial Submission', 'Contract Preparation', 'Final Approval', 'Partner Signing'].includes(project?.status ?? '')"></app-initial-submission>
     <app-contract-preparation [project]="project" (recommendationSaved)="recommendationSaved()"
@@ -9,4 +7,8 @@
         *ngIf="['Final Approval', 'Partner Signing'].includes(project?.status ?? '')"></app-final-approval>
     <app-partner-signing [project]="project" (recommendationSaved)="recommendationSaved()"
         *ngIf="['Partner Signing'].includes(project?.status ?? '')"></app-partner-signing>
+    <app-fund-release [project]="project" (recommendationSaved)="recommendationSaved()"
+        *ngIf="['Fund Release', 'Completed'].includes(project?.status ?? '')"></app-fund-release>
+    <app-completed [project]="project" (recommendationSaved)="recommendationSaved()"
+        *ngIf="['Completed'].includes(project?.status ?? '')"></app-completed>
 </div>

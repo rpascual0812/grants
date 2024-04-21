@@ -2,13 +2,14 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgbdSortableHeaderDirective, SortEvent } from 'src/app/directives/ngbd-sortable-header.directive';
 import { Application } from 'src/app/interfaces/_application.interface';
+import { Project } from 'src/app/interfaces/_project.interface';
 import { ApplicationService } from 'src/app/services/application.service';
+import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { getOtherCurrencyKey } from 'src/app/utilities/constants';
 
 interface Grant {
     pk: number;
-    project_pk: number;
     partnerId: string;
     partner: string;
     title: string;
@@ -17,6 +18,7 @@ interface Grant {
     proposedBudgetOther: number;
     proposedBudgetOtherCurrency: string;
     donorProject: string;
+    status: string;
 }
 
 const compare = (v1: string | number | Date, v2: string | number | Date) => {
@@ -40,7 +42,7 @@ export class ContractFinalizationComponent implements OnInit {
     page: number = 1;
     @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective<Grant>>;
 
-    constructor(private applicationService: ApplicationService, private toastr: ToastrService) { }
+    constructor(private projectService: ProjectService, private toastr: ToastrService) { }
 
     ngOnInit() {
         this.fetch();
@@ -48,28 +50,29 @@ export class ContractFinalizationComponent implements OnInit {
 
     fetch() {
         this.loading = true;
-        this.applicationService.fetch().subscribe({
+        this.projectService.fetch().subscribe({
             next: (res: any) => {
                 const status = res?.status;
-                const data = (res?.data ?? []) as Application[];
+                const data = (res?.data ?? []) as Project[];
+
                 if (status) {
-                    const tempData: Grant[] = data?.map((item) => ({
+                    const projects: Grant[] = data?.map((item) => ({
                         pk: item?.pk as number,
-                        project_pk: item?.project?.pk as number,
                         partnerId: item?.partner?.partner_id ?? '',
                         partner: item?.partner?.name ?? '',
-                        title: item?.project?.title ?? '',
+                        title: item?.title ?? '',
                         applicationDate: item?.date_created as Date,
-                        proposedBudget: parseInt(item?.project?.project_proposal?.budget_request_usd ?? ''),
-                        proposedBudgetOther: parseInt(item?.project?.project_proposal?.budget_request_other ?? ''),
+                        proposedBudget: parseInt(item?.project_proposal?.budget_request_usd ?? ''),
+                        proposedBudgetOther: parseInt(item?.project_proposal?.budget_request_other ?? ''),
                         proposedBudgetOtherCurrency: getOtherCurrencyKey(
-                            item?.project?.project_proposal?.budget_request_other_currency ?? ''
+                            item?.project_proposal?.budget_request_other_currency ?? ''
                         ) ?? '',
                         donorProject: '',
+                        status: item?.status ?? ''
                     }));
-                    this.contractPreparation = tempData;
-                    this.finalApproval = tempData;
-                    this.partnerSigning = tempData;
+                    this.contractPreparation = projects.filter(proj => proj.status == 'Contract Preparation');
+                    this.finalApproval = projects.filter(proj => proj.status == 'Final Approval');
+                    this.partnerSigning = projects.filter(proj => proj.status == 'Partner Signing');
                 }
                 this.loading = false;
             },

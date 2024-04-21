@@ -74,7 +74,7 @@
                                         <td class="text-dark font-weight-light">
                                             <div class="d-flex flex-wrap gap-2 align-items-center">
                                                 <button class="btn btn-default text-info p-1 m-0 text-xs"
-                                                    [routerLink]="['/grant' + item.project_pk + '/review']"
+                                                    [routerLink]="['/grant/' + item.pk + '/review']"
                                                     (click)="handleReview($event)">
                                                     Review
                                                 </button>
@@ -346,7 +346,7 @@
                             </td>
                             <td class="text-dark font-weight-light">
                                 <button class="btn btn-default text-info"
-                                    [routerLink]="['/grant', item.pk]">Review</button>
+                                    [routerLink]="['/grant/' + item.pk + '/review']">Review</button>
                                 <button class="btn btn-default text-danger">Delete</button>
                             </td>
                         </tr>

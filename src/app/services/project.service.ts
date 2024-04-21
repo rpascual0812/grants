@@ -9,7 +9,7 @@ export class ProjectService {
 
     constructor(public http: HttpClient) { }
 
-    fetch(pk: any) {
+    fetch() {
         return this.http.get(`${_.BASE_URL}/projects`);
     }
 

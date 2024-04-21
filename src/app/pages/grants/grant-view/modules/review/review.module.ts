@@ -7,6 +7,8 @@ import { InitialSubmissionModule } from './modules/initial-submission/initial-su
 import { ContractPreparationModule } from './modules/contract-preparation/contract-preparation.module';
 import { FinalApprovalModule } from './modules/final-approval/final-approval.module';
 import { PartnerSigningModule } from './modules/partner-signing/partner-signing.module';
+import { CompletedModule } from './modules/completed/completed.module';
+import { FundReleaseModule } from './modules/fund-release/fund-release.module';
 
 @NgModule({
     declarations: [
@@ -23,7 +25,9 @@ import { PartnerSigningModule } from './modules/partner-signing/partner-signing.
         InitialSubmissionModule,
         ContractPreparationModule,
         FinalApprovalModule,
-        PartnerSigningModule
+        PartnerSigningModule,
+        FundReleaseModule,
+        CompletedModule
     ]
 })
 export class ReviewModule { }
