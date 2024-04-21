@@ -166,7 +166,7 @@ export class DueDiligenceFinalReviewComponent {
         const review = this.reviews[i];
         _.confirmMessage(
             {
-                title: '<strong>Are you sure you want to delete this application?</strong>',
+                title: '<strong>Are you sure you want to delete this review?</strong>',
                 icon: 'question',
                 buttons: {
                     showClose: true,

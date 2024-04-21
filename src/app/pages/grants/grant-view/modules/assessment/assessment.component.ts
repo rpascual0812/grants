@@ -37,8 +37,6 @@ export class AssessmentComponent {
     ) { }
 
     ngOnInit() {
-
-        console.log('project', this.project);
         this.partner = this.project?.partner;
         this.fetchUser();
         this.fetch();
