@@ -1,52 +1,74 @@
 <div>
-    <div class="row">
-        <div class="col-md-2">
-            <p class="text-dark-blue font-weight-bold">Date</p>
-        </div>
-        <div class="col-md-3">
-            <p class="text-dark-blue font-weight-bold">Donor Project</p>
-        </div>
-        <div class="col-md-5">
-            <p class="text-dark-blue font-weight-bold">Contributions/Results</p>
-        </div>
-        <div class="col-md-2">
-            <p class="text-dark-blue font-weight-bold">Reviewing Officer</p>
+    <div class="assessment-container my-3 overflow-x-auto">
+        <div style="min-width: 1000px">
+            <div class="row mx-0">
+                <div class="col-2">
+                    <p class="text-dark font-weight-bold text-sm p-0 m-0">Date</p>
+                </div>
+
+                <div class="col-1">
+                    <p class="text-dark font-weight-bold text-sm p-0 m-0">Donor Project</p>
+                </div>
+
+                <div class="col-1">
+                    <p class="text-dark font-weight-bold text-sm p-0 m-0">Thematic Area</p>
+                </div>
+
+                <div class="col-4">
+                    <p class="text-dark font-weight-bold text-sm p-0 m-0">Contribution/Results</p>
+                </div>
+
+                <div class="col-2">
+                    <p class="text-dark font-weight-bold text-sm p-0 m-0">Reviewing Officer</p>
+                </div>
+
+                <div class="col-2">
+                    <!-- spacer -->
+                </div>
+            </div>
+
+            <div *ngFor="let item of partnerAssessments; index as i" class="row align-items-center mx-0 my-3"
+                [ngClass]="{ 'border-top border-secondary': i !== 0 }">
+                <div class="col-2">
+                    <p class="text-secondary text-sm my-1 p-0">
+                        {{ item.date_created | date : 'dd-MMMM-YYYY' }}
+                    </p>
+                </div>
+
+                <div class="col-1">
+                    <p class="text-secondary text-sm my-1 p-0"></p>
+                </div>
+
+                <div class="col-1">
+                    <p class="text-secondary text-sm my-1 p-0"></p>
+                </div>
+
+                <div class="col-4">
+                    <p class="text-secondary text-sm my-1 p-0">{{ item.message }}</p>
+                </div>
+
+                <div class="col-2">
+                    <p class="text-secondary text-sm my-1 p-0">
+                        {{ item.user?.first_name }} {{ item?.user?.last_name }}
+                    </p>
+                </div>
+
+                <div class="col-2">
+                    <button class="btn btn-icon-only my-1" *ngIf="item?.created_by === user?.pk"
+                        (click)="handleEdit(item?.pk)">
+                        <i class="material-icons">edit</i>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row my-2 border-divider-assessment">
-        <div class="col-md-2">
-            <p class="text-secondary font-weight-bold">10-Oct-2022</p>
-        </div>
-        <div class="col-md-3">
-            <p class="text-secondary font-weight-bold">Climate Related</p>
-        </div>
-        <div class="col-md-5">
-            <p class="text-secondary font-weight-bold">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nemo ducimus architecto minima deleniti
-                repellendus laudantium sit odit temporibus, at asperiores, velit reiciendis quod libero vitae. Dolor
-                nihil dolorum optio inventore?
-            </p>
-        </div>
-        <div class="col-md-2">
-            <p class="text-secondary font-weight-bold">Aurora Hawthorne</p>
-        </div>
-    </div>
-    <div class="row my-2">
-        <div class="col-md-2">
-            <p class="text-secondary font-weight-bold">10-Oct-2022</p>
-        </div>
-        <div class="col-md-3">
-            <p class="text-secondary font-weight-bold">Climate Related</p>
-        </div>
-        <div class="col-md-5">
-            <p class="text-secondary font-weight-bold">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nemo ducimus architecto minima deleniti
-                repellendus laudantium sit odit temporibus, at asperiores, velit reiciendis quod libero vitae. Dolor
-                nihil dolorum optio inventore?
-            </p>
-        </div>
-        <div class="col-md-2">
-            <p class="text-secondary font-weight-bold">Aurora Hawthorne</p>
+
+    <div class="d-flex justify-content-end mt-5">
+        <div class="d-flex flex-wrap flex-row gap-1 align-items-center">
+            <p class="text-dark font-weight-bold p-0 m-0">Add Assessment</p>
+            <button class="btn btn-icon-only btn-info rounded-circle" (click)="handleAdd()">
+                <span class="position-relative bottom-10 end-10"><i class="material-icons">add</i></span>
+            </button>
         </div>
     </div>
 </div>

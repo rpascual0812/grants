@@ -18,41 +18,43 @@ import { DocumentationsComponent } from './modules/grant-tab-views/documentation
 import { LessonsComponent } from './modules/grant-tab-views/lessons/lessons.component';
 import { ProjectEditModalComponent } from './modals/project-edit-modal/project-edit-modal.component';
 import { ProjInfoViewComponent } from './modals/modal-views/proj-info-view/proj-info-view.component';
+import { AssessmentViewComponent } from './modals/modal-views/assessment-view/assessment-view.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivitiesAndTimelineViewComponent } from './modals/modal-views/activities-and-timeline-view/activities-and-timeline-view.component';
 import { InputDropdownModule } from '../../applications/application-new/modules/input-dropdown/input-dropdown.module';
 
 
 @NgModule({
-  declarations: [
-    GrantViewComponent,
-    FundingReleaseComponent,
-    GoalsComponent,
-    BeneficiariesComponent,
-    AttendeesComponent,
-    OutputsComponent,
-    CapdevComponent,
-    DocumentationsComponent,
-    LessonsComponent,
-    ProjectEditModalComponent,
-    ProjInfoViewComponent,
-    ActivitiesAndTimelineViewComponent,
-  ],
-  exports: [
-    GrantViewComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AccordionModule.forRoot(),
-    AssessmentModule,
-    ProjectInformationModule,
-    ActivitiesTimelineModule,
-    ReviewModule,
-    GrantTabLayoutModule,
-    SelectModule,
-    InputDropdownModule,
-  ]
+    declarations: [
+        GrantViewComponent,
+        FundingReleaseComponent,
+        GoalsComponent,
+        BeneficiariesComponent,
+        AttendeesComponent,
+        OutputsComponent,
+        CapdevComponent,
+        DocumentationsComponent,
+        LessonsComponent,
+        ProjectEditModalComponent,
+        ProjInfoViewComponent,
+        AssessmentViewComponent,
+        ActivitiesAndTimelineViewComponent,
+    ],
+    exports: [
+        GrantViewComponent
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AccordionModule.forRoot(),
+        AssessmentModule,
+        ProjectInformationModule,
+        ActivitiesTimelineModule,
+        ReviewModule,
+        GrantTabLayoutModule,
+        SelectModule,
+        InputDropdownModule,
+    ]
 })
 export class GrantViewModule { }

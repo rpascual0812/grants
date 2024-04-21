@@ -53,7 +53,7 @@ export class ProjInfoViewComponent implements OnInit {
         private applicationService: ApplicationService,
         private toastr: ToastrService,
         public documentUploaderRef: BsModalRef
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.provinceOpts = this.provinces?.map((item: any) => ({
@@ -263,15 +263,6 @@ export class ProjInfoViewComponent implements OnInit {
                     const data = res?.data;
                     const status = res.status;
                     if (status) {
-                        this.project = {
-                            ...this.project,
-                            partner: {
-                                ...this.project?.partner,
-                                organization: {
-                                    ...data,
-                                },
-                            },
-                        };
                         this.toastr.success('Organization has been successfully saved', 'SUCCESS!');
                         this.bsModalRef.onHidden?.next({
                             isSaved: true,

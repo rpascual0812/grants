@@ -24,6 +24,7 @@ export interface Project {
     project_proposal?: ProjectProposal;
     project_beneficiary?: ProjectBeneficiary[];
     project_location?: ProjectLocation[];
+    partner_pk: number;
     partner?: Partner;
     type?: Type;
 }

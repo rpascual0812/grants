@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Application } from 'src/app/interfaces/_application.interface';
+import { Application, PartnerAssessment } from 'src/app/interfaces/_application.interface';
 import { Project } from 'src/app/interfaces/_project.interface';
 import { ApplicationService } from 'src/app/services/application.service';
-import { GrantSignalService } from 'src/app/services/grant.signal.service';
+import { GrantSignalService, ProjectForm } from 'src/app/services/grant.signal.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
@@ -13,9 +13,7 @@ import { FileUploaderComponent } from 'src/app/components/file-uploader/file-upl
 
 export type OnHiddenData = {
     isSaved: boolean;
-    data: {
-        project: Project | null;
-    };
+    data: ProjectForm;
 };
 @Component({
     selector: 'app-grant-view',
