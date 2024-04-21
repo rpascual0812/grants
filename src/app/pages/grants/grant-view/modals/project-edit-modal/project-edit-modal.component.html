@@ -7,14 +7,10 @@
 
 <div>
     <ng-container *ngIf="section === 'projectInformation'">
-        <app-proj-info-view
-            [application]="application"
-            [provinces]="provinces"
-            [countries]="countries"
-        ></app-proj-info-view>
+        <app-proj-info-view [project]="project" [provinces]="provinces" [countries]="countries"></app-proj-info-view>
     </ng-container>
 
     <ng-container *ngIf="section === 'activitiesAndTimeline'">
-        <app-activities-and-timeline-view [application]="application"></app-activities-and-timeline-view>
+        <app-activities-and-timeline-view [project]="project"></app-activities-and-timeline-view>
     </ng-container>
 </div>

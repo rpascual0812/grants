@@ -4,6 +4,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { ChangeFieldEventEmitter } from 'src/app/components/select/select.component';
 import { Application, Country, Province } from 'src/app/interfaces/_application.interface';
+import { Project } from 'src/app/interfaces/_project.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { extractErrorMessage, getDurationOpts } from 'src/app/utilities/application.utils';
 import { OnHiddenData } from '../../../grant-view.component';
@@ -26,7 +27,7 @@ type ProvinceOpt = {
     styleUrls: ['./proj-info-view.component.scss'],
 })
 export class ProjInfoViewComponent implements OnInit {
-    @Input() application: Application | null;
+    @Input() project: Project | null;
     @Input() countries: Country[] = [];
     @Input() provinces: Province[] = [];
 
@@ -52,7 +53,7 @@ export class ProjInfoViewComponent implements OnInit {
         private applicationService: ApplicationService,
         private toastr: ToastrService,
         public documentUploaderRef: BsModalRef
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.provinceOpts = this.provinces?.map((item: any) => ({
@@ -73,9 +74,9 @@ export class ProjInfoViewComponent implements OnInit {
     }
 
     setForm() {
-        const currentApplication = this.application;
-        const partnerOrg = currentApplication?.partner?.organization;
-        const project = currentApplication?.project;
+        const currentProject = this.project;
+        const partnerOrg = currentProject?.partner?.organization;
+        const project = currentProject;
         this.form = this.formBuilder.group({
             title: [project?.title ?? '', Validators.required],
             duration: [project?.duration ?? '', Validators.required],
@@ -91,8 +92,8 @@ export class ProjInfoViewComponent implements OnInit {
 
     initialProjLocations() {
         this.projectLoc = this.form.get('project_location') as FormArray;
-        const currentApplication = this.application;
-        const projLoc = currentApplication?.project?.project_location;
+        const currentProject = this.project;
+        const projLoc = currentProject?.project_location;
         const currentProjLoc = projLoc ?? [];
         currentProjLoc.forEach((projLoc, idx) => {
             this.projectLoc.push(this.createFormProjLocations(projLoc?.pk, projLoc.country_pk, projLoc.province_code));
@@ -131,7 +132,7 @@ export class ProjInfoViewComponent implements OnInit {
         key: 'country_pk' | 'province_code',
         idx: number
     ) {
-        const project = this.application?.project;
+        const project = this.project;
         const projLoc = project?.project_location?.at(idx);
         const extractedItem = item?.at(0);
         const pk = (extractedItem as SelectItem)?.[listItemKey ?? ''] ?? '';
@@ -157,7 +158,7 @@ export class ProjInfoViewComponent implements OnInit {
     }
 
     onDelProjLoc(idx: number) {
-        const project = this.application?.project;
+        const project = this.project;
         const projectPk = project?.pk ?? null;
         const tempLocPk = this.projectLoc.at(idx).get('pk')?.value;
         const locationPk = typeof tempLocPk === 'string' || !tempLocPk ? null : tempLocPk;
@@ -210,12 +211,12 @@ export class ProjInfoViewComponent implements OnInit {
     }
 
     saveProjectInfo() {
-        const project = this.application?.project;
+        const project = this.project;
         const { value } = this.form;
         this.applicationService
             .saveApplicationProject({
                 pk: project?.pk,
-                application_pk: this.application?.pk,
+                application_pk: this.project?.application?.pk,
                 ...value,
             })
             .subscribe({
@@ -223,11 +224,8 @@ export class ProjInfoViewComponent implements OnInit {
                     const data = res?.data;
                     const status = res?.status;
                     if (status) {
-                        this.application = {
-                            ...this.application,
-                            project: {
-                                ...data,
-                            },
+                        this.project = {
+                            ...data,
                         };
                         this.toastr.success('Project Information has been successfully saved', 'SUCCESS!');
                         this.savePartnerOrg();
@@ -254,8 +252,8 @@ export class ProjInfoViewComponent implements OnInit {
         const { value } = this.form;
         this.applicationService
             .saveApplicationPartnerOrg({
-                partner_id: this.application?.partner?.partner_id,
-                organization_pk: this.application?.partner?.organization?.pk,
+                partner_id: this.project?.partner?.partner_id,
+                organization_pk: this.project?.partner?.organization?.pk,
                 project_website: value?.project_website,
             })
             .subscribe({
@@ -263,20 +261,20 @@ export class ProjInfoViewComponent implements OnInit {
                     const data = res?.data;
                     const status = res.status;
                     if (status) {
-                        this.application = {
-                            ...this.application,
-                            partner: {
-                                ...this.application?.partner,
-                                organization: {
-                                    ...data,
-                                },
-                            },
-                        };
+                        // this.project = {
+                        //     ...this.project,
+                        //     partner: {
+                        //         ...this.project?.partner,
+                        //         organization: {
+                        //             ...data,
+                        //         },
+                        //     },
+                        // };
                         this.toastr.success('Organization has been successfully saved', 'SUCCESS!');
                         this.bsModalRef.onHidden?.next({
                             isSaved: true,
                             data: {
-                                application: this.application,
+                                project: this.project,
                             },
                         } as OnHiddenData);
                         this.bsModalRef.hide();

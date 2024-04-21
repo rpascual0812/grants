@@ -8,6 +8,7 @@ import { getOtherCurrencyKey } from 'src/app/utilities/constants';
 
 interface Grant {
     pk: number;
+    project_pk: number;
     partnerId: string;
     partner: string;
     title: string;
@@ -41,7 +42,7 @@ export class FundReleaseComponent implements OnInit {
     page: number = 1;
     @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective<Grant>>;
 
-    constructor(private applicationService: ApplicationService, private toastr: ToastrService) {}
+    constructor(private applicationService: ApplicationService, private toastr: ToastrService) { }
 
     ngOnInit() {
         this.fetch()
@@ -51,11 +52,13 @@ export class FundReleaseComponent implements OnInit {
         this.loading = true;
         this.applicationService.fetch().subscribe({
             next: (res: any) => {
+                console.log(res);
                 const status = res?.status;
                 const data = (res?.data ?? []) as Application[];
                 if (status) {
                     const tempData: Grant[] = data?.map((item) => ({
                         pk: item?.pk as number,
+                        project_pk: item?.project?.pk as number,
                         partnerId: item?.partner?.partner_id ?? '',
                         partner: item?.partner?.name ?? '',
                         title: item?.project?.title ?? '',

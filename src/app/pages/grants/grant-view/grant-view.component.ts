@@ -2,14 +2,16 @@ import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Application } from 'src/app/interfaces/_application.interface';
+import { Project } from 'src/app/interfaces/_project.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { GrantSignalService } from 'src/app/services/grant.signal.service';
+import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
 export type OnHiddenData = {
     isSaved: boolean;
     data: {
-        application: Application | null;
+        project: Project | null;
     };
 };
 @Component({
@@ -20,13 +22,14 @@ export type OnHiddenData = {
 })
 export class GrantViewComponent implements OnInit {
     loading = true;
-    application: Application | null = null;
+    project: Project | null = null;
     pk = '';
     currentExpanded = new Set();
 
     grantSignalService = inject(GrantSignalService);
     constructor(
         private applicationService: ApplicationService,
+        private projectService: ProjectService,
         private route: ActivatedRoute,
         private toastr: ToastrService
     ) {
@@ -39,12 +42,13 @@ export class GrantViewComponent implements OnInit {
 
     fetch() {
         this.loading = true;
-        this.applicationService.fetchOne(this.pk).subscribe({
+        this.projectService.fetchOne(this.pk).subscribe({
             next: (res: any) => {
-                const data = res?.data as Application;
+                const data = res?.data as Project;
+                console.log(data);
                 const status = res?.status;
                 if (status) {
-                    this.application = data;
+                    this.project = data;
                 } else {
                     this.toastr.error(`An error occurred while fetching Application. Please try again.`, 'ERROR!');
                 }
