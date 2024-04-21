@@ -107,20 +107,25 @@
                                 <div class="col-md-6">
                                     <p class="text-sm font-weight-bold text-dark">Signed Contract</p>
                                 </div>
-                                <div class="col-md-6">
-                                    <p class="text-sm font-weight-bold text-secondary">
-                                        <span>
-                                            <i class="material-icons">attach_file</i>
-                                        </span>
-                                        document.pdf
-                                    </p>
-                                    <p class="text-sm font-weight-bold text-secondary">
-                                        <span>
-                                            <i class="material-icons">attach_file</i>
-                                        </span>
-                                        document.pdf
-                                    </p>
+                                <div class="row mt-3 mb-3">
+                                    <div class="md-12" *ngFor="let attachment of attachments; let i = index">
+                                        <a href="{{SERVER + '/' + attachment.path}}"
+                                            target="_blank">{{attachment.original_name}}</a> <a
+                                            (click)="deleteAttachment(i, 'signed_contract')"><i
+                                                class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
+                                    </div>
                                 </div>
+
+                                <button class="btn btn-default" (click)="uploadFiles('signed_contract')">
+                                    <div class="d-flex flex-column text-start">
+                                        <p class="p-0 m-0 text-sm text-info font-weight-bold">
+                                            <span class="icon icon-sm">
+                                                <i class="material-icons">add</i>
+                                            </span>
+                                            Attach File
+                                        </p>
+                                    </div>
+                                </button>
                             </div>
                         </div>
                         <div class="d-flex justify-content-end my-3">
