@@ -259,7 +259,8 @@ export interface PartnerOrganizationReference {
 export interface Review {
     pk?: number;
     message: string;
-    flag?: string;
+    grantee?: boolean;
+    needs_resolution?: boolean;
     type: string;
     resolved?: boolean;
     created_by?: number;
