@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { ChangeFieldEventEmitter } from 'src/app/components/select/select.component';
-import { Application, Country, Province } from 'src/app/interfaces/_application.interface';
+import { Country, Province } from 'src/app/interfaces/_application.interface';
 import { Project } from 'src/app/interfaces/_project.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { extractErrorMessage, getDurationOpts } from 'src/app/utilities/application.utils';
@@ -53,7 +53,7 @@ export class ProjInfoViewComponent implements OnInit {
         private applicationService: ApplicationService,
         private toastr: ToastrService,
         public documentUploaderRef: BsModalRef
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.provinceOpts = this.provinces?.map((item: any) => ({
@@ -181,8 +181,9 @@ export class ProjInfoViewComponent implements OnInit {
                         }
                     },
                     error: (err) => {
+                        const { statusCode, errorMessage } = extractErrorMessage(err);
                         this.toastr.error(
-                            `An error occurred while deleting Project Location. Please try again.`,
+                            `An error occurred while deleting Project Location. ${statusCode} ${errorMessage} Please try again.`,
                             'ERROR!'
                         );
                     },
@@ -225,6 +226,7 @@ export class ProjInfoViewComponent implements OnInit {
                     const status = res?.status;
                     if (status) {
                         this.project = {
+                            ...this.project,
                             ...data,
                         };
                         this.toastr.success('Project Information has been successfully saved', 'SUCCESS!');
@@ -261,15 +263,15 @@ export class ProjInfoViewComponent implements OnInit {
                     const data = res?.data;
                     const status = res.status;
                     if (status) {
-                        // this.project = {
-                        //     ...this.project,
-                        //     partner: {
-                        //         ...this.project?.partner,
-                        //         organization: {
-                        //             ...data,
-                        //         },
-                        //     },
-                        // };
+                        this.project = {
+                            ...this.project,
+                            partner: {
+                                ...this.project?.partner,
+                                organization: {
+                                    ...data,
+                                },
+                            },
+                        };
                         this.toastr.success('Organization has been successfully saved', 'SUCCESS!');
                         this.bsModalRef.onHidden?.next({
                             isSaved: true,

@@ -29,7 +29,7 @@ export class ActivitiesAndTimelineViewComponent implements OnInit {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.setForm();
@@ -88,15 +88,12 @@ export class ActivitiesAndTimelineViewComponent implements OnInit {
                     const status = res.status;
                     if (status) {
                         this.toastr.success('Activities and Timeline has been successfully saved', 'SUCCESS!');
-                        // this.project = {
-                        //     ...this.project,
-                        //     project: {
-                        //         ...this.project?.project,
-                        //         project_proposal: {
-                        //             ...data,
-                        //         },
-                        //     },
-                        // };
+                        this.project = {
+                            ...this.project,
+                            project_proposal: {
+                                ...data,
+                            },
+                        };
                         this.bsModalRef.onHidden?.next({
                             isSaved: true,
                             data: {
