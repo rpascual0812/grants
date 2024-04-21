@@ -4,12 +4,12 @@ export const APPLICATION_TIMELINE_STATUS_DATA_MOCK = [
         title: `Grant Application`,
         label: `Due Date: September 20, 2023`,
         showVerticalLine: true,
-        status: 'inprogress',
+        status: 'on-progress',
         items: [
             {
                 id: '1',
                 label: 'Test with button',
-                status: 'inprogress',
+                status: 'on-progress',
                 button: {
                     label: `test`,
                     type: `info`,
@@ -20,7 +20,7 @@ export const APPLICATION_TIMELINE_STATUS_DATA_MOCK = [
             {
                 id: '2',
                 label: 'Inprogress Mock',
-                status: 'inprogress',
+                status: 'on-progress',
             },
             {
                 id: '3',
@@ -40,7 +40,7 @@ export const APPLICATION_TIMELINE_STATUS_DATA_MOCK = [
             {
                 id: '6',
                 label: 'Complete Mock',
-                status: 'inprogress',
+                status: 'on-progress',
             },
         ],
     },

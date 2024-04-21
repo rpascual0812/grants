@@ -147,19 +147,19 @@
             </div>
             <app-medium-grants [currentApplication]="currentApplication"></app-medium-grants>
             <app-grants-team-review (recommendationSaved)="fetch()"
-                *ngIf="['Received Proposals','Grants Team Review','Advisers Review','Budget Review and Finalization','Financial Management Capacity','Due Diligence Final Review', 'Contract Preparation'].includes(currentApplication?.status ?? '')"
+                *ngIf="['Received Proposals','Grants Team Review','Advisers Review','Budget Review and Finalization','Financial Management Capacity','Due Diligence Final Review', 'Approved'].includes(currentApplication?.status ?? '')"
                 [currentApplication]="currentApplication"></app-grants-team-review>
             <app-advisers-review (recommendationSaved)="fetch()"
-                *ngIf="['Advisers Review','Budget Review and Finalization','Financial Management Capacity','Due Diligence Final Review', 'Contract Preparation'].includes(currentApplication?.status ?? '')"
+                *ngIf="['Advisers Review','Budget Review and Finalization','Financial Management Capacity','Due Diligence Final Review', 'Approved'].includes(currentApplication?.status ?? '')"
                 [currentApplication]="currentApplication"></app-advisers-review>
             <app-budget-review-finalization (recommendationSaved)="fetch()"
-                *ngIf="['Budget Review and Finalization','Financial Management Capacity','Due Diligence Final Review', 'Contract Preparation'].includes(currentApplication?.status ?? '')"
+                *ngIf="['Budget Review and Finalization','Financial Management Capacity','Due Diligence Final Review', 'Approved'].includes(currentApplication?.status ?? '')"
                 [currentApplication]="currentApplication"></app-budget-review-finalization>
             <app-financial-management-capacity (recommendationSaved)="fetch()"
-                *ngIf="['Financial Management Capacity','Due Diligence Final Review', 'Contract Preparation'].includes(currentApplication?.status ?? '')"
+                *ngIf="['Financial Management Capacity','Due Diligence Final Review', 'Approved'].includes(currentApplication?.status ?? '')"
                 [currentApplication]="currentApplication"></app-financial-management-capacity>
             <app-due-diligence-final-review (recommendationSaved)="fetch()"
-                *ngIf="['Due Diligence Final Review', 'Contract Preparation'].includes(currentApplication?.status ?? '')"
+                *ngIf="['Due Diligence Final Review', 'Approved'].includes(currentApplication?.status ?? '')"
                 [currentApplication]="currentApplication"></app-due-diligence-final-review>
         </ng-container>
     </div>

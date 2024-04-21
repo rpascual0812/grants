@@ -2,75 +2,70 @@
     <div class="row mt-1 g-2">
         <div class="col-6">
             <h6 class="text-white m-0 p-0">Proponent</h6>
-            <p class="text-white text-2xl m-0 p-0 font-weight-bold">Organization Name 1</p>
+            <p class="text-white text-2xl m-0 p-0 font-weight-bold">{{application?.partner?.name}}</p>
         </div>
         <div class="col-6">
             <h6 class="text-white m-0 p-0">ID Number</h6>
-            <p class="text-white text-2xl m-0 p-0 font-weight-bold">989131</p>
+            <p class="text-white text-2xl m-0 p-0 font-weight-bold">{{application?.partner?.partner_id}}</p>
         </div>
     </div>
 
     <div class="row my-5">
         <div class="col-6">
             <h6 class="text-white m-0 p-0">Date of Submission</h6>
-            <p class="text-white text-2xl m-0 p-0 font-weight-bold">February 14, 2024</p>
+            <p class="text-white text-2xl m-0 p-0 font-weight-bold">{{application?.date_created | date}}</p>
         </div>
     </div>
 
     <div class="row my-5">
         <div class="col-6">
             <div
-                class="border border-0 rounded-2 bg-info text-center text-white my-1 text-sm font-weight-bold col-7 p-2"
-            >
+                class="border border-0 rounded-2 bg-info text-center text-white my-1 text-sm font-weight-bold col-7 p-2">
                 Grantee Project
             </div>
-            <p class="text-white m-0 p-0 text-sm">Lorem ipsum dolor sit amet consectetur, adipisicing elit</p>
+            <p class="text-white m-0 p-0 text-sm">{{application?.project?.title}}</p>
         </div>
         <div class="col-6">
             <div
-                class="border border-0 rounded-2 bg-info text-center text-white my-1 text-sm font-weight-bold col-7 p-2"
-            >
+                class="border border-0 rounded-2 bg-info text-center text-white my-1 text-sm font-weight-bold col-7 p-2">
                 Duration
             </div>
-            <p class="text-white m-0 p-0 text-sm">35 months</p>
+            <p class="text-white m-0 p-0 text-sm">{{application?.project?.duration}}</p>
         </div>
     </div>
 
     <div class="row my-5">
         <div class="col-6">
             <div
-                class="border border-0 rounded-2 bg-info text-center text-white my-1 text-sm font-weight-bold col-7 p-2"
-            >
+                class="border border-0 rounded-2 bg-info text-center text-white my-1 text-sm font-weight-bold col-7 p-2">
                 Thematic Area
             </div>
             <p class="text-white m-0 p-0 text-sm">Natural Resource Governance</p>
         </div>
         <div class="col-6">
             <div
-                class="border border-0 rounded-2 bg-info text-center text-white my-1 text-sm font-weight-bold col-7 p-2"
-            >
+                class="border border-0 rounded-2 bg-info text-center text-white my-1 text-sm font-weight-bold col-7 p-2">
                 Local Currency
             </div>
-            <p class="text-white m-0 p-0 text-sm">PHP</p>
+            <p class="text-white m-0 p-0 text-sm">
+                {{application?.project?.project_proposal?.budget_request_other_currency}}</p>
         </div>
     </div>
 
     <div class="row my-5">
         <div class="col-6">
             <div
-                class="border border-0 rounded-2 bg-info text-center text-white my-1 text-sm font-weight-bold col-7 p-2"
-            >
+                class="border border-0 rounded-2 bg-info text-center text-white my-1 text-sm font-weight-bold col-7 p-2">
                 Country
             </div>
-            <p class="text-white m-0 p-0 text-sm">Philippines</p>
+            <p class="text-white m-0 p-0 text-sm">{{application?.partner?.organization?.country?.name}}</p>
         </div>
         <div class="col-6">
             <div
-                class="border border-0 rounded-2 bg-info text-center text-white my-1 text-sm font-weight-bold col-10 p-2"
-            >
+                class="border border-0 rounded-2 bg-info text-center text-white my-1 text-sm font-weight-bold col-10 p-2">
                 Amount Requested (USD)
             </div>
-            <p class="text-white m-0 p-0 text-sm">4500 USD</p>
+            <p class="text-white m-0 p-0 text-sm">{{application?.project?.project_proposal?.budget_request_usd}} USD</p>
         </div>
     </div>
 </div>
