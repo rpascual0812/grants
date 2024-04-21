@@ -16,4 +16,14 @@ export class ProjectService {
     fetchOne(pk: any) {
         return this.http.get(`${_.BASE_URL}/projects/${pk}/review`);
     }
+
+    saveSignedContractAttachment(data: any) {
+        return this.http.post(`${_.BASE_URL}/projects/attachment`, data);
+    }
+
+    deleteProjectAttachment(data: any) {
+        return this.http.delete(`${_.BASE_URL}/projects/${data.project_pk}/document/${data.document_pk}`, {
+            params: { type: data.type },
+        });
+    }
 }
