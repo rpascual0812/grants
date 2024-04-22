@@ -1,10 +1,120 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import {
+    FundingReleaseTrancheModalComponent,
+    onHiddenDataFundingRelease,
+} from '../../../modals/funding-release-tranche-modal/funding-release-tranche-modal.component';
+import { Project, ProjectFunding } from 'src/app/interfaces/_project.interface';
+import { GrantSignalService } from 'src/app/services/grant.signal.service';
+import { ProjectService } from 'src/app/services/project.service';
+import { extractErrorMessage } from 'src/app/utilities/application.utils';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-funding-release',
-  templateUrl: './funding-release.component.html',
-  styleUrls: ['./funding-release.component.scss']
+    selector: 'app-funding-release',
+    templateUrl: './funding-release.component.html',
+    styleUrls: ['./funding-release.component.scss'],
 })
-export class FundingReleaseComponent {
-  @Input() test: string
+export class FundingReleaseComponent implements OnInit {
+    loading = false;
+    project: Project | null = null;
+    projectFunding: ProjectFunding[] | null = [];
+
+    bsModalRef?: BsModalRef;
+
+    grantSignalService = inject(GrantSignalService);
+    constructor(
+        private modalService: BsModalService,
+        private changeDetection: ChangeDetectorRef,
+        private projectService: ProjectService,
+        private toastr: ToastrService
+    ) {}
+
+    ngOnInit() {
+        this.project = this.grantSignalService.project();
+        this.fetchProjectFunding();
+    }
+
+    fetchProjectFunding() {
+        this.loading = true;
+        this.projectService
+            .fetchProjectFunding({
+                project_pk: this.project?.pk,
+            })
+            .subscribe({
+                next: (res: any) => {
+                    const status = res?.status;
+                    const data = res?.data;
+                    if (status) {
+                        this.projectFunding = data?.project_funding;
+                        console.log(this.projectFunding);
+                    } else {
+                        this.toastr.error(
+                            `An error occurred while fetching Funding Release. Please try again.`,
+                            'ERROR!'
+                        );
+                    }
+                    this.loading = false;
+                },
+                error: (err) => {
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
+                    this.toastr.error(
+                        `An error occurred while fetching Funding Release. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
+                    this.loading = false;
+                },
+            });
+    }
+
+    handleAddTranche() {
+        this.openTrancheModal();
+    }
+
+    handleEditTranche(pk?: number) {
+        this.openTrancheModal(pk);
+    }
+
+    modifyList(funding: ProjectFunding) {
+        const existingFunding = this.projectFunding?.find((item) => item.pk === funding?.pk);
+        if (!existingFunding) {
+            this.projectFunding = [
+                ...(this.projectFunding ?? []),
+                {
+                    ...funding,
+                },
+            ];
+        } else {
+            this.projectFunding =
+                this?.projectFunding?.map((item) => {
+                    if (item.pk === funding?.pk) {
+                        item = {
+                            ...funding,
+                        };
+                    }
+                    return {
+                        ...item,
+                    };
+                }) ?? [];
+        }
+    }
+
+    openTrancheModal(pk?: number) {
+        const funding = this.projectFunding?.find((item) => item?.pk === pk) ?? null;
+        this.bsModalRef = this.modalService.show(FundingReleaseTrancheModalComponent, {
+            class: 'modal-xl',
+            initialState: {
+                projectFunding: {
+                    ...funding,
+                    project_pk: this.project?.pk,
+                },
+            },
+        });
+        this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: onHiddenDataFundingRelease) => {
+            if (data && isSaved) {
+                this.modifyList(data);
+                this.changeDetection.detectChanges();
+            }
+        });
+    }
 }
