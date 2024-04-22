@@ -3,9 +3,15 @@ import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/co
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import {
     FundingReleaseTrancheModalComponent,
+    GroupedFundingReport,
     onHiddenDataFundingRelease,
 } from '../../../modals/funding-release-tranche-modal/funding-release-tranche-modal.component';
-import { Project, ProjectFunding, ProjectFundingLiquidation } from 'src/app/interfaces/_project.interface';
+import {
+    Project,
+    ProjectFunding,
+    ProjectFundingLiquidation,
+    ProjectFundingReport,
+} from 'src/app/interfaces/_project.interface';
 import { GrantSignalService } from 'src/app/services/grant.signal.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
@@ -31,7 +37,7 @@ export class FundingReleaseComponent implements OnInit {
         private changeDetection: ChangeDetectorRef,
         private projectService: ProjectService,
         private toastr: ToastrService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.project = this.grantSignalService.project();
@@ -90,6 +96,15 @@ export class FundingReleaseComponent implements OnInit {
         return getOtherCurrencyKey(otherCurrencyLabel ?? '');
     }
 
+    groupedFundingReport(projFundingReport: ProjectFundingReport[]) {
+        return projFundingReport.reduce((acc, value) => {
+            if (value?.title) {
+                (acc[value?.title] = acc[value?.title] || []).push(value);
+            }
+            return acc;
+        }, {} as GroupedFundingReport);
+    }
+
     modifyFundingList(funding: ProjectFunding) {
         const existingFunding = this.projectFunding?.find((item) => item.pk === funding?.pk);
         if (!existingFunding) {
@@ -126,7 +141,7 @@ export class FundingReleaseComponent implements OnInit {
             },
         });
         this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: onHiddenDataFundingRelease) => {
-            if (data && isSaved) {
+            if (data?.pk && isSaved) {
                 this.modifyFundingList(data);
                 this.changeDetection.detectChanges();
             }

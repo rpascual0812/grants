@@ -103,27 +103,22 @@
                     </h6>
                 </div>
 
-                <div *ngFor="let report of funding.project_funding_report" class="card my-3">
+                <div *ngFor="let item of groupedFundingReport(funding?.project_funding_report ?? []) | keyvalue" class="card my-3">
                     <div class="d-flex flex-wrap flex-row p-2 align-items-center">
-                        <p class="mx-2 p-0 m-0" style="text-decoration: underline">{{ report?.title }}</p>
-                        <button class="btn btn-info btn-icon-only btn-rounded">
+                        <p class="mx-2 p-0 m-0" style="text-decoration: underline">{{ item.key }}</p>
+                        <!-- <button class="btn btn-info btn-icon-only btn-rounded">
                             <span class="position-relative bottom-10 end-10"><i class="material-icons">add</i></span>
-                        </button>
+                        </button> -->
                     </div>
-
-                    <div class="row p-3 align-items-center">
+                    <div class="row p-3 align-items-center" *ngFor="let subItem of item.value">
                         <div class="col-12 col-md-3">
                             <a style="text-decoration: underline" class=""></a>
                         </div>
                         <div class="col-12 col-md-3">
-                            <p class="p-0 m-0">{{ report?.date_created | date : 'dd-MM-YYYY' }}</p>
+                            <p class="p-0 m-0">{{ subItem?.date_created | date : 'dd-MM-YYYY' }}</p>
                         </div>
                         <div class="col-12 col-md-3">
-                            <p class="p-0 m-0">{{ report?.status }}</p>
-                            <!-- <select class="form-select px-3 border border-1 ronded-1 text-secondary text-md">
-                                <option value="true">Status</option>
-                                <option value="false">No</option>
-                            </select> -->
+                            <p class="p-0 m-0">{{ subItem?.status }}</p>
                         </div>
                         <div class="col-12 col-md-3">
                             <button class="btn btn-danger btn-icon-only btn-rounded">
