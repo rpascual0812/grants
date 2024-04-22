@@ -7,6 +7,7 @@ import { ProjectFunding } from 'src/app/interfaces/_project.interface';
 import { formatDate } from '@angular/common';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
+import { OTHER_CURRENCY_LIST, USD_CURRENCY } from 'src/app/utilities/constants';
 
 export type onHiddenDataFundingRelease = {
     isSaved: boolean;
@@ -24,7 +25,7 @@ const parseFormDate = (date: Date) => {
 })
 export class FundingReleaseTrancheModalComponent implements OnInit {
     processing = false;
-    projectFunding: ProjectFunding | null = null;
+    funding: ProjectFunding | null = null;
     submitted: boolean = false;
     form: FormGroup;
     projectFundingReport: FormArray;
@@ -36,11 +37,10 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
         private modalService: BsModalService,
         private toastr: ToastrService
     ) {
-        this.projectFunding = (modalService?.config?.initialState as any)?.projectFunding;
+        this.funding = (modalService?.config?.initialState as any)?.funding;
     }
 
     ngOnInit() {
-        console.log(this.projectFunding);
         this.setForm();
     }
 
@@ -54,16 +54,20 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
 
     setForm() {
         this.form = this.formBuilder.group({
-            title: [this.projectFunding?.title ?? '', Validators.required],
+            title: [this.funding?.title ?? '', Validators.required],
             released_date: [
-                this.projectFunding?.released_date ? parseFormDate(this.projectFunding?.released_date ?? '') : '',
+                this.funding?.released_date ? parseFormDate(this.funding?.released_date ?? '') : '',
                 Validators.required,
             ],
             report_due_date: [
-                this.projectFunding?.report_due_date ? parseFormDate(this.projectFunding?.report_due_date ?? '') : '',
+                this.funding?.report_due_date ? parseFormDate(this.funding?.report_due_date ?? '') : '',
                 Validators.required,
             ],
-            released_amount: [this.projectFunding?.released_amount ?? '', Validators.required],
+            released_amount_usd: [this.funding?.released_amount_usd ?? '', Validators.required],
+            released_amount_other_currency: [
+                this.funding?.released_amount_other_currency ??
+                    `${USD_CURRENCY.at(0)?.key} - ${USD_CURRENCY.at(0)?.label}`,
+            ],
             project_funding_report: this.formBuilder.array([]),
         });
         this.initialProjFundingReport();
@@ -71,7 +75,7 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
 
     initialProjFundingReport() {
         this.projectFundingReport = this.form.get('project_funding_report') as FormArray;
-        const projFundingReport = this.projectFunding?.project_funding_report ?? [];
+        const projFundingReport = this.funding?.project_funding_report ?? [];
         projFundingReport.forEach((report) => {
             this.projectFundingReport.push(
                 this.createFormProjectFundingReport(
@@ -110,9 +114,10 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
         const { value } = this.form;
         this.projectService
             .saveProjectFunding({
-                project_pk: this.projectFunding?.project_pk,
-                pk: this.projectFunding?.pk,
+                project_pk: this.funding?.project_pk,
+                pk: this.funding?.pk,
                 ...value,
+                released_amount_other: value.released_amount_usd,
             })
             .subscribe({
                 next: (res: any) => {

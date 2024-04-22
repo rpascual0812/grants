@@ -23,6 +23,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivitiesAndTimelineViewComponent } from './modals/modal-views/activities-and-timeline-view/activities-and-timeline-view.component';
 import { InputDropdownModule } from '../../applications/application-new/modules/input-dropdown/input-dropdown.module';
 import { FundingReleaseTrancheModalComponent } from './modals/funding-release-tranche-modal/funding-release-tranche-modal.component';
+import { FundingReleaseLiquidationModalComponent } from './modals/funding-release-liquidation-modal/funding-release-liquidation-modal.component';
 
 @NgModule({
     declarations: [
@@ -40,6 +41,7 @@ import { FundingReleaseTrancheModalComponent } from './modals/funding-release-tr
         AssessmentViewComponent,
         ActivitiesAndTimelineViewComponent,
         FundingReleaseTrancheModalComponent,
+        FundingReleaseLiquidationModalComponent,
     ],
     exports: [
         GrantViewComponent

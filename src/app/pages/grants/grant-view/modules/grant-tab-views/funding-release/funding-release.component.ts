@@ -1,14 +1,17 @@
+import { onHiddenDataFundingLiquidation } from './../../../modals/funding-release-liquidation-modal/funding-release-liquidation-modal.component';
 import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import {
     FundingReleaseTrancheModalComponent,
     onHiddenDataFundingRelease,
 } from '../../../modals/funding-release-tranche-modal/funding-release-tranche-modal.component';
-import { Project, ProjectFunding } from 'src/app/interfaces/_project.interface';
+import { Project, ProjectFunding, ProjectFundingLiquidation } from 'src/app/interfaces/_project.interface';
 import { GrantSignalService } from 'src/app/services/grant.signal.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { ToastrService } from 'ngx-toastr';
+import { FundingReleaseLiquidationModalComponent } from '../../../modals/funding-release-liquidation-modal/funding-release-liquidation-modal.component';
+import { getOtherCurrencyKey } from 'src/app/utilities/constants';
 
 @Component({
     selector: 'app-funding-release',
@@ -75,7 +78,19 @@ export class FundingReleaseComponent implements OnInit {
         this.openTrancheModal(pk);
     }
 
-    modifyList(funding: ProjectFunding) {
+    handleAddLiquidation() {
+        this.openLiquidationModal();
+    }
+
+    handleEditLiquidation(projectFundingLiquidation?: ProjectFundingLiquidation) {
+        this.openLiquidationModal(projectFundingLiquidation);
+    }
+
+    parseCurrencyKey(otherCurrencyLabel?: string) {
+        return getOtherCurrencyKey(otherCurrencyLabel ?? '');
+    }
+
+    modifyFundingList(funding: ProjectFunding) {
         const existingFunding = this.projectFunding?.find((item) => item.pk === funding?.pk);
         if (!existingFunding) {
             this.projectFunding = [
@@ -104,7 +119,7 @@ export class FundingReleaseComponent implements OnInit {
         this.bsModalRef = this.modalService.show(FundingReleaseTrancheModalComponent, {
             class: 'modal-xl',
             initialState: {
-                projectFunding: {
+                funding: {
                     ...funding,
                     project_pk: this.project?.pk,
                 },
@@ -112,7 +127,32 @@ export class FundingReleaseComponent implements OnInit {
         });
         this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: onHiddenDataFundingRelease) => {
             if (data && isSaved) {
-                this.modifyList(data);
+                this.modifyFundingList(data);
+                this.changeDetection.detectChanges();
+            }
+        });
+    }
+
+    openLiquidationModal(projectFundingLiquidation?: ProjectFundingLiquidation) {
+        this.bsModalRef = this.modalService.show(FundingReleaseLiquidationModalComponent, {
+            class: 'modal-md',
+            initialState: {
+                projectPk: this.project?.pk,
+                projectFunding: this.projectFunding ?? [],
+                projectFundingLiquidation,
+            },
+        });
+        this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: onHiddenDataFundingLiquidation) => {
+            if (data && isSaved) {
+                this.projectFunding =
+                    this.projectFunding?.map((funding) => {
+                        if (funding.pk === data?.project_funding_pk) {
+                            funding['project_funding_liquidation'] = data;
+                        }
+                        return {
+                            ...funding,
+                        };
+                    }) ?? [];
                 this.changeDetection.detectChanges();
             }
         });
