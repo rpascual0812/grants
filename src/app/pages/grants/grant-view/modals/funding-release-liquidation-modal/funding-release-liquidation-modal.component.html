@@ -1,0 +1,102 @@
+<div class="modal-header bg-gray-300">
+    <h4 class="modal-title pull-left text-dark">Liquidation</h4>
+    <button type="button" class="btn btn-default pull-right" aria-label="Close" (click)="this.bsModalRef.hide()">
+        <i class="material-icons">close</i>
+    </button>
+</div>
+
+<div class="modal-body">
+    <div class="container">
+        <form [formGroup]="form" (ngSubmit)="handleSave()">
+            <div class="form-group my-2">
+                <label class="text-dark">Choose Tranche Number</label>
+                <p *ngIf="projectFundingLiquidation?.pk" class="text-secondary p-1 m-0 text-sm">{{ projectFundingLiquidation?.status }}</p>
+                <select
+                    *ngIf="!projectFundingLiquidation?.pk"
+                    #statusSelectOpt
+                    class="form-select border rounded-1 p-1 text-dark"
+                    formControlName="status"
+                    (change)="onChangeSelectedOpt(statusSelectOpt.value, 'status')"
+                >
+                    >
+                    <option *ngFor="let tranche of getAvailableTranche()" [value]="tranche.title">
+                        {{ tranche.title }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group my-2">
+                <label class="text-dark">Liquidation</label>
+                <textarea
+                    formControlName="description"
+                    type="text"
+                    class="form-control border rounded-1 p-1"
+                    [ngClass]="{
+                        'is-invalid': submitted && f['description'].errors
+                    }"
+                ></textarea>
+                <div *ngIf="submitted && f['description'].errors" class="invalid-feedback">
+                    <div *ngIf="f['description'].errors['required']">Liquidation is required</div>
+                </div>
+            </div>
+            <div class="form-group my-2">
+                <label class="font-weight-bold text-dark">Amount</label>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="input-group">
+                            <input
+                                type="number"
+                                min="0"
+                                class="form-control border border-end-0 rounded-1 p-1"
+                                required
+                                formControlName="amount_usd"
+                                [ngClass]="{
+                                    'is-invalid': submitted && f['amount_usd'].errors
+                                }"
+                            />
+                            <div class="border border-start-0 border-end-1 p-1 text-sm">USD</div>
+                            <div *ngIf="submitted && f['amount_usd'].errors" class="invalid-feedback">
+                                <div *ngIf="f['amount_usd'].errors['required']">Field is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <app-input-dropdown
+                            [data]="availableCurrencies"
+                            [defaultSelected]="otherCurrenciesDefaultSelected"
+                            [inputValue]="f['amount_other'].value ?? ''"
+                            (onSelectItem)="onSelectItemDropdown($event, 'amount_other_currency')"
+                            (inputValueChange)="onInputValueChange($event, 'amount_other')"
+                        ></app-input-dropdown>
+                        <div *ngIf="submitted && f['amount_other'].errors">
+                            <div class="text-danger text-sm my-1" *ngIf="f['amount_other'].errors['required']">
+                                Field is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group my-2">
+                <label class="font-weight-bold text-dark">Date</label>
+                <input
+                    formControlName="date_released"
+                    class="form-control border rounded-1 p-1"
+                    type="date"
+                    required
+                    [ngClass]="{
+                        'is-invalid': submitted && f['date_released'].errors
+                    }"
+                />
+                <div *ngIf="submitted && f['date_released'].errors" class="invalid-feedback">
+                    <div *ngIf="f['date_released'].errors['required']">Field is required</div>
+                </div>
+            </div>
+        </form>
+        <div class="modal-footer my-3">
+            <button type="button" class="btn btn-white text-capitalize" (click)="handleClose()">Cancel</button>
+            <button type="button" class="btn btn-dark-blue text-capitalize" (click)="handleSave()">
+                Save Liquidation
+            </button>
+        </div>
+    </div>
+</div>

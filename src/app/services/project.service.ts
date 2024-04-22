@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from '../utilities/globals';
-import { ProjectFunding } from '../interfaces/_project.interface';
+import { ProjectFunding, ProjectFundingLiquidation } from '../interfaces/_project.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -27,6 +27,10 @@ export class ProjectService {
 
     saveProjectFunding(data: ProjectFunding) {
         return this.http.post(`${_.BASE_URL}/projects/project_funding`, data);
+    }
+
+    saveProjectFundingLiquidation(data: ProjectFundingLiquidation) {
+        return this.http.post(`${_.BASE_URL}/projects/project_funding_liquidation`, data);
     }
 
     deleteProjectAttachment(data: any) {

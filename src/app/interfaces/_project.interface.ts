@@ -33,20 +33,22 @@ export interface Project {
     reviews: Review[];
 }
 
-
 export interface ProjectFunding {
     pk?: number;
     title?: string;
     project_pk?: number;
-    released_amount?: string;
+    released_amount_usd?: string;
+    released_amount_other?: string;
+    released_amount_other_currency?: string;
     released_date?: Date;
     bank_receipt_pk?: number;
-    grantee_acknowledgement_pk?: number;
+    grantee_acknowledgement?: Date;
     created_by?: number;
     report_due_date?: Date;
     date_created?: Date;
     date_updated?: Date;
     project_funding_report?: ProjectFundingReport[];
+    project_funding_liquidation?: ProjectFundingLiquidation;
 }
 
 export interface ProjectFundingReport {
@@ -54,6 +56,19 @@ export interface ProjectFundingReport {
     project_funding_pk?: number;
     title?: string;
     status?: string;
+    attachment_pk?: null;
     date_created?: Date;
     archived?: boolean;
+}
+
+export interface ProjectFundingLiquidation {
+    pk?: number;
+    project_funding_pk?: number;
+    description?: string;
+    amount_usd?: string;
+    amount_other?: string;
+    amount_other_currency?: string;
+    status?: string;
+    date_created?: Date;
+    date_released?: Date;
 }
