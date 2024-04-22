@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
-import { PartnerAssessment, Project } from '../interfaces/_application.interface';
+import { PartnerAssessment } from '../interfaces/_application.interface';
+import { Project } from '../interfaces/_project.interface';
 
 export interface ProjectForm extends Project {
     project?: Project;
@@ -11,5 +12,6 @@ export interface ProjectForm extends Project {
 })
 export class GrantSignalService {
     public editSectionKey = signal<null | string>(null);
-    constructor() { }
+    public project = signal<Project | null>(null);
+    constructor() {}
 }

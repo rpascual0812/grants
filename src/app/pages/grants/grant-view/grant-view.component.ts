@@ -1,9 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Application, PartnerAssessment } from 'src/app/interfaces/_application.interface';
 import { Project } from 'src/app/interfaces/_project.interface';
-import { ApplicationService } from 'src/app/services/application.service';
 import { GrantSignalService, ProjectForm } from 'src/app/services/grant.signal.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';

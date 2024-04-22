@@ -38,13 +38,15 @@
         </div>
     </div>
 
-    <div class="tranche-container">
+    <div *ngFor="let funding of projectFunding" class="tranche-container">
         <div class="row">
             <div class="col-4">
-                <h5 class="text-dark">1st Tranche</h5>
+                <h5 class="text-dark">{{ funding?.title }}</h5>
                 <div class="d-flex flex-wrap flex-row align-items-center justify-content-between">
-                    <p class="text-secondary m-0 p-0">10-Jul-2022 | {{ 10000 | number }} USD</p>
-                    <button class="btn btn-icon-only">
+                    <p class="text-secondary m-0 p-0">
+                        {{ funding?.report_due_date | date : 'dd-MMM-YYYY' }} | {{ funding?.released_amount }}
+                    </p>
+                    <button class="btn btn-icon-only" (click)="handleEditTranche(funding?.pk)">
                         <i class="material-icons">edit</i>
                     </button>
                 </div>
@@ -56,35 +58,32 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex flex-wrap flex-row">
-                            <button class="btn btn-dark-blue m-1">edit deadline</button>
-                            <button class="btn btn-dark-blue m-1">edit value</button>
+                            <button class="btn btn-dark-blue m-1" (click)="handleEditTranche(funding?.pk)">edit deadline</button>
+                            <button class="btn btn-dark-blue m-1" (click)="handleEditTranche(funding?.pk)">edit value</button>
                         </div>
 
                         <div class="my-2">
                             <p class="m-0 p-0" style="text-decoration: underline">release date</p>
-                            <p class="text-secondary m-0 p-0">10-Jul-2022</p>
+                            <p class="text-secondary m-0 p-0">{{ funding?.released_date | date : 'dd-MMM-YYYY' }}</p>
                         </div>
 
                         <div class="my-2">
                             <p class="m-0 p-0" style="text-decoration: underline">release amount</p>
-                            <p class="text-secondary m-0 p-0">PHP {{ 10000 | number }}</p>
-                        </div>
-
-                        <div class="my-2">
-                            <p class="m-0 p-0" style="text-decoration: underline">release amount</p>
-                            <p class="text-secondary m-0 p-0">PHP {{ 10000 | number }}</p>
+                            <p class="text-secondary m-0 p-0">{{ funding?.released_amount }}</p>
                         </div>
 
                         <div class="my-2">
                             <p class="m-0 p-0" style="text-decoration: underline">attached bank receipt</p>
-                            <p class="text-secondary m-0 p-0">link123.com</p>
+                            <p class="text-secondary m-0 p-0">{{ funding?.bank_receipt_pk }}</p>
                         </div>
 
                         <div class="my-2">
                             <p class="m-0 p-0" style="text-decoration: underline">grantee's acknowledgement</p>
                             <div class="form-check m-0 p-1">
                                 <input class="form-check-input" type="checkbox" />
-                                <label class="form-check-label font-weight-light mx-1">10-Jul-2022</label>
+                                <label class="form-check-label font-weight-light mx-1">{{
+                                    funding?.report_due_date | date : 'dd-MMM-YYYY'
+                                }}</label>
                             </div>
                         </div>
                     </div>
@@ -94,13 +93,14 @@
             <div class="col-12 col-md-8">
                 <div class="card bg-dark-blue">
                     <h6 class="text-white p-3">
-                        Interim report due <span class="font-weight-light">10-Jul-2022</span>
+                        interim report due
+                        <span class="font-weight-light">{{ funding?.report_due_date | date : 'dd-MMM-YYYY' }}</span>
                     </h6>
                 </div>
 
-                <div class="card my-3">
+                <div *ngFor="let report of funding.project_funding_report" class="card my-3">
                     <div class="d-flex flex-wrap flex-row p-2 align-items-center">
-                        <p class="mx-2 p-0" style="text-decoration: underline">interim narrative report</p>
+                        <p class="mx-2 p-0 m-0" style="text-decoration: underline">{{ report?.title }}</p>
                         <button class="btn btn-info btn-icon-only btn-rounded">
                             <span class="position-relative bottom-10 end-10"><i class="material-icons">add</i></span>
                         </button>
@@ -108,92 +108,17 @@
 
                     <div class="row p-3 align-items-center">
                         <div class="col-12 col-md-3">
-                            <a style="text-decoration: underline" class="">http://www.example.edu</a>
+                            <a style="text-decoration: underline" class=""></a>
                         </div>
                         <div class="col-12 col-md-3">
-                            <p class="p-0 m-0">10-Jul-2022</p>
+                            <p class="p-0 m-0">{{ report?.date_created | date : 'dd-MM-YYYY' }}</p>
                         </div>
                         <div class="col-12 col-md-3">
-                            <select class="form-select px-3 border border-1 ronded-1 text-secondary text-md">
+                            <p class="p-0 m-0">{{ report?.status }}</p>
+                            <!-- <select class="form-select px-3 border border-1 ronded-1 text-secondary text-md">
                                 <option value="true">Status</option>
                                 <option value="false">No</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <button class="btn btn-danger btn-icon-only btn-rounded">
-                                <span class="position-relative bottom-10 end-10"
-                                    ><i class="material-icons">delete</i></span
-                                >
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="row p-3 align-items-center">
-                        <div class="col-12 col-md-3">
-                            <a style="text-decoration: underline" class="">http://www.example.edu</a>
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <p class="p-0 m-0">10-Jul-2022</p>
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <select class="form-select px-3 border border-1 ronded-1 text-secondary text-md">
-                                <option value="true">Status</option>
-                                <option value="false">No</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <button class="btn btn-danger btn-icon-only btn-rounded">
-                                <span class="position-relative bottom-10 end-10"
-                                    ><i class="material-icons">delete</i></span
-                                >
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="card my-3">
-                    <div class="d-flex flex-wrap flex-row p-2 align-items-center">
-                        <p class="mx-2 p-0" style="text-decoration: underline">interim financial report</p>
-                        <button class="btn btn-info btn-icon-only btn-rounded">
-                            <span class="position-relative bottom-10 end-10"><i class="material-icons">add</i></span>
-                        </button>
-                    </div>
-
-                    <div class="row p-3 align-items-center">
-                        <div class="col-12 col-md-3">
-                            <a style="text-decoration: underline" class="">http://www.example.edu</a>
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <p class="p-0 m-0">10-Jul-2022</p>
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <select class="form-select px-3 border border-1 ronded-1 text-secondary text-md">
-                                <option value="true">Status</option>
-                                <option value="false">No</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <button class="btn btn-danger btn-icon-only btn-rounded">
-                                <span class="position-relative bottom-10 end-10"
-                                    ><i class="material-icons">delete</i></span
-                                >
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="row p-3 align-items-center">
-                        <div class="col-12 col-md-3">
-                            <a style="text-decoration: underline" class="">http://www.example.edu</a>
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <p class="p-0 m-0">10-Jul-2022</p>
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <select class="form-select px-3 border border-1 ronded-1 text-secondary text-md">
-                                <option value="true">Status</option>
-                                <option value="false">No</option>
-                            </select>
+                            </select> -->
                         </div>
                         <div class="col-12 col-md-3">
                             <button class="btn btn-danger btn-icon-only btn-rounded">
@@ -207,7 +132,7 @@
             </div>
         </div>
 
-        <div class="card bg-gray-400">
+        <div class="card bg-gray-400 my-3">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-md-8">
@@ -216,22 +141,22 @@
                             <span class="font-weight-light">24-Sept-2022</span>
                         </h5>
                         <div class="container bg-white rounded">
-                            <p class="text-secondary p-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam autem voluptatum modi sint libero iure praesentium nostrum reprehenderit nam eius, ratione excepturi obcaecati ipsam, illo earum necessitatibus cupiditate! Impedit, fugit.</p>
+                            <p class="text-secondary p-1">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam autem voluptatum modi
+                                sint libero iure praesentium nostrum reprehenderit nam eius, ratione excepturi obcaecati
+                                ipsam, illo earum necessitatibus cupiditate! Impedit, fugit.
+                            </p>
                         </div>
                     </div>
 
                     <div class="col-12 col-md-2">
-                        <h5 class="text-dark">
-                            Amount
-                        </h5>
+                        <h5 class="text-dark">Amount</h5>
                         <p class="text-dark">USD {{ 199234 | number }}</p>
                         <p class="text-dark">IDR {{ 2988510000 | number }}</p>
                     </div>
 
                     <div class="col-12 col-md-2">
-                        <h5 class="text-dark">
-                            Attachment
-                        </h5>
+                        <h5 class="text-dark">Attachment</h5>
                         <p class="text-dark">
                             <span>
                                 <i class="material-icons">attach_file</i>
@@ -241,15 +166,12 @@
                     </div>
                 </div>
             </div>
-            
         </div>
 
         <div class="card bg-gray-500 my-3">
             <div class="card-body">
                 <div class="d-flex flex-wrap flex-row justify-content-between">
-                    <h6 class="text-white">
-                        1st Tranche | Liquidation Total
-                    </h6>
+                    <h6 class="text-white">1st Tranche | Liquidation Total</h6>
 
                     <h6 class="text-white font-weight-light">
                         USD {{ 199234 | number }} | IDR {{ 2988819419 | number }}
@@ -257,5 +179,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="d-flex flex-wrap flex-row gap-2">
+        <button class="btn btn-dark-blue text-capitalize" (click)="handleAddTranche()">Add New Tranche</button>
+        <button class="btn btn-secondary text-capitalize">Add New Liquidation</button>
     </div>
 </div>

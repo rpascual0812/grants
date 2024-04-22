@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from '../utilities/globals';
+import { ProjectFunding } from '../interfaces/_project.interface';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class ProjectService {
-
-    constructor(public http: HttpClient) { }
+    constructor(public http: HttpClient) {}
 
     fetch() {
         return this.http.get(`${_.BASE_URL}/projects`);
@@ -17,8 +17,16 @@ export class ProjectService {
         return this.http.get(`${_.BASE_URL}/projects/${pk}/review`);
     }
 
+    fetchProjectFunding(params: { project_pk?: number }) {
+        return this.http.get(`${_.BASE_URL}/projects/${params?.project_pk}/project_funding`);
+    }
+
     saveSignedContractAttachment(data: any) {
         return this.http.post(`${_.BASE_URL}/projects/attachment`, data);
+    }
+
+    saveProjectFunding(data: ProjectFunding) {
+        return this.http.post(`${_.BASE_URL}/projects/project_funding`, data);
     }
 
     deleteProjectAttachment(data: any) {
