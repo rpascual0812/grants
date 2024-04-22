@@ -7,6 +7,7 @@ import {
     Recommendation,
     Review,
     Type,
+    Document
 } from './_application.interface';
 
 export interface Project {
@@ -42,6 +43,7 @@ export interface ProjectFunding {
     released_amount_other_currency?: string;
     released_date?: Date;
     bank_receipt_pk?: number;
+    bank_receipt_document?: Document;
     grantee_acknowledgement?: Date;
     created_by?: number;
     report_due_date?: Date;
