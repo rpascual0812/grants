@@ -46,17 +46,25 @@
             </div>
             <div class="card panel mt-2 py-3"
                 *ngFor="let role of roles| paginate : { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.count }; let i = index">
-
                 <div class="row" style="margin-right: 0px !important;">
                     <div class="col-md-6 px-4 cursor-pointer" (click)="openModal(role)">{{role.name}}</div>
                     <div class="col-md-2">
-                        <app-select [arr]="['Select 1', 'Select 2', 'Select 3']" [multiple]="true"></app-select>
+                        <app-select [arr]="selections" [multiple]="false"
+                            [defaultSelectedInArr]="role.restrictions['grant_application']"
+                            (onSelectEvent)="onSelect($event, i, 'grant_application')"
+                            (onDeSelectEvent)="onDeselect($event, i, 'grant_application')"></app-select>
                     </div>
                     <div class="col-md-2">
-                        <app-select [arr]="['Select 1', 'Select 2', 'Select 3']" [multiple]="true"></app-select>
+                        <app-select [arr]="selections" [multiple]="false"
+                            [defaultSelectedInArr]="role.restrictions['contract_finalization']"
+                            (onSelectEvent)="onSelect($event, i, 'contract_finalization')"
+                            (onDeSelectEvent)="onDeselect($event, i, 'contract_finalization')"></app-select>
                     </div>
                     <div class="col-md-2">
-                        <app-select [arr]="['Select 1', 'Select 2', 'Select 3']" [multiple]="false"></app-select>
+                        <app-select [arr]="selections" [multiple]="false"
+                            [defaultSelectedInArr]="role.restrictions['fund_release']"
+                            (onSelectEvent)="onSelect($event, i, 'fund_release')"
+                            (onDeSelectEvent)="onDeselect($event, i, 'fund_release')"></app-select>
                     </div>
                 </div>
             </div>
