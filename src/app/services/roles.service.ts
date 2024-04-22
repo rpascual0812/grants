@@ -15,7 +15,13 @@ export class RoleService {
         return this.http.get(`${_.BASE_URL}/roles`, { params: filters });
     }
 
-    save(role: any, user: any) {
-        return this.http.post(`${_.BASE_URL}/roles`, { checked: role.checked, role_pk: role.pk, user_pk: user.pk });
+    save(role: any) {
+        return this.http.post(`${_.BASE_URL}/roles`, { ...role });
     }
+
+    saveRestriction(role: any) {
+        return this.http.post(`${_.BASE_URL}/roles/restrictions`, { ...role });
+    }
+
+
 }

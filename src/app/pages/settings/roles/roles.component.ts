@@ -23,6 +23,16 @@ export class RolesComponent {
     pagination: any = _.PAGINATION;
     tableSizes: any = _.TABLE_SIZES;
 
+    selections: any = [
+        'restricted', 'read-only', 'comments', 'recommendation'
+    ];
+
+    restrictions: any = {
+        grant_application: '',
+        contract_finalization: '',
+        fund_release: ''
+    }
+
     page: number = 1;
 
     constructor(
@@ -51,6 +61,9 @@ export class RolesComponent {
             .subscribe({
                 next: (data: any) => {
                     this.roles = data.data;
+                    this.roles.forEach((role: any) => {
+                        role.restrictions = role.restrictions ? role.restrictions : this.restrictions;
+                    });
                     this.pagination.count = data.total;
                 },
                 error: (error: any) => {
@@ -75,7 +88,6 @@ export class RolesComponent {
         this.bsModalRef = this.modalService.show(RolesModalComponent, initialState);
         this.bsModalRef.content.saveBtnName = 'Save';
         this.bsModalRef.content.closeBtnName = 'Close';
-        this.bsModalRef.content.activateBtnName = 'Activate';
 
         this.bsModalRef.content.callback.subscribe((res: any) => {
             try {
@@ -129,5 +141,33 @@ export class RolesComponent {
     handleIsOpenChange($event: boolean, id: string) {
         const currentIdx = this.roles.findIndex((role: any) => role['id'] === id);
         this.roles[currentIdx]['expanded'] = $event;
+    }
+
+    onSelect(ev: any, i: number, type: string) {
+        this.restrictions[type] = ev[0];
+        this.roles[i].restrictions = this.restrictions;
+        this.saveRestriction(this.roles[i]);
+    }
+
+    onDeselect(ev: any, i: number, type: string) {
+        this.restrictions[type] = '';
+        this.roles[i].restrictions = this.restrictions;
+        this.saveRestriction(this.roles[i]);
+    }
+
+    saveRestriction(role: any) {
+        this.roleService
+            .saveRestriction(role)
+            .subscribe({
+                next: (data: any) => {
+                    console.log(data);
+                },
+                error: (error: any) => {
+                    console.log(error);
+                },
+                complete: () => {
+                    console.log('Complete');
+                }
+            });
     }
 }

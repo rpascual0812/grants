@@ -38,4 +38,8 @@ export class UserService {
     resetPassword(account: any) {
         return this.http.post(`${_.BASE_URL}/users/password/update`, account);
     }
+
+    saveRole(role: any, user: any) {
+        return this.http.post(`${_.BASE_URL}/users/roles`, { checked: role.checked, role_pk: role.pk, user_pk: user.pk });
+    }
 }

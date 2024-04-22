@@ -6,6 +6,7 @@ import { formatDate } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 
 import * as _ from '../../../../utilities/globals';
+import { RoleService } from 'src/app/services/roles.service';
 
 @Component({
     selector: 'app-roles-modal',
@@ -36,6 +37,7 @@ export class RolesModalComponent {
         private modalService: BsModalService,
         private toastr: ToastrService,
         private cdr: ChangeDetectorRef,
+        private roleService: RoleService
     ) { }
 
     ngOnInit(): void {
@@ -65,5 +67,24 @@ export class RolesModalComponent {
         if (this.form.invalid) {
             return;
         }
+
+        this.roleService
+            .save(this.form.value)
+            .subscribe({
+                next: (data: any) => {
+                    this.callback.emit({ data });
+                    this.toastr.success('The role has been successfully ' + (this.form.value.pk ? 'updated' : 'added'), 'SUCCESS!');
+                },
+                error: (error: any) => {
+                    console.log(error);
+                    this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
+                    setTimeout(() => { this.loading = false; }, 500);
+                },
+                complete: () => {
+                    console.log('Complete');
+                    setTimeout(() => { this.loading = false; }, 500);
+                    this.bsModalRef.hide();
+                }
+            });
     }
 }
