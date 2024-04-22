@@ -31,7 +31,7 @@ export class FundingReleaseComponent implements OnInit {
         private changeDetection: ChangeDetectorRef,
         private projectService: ProjectService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.project = this.grantSignalService.project();

@@ -79,7 +79,7 @@
 
                         <div class="my-2">
                             <p class="m-0 p-0" style="text-decoration: underline">attached bank receipt</p>
-                            <p class="text-secondary m-0 p-0">{{ funding?.bank_receipt_pk }}</p>
+                            <p class="text-secondary m-0 p-0">{{ funding?.bank_receipt_document?.original_name }}</p>
                         </div>
 
                         <div class="my-2">
@@ -88,7 +88,7 @@
                                 <input class="form-check-input" type="checkbox" disabled />
                                 <label class="form-check-label font-weight-light mx-1">{{
                                     funding?.grantee_acknowledgement | date : 'dd-MMM-YYYY'
-                                }}</label>
+                                    }}</label>
                             </div>
                         </div>
                     </div>
@@ -127,9 +127,8 @@
                         </div>
                         <div class="col-12 col-md-3">
                             <button class="btn btn-danger btn-icon-only btn-rounded">
-                                <span class="position-relative bottom-10 end-10"
-                                    ><i class="material-icons">delete</i></span
-                                >
+                                <span class="position-relative bottom-10 end-10"><i
+                                        class="material-icons">delete</i></span>
                             </button>
                         </div>
                     </div>
@@ -150,7 +149,7 @@
                             Liquidation
                             <span class="font-weight-light">{{
                                 funding?.project_funding_liquidation?.date_released | date : 'dd-MMM-yyyy'
-                            }}</span>
+                                }}</span>
                         </h5>
                         <div class="container bg-white rounded">
                             <p class="text-secondary p-1">

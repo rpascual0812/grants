@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { ModalService } from 'src/app/components/modal/modal.service';
 import { ProjectFunding } from 'src/app/interfaces/_project.interface';
@@ -8,6 +8,10 @@ import { formatDate } from '@angular/common';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { OTHER_CURRENCY_LIST, USD_CURRENCY } from 'src/app/utilities/constants';
+import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
+import * as _ from '../../../../../utilities/globals';
+import { DocumentService } from 'src/app/services/document.service';
+import { Document } from 'src/app/interfaces/_application.interface';
 
 export type onHiddenDataFundingRelease = {
     isSaved: boolean;
@@ -30,12 +34,26 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
     form: FormGroup;
     projectFundingReport: FormArray;
 
+    attachments: any = {
+        bank_receipt: [],
+        report_file: []
+    };
+    SERVER: string = _.BASE_URL;
+
+    bank_receipt: any = {};
+    report_file: any = {};
+
+    grantee_acknowledgement: boolean = false;
+
     constructor(
         public bsModalRef: BsModalRef,
         private formBuilder: FormBuilder,
         private projectService: ProjectService,
         private modalService: BsModalService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        public documentUploaderRef: BsModalRef,
+        private cdr: ChangeDetectorRef,
+        private documentService: DocumentService,
     ) {
         this.funding = (modalService?.config?.initialState as any)?.funding;
     }
@@ -66,9 +84,10 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
             released_amount_usd: [this.funding?.released_amount_usd ?? '', Validators.required],
             released_amount_other_currency: [
                 this.funding?.released_amount_other_currency ??
-                    `${USD_CURRENCY.at(0)?.key} - ${USD_CURRENCY.at(0)?.label}`,
+                `${USD_CURRENCY.at(0)?.key} - ${USD_CURRENCY.at(0)?.label}`,
             ],
             project_funding_report: this.formBuilder.array([]),
+            grantee_acknowledgement: [''],
         });
         this.initialProjFundingReport();
     }
@@ -81,8 +100,9 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
                 this.createFormProjectFundingReport(
                     report?.title ?? '',
                     report?.status ?? '',
+                    this.attachments.report_file?.[0] ?? '',
                     (report?.date_created ?? '') as Date,
-                    report?.pk
+                    report?.pk,
                 )
             );
         });
@@ -91,6 +111,7 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
     createFormProjectFundingReport(
         title: string,
         status: string,
+        document?: Document,
         dateCreated?: Date,
         projectFundingReportPk?: number
     ): FormGroup {
@@ -99,6 +120,7 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
             title: [title, Validators.required],
             date_created: [dateCreated ? parseFormDate(dateCreated) : ''],
             status: [status, Validators.required],
+            bank_receipt_pk: ['']
         });
     }
 
@@ -107,17 +129,19 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
     }
 
     handleAddFundingReport(params: { title: string; status: string }) {
-        this.projectFundingReport.push(this.createFormProjectFundingReport(params?.title, params?.status));
+        this.projectFundingReport.push(this.createFormProjectFundingReport(params?.title, params?.status, this.attachments.report_file?.[0]));
     }
 
     saveFormValue() {
         const { value } = this.form;
+        console.log(value);
         this.projectService
             .saveProjectFunding({
                 project_pk: this.funding?.project_pk,
                 pk: this.funding?.pk,
                 ...value,
                 released_amount_other: value.released_amount_usd,
+                bank_receipt_pk: this.bank_receipt.pk
             })
             .subscribe({
                 next: (res: any) => {
@@ -159,5 +183,29 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
 
     handleClose() {
         this.bsModalRef.hide();
+    }
+
+    uploadFiles(type: string) {
+        const initialState: ModalOptions = {
+            class: 'modal-lg',
+        };
+        this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
+
+        this.documentUploaderRef.content.document.subscribe((res: any) => {
+            if (type == 'bank_receipt') {
+                this.bank_receipt = res.file;
+                this.attachments.bank_receipt = [res.file];
+            }
+            else if (type == 'report') {
+                this.report_file = res.file;
+                this.attachments.report_file = [res.file];
+            }
+            this.cdr.detectChanges();
+        });
+    }
+
+    delete(index: number) {
+        this.attachments.splice(index, 1);
+        this.form.get('bank_receipt_pk')?.patchValue(null);
     }
 }

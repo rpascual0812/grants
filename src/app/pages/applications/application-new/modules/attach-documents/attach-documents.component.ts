@@ -22,7 +22,7 @@ export class AttachDocumentsComponent implements OnInit {
         private modalService: BsModalService,
         private documentService: DocumentService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.attachments = this.inputAttachments;
