@@ -71,6 +71,12 @@ export class FileUploaderComponent implements OnInit {
                     if (event.type === HttpEventType.UploadProgress) {
                         this.progress = Math.round(100 * event.loaded / event.total);
                     } else if (event instanceof HttpResponse) {
+
+                        if (this.progress == 100) {
+                            this.files[i].status = 'Success';
+                        }
+                        this.cdr.detectChanges();
+
                         this.document.emit({ file: event.body });
                     }
                 },
