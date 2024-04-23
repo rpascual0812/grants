@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <div *ngFor="let funding of projectFunding" class="tranche-container">
+    <div *ngFor="let funding of projectFunding; let i = index" class="tranche-container">
         <div class="row">
             <div class="col-4">
                 <h5 class="text-dark">{{ funding?.title }}</h5>
@@ -169,12 +169,29 @@
 
                     <div class="col-12 col-md-2">
                         <h5 class="text-dark">Attachment</h5>
-                        <p class="text-dark">
-                            <span>
-                                <i class="material-icons">attach_file</i>
-                            </span>
-                            document.pdf
-                        </p>
+
+                        <div class="row mt-3 mb-3"
+                            [hidden]="funding?.project_funding_liquidation?.documents?.length == 0">
+                            <div class="md-12"
+                                *ngFor="let attachment of funding?.project_funding_liquidation?.documents; let j = index">
+                                <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
+                                    attachment.original_name
+                                    }}</a>
+                                <a (click)="deleteAttachment(i, j)"><i
+                                        class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-default" (click)="uploadFiles(i)">
+                            <div class="d-flex flex-column text-start">
+                                <p class="p-0 m-0 text-sm text-info font-weight-bold">
+                                    <span class="icon icon-sm">
+                                        <i class="material-icons">add</i>
+                                    </span>
+                                    Attach File
+                                </p>
+                            </div>
+                        </button>
                     </div>
                 </div>
             </div>
