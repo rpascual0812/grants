@@ -207,6 +207,7 @@ input.form-control:focus {
 
 ng-multiselect-dropdown>.multiselect-dropdown>.dropdown-list {
     width: auto !important;
+    position: fixed !important;
 }
 
 ng-multiselect-dropdown>.multiselect-dropdown .dropdown-btn {
