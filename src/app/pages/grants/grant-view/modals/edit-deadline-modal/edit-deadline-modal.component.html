@@ -1,0 +1,32 @@
+<div class="modal-header bg-gray-300">
+    <h4 class="modal-title pull-left text-dark">Edit Deadline</h4>
+    <button type="button" class="btn btn-default pull-right" aria-label="Close" (click)="this.bsModalRef.hide()">
+        <i class="material-icons">close</i>
+    </button>
+</div>
+
+<div class="modal-body">
+    <div class="container">
+        <form [formGroup]="form" (ngSubmit)="handleSave()">
+            <div class="form-group my-2">
+                <label class="text-decoration-underline text-dark">report due date</label>
+                <input
+                    formControlName="report_due_date"
+                    class="form-control border rounded-1 p-1"
+                    type="date"
+                    [ngClass]="{ 'is-invalid': submitted && f['report_due_date'].errors }"
+                    required
+                />
+                <div *ngIf="submitted && f['report_due_date'].errors" class="invalid-feedback">
+                    <div *ngIf="f['report_due_date'].errors['required']">report_due_date is required</div>
+                </div>
+            </div>
+        </form>
+        <div class="modal-footer my-3">
+            <button type="button" class="btn btn-white text-capitalize" (click)="handleClose()">Cancel</button>
+            <button type="button" class="btn btn-dark-blue text-capitalize" (click)="handleSave()">
+                Save
+            </button>
+        </div>
+    </div>
+</div>

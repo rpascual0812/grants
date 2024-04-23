@@ -20,6 +20,8 @@ import { FundingReleaseLiquidationModalComponent } from '../../../modals/funding
 import { getOtherCurrencyKey } from 'src/app/utilities/constants';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import * as _ from '../../../../../../utilities/globals';
+import { DateTime } from 'luxon';
+import { EditDeadlineModalComponent } from '../../../modals/edit-deadline-modal/edit-deadline-modal.component';
 
 @Component({
     selector: 'app-funding-release',
@@ -42,8 +44,8 @@ export class FundingReleaseComponent implements OnInit {
         private projectService: ProjectService,
         private toastr: ToastrService,
         public documentUploaderRef: BsModalRef,
-        private cdr: ChangeDetectorRef,
-    ) { }
+        private cdr: ChangeDetectorRef
+    ) {}
 
     ngOnInit() {
         this.project = this.grantSignalService.project();
@@ -96,6 +98,70 @@ export class FundingReleaseComponent implements OnInit {
 
     handleEditLiquidation(projectFundingLiquidation?: ProjectFundingLiquidation) {
         this.openLiquidationModal(projectFundingLiquidation);
+    }
+
+    getNextReportDueDate() {
+        // fetches the nearest report due date that is greater than or equal to the current date
+        // example:
+        // current date: 23-APR-2024
+        // report due dates: [27-APR-2024, 28-APR-2024, 29-APR-2024]
+        // report due date: 27-APR-2024
+        const nextReportDue = this.projectFunding
+            ?.filter((funding) => {
+                const currentDate = DateTime.now();
+                const parsedDueDate = (funding?.report_due_date &&
+                    DateTime.fromISO(String(funding?.report_due_date))) as DateTime;
+                return currentDate.startOf('day') <= parsedDueDate.startOf('day');
+            })
+            .sort((reportA, reportB) => {
+                const reportDueDateA = DateTime.fromISO(String(reportA?.report_due_date));
+                const reportDueDateB = DateTime.fromISO(String(reportB?.report_due_date));
+                return reportDueDateA.startOf('day') <= reportDueDateB.startOf('day') ? -1 : 1;
+            });
+        return nextReportDue?.at(0)?.report_due_date ?? null;
+    }
+
+    getLastTrancheDate() {
+        // fetches the nearest date created value that is equal or less than to the current date
+        // example:
+        // current date: 23-APR-2024
+        // date created dates: [23-APR-2024, 22-APR-2024, 21-APR-2024]
+        // tranche date: 23-APR-2024
+        const lastTrancheDate = this.projectFunding
+            ?.filter((funding) => {
+                const currentDate = DateTime.now();
+                const parsedDateCreated = (funding?.date_created &&
+                    DateTime.fromISO(String(funding?.date_created))) as DateTime;
+                return currentDate.startOf('day') >= parsedDateCreated.startOf('day');
+            })
+            .sort((reportA, reportB) => {
+                const reportDueDateA = DateTime.fromISO(String(reportA?.date_created));
+                const reportDueDateB = DateTime.fromISO(String(reportB?.date_created));
+                return reportDueDateA.startOf('day') >= reportDueDateB.startOf('day') ? -1 : 1;
+            });
+        return lastTrancheDate?.at(0)?.date_created ?? null;
+    }
+
+    getOverdueReport() {
+        // fetches the nearest report due date that is less than or equal to the current date
+        // and has values for grantee_acknowledgement or bank_receipt
+        const overdueReport = this.projectFunding
+            ?.filter((funding) => {
+                const currentDate = DateTime.now();
+                const parsedDueDate = (funding?.report_due_date &&
+                    DateTime.fromISO(String(funding?.report_due_date))) as DateTime;
+                return currentDate.startOf('day') >= parsedDueDate.startOf('day');
+            })
+            ?.filter((funding) => {
+                return funding?.grantee_acknowledgement || funding?.bank_receipt_pk;
+            })
+            ?.sort((reportA, reportB) => {
+                const reportDueDateA = DateTime.fromISO(String(reportA?.date_created));
+                const reportDueDateB = DateTime.fromISO(String(reportB?.date_created));
+                return reportDueDateA.startOf('day') >= reportDueDateB.startOf('day') ? -1 : 1;
+            });
+
+        return overdueReport?.at(0) ?? null;
     }
 
     parseCurrencyKey(otherCurrencyLabel?: string) {
@@ -154,6 +220,26 @@ export class FundingReleaseComponent implements OnInit {
         });
     }
 
+    openEditDeadlineModal(pk?: number) {
+        const funding = this.projectFunding?.find((item) => item?.pk === pk) ?? null;
+        this.bsModalRef = this.modalService.show(EditDeadlineModalComponent, {
+            class: 'modal-md',
+            initialState: {
+                funding: {
+                    ...funding,
+                    project_pk: this.project?.pk,
+                },
+            },
+        });
+
+        this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: onHiddenDataFundingRelease) => {
+            if (data?.pk && isSaved) {
+                this.modifyFundingList(data);
+                this.changeDetection.detectChanges();
+            }
+        });
+    }
+
     openLiquidationModal(projectFundingLiquidation?: ProjectFundingLiquidation) {
         this.bsModalRef = this.modalService.show(FundingReleaseLiquidationModalComponent, {
             class: 'modal-md',
@@ -181,7 +267,7 @@ export class FundingReleaseComponent implements OnInit {
 
     uploadFiles(index: number) {
         const initialState: ModalOptions = {
-            class: 'modal-lg'
+            class: 'modal-lg',
         };
         this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
 
@@ -193,20 +279,16 @@ export class FundingReleaseComponent implements OnInit {
     }
 
     linkAttachment(file: any, liquidation: any) {
-        this.projectService
-            .saveLiquidationAttachment({ liquidation_pk: liquidation?.pk, file: file })
-            .subscribe({
-                next: (data: any) => {
-
-                },
-                error: (error: any) => {
-                    console.log(error);
-                    this.toastr.error('An error occurred while uploading attachments. Please try again', 'ERROR!');
-                },
-                complete: () => {
-                    console.log('Complete');
-                }
-            });
+        this.projectService.saveLiquidationAttachment({ liquidation_pk: liquidation?.pk, file: file }).subscribe({
+            next: (data: any) => {},
+            error: (error: any) => {
+                console.log(error);
+                this.toastr.error('An error occurred while uploading attachments. Please try again', 'ERROR!');
+            },
+            complete: () => {
+                console.log('Complete');
+            },
+        });
     }
 
     deleteAttachment(funding_index: number, document_index: number) {
@@ -224,11 +306,18 @@ export class FundingReleaseComponent implements OnInit {
             },
             () => {
                 this.projectService
-                    .deleteLiquidationAttachment({ pk: this.projectFunding?.[funding_index].project_funding_liquidation?.documents?.[document_index].pk })
+                    .deleteLiquidationAttachment({
+                        pk: this.projectFunding?.[funding_index].project_funding_liquidation?.documents?.[
+                            document_index
+                        ].pk,
+                    })
                     .subscribe({
                         next: (data: any) => {
                             if (data.status) {
-                                this.projectFunding?.[funding_index].project_funding_liquidation?.documents?.splice(document_index, 1);
+                                this.projectFunding?.[funding_index].project_funding_liquidation?.documents?.splice(
+                                    document_index,
+                                    1
+                                );
                             }
                         },
                         error: (error: any) => {
@@ -237,10 +326,9 @@ export class FundingReleaseComponent implements OnInit {
                         },
                         complete: () => {
                             console.log('Complete');
-                        }
+                        },
                     });
             }
         );
-
     }
 }

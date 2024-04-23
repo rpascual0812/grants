@@ -1,17 +1,21 @@
 <div class="container">
     <div class="row my-3">
         <div class="col-12 col-md-4">
-            <h5 class="text-dark">
+            <h5 *ngIf="getNextReportDueDate()" class="text-dark">
                 Next Report Due
-                <span class="badge text-xs text-bg-danger text-white mx-2">10-Jul-2022</span>
+                <span class="badge text-xs text-bg-danger text-white mx-2">
+                    {{ getNextReportDueDate() | date : 'dd-MMM-yyyy' }}
+                </span>
             </h5>
 
-            <h5 class="text-dark">
+            <h5 *ngIf="getLastTrancheDate()" class="text-dark">
                 Last Tranche Date
-                <span class="badge text-xs text-bg-danger text-white mx-2">10-Jul-2022</span>
+                <span class="badge text-xs text-bg-danger text-white mx-2">
+                    {{ getLastTrancheDate() | date : 'dd-MMM-yyyy' }}
+                </span>
             </h5>
         </div>
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-8" *ngIf="getOverdueReport()">
             <div class="card bg-danger">
                 <div class="card-title p-1 mb-0">
                     <h5 class="text-white px-2 m-0">Overdue Report</h5>
@@ -20,16 +24,26 @@
                     <div class="bg-white p-2 rounded">
                         <div class="d-flex flex-wrap flex-row gap-1">
                             <p class="text-dark font-weight-bold">Amount Released</p>
-                            <p class="text-dark">{{ 10000 | number }} USD</p>
+                            <p class="text-dark">{{ getOverdueReport()?.released_amount_usd | number }} USD</p>
                         </div>
                         <div class="d-flex flex-wrap flex-row gap-1">
                             <div class="form-check m-0 p-1">
                                 <label class="form-check-label text-dark font-weight-bold mx-1">Acknowledgement</label>
-                                <input class="form-check-input" type="checkbox" />
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    disabled
+                                    [checked]="getOverdueReport()?.grantee_acknowledgement"
+                                />
                             </div>
                             <div class="form-check m-0 p-1">
                                 <label class="form-check-label text-dark font-weight-bold mx-1">Official Receipt</label>
-                                <input class="form-check-input" type="checkbox" />
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    disabled
+                                    [checked]="getOverdueReport()?.bank_receipt_pk"
+                                />
                             </div>
                         </div>
                     </div>
@@ -59,7 +73,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex flex-wrap flex-row">
-                            <button class="btn btn-dark-blue m-1" (click)="handleEditTranche(funding?.pk)">
+                            <button class="btn btn-dark-blue m-1" (click)="openEditDeadlineModal(funding?.pk)">
                                 edit deadline
                             </button>
                             <button class="btn btn-dark-blue m-1" (click)="handleEditTranche(funding?.pk)">
@@ -88,11 +102,15 @@
                         <div class="my-2">
                             <p class="m-0 p-0" style="text-decoration: underline">grantee's acknowledgement</p>
                             <div class="form-check m-0 p-1">
-                                <input class="form-check-input" type="checkbox" disabled
-                                    [checked]="funding?.grantee_acknowledgement" />
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    disabled
+                                    [checked]="funding?.grantee_acknowledgement"
+                                />
                                 <label class="form-check-label font-weight-light mx-1">{{
                                     funding?.grantee_acknowledgement | date : 'dd-MMM-YYYY'
-                                    }}</label>
+                                }}</label>
                             </div>
                         </div>
                     </div>
@@ -107,8 +125,10 @@
                     </h6>
                 </div>
 
-                <div *ngFor="let item of groupedFundingReport(funding?.project_funding_report ?? []) | keyvalue"
-                    class="card my-3">
+                <div
+                    *ngFor="let item of groupedFundingReport(funding?.project_funding_report ?? []) | keyvalue"
+                    class="card my-3"
+                >
                     <div class="d-flex flex-wrap flex-row p-2 align-items-center">
                         <p class="mx-2 p-0 m-0" style="text-decoration: underline">{{ item.key }}</p>
                         <!-- <button class="btn btn-info btn-icon-only btn-rounded">
@@ -149,7 +169,7 @@
                             Liquidation
                             <span class="font-weight-light">{{
                                 funding?.project_funding_liquidation?.date_released | date : 'dd-MMM-yyyy'
-                                }}</span>
+                            }}</span>
                         </h5>
                         <div class="container bg-white rounded">
                             <p class="text-secondary p-1">
@@ -170,15 +190,23 @@
                     <div class="col-12 col-md-2">
                         <h5 class="text-dark">Attachment</h5>
 
-                        <div class="row mt-3 mb-3"
-                            [hidden]="funding?.project_funding_liquidation?.documents?.length == 0">
-                            <div class="md-12"
-                                *ngFor="let attachment of funding?.project_funding_liquidation?.documents; let j = index">
+                        <div
+                            class="row mt-3 mb-3"
+                            [hidden]="funding?.project_funding_liquidation?.documents?.length == 0"
+                        >
+                            <div
+                                class="md-12"
+                                *ngFor="
+                                    let attachment of funding?.project_funding_liquidation?.documents;
+                                    let j = index
+                                "
+                            >
                                 <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
                                     attachment.original_name
-                                    }}</a>
-                                <a (click)="deleteAttachment(i, j)"><i
-                                        class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
+                                }}</a>
+                                <a (click)="deleteAttachment(i, j)"
+                                    ><i class="fa fa-times text-danger mx-2 cursor-pointer"></i
+                                ></a>
                             </div>
                         </div>
 
