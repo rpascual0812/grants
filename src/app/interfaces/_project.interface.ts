@@ -73,4 +73,5 @@ export interface ProjectFundingLiquidation {
     status?: string;
     date_created?: Date;
     date_released?: Date;
+    documents?: Document[]
 }
