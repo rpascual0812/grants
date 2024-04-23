@@ -61,6 +61,16 @@ export class ProjectService {
         return this.http.get(`${_.BASE_URL}/projects/${pk}/reviews`, { params: { type } });
     }
 
+    deleteProjectFundingReport(data: {
+        project_pk?: number;
+        project_funding_pk?: number;
+        project_funding_report_pk?: number;
+    }) {
+        return this.http.delete(
+            `${_.BASE_URL}/projects/${data.project_pk}/project_funding/${data.project_funding_pk}/project_funding_report/${data.project_funding_report_pk}`
+        );
+    }  
+
     saveLiquidationAttachment(data: any) {
         return this.http.post(`${_.BASE_URL}/projects/liquidation/attachment`, data);
     }
