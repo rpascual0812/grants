@@ -1,6 +1,6 @@
 import { onHiddenDataFundingLiquidation } from './../../../modals/funding-release-liquidation-modal/funding-release-liquidation-modal.component';
 import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import {
     FundingReleaseTrancheModalComponent,
     GroupedFundingReport,
@@ -18,6 +18,8 @@ import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { ToastrService } from 'ngx-toastr';
 import { FundingReleaseLiquidationModalComponent } from '../../../modals/funding-release-liquidation-modal/funding-release-liquidation-modal.component';
 import { getOtherCurrencyKey } from 'src/app/utilities/constants';
+import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
+import * as _ from '../../../../../../utilities/globals';
 
 @Component({
     selector: 'app-funding-release',
@@ -31,13 +33,17 @@ export class FundingReleaseComponent implements OnInit {
 
     bsModalRef?: BsModalRef;
 
+    SERVER: string = _.BASE_URL;
+
     grantSignalService = inject(GrantSignalService);
     constructor(
         private modalService: BsModalService,
         private changeDetection: ChangeDetectorRef,
         private projectService: ProjectService,
-        private toastr: ToastrService
-    ) {}
+        private toastr: ToastrService,
+        public documentUploaderRef: BsModalRef,
+        private cdr: ChangeDetectorRef,
+    ) { }
 
     ngOnInit() {
         this.project = this.grantSignalService.project();
@@ -62,6 +68,7 @@ export class FundingReleaseComponent implements OnInit {
                             'ERROR!'
                         );
                     }
+
                     this.loading = false;
                 },
                 error: (err) => {
@@ -170,5 +177,70 @@ export class FundingReleaseComponent implements OnInit {
                 this.changeDetection.detectChanges();
             }
         });
+    }
+
+    uploadFiles(index: number) {
+        const initialState: ModalOptions = {
+            class: 'modal-lg'
+        };
+        this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
+
+        this.documentUploaderRef.content.document.subscribe((res: any) => {
+            this.projectFunding?.[index].project_funding_liquidation?.documents?.push(res.file);
+            this.linkAttachment(res.file, this.projectFunding?.[index].project_funding_liquidation);
+            this.cdr.detectChanges();
+        });
+    }
+
+    linkAttachment(file: any, liquidation: any) {
+        this.projectService
+            .saveLiquidationAttachment({ liquidation_pk: liquidation?.pk, file: file })
+            .subscribe({
+                next: (data: any) => {
+
+                },
+                error: (error: any) => {
+                    console.log(error);
+                    this.toastr.error('An error occurred while uploading attachments. Please try again', 'ERROR!');
+                },
+                complete: () => {
+                    console.log('Complete');
+                }
+            });
+    }
+
+    deleteAttachment(funding_index: number, document_index: number) {
+        _.confirmMessage(
+            {
+                title: '<strong>Are you sure you want to delete this attachment?</strong>',
+                icon: 'question',
+                buttons: {
+                    showClose: true,
+                    showCancel: true,
+                    focusConfirm: false,
+                },
+                confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
+            },
+            () => {
+                this.projectService
+                    .deleteLiquidationAttachment({ pk: this.projectFunding?.[funding_index].project_funding_liquidation?.documents?.[document_index].pk })
+                    .subscribe({
+                        next: (data: any) => {
+                            if (data.status) {
+                                this.projectFunding?.[funding_index].project_funding_liquidation?.documents?.splice(document_index, 1);
+                            }
+                        },
+                        error: (error: any) => {
+                            console.log(error);
+                            this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
+                        },
+                        complete: () => {
+                            console.log('Complete');
+                        }
+                    });
+            }
+        );
+
     }
 }

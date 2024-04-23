@@ -7,7 +7,7 @@ import { ProjectFunding, ProjectFundingLiquidation } from '../interfaces/_projec
     providedIn: 'root',
 })
 export class ProjectService {
-    constructor(public http: HttpClient) {}
+    constructor(public http: HttpClient) { }
 
     fetch() {
         return this.http.get(`${_.BASE_URL}/projects`);
@@ -69,5 +69,13 @@ export class ProjectService {
         return this.http.delete(
             `${_.BASE_URL}/projects/${data.project_pk}/project_funding/${data.project_funding_pk}/project_funding_report/${data.project_funding_report_pk}`
         );
+    }  
+
+    saveLiquidationAttachment(data: any) {
+        return this.http.post(`${_.BASE_URL}/projects/liquidation/attachment`, data);
+    }
+
+    deleteLiquidationAttachment(data: any) {
+        return this.http.delete(`${_.BASE_URL}/documents/${data.pk}`);
     }
 }
