@@ -12,13 +12,8 @@
                 <div class="col-12">
                     <div class="form-group my-3">
                         <label class="font-weight-bold text-dark">Tranche Title*</label>
-                        <input
-                            formControlName="title"
-                            class="form-control border rounded-1 p-1"
-                            type="text"
-                            [ngClass]="{ 'is-invalid': submitted && f['title'].errors }"
-                            required
-                        />
+                        <input formControlName="title" class="form-control border rounded-1 p-1" type="text"
+                            [ngClass]="{ 'is-invalid': submitted && f['title'].errors }" required />
                         <div *ngIf="submitted && f['title'].errors" class="invalid-feedback">
                             <div *ngIf="f['title'].errors['required']">Title is required</div>
                         </div>
@@ -27,13 +22,8 @@
                 <div class="col-12">
                     <div class="form-group my-3">
                         <label class="font-weight-bold text-dark">Report due date*</label>
-                        <input
-                            formControlName="report_due_date"
-                            class="form-control border rounded-1 p-1"
-                            type="date"
-                            [ngClass]="{ 'is-invalid': submitted && f['report_due_date'].errors }"
-                            required
-                        />
+                        <input formControlName="report_due_date" class="form-control border rounded-1 p-1" type="date"
+                            [ngClass]="{ 'is-invalid': submitted && f['report_due_date'].errors }" required />
                         <div *ngIf="submitted && f['report_due_date'].errors" class="invalid-feedback">
                             <div *ngIf="f['report_due_date'].errors['required']">report due date is required</div>
                         </div>
@@ -47,26 +37,18 @@
                         <div class="card-body">
                             <div class="form-group my-2">
                                 <label class="text-decoration-underline text-dark">release date</label>
-                                <input
-                                    formControlName="released_date"
-                                    class="form-control border rounded-1 p-1"
-                                    type="date"
-                                    [ngClass]="{ 'is-invalid': submitted && f['released_date'].errors }"
-                                    required
-                                />
+                                <input formControlName="released_date" class="form-control border rounded-1 p-1"
+                                    type="date" [ngClass]="{ 'is-invalid': submitted && f['released_date'].errors }"
+                                    required />
                                 <div *ngIf="submitted && f['released_date'].errors" class="invalid-feedback">
                                     <div *ngIf="f['released_date'].errors['required']">release date is required</div>
                                 </div>
                             </div>
                             <div class="form-group my-2">
                                 <label class="text-decoration-underline text-dark">release amount</label>
-                                <input
-                                    formControlName="released_amount_usd"
-                                    class="form-control border rounded-1 p-1"
-                                    type="number"
-                                    required
-                                    [ngClass]="{ 'is-invalid': submitted && f['released_amount_usd'].errors }"
-                                />
+                                <input formControlName="released_amount_usd" class="form-control border rounded-1 p-1"
+                                    type="number" required
+                                    [ngClass]="{ 'is-invalid': submitted && f['released_amount_usd'].errors }" />
                                 <div *ngIf="submitted && f['released_amount_usd'].errors" class="invalid-feedback">
                                     <div *ngIf="f['released_amount_usd'].errors['required']">
                                         release date is required
@@ -76,24 +58,18 @@
                             <div class="form-group my-2">
                                 <label class="text-decoration-underline text-dark">attached bank receipt</label>
                                 <div class="row mt-3 mb-3" [hidden]="attachments.bank_receipt.length == 0">
-                                    <div
-                                        class="md-12"
-                                        *ngFor="let attachment of attachments.bank_receipt; let i = index"
-                                    >
+                                    <div class="md-12"
+                                        *ngFor="let attachment of attachments.bank_receipt; let i = index">
                                         <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
                                             attachment.original_name
-                                        }}</a>
-                                        <a (click)="delete(i)"
-                                            ><i class="fa fa-times text-danger mx-2 cursor-pointer"></i
-                                        ></a>
+                                            }}</a>
+                                        <a (click)="delete(i, 'bank_receipt')"><i
+                                                class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                                     </div>
                                 </div>
 
-                                <button
-                                    class="btn btn-white form-control"
-                                    type="button"
-                                    (click)="uploadFiles('bank_receipt')"
-                                >
+                                <button class="btn btn-white form-control" type="button"
+                                    (click)="uploadFiles('bank_receipt')">
                                     <div class="d-flex flex-column text-start">
                                         <p class="p-0 m-0 text-sm text-info font-weight-bold">
                                             <span class="icon icon-sm">
@@ -107,21 +83,15 @@
                             <div class="form-group my-2">
                                 <label class="text-decoration-underline text-dark">grantee's acknowledgement</label>
                                 <div class="form-check">
-                                    <input
-                                        class="form-check-input mx-1"
-                                        type="checkbox"
-                                        (change)="onCheckbox()"
-                                        [checked]="granteeAcknowledgement"
-                                    />
-                                    <input
-                                        class="border rounded-1 p-1"
-                                        type="date"
-                                        formControlName="grantee_acknowledgement"
-                                        [hidden]="!granteeAcknowledgement"
-                                        [ngClass]="{ 'is-invalid': submitted && f['grantee_acknowledgement'].errors }"
-                                    />
-                                    <div *ngIf="submitted && f['grantee_acknowledgement'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['grantee_acknowledgement'].errors['required']">Date is required</div>
+                                    <input class="form-check-input mx-1" type="checkbox" (change)="onCheckbox()"
+                                        [checked]="granteeAcknowledgement" />
+                                    <input class="border rounded-1 p-1" type="date"
+                                        formControlName="grantee_acknowledgement" [hidden]="!granteeAcknowledgement"
+                                        [ngClass]="{ 'is-invalid': submitted && f['grantee_acknowledgement'].errors }" />
+                                    <div *ngIf="submitted && f['grantee_acknowledgement'].errors"
+                                        class="invalid-feedback">
+                                        <div *ngIf="f['grantee_acknowledgement'].errors['required']">Date is required
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -154,29 +124,20 @@
                                     </p>
                                 </div>
                                 <div class="col-12 col-md-3">
-                                    <select
-                                        #selectReportStatusRow
+                                    <select #selectReportStatusRow
                                         class="form-select p-1 border border-1 ronded-1 text-secondary font-weight-bold px-3"
-                                        (change)="onSelectOpt(selectReportStatusRow.value, item.key, i)"
-                                    >
-                                        <option
-                                            *ngFor="let status of reportStatus"
-                                            [value]="status.key"
-                                            [selected]="status.key === subItem.status"
-                                        >
+                                        (change)="onSelectOpt(selectReportStatusRow.value, item.key, i)">
+                                        <option *ngFor="let status of reportStatus" [value]="status.key"
+                                            [selected]="status.key === subItem.status">
                                             {{ status.label }}
                                         </option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-3">
-                                    <button
-                                        class="btn btn-danger btn-icon-only btn-rounded"
-                                        type="button"
-                                        (click)="handleDelFundingReport(i, item.key)"
-                                    >
-                                        <span class="position-relative bottom-10 end-10"
-                                            ><i class="material-icons">delete</i></span
-                                        >
+                                    <button class="btn btn-danger btn-icon-only btn-rounded" type="button"
+                                        (click)="handleDelFundingReport(i, item.key)">
+                                        <span class="position-relative bottom-10 end-10"><i
+                                                class="material-icons">delete</i></span>
                                     </button>
                                 </div>
                             </div>
@@ -186,10 +147,8 @@
                     <div class="card my-2">
                         <div class="card-body">
                             <div class="form-group my-2">
-                                <select
-                                    #selectReportTitle
-                                    class="form-select p-1 border border-1 ronded-1 text-secondary font-weight-bold px-3"
-                                >
+                                <select #selectReportTitle
+                                    class="form-select p-1 border border-1 ronded-1 text-secondary font-weight-bold px-3">
                                     <option *ngFor="let section of reportSection" [value]="section.key">
                                         {{ section.label }}
                                     </option>
@@ -198,23 +157,17 @@
                             <div class="row">
                                 <div class="col-12 col-md-5">
                                     <div class="row mt-3 mb-3" [hidden]="attachments.report_file.length == 0">
-                                        <div
-                                            class="md-12"
-                                            *ngFor="let attachment of attachments.report_file; let i = index"
-                                        >
+                                        <div class="md-12"
+                                            *ngFor="let attachment of attachments.report_file; let i = index">
                                             <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
                                                 attachment.original_name
-                                            }}</a>
-                                            <a (click)="delete(i)"
-                                                ><i class="fa fa-times text-danger mx-2 cursor-pointer"></i
-                                            ></a>
+                                                }}</a>
+                                            <a (click)="delete(i, 'report_file')"><i
+                                                    class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                                         </div>
                                     </div>
-                                    <button
-                                        class="btn btn-white form-control"
-                                        type="button"
-                                        (click)="uploadFiles('report')"
-                                    >
+                                    <button class="btn btn-white form-control" type="button"
+                                        (click)="uploadFiles('report')">
                                         <div class="d-flex flex-column text-start">
                                             <p class="p-0 m-0 text-sm text-info font-weight-bold">
                                                 <span class="icon icon-sm">
@@ -226,26 +179,20 @@
                                     </button>
                                 </div>
                                 <div class="col-12 col-md-4">
-                                    <select
-                                        #selectReportStatus
-                                        class="form-select p-1 border border-1 ronded-1 text-secondary font-weight-bold px-3"
-                                    >
+                                    <select #selectReportStatus
+                                        class="form-select p-1 border border-1 ronded-1 text-secondary font-weight-bold px-3">
                                         <option *ngFor="let status of reportStatus" [value]="status.key">
                                             {{ status.label }}
                                         </option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-3">
-                                    <button
-                                        class="btn btn-dark-blue text-capitalize"
-                                        type="button"
-                                        (click)="
+                                    <button class="btn btn-dark-blue text-capitalize" type="button" (click)="
                                             handleAddFundingReport({
                                                 title: selectReportTitle.value,
                                                 status: selectReportStatus.value
                                             })
-                                        "
-                                    >
+                                        ">
                                         Add
                                     </button>
                                 </div>

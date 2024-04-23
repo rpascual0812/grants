@@ -81,6 +81,7 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
 
     ngOnInit() {
         this.setForm();
+        this.attachments.bank_receipt = this.funding?.bank_receipt_document ? [this.funding?.bank_receipt_document] : [];
     }
 
     get f() {
@@ -88,7 +89,6 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
     }
 
     setForm() {
-        console.log(this.funding);
         this.form = this.formBuilder.group({
             title: [this.funding?.title ?? '', Validators.required],
             released_date: [
@@ -102,7 +102,10 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
             released_amount_usd: [this.funding?.released_amount_usd ?? '', Validators.required],
             released_amount_other_currency: [
                 this.funding?.released_amount_other_currency ??
-                    `${USD_CURRENCY.at(0)?.key} - ${USD_CURRENCY.at(0)?.label}`,
+                `${USD_CURRENCY.at(0)?.key} - ${USD_CURRENCY.at(0)?.label}`,
+            ],
+            bank_receipt_pk: [
+                this.funding?.bank_receipt_pk ? this.funding?.bank_receipt_pk : null,
             ],
             grantee_acknowledgement: [
                 this.funding?.grantee_acknowledgement
@@ -217,7 +220,7 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
                 ...value,
                 project_funding_report: projectFundingReport,
                 released_amount_other: value.released_amount_usd,
-                bank_receipt_pk: this.bank_receipt.pk,
+                bank_receipt_pk: value.bank_receipt_pk,
             })
             .subscribe({
                 next: (res: any) => {
@@ -279,8 +282,11 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
         });
     }
 
-    delete(index: number) {
-        this.attachments.splice(index, 1);
-        this.form.get('bank_receipt_pk')?.patchValue(null);
+    delete(index: number, type: string) {
+        this.attachments[type].splice(index, 1);
+        if (type == 'bank_receipt') {
+            this.bank_receipt = {};
+            this.form.get('bank_receipt_pk')?.patchValue(null);
+        }
     }
 }

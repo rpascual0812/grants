@@ -36,7 +36,7 @@
                         <div class="md-12" *ngFor="let attachment of attachments.management_capacity; let i = index">
                             <a href="{{SERVER + '/' + attachment.path}}"
                                 target="_blank">{{attachment.original_name}}</a> <a
-                                (click)="deleteAttachment(i, 'additional_information')"><i
+                                (click)="deleteAttachment(i, 'management_capacity')"><i
                                     class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                         </div>
                     </div>
