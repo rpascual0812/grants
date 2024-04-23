@@ -56,7 +56,6 @@ export class FundingReleaseComponent implements OnInit {
                     const data = res?.data;
                     if (status) {
                         this.projectFunding = data?.project_funding;
-                        console.log(this.projectFunding);
                     } else {
                         this.toastr.error(
                             `An error occurred while fetching Funding Release. Please try again.`,

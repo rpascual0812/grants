@@ -10,7 +10,6 @@ import { USD_CURRENCY } from 'src/app/utilities/constants';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import * as _ from '../../../../../utilities/globals';
 import { DocumentService } from 'src/app/services/document.service';
-import { Document } from 'src/app/interfaces/_application.interface';
 
 export type onHiddenDataFundingRelease = {
     isSaved: boolean;
@@ -29,6 +28,18 @@ const parseGroupedFundingReportAsArr = (groupedFundingReport: GroupedFundingRepo
     const arr = Object.keys(groupedFundingReport).map((key) => groupedFundingReport[key]);
     return arr.flat();
 };
+
+const SECTION = [
+    { key: 'interim narrative report', label: 'interim narrative report' },
+    { key: 'interim financial report', label: 'interim financial report' },
+];
+
+const STATUS = [
+    { key: 'none', label: 'none' },
+    { key: 'for review', label: 'for review' },
+    { key: 'incomplete', label: 'incomplete' },
+    { key: 'approved', label: 'approved' },
+];
 
 @Component({
     selector: 'app-funding-release-tranche-modal',
@@ -51,7 +62,9 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
     bank_receipt: any = {};
     report_file: any = {};
 
-    grantee_acknowledgement: boolean = false;
+    granteeAcknowledgement = false;
+    reportSection = SECTION;
+    reportStatus = STATUS;
 
     constructor(
         public bsModalRef: BsModalRef,
@@ -75,6 +88,7 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
     }
 
     setForm() {
+        console.log(this.funding);
         this.form = this.formBuilder.group({
             title: [this.funding?.title ?? '', Validators.required],
             released_date: [
@@ -90,9 +104,22 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
                 this.funding?.released_amount_other_currency ??
                     `${USD_CURRENCY.at(0)?.key} - ${USD_CURRENCY.at(0)?.label}`,
             ],
-            grantee_acknowledgement: [null],
+            grantee_acknowledgement: [
+                this.funding?.grantee_acknowledgement
+                    ? parseFormDate(this.funding?.grantee_acknowledgement ?? '')
+                    : null,
+            ],
         });
+        this.initialGranteeAcknowledgementRender();
         this.initialFundingReportRender();
+    }
+
+    initialGranteeAcknowledgementRender() {
+        if (this.funding?.grantee_acknowledgement) {
+            this.granteeAcknowledgement = true;
+        } else {
+            this.granteeAcknowledgement = false;
+        }
     }
 
     initialFundingReportRender() {
@@ -147,6 +174,37 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
         } else {
             this.groupedFundingReport[key] = this.groupedFundingReport[key].filter((_item, i) => i !== idx);
         }
+    }
+
+    onCheckbox() {
+        this.granteeAcknowledgement = !this.granteeAcknowledgement;
+        if (!this.granteeAcknowledgement) {
+            this.removeValidators();
+        } else {
+            this.addValidators();
+        }
+    }
+
+    addValidators() {
+        this.form?.controls['grantee_acknowledgement']?.addValidators(Validators.required);
+        this.form?.controls?.['grantee_acknowledgement']?.updateValueAndValidity();
+    }
+
+    removeValidators() {
+        this.form?.controls?.['grantee_acknowledgement']?.setErrors(null);
+        this.form?.controls?.['grantee_acknowledgement']?.clearValidators();
+        this.form?.controls?.['grantee_acknowledgement']?.updateValueAndValidity();
+    }
+
+    onSelectOpt(value: string, key: string, i: number) {
+        this.groupedFundingReport[key] = this.groupedFundingReport[key].map((item, idx) => {
+            if (idx === i) {
+                item.status = value;
+            }
+            return {
+                ...item,
+            };
+        });
     }
 
     saveFormValue() {
