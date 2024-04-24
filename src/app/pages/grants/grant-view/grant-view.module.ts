@@ -24,6 +24,7 @@ import { ActivitiesAndTimelineViewComponent } from './modals/modal-views/activit
 import { InputDropdownModule } from '../../applications/application-new/modules/input-dropdown/input-dropdown.module';
 import { FundingReleaseTrancheModalComponent } from './modals/funding-release-tranche-modal/funding-release-tranche-modal.component';
 import { FundingReleaseLiquidationModalComponent } from './modals/funding-release-liquidation-modal/funding-release-liquidation-modal.component';
+import { EditDeadlineModalComponent } from './modals/edit-deadline-modal/edit-deadline-modal.component';
 
 @NgModule({
     declarations: [
@@ -42,6 +43,7 @@ import { FundingReleaseLiquidationModalComponent } from './modals/funding-releas
         ActivitiesAndTimelineViewComponent,
         FundingReleaseTrancheModalComponent,
         FundingReleaseLiquidationModalComponent,
+        EditDeadlineModalComponent,
     ],
     exports: [
         GrantViewComponent
