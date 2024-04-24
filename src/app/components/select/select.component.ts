@@ -61,10 +61,8 @@ export class SelectComponent {
         } else {
             this.dropdownList = this.arr;
             this.selectedItems = this.arr.filter((item: any) => item === this.defaultSelectedInArr);
-            this.setDefaultSelectedItemKey(this.arr);
+            this.setDefaultSelectedItemKey();
         }
-
-
     }
 
     onItemSelect(item: any) {
@@ -91,7 +89,7 @@ export class SelectComponent {
         this.globalService.selectFetch(this.url).subscribe({
             next: (data: any) => {
                 this.dropdownList = data.data;
-                this.setDefaultSelectedItemKey(data.data);
+                this.setDefaultSelectedItemKey();
             },
             error: (error: any) => {
                 console.log(error);
@@ -111,22 +109,27 @@ export class SelectComponent {
         });
     }
 
-    setDefaultSelectedItemKey(dropdownList: any[]) {
-        console.log(this.multiple, this.defaultSelectedItemKeyArr);
+    setDefaultSelectedItemKey() {
         if (this.multiple) {
             if (this.defaultSelectedItemKeyArr.length > 0) {
-                // this.selectedItems = dropdownList?.filter(
-                //     (item: any) => item[this.listItemKey] === this.defaultSelectedItemKey
-                // );
+                this.dropdownList.forEach((item: any) => {
+                    this.defaultSelectedItemKeyArr.forEach((selected: any) => {
+                        if (item.pk == selected.pk) {
+                            this.selectedItems.push({ pk: selected.pk, name: item.name });
+                        }
+                    });
+                });
             }
         }
         else {
             if (this.defaultSelectedItemKey) {
-                this.selectedItems = dropdownList?.filter(
+                this.selectedItems = this.dropdownList?.filter(
                     (item: any) => item[this.listItemKey] === this.defaultSelectedItemKey
                 );
             }
         }
+
+        this.cdRef.detectChanges();
     }
 
     subscribeToChangeFieldEmitter() {
