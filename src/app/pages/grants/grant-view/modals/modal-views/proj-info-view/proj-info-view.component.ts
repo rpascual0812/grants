@@ -1,3 +1,4 @@
+import { ProjectSite } from './../../../../../../interfaces/_project.interface';
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -8,6 +9,7 @@ import { Project } from 'src/app/interfaces/_project.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { extractErrorMessage, getDurationOpts } from 'src/app/utilities/application.utils';
 import { OnHiddenData } from '../../../grant-view.component';
+import { ProjectService } from 'src/app/services/project.service';
 
 type SelectItem = {
     pk?: number;
@@ -30,7 +32,9 @@ export class ProjInfoViewComponent implements OnInit {
     @Input() project: Project | null;
     @Input() countries: Country[] = [];
     @Input() provinces: Province[] = [];
+    @Input() projectSite: ProjectSite[] = [];
 
+    isSaved = false;
     processing = false;
     form: FormGroup;
     submitted = false;
@@ -38,6 +42,7 @@ export class ProjInfoViewComponent implements OnInit {
 
     provinceOpts: ProvinceOpt[] = [];
     projectLoc: FormArray;
+    projSiteForm: FormArray;
 
     SELECT_PROVINCE_KEY_PREFIX = 'province_';
     SELECT_COUNTRY_KEY_PREFIX = 'country_';
@@ -51,9 +56,10 @@ export class ProjInfoViewComponent implements OnInit {
         public bsModalRef: BsModalRef,
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
+        private projectService: ProjectService,
         private toastr: ToastrService,
         public documentUploaderRef: BsModalRef
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.provinceOpts = this.provinces?.map((item: any) => ({
@@ -73,6 +79,10 @@ export class ProjInfoViewComponent implements OnInit {
         return <FormArray>this.form.get('project_location');
     }
 
+    get formProjSite() {
+        return <FormArray>this.form.get('project_site');
+    }
+
     setForm() {
         const currentProject = this.project;
         const partnerOrg = currentProject?.partner?.organization;
@@ -86,8 +96,17 @@ export class ProjInfoViewComponent implements OnInit {
             how_will_affect: [project?.how_will_affect ?? '', Validators.required],
             project_website: [partnerOrg?.project_website ?? ''],
             project_location: this.formBuilder.array([], [Validators.required]),
+            project_site: this.formBuilder.array([]),
         });
         this.initialProjLocations();
+        this.initialProjSite();
+    }
+
+    initialProjSite() {
+        this.projSiteForm = this.form.get('project_site') as FormArray;
+        this.projectSite.forEach((item) => {
+            this.projSiteForm.push(this.createFormProjSite(item?.pk, item?.site));
+        });
     }
 
     initialProjLocations() {
@@ -117,6 +136,13 @@ export class ProjInfoViewComponent implements OnInit {
         });
     }
 
+    createFormProjSite(projSitePk?: number, site?: string): FormGroup {
+        return this.formBuilder.group({
+            pk: [projSitePk ?? ''],
+            site: [site ?? '', Validators.required],
+        });
+    }
+
     getProvinceOpts(countryPk: number) {
         return this.provinceOpts.filter((item) => item.country_pk === countryPk);
     }
@@ -124,6 +150,11 @@ export class ProjInfoViewComponent implements OnInit {
     onAddProjLoc() {
         this.projectLoc = this.form.get('project_location') as FormArray;
         this.projectLoc.push(this.createFormProjLocations());
+    }
+
+    onAddProjSite() {
+        this.projSiteForm = this.form.get('project_site') as FormArray;
+        this.projSiteForm.push(this.createFormProjSite());
     }
 
     onModifyProjLoc(
@@ -173,6 +204,14 @@ export class ProjInfoViewComponent implements OnInit {
                         const status = res?.status;
                         if (status) {
                             this.projectLoc.removeAt(idx);
+                            const projectLoc = this.project?.project_location?.filter(
+                                (location) => location.pk !== locationPk
+                            );
+                            this.project = {
+                                ...this.project,
+                                project_location: projectLoc,
+                            } as Project;
+                            this.isSaved = true;
                         } else {
                             this.toastr.error(
                                 `An error occurred while deleting Project Location. Please try again.`,
@@ -193,6 +232,44 @@ export class ProjInfoViewComponent implements OnInit {
         }
     }
 
+    onDelProjSite(idx: number) {
+        const projectPk = this.project?.pk;
+        const tempSitePk = this.projSiteForm.at(idx).get('pk')?.value;
+        const sitePk = typeof tempSitePk === 'string' || !tempSitePk ? null : tempSitePk;
+        if (projectPk && sitePk) {
+            this.projectService
+                .deleteProjectSite({
+                    project_pk: projectPk,
+                    project_site_pk: sitePk,
+                })
+                .subscribe({
+                    next: (res: any) => {
+                        const status = res?.status;
+                        if (status) {
+                            this.projSiteForm.removeAt(idx);
+                            const projectSite = this.projectSite?.filter((site) => site.pk !== sitePk);
+                            this.projectSite = projectSite;
+                            this.isSaved = true;
+                        } else {
+                            this.toastr.error(
+                                `An error occurred while deleting Project Site. Please try again.`,
+                                'ERROR!'
+                            );
+                        }
+                    },
+                    error: (err) => {
+                        const { statusCode, errorMessage } = extractErrorMessage(err);
+                        this.toastr.error(
+                            `An error occurred while deleting Project Site. ${statusCode} ${errorMessage} Please try again.`,
+                            'ERROR!'
+                        );
+                    },
+                });
+        } else {
+            this.projSiteForm.removeAt(idx);
+        }
+    }
+
     isNotValidKeyNumber(countryPk: number) {
         return typeof countryPk !== 'number';
     }
@@ -208,6 +285,7 @@ export class ProjInfoViewComponent implements OnInit {
     }
 
     handleClose() {
+        this.processChanges();
         this.bsModalRef.hide();
     }
 
@@ -230,6 +308,7 @@ export class ProjInfoViewComponent implements OnInit {
                             ...data,
                         };
                         this.toastr.success('Project Information has been successfully saved', 'SUCCESS!');
+                        this.isSaved = true;
                         this.savePartnerOrg();
                     } else {
                         this.toastr.error(
@@ -261,25 +340,64 @@ export class ProjInfoViewComponent implements OnInit {
             .subscribe({
                 next: (res: any) => {
                     const data = res?.data;
-                    const status = res.status;
+                    const status = res?.status;
                     if (status) {
                         this.toastr.success('Organization has been successfully saved', 'SUCCESS!');
-                        this.bsModalRef.onHidden?.next({
-                            isSaved: true,
-                            data: {
-                                project: this.project,
+                        this.project = {
+                            ...this.project,
+                            partner: {
+                                ...this.project?.partner,
+                                organization: {
+                                    ...this.project?.partner?.organization,
+                                    ...data,
+                                },
                             },
-                        } as OnHiddenData);
-                        this.bsModalRef.hide();
+                        } as Project;
+                        this.isSaved = true;
+                        this.saveProjectSite();
                     } else {
                         this.toastr.error(`An error occurred while saving Organization. Please try again.`, 'ERROR!');
+                    }
+
+                    this.processing = false;
+                },
+                error: (err) => {
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
+                    this.toastr.error(
+                        `An error occurred while saving Organization. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
+                    this.processing = false;
+                },
+            });
+    }
+
+    saveProjectSite() {
+        const { value } = this.form;
+        const projectSite = value.project_site;
+        this.projectService
+            .saveProjectSite({
+                project_pk: this.project?.pk,
+                project_site: projectSite,
+            })
+            .subscribe({
+                next: (res: any) => {
+                    const status = res?.status;
+                    const data = res?.data;
+                    if (status) {
+                        this.toastr.success('Project Site has been successfully saved', 'SUCCESS!');
+                        this.projectSite = data?.project_site;
+                        this.isSaved = true;
+                        this.handleClose();
+                    } else {
+                        this.toastr.error(`An error occurred while saving Project Site. Please try again.`, 'ERROR!');
                     }
                     this.processing = false;
                 },
                 error: (err) => {
                     const { statusCode, errorMessage } = extractErrorMessage(err);
                     this.toastr.error(
-                        `An error occurred while saving Proponent Information. ${statusCode} ${errorMessage} Please try again.`,
+                        `An error occurred while saving Project Site. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
                     this.processing = false;
@@ -294,5 +412,15 @@ export class ProjInfoViewComponent implements OnInit {
             this.processing = true;
             this.saveProjectInfo();
         }
+    }
+
+    processChanges() {
+        this.bsModalRef.onHidden?.next({
+            isSaved: this.isSaved,
+            data: {
+                project: this.project,
+                projectSite: this.projectSite,
+            },
+        } as OnHiddenData);
     }
 }

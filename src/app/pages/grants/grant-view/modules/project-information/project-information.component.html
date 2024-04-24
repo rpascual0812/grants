@@ -1,13 +1,13 @@
 <div>
     <h4 class="text-dark mb-4">Project Information</h4>
 
-    <div class="container text-center" *ngIf="loadingCountryFetch || loadingProvinceFetch">
+    <div class="container text-center" *ngIf="loadingCountryFetch || loadingProvinceFetch || loadingProjectSite">
         <div class="spinner-border" style="width: 3rem; height: 3rem" role="loading">
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
 
-    <ng-container *ngIf="!loadingCountryFetch && !loadingProvinceFetch">
+    <ng-container *ngIf="!loadingCountryFetch && !loadingProvinceFetch && !loadingProjectSite">
         <div class="row">
             <div class="col-md-2">
                 <p class="text-dark-blue font-weight-bold">Project Title</p>
@@ -102,23 +102,13 @@
             <div class="col-md-6">
                 <p class="text-dark font-weight-bold p-0">Site</p>
                 <div class="col-md-12 form-group my-3">
-                    <div class="row gap-0">
-                        <div class="col-12 col-md-9 p-0">
-                            <input type="text" class="form-control border rounded-1 p-1 bg-white" />
-                        </div>
-                        <div class="col-2 col-md-1 p-0">
-                            <button class="btn btn-default btn-sm text-info text-xs">Edit</button>
-                        </div>
-                        <div class="col-2 col-md-1 p-0">
-                            <button class="btn btn-default btn-sm text-danger text-xs">Remove</button>
+                    <div *ngFor="let item of projectSite" class="row gap-0 my-2 align-items-center">
+                        <div class="col-12 col-md-9 p-0 my-1">
+                            <p class="font-weight-bold text-dark text-sm p-0 px-3 m-0">
+                                {{ item.site }}
+                            </p>
                         </div>
                     </div>
-                    <button class="btn btn-dark-blue my-3" type="button">
-                        <span class="icon icon-sm position-relative" style="bottom: 2px">
-                            <i class="material-icons">add</i>
-                        </span>
-                        Add Site
-                    </button>
                 </div>
             </div>
         </div>

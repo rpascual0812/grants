@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Application, Country, PartnerAssessment, Province } from 'src/app/interfaces/_application.interface';
-import { Project } from 'src/app/interfaces/_project.interface';
+import { Project, ProjectSite } from 'src/app/interfaces/_project.interface';
 
 export const PROJECT_EDIT_MODAL_TITLE_MAPPER = {
     projectInformation: `Project Information`,
@@ -22,6 +22,7 @@ export class ProjectEditModalComponent {
     partnerAssessment: PartnerAssessment | null = null;
     provinces: Province[] = [];
     countries: Country[] = [];
+    projectSite: ProjectSite[] = [];
     modalTitle = '';
 
     constructor(public bsModalRef: BsModalRef, modalService: BsModalService) {
@@ -30,6 +31,7 @@ export class ProjectEditModalComponent {
         this.project = (modalService?.config?.initialState as any)?.project;
         this.provinces = (modalService?.config?.initialState as any)?.provinces;
         this.countries = (modalService?.config?.initialState as any)?.countries;
+        this.projectSite = (modalService?.config?.initialState as any)?.projectSite;
         this.modalTitle = PROJECT_EDIT_MODAL_TITLE_MAPPER?.[this.section as ProjectEditModalTitleMapperKey] ?? '';
     }
 }
