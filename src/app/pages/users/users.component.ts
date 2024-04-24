@@ -14,6 +14,8 @@ import { ModalService } from '../../components/modal/modal.service';
 import { LinkGeneratorComponent } from 'src/app/components/link-generator/link-generator.component';
 import { ApplicationService } from 'src/app/services/application.service';
 
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
     selector: 'app-users',
     templateUrl: './users.component.html',
@@ -42,6 +44,7 @@ export class UsersComponent implements OnInit {
         private formBuilder: FormBuilder,
         private modalService: BsModalService,
         private roleService: RoleService,
+        private toastr: ToastrService,
     ) {
 
     }
@@ -90,6 +93,13 @@ export class UsersComponent implements OnInit {
             .subscribe({
                 next: (data: any) => {
                     this.users = data.data;
+
+                    this.users.forEach((user: any) => {
+                        user['roles'] = user.user_role.map((role: any) => ({
+                            pk: role.role_pk
+                        }));
+                    })
+
                     this.pagination.count = data.total;
                 },
                 error: (error: any) => {
@@ -272,18 +282,18 @@ export class UsersComponent implements OnInit {
                 module: user
             }
         };
-        // this.bsModalRef = this.modalService.show(LogsComponent, initialState);
-        // this.bsModalRef.content.saveBtnName = 'Save';
-        // this.bsModalRef.content.closeBtnName = 'Close';
-        // this.bsModalRef.content.activateBtnName = 'Activate';
+        this.bsModalRef = this.modalService.show(LogsComponent, initialState);
+        this.bsModalRef.content.saveBtnName = 'Save';
+        this.bsModalRef.content.closeBtnName = 'Close';
+        this.bsModalRef.content.activateBtnName = 'Activate';
 
-        // this.bsModalRef.content.callback.subscribe((res: any) => {
-        //     try {
-        //         this.fetch();
-        //     } catch (error: any) {
-        //         _.errorMessage("This is a test error alert");
-        //     }
-        // });
+        this.bsModalRef.content.callback.subscribe((res: any) => {
+            try {
+                this.fetch();
+            } catch (error: any) {
+                _.errorMessage("This is a test error alert");
+            }
+        });
     }
 
     onTableDataChange(event: any) {
@@ -297,19 +307,19 @@ export class UsersComponent implements OnInit {
         this.fetch();
     }
 
-    openModal() {
-        // this.sub = this.modalService
-        //     .openModal(this.entry, 'Are you sure ?', 'click confirm or close')
-        //     .subscribe((v) => {
-        //         //your logic
-        //     });
-    }
+    roleUpdate(ev: any, i: number) {
+        this.userService
+            .saveRole(this.users[i].pk, ev)
+            .subscribe({
+                next: (data: any) => {
 
-    rolesChanged(event: any) {
-        console.log('changed', event);
-    }
-
-    rolesData(event: any) {
-        console.log('data', event);
+                },
+                error: (error: any) => {
+                    console.log(error);
+                },
+                complete: () => {
+                    // this.toastr.success('The user\'s roles have been updated successfully.', 'SUCCESS!');
+                }
+            });
     }
 }

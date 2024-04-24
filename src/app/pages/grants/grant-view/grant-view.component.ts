@@ -143,6 +143,22 @@ export class GrantViewComponent implements OnInit {
                     });
             }
         );
+    }
 
+    toggleFinancialManagementTraining() {
+        this.projectService
+            .updateFinancialManagementTraining({ project_pk: this.project?.pk, financial_management_training: !this.project?.financial_management_training })
+            .subscribe({
+                next: (data: any) => {
+
+                },
+                error: (error: any) => {
+                    console.log(error);
+                    this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
+                },
+                complete: () => {
+                    console.log('Complete');
+                }
+            });
     }
 }

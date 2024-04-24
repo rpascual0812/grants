@@ -39,7 +39,7 @@ export class UserService {
         return this.http.post(`${_.BASE_URL}/users/password/update`, account);
     }
 
-    saveRole(role: any, user: any) {
-        return this.http.post(`${_.BASE_URL}/users/roles`, { checked: role.checked, role_pk: role.pk, user_pk: user.pk });
+    saveRole(user_pk: number, roles: any) {
+        return this.http.post(`${_.BASE_URL}/users/roles`, { pk: user_pk, roles });
     }
 }

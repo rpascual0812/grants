@@ -53,26 +53,21 @@
                                     <p class="text-sm font-weight-bold text-dark">Grant Amount</p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p class="text-sm font-weight-bold text-secondary"></p>
-                                    <p class="text-sm font-weight-bold text-secondary"></p>
+                                    <p class="text-sm font-weight-bold text-secondary">
+                                        {{project?.project_proposal?.budget_request_usd | number}} USD</p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-check m-0 p-1">
-                                        <input
-                                            id="financial_management_training"
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            name="financial_management_training"
+                                        <input id="financial_management_training" class="form-check-input"
+                                            type="checkbox" name="financial_management_training"
                                             value="Financial Management Training/Coaching"
                                             [checked]="project?.financial_management_training"
-                                        />
-                                        <label
-                                            class="form-check-label text-dark font-weight-bold"
-                                            for="financial_management_training"
-                                            >Financial Management Training/Coaching</label
-                                        >
+                                            (change)="toggleFinancialManagementTraining()" />
+                                        <label class="form-check-label text-dark font-weight-bold"
+                                            for="financial_management_training">Financial Management
+                                            Training/Coaching</label>
                                     </div>
                                 </div>
                             </div>
@@ -85,8 +80,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <small
-                                        class="badge text-bg-danger text-white text-wrap text-xs text-capitalize"
-                                    ></small>
+                                        class="badge text-bg-danger text-white text-wrap text-xs text-capitalize"></small>
                                 </div>
                             </div>
                             <div class="row">
@@ -94,7 +88,7 @@
                                     <p class="text-sm font-weight-bold text-dark">Grant Type and Function</p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p class="text-sm font-weight-bold text-secondary"></p>
+                                    <p class="text-sm font-weight-bold text-secondary">{{project?.type?.name}}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -118,10 +112,9 @@
                                     <div class="md-12" *ngFor="let attachment of attachments; let i = index">
                                         <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
                                             attachment.original_name
-                                        }}</a>
-                                        <a (click)="deleteAttachment(i, 'signed_contract')"
-                                            ><i class="fa fa-times text-danger mx-2 cursor-pointer"></i
-                                        ></a>
+                                            }}</a>
+                                        <a (click)="deleteAttachment(i, 'signed_contract')"><i
+                                                class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                                     </div>
                                 </div>
 
@@ -163,15 +156,11 @@
 
             <div class="my-5">
                 <accordion [isAnimated]="true">
-                    <accordion-group
-                        (isOpenChange)="handleIsOpenChange($event, 'assessment')"
-                        [panelClass]="
+                    <accordion-group (isOpenChange)="handleIsOpenChange($event, 'assessment')" [panelClass]="
                             currentExpanded.has('assessment')
                                 ? 'custom-accordion-expanded w-100'
                                 : 'custom-accordion-collapsed w-100'
-                        "
-                        class="my-3"
-                    >
+                        " class="my-3">
                         <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                             <div class="pull-left float-left">
                                 <p class="text-dark text-sm font-weight-bold m-0 p-0">Assessment</p>
@@ -182,7 +171,7 @@
                                     <button class="btn btn-icon-only">
                                         <i class="material-icons">{{
                                             currentExpanded.has('assessment') ? 'expand_less' : 'expand_more'
-                                        }}</i>
+                                            }}</i>
                                     </button>
                                 </div>
                             </div>
@@ -190,15 +179,11 @@
                         <app-assessment [project]="project"></app-assessment>
                     </accordion-group>
 
-                    <accordion-group
-                        (isOpenChange)="handleIsOpenChange($event, 'projectInformation')"
-                        [panelClass]="
+                    <accordion-group (isOpenChange)="handleIsOpenChange($event, 'projectInformation')" [panelClass]="
                             currentExpanded.has('projectInformation')
                                 ? 'custom-accordion-expanded w-100'
                                 : 'custom-accordion-collapsed w-100'
-                        "
-                        class="my-3"
-                    >
+                        " class="my-3">
                         <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                             <div class="pull-left float-left">
                                 <p class="text-dark text-sm font-weight-bold m-0 p-0">Project Information</p>
@@ -206,16 +191,14 @@
 
                             <div class="pull-right float-right">
                                 <div class="d-flex flex flex-row">
-                                    <button
-                                        class="btn btn-icon-only"
-                                        (click)="handleOnEdit($event, 'projectInformation')"
-                                    >
+                                    <button class="btn btn-icon-only"
+                                        (click)="handleOnEdit($event, 'projectInformation')">
                                         <i class="material-icons">edit</i>
                                     </button>
                                     <button class="btn btn-icon-only">
                                         <i class="material-icons">{{
                                             currentExpanded.has('projectInformation') ? 'expand_less' : 'expand_more'
-                                        }}</i>
+                                            }}</i>
                                     </button>
                                 </div>
                             </div>
@@ -223,15 +206,11 @@
                         <app-project-information [project]="project"></app-project-information>
                     </accordion-group>
 
-                    <accordion-group
-                        (isOpenChange)="handleIsOpenChange($event, 'activitiesAndTimeline')"
-                        [panelClass]="
+                    <accordion-group (isOpenChange)="handleIsOpenChange($event, 'activitiesAndTimeline')" [panelClass]="
                             currentExpanded.has('activitiesAndTimeline')
                                 ? 'custom-accordion-expanded w-100'
                                 : 'custom-accordion-collapsed w-100'
-                        "
-                        class="my-3"
-                    >
+                        " class="my-3">
                         <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                             <div class="pull-left float-left">
                                 <p class="text-dark text-sm font-weight-bold m-0 p-0">Activities and Timeline</p>
@@ -239,16 +218,14 @@
 
                             <div class="pull-right float-right">
                                 <div class="d-flex flex flex-row">
-                                    <button
-                                        class="btn btn-icon-only"
-                                        (click)="handleOnEdit($event, 'activitiesAndTimeline')"
-                                    >
+                                    <button class="btn btn-icon-only"
+                                        (click)="handleOnEdit($event, 'activitiesAndTimeline')">
                                         <i class="material-icons">edit</i>
                                     </button>
                                     <button class="btn btn-icon-only">
                                         <i class="material-icons">{{
                                             currentExpanded.has('activitiesAndTimeline') ? 'expand_less' : 'expand_more'
-                                        }}</i>
+                                            }}</i>
                                     </button>
                                 </div>
                             </div>
@@ -256,15 +233,11 @@
                         <app-activities-timeline [project]="project"></app-activities-timeline>
                     </accordion-group>
 
-                    <accordion-group
-                        (isOpenChange)="handleIsOpenChange($event, 'reviews')"
-                        [panelClass]="
+                    <accordion-group (isOpenChange)="handleIsOpenChange($event, 'reviews')" [panelClass]="
                             currentExpanded.has('reviews')
                                 ? 'custom-accordion-expanded w-100'
                                 : 'custom-accordion-collapsed w-100'
-                        "
-                        class="my-3"
-                    >
+                        " class="my-3">
                         <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                             <div class="pull-left float-left">
                                 <p class="text-dark text-sm font-weight-bold m-0 p-0">Reviews</p>
@@ -278,7 +251,7 @@
                                     <button class="btn btn-icon-only">
                                         <i class="material-icons">{{
                                             currentExpanded.has('reviews') ? 'expand_less' : 'expand_more'
-                                        }}</i>
+                                            }}</i>
                                     </button>
                                 </div>
                             </div>
