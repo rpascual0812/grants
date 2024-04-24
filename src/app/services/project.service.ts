@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from '../utilities/globals';
-import { ProjectFunding, ProjectFundingLiquidation } from '../interfaces/_project.interface';
+import { ProjectFunding, ProjectFundingLiquidation, ProjectSite } from '../interfaces/_project.interface';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ProjectService {
-    constructor(public http: HttpClient) { }
+    constructor(public http: HttpClient) {}
 
     fetch() {
         return this.http.get(`${_.BASE_URL}/projects`);
@@ -69,7 +69,7 @@ export class ProjectService {
         return this.http.delete(
             `${_.BASE_URL}/projects/${data.project_pk}/project_funding/${data.project_funding_pk}/project_funding_report/${data.project_funding_report_pk}`
         );
-    }  
+    }
 
     saveLiquidationAttachment(data: any) {
         return this.http.post(`${_.BASE_URL}/projects/liquidation/attachment`, data);
@@ -77,5 +77,17 @@ export class ProjectService {
 
     deleteLiquidationAttachment(data: any) {
         return this.http.delete(`${_.BASE_URL}/documents/${data.pk}`);
+    }
+
+    fetchProjectSite(data: { pk: number }) {
+        return this.http.get(`${_.BASE_URL}/projects/${data.pk}/project_site`);
+    }
+
+    saveProjectSite(data: { project_pk?: number; project_site: ProjectSite[] }) {
+        return this.http.post(`${_.BASE_URL}/projects/project_site`, data);
+    }
+
+    deleteProjectSite(data: { project_pk?: number; project_site_pk: number }) {
+        return this.http.delete(`${_.BASE_URL}/projects/${data.project_pk}/project_site/${data.project_site_pk}`);
     }
 }

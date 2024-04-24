@@ -117,9 +117,9 @@
                             <div class="w-100 border border-top-1 border-dark my-1"></div>
                             <div class="row my-1" *ngFor="let application of item?.applications ?? []">
                                 <div class="col-4">
-                                    <p class="text-dark text-sm m-0 p-0">
+                                    <a class="text-dark text-sm m-0 p-0" [routerLink]="['/grant', application?.project?.pk, 'review']">
                                         {{ application?.project?.title }}
-                                    </p>
+                                    </a>
                                 </div>
                                 <div class="col-2">
                                     <p class="text-dark text-sm m-0 p-0">

@@ -5,7 +5,7 @@
     </div>
 
     <div class="existing-projects-container my-3 overflow-x-auto">
-        <div style="min-width: 1000px;">
+        <div style="min-width: 1000px">
             <div class="row my-3 align-items-center mx-0">
                 <div class="col-2">
                     <p class="text-dark text-sm p-0 m-0 font-weight-bold">Project</p>
@@ -25,12 +25,17 @@
                 <div class="col-3"></div>
             </div>
 
-            <div *ngFor="let item of (partner?.application ?? []); index as i"
-                class="row my-3 mx-0 bg-gray-100 py-3 rounded-2 align-items-center">
+            <div
+                *ngFor="let item of partner?.application ?? []; index as i"
+                class="row my-3 mx-0 bg-gray-100 py-3 rounded-2 align-items-center"
+            >
                 <div class="col-2">
-                    <p class="text-gray text-sm p-0 m-0 font-weight-bold">
+                    <a
+                        class="text-gray text-sm p-0 m-0 font-weight-bold"
+                        [routerLink]="['/grant', item?.project?.pk, 'review']"
+                    >
                         {{ item?.project?.title }}
-                    </p>
+                    </a>
                 </div>
                 <!-- <div class="col-2">
                     <p class="text-gray text-sm p-0 m-0 font-weight-bold">Grants</p>

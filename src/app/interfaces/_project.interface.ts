@@ -7,7 +7,7 @@ import {
     Recommendation,
     Review,
     Type,
-    Document
+    Document,
 } from './_application.interface';
 
 export interface Project {
@@ -28,7 +28,7 @@ export interface Project {
     project_beneficiary?: ProjectBeneficiary[];
     project_location?: ProjectLocation[];
     recommendations?: Recommendation[];
-    partner_pk: number;
+    partner_pk?: number;
     partner?: Partner;
     type?: Type;
     reviews: Review[];
@@ -73,5 +73,13 @@ export interface ProjectFundingLiquidation {
     status?: string;
     date_created?: Date;
     date_released?: Date;
-    documents?: Document[]
+    documents?: Document[];
+}
+
+export interface ProjectSite {
+    pk?: number;
+    project_pk?: number;
+    site?: string;
+    created_by?: number;
+    date_created?: Date;
 }

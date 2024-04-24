@@ -1,7 +1,8 @@
+import { ProjectService } from 'src/app/services/project.service';
 import { ChangeDetectorRef, Component, Input, OnInit, effect, inject } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Application, Country, Province } from 'src/app/interfaces/_application.interface';
-import { Project } from 'src/app/interfaces/_project.interface';
+import { Country, Province } from 'src/app/interfaces/_application.interface';
+import { Project, ProjectSite } from 'src/app/interfaces/_project.interface';
 import { GlobalService } from 'src/app/services/global.service';
 import { GrantSignalService } from 'src/app/services/grant.signal.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
@@ -20,19 +21,24 @@ import { OnHiddenData } from '../../grant-view.component';
 export class ProjectInformationComponent implements OnInit {
     @Input() project: Project | null = null;
     bsModalRef?: BsModalRef;
+
     loadingCountryFetch = true;
     loadingProvinceFetch = true;
+    loadingProjectSite = true;
+
     section: ProjectEditModalTitleMapperKey | null = 'projectInformation';
     countries: Country[] = [];
     provinces: Province[] = [];
+    projectSite: ProjectSite[] = [];
 
     grantSignalService = inject(GrantSignalService);
     constructor(
         private globalService: GlobalService,
+        private projectService: ProjectService,
         private toastr: ToastrService,
         private modalService: BsModalService,
         private changeDetection: ChangeDetectorRef
-    ) { }
+    ) {}
 
     grantSignalEffect = effect(
         () => {
@@ -49,6 +55,7 @@ export class ProjectInformationComponent implements OnInit {
     ngOnInit() {
         this.fetchCountry();
         this.fetchProvince();
+        this.fetchProjectSite();
     }
 
     fetchCountry() {
@@ -99,6 +106,30 @@ export class ProjectInformationComponent implements OnInit {
         });
     }
 
+    fetchProjectSite() {
+        this.loadingProjectSite = true;
+        this.projectService.fetchProjectSite({ pk: this.project?.pk as number }).subscribe({
+            next: (res: any) => {
+                const status = res?.status;
+                const data = res?.data;
+                if (status) {
+                    this.projectSite = data;
+                } else {
+                    this.toastr.error(`An error occurred while fetching Project Site. Please try again.`, 'ERROR!');
+                }
+                this.loadingProjectSite = false;
+            },
+            error: (err: any) => {
+                const { statusCode, errorMessage } = extractErrorMessage(err);
+                this.toastr.error(
+                    `An error occurred while fetching Country. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+                this.loadingProjectSite = false;
+            },
+        });
+    }
+
     getCountryInfo(countryPk?: number) {
         return this.countries?.find((country) => country?.pk === countryPk);
     }
@@ -115,11 +146,14 @@ export class ProjectInformationComponent implements OnInit {
                 section: this.section,
                 provinces: this.provinces,
                 countries: this.countries,
+                projectSite: this.projectSite
             },
         });
 
         this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: OnHiddenData) => {
-            if (isSaved) {
+            if (data && isSaved) {
+                this.project = data?.project as Project
+                this.projectSite = data?.projectSite ?? []
                 this.changeDetection.detectChanges();
             }
         });

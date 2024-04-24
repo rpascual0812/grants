@@ -211,6 +211,50 @@
                         Add
                     </button>
                 </div>
+
+                <div class="site-container container my-3">
+                    <p class="text-dark font-weight-bold p-0">Site</p>
+                    <div
+                        formArrayName="project_site"
+                        *ngFor="let item of formProjSite.controls; index as i"
+                        [attr.data-index]="i"
+                        class="form-group my-3"
+                    >
+                        <div class="row" [formGroupName]="i">
+                            <div class="col-12 col-md-8">
+                                <input
+                                    placeholder="Site"
+                                    type="site"
+                                    class="form-control border rounded-1 p-2"
+                                    required
+                                    formControlName="site"
+                                />
+                                <div *ngIf="submitted && formProjSite.controls.at(i)?.get('site')?.errors">
+                                    <div
+                                        *ngIf="formProjSite.controls.at(i)?.get('site')?.errors"
+                                        class="text-sm text-danger"
+                                    >
+                                        Site is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-4 my-1">
+                                <button class="btn btn-danger" type="button" (click)="onDelProjSite(i)">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-container-site">
+                        <button class="btn btn-dark-blue" (click)="onAddProjSite()">
+                            <span class="icon icon-sm position-relative" style="bottom: 2px">
+                                <i class="material-icons">add</i>
+                            </span>
+                            Add Site
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button
