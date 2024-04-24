@@ -66,8 +66,11 @@
                                         <span class="text-xs">{{user.email_address}}</span>
                                     </td>
                                     <td class="w-15 align-middle text-center text-sm">
-                                        <app-select url="roles" [multiple]="true" [limitSelection]="2"
-                                            [itemsShowLimit]="3" placeholder="Please select"></app-select>
+                                        <app-select url="roles" [multiple]="true" [itemsShowLimit]="3"
+                                            (onSelectEvent)="roleUpdate($event, i)"
+                                            (onDeSelectEvent)="roleUpdate($event, i)"
+                                            [defaultSelectedItemKeyArr]="user.roles"
+                                            placeholder="Please select"></app-select>
                                     </td>
                                     <td class="w-20 opacity-7">
                                         <div class="ms-auto text-end">

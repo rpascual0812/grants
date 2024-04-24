@@ -26,6 +26,7 @@ export class SelectComponent {
     @Input() disabled: boolean = false;
     @Input() indexZero: any = {};
     @Input() defaultSelectedItemKey?: any; // default selected with pk in list and url is indicated
+    @Input() defaultSelectedItemKeyArr?: any; // default selected with pk in list and url is indicated
     @Input() defaultSelectedInArr?: any; // default selected without pk in list and url is NOT indicated
     @Input() changeFieldEventEmitter?: EventEmitter<ChangeFieldEventEmitter>;
 
@@ -37,7 +38,7 @@ export class SelectComponent {
     selectedItems: any = [];
     dropdownSettings = {};
 
-    constructor(private globalService: GlobalService, private cdRef: ChangeDetectorRef) {}
+    constructor(private globalService: GlobalService, private cdRef: ChangeDetectorRef) { }
 
     ngOnInit() {
         this.subscribeToChangeFieldEmitter();
@@ -62,14 +63,17 @@ export class SelectComponent {
             this.selectedItems = this.arr.filter((item: any) => item === this.defaultSelectedInArr);
             this.setDefaultSelectedItemKey(this.arr);
         }
+
+
     }
 
     onItemSelect(item: any) {
-        if (this.multiple) {
-            this.selectedItems.push(item);
-        } else {
-            this.selectedItems = [item];
-        }
+        // the code below is duplicating the values selected
+        // if (this.multiple) {
+        //     this.selectedItems.push(item);
+        // } else {
+        //     this.selectedItems = [item];
+        // }
         this.onSelectEvent.emit(this.selectedItems);
     }
 
@@ -108,10 +112,20 @@ export class SelectComponent {
     }
 
     setDefaultSelectedItemKey(dropdownList: any[]) {
-        if (this.defaultSelectedItemKey) {
-            this.selectedItems = dropdownList?.filter(
-                (item: any) => item[this.listItemKey] === this.defaultSelectedItemKey
-            );
+        console.log(this.multiple, this.defaultSelectedItemKeyArr);
+        if (this.multiple) {
+            if (this.defaultSelectedItemKeyArr.length > 0) {
+                // this.selectedItems = dropdownList?.filter(
+                //     (item: any) => item[this.listItemKey] === this.defaultSelectedItemKey
+                // );
+            }
+        }
+        else {
+            if (this.defaultSelectedItemKey) {
+                this.selectedItems = dropdownList?.filter(
+                    (item: any) => item[this.listItemKey] === this.defaultSelectedItemKey
+                );
+            }
         }
     }
 

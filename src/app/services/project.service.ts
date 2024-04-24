@@ -90,4 +90,8 @@ export class ProjectService {
     deleteProjectSite(data: { project_pk?: number; project_site_pk: number }) {
         return this.http.delete(`${_.BASE_URL}/projects/${data.project_pk}/project_site/${data.project_site_pk}`);
     }
+
+    updateFinancialManagementTraining(data: any) {
+        return this.http.post(`${_.BASE_URL}/projects/update_financial_management_training`, data);
+    }
 }
