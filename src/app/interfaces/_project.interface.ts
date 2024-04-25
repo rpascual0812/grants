@@ -58,9 +58,10 @@ export interface ProjectFundingReport {
     project_funding_pk?: number;
     title?: string;
     status?: string;
-    attachment_pk?: null;
+    attachment_pk?: number;
     date_created?: Date;
     archived?: boolean;
+    document?: Document;
 }
 
 export interface ProjectFundingLiquidation {

@@ -137,7 +137,9 @@
                     </div>
                     <div class="row p-3 align-items-center" *ngFor="let subItem of item.value">
                         <div class="col-12 col-md-3">
-                            <a style="text-decoration: underline" class=""></a>
+                            <a style="text-decoration: underline"  href="{{SERVER + '/' + subItem?.document?.path}}">
+                                {{subItem?.document?.original_name}}
+                            </a>
                         </div>
                         <div class="col-12 col-md-3">
                             <p class="p-0 m-0">{{ subItem?.date_created | date : 'dd-MM-YYYY' }}</p>
@@ -172,9 +174,7 @@
                             }}</span>
                         </h5>
                         <div class="container bg-white rounded">
-                            <p class="text-secondary p-1">
-                                {{ funding?.project_funding_liquidation?.description }}
-                            </p>
+                            <p class="text-secondary p-1 min-height-100" [innerText]="funding?.project_funding_liquidation?.description"></p>
                         </div>
                     </div>
 

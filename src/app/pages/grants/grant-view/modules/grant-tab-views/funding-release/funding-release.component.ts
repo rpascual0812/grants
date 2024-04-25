@@ -254,7 +254,11 @@ export class FundingReleaseComponent implements OnInit {
                 this.projectFunding =
                     this.projectFunding?.map((funding) => {
                         if (funding.pk === data?.project_funding_pk) {
-                            funding['project_funding_liquidation'] = data;
+                            funding['project_funding_liquidation'] = {
+                                ...funding,
+                                ...data,
+                                documents: [...(funding?.project_funding_liquidation?.documents ?? [])],
+                            };
                         }
                         return {
                             ...funding,
