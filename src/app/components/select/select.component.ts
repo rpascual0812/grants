@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { GlobalService } from '../../services/global.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 export interface ChangeFieldEventEmitter {
     selectedItems?: any[];
@@ -38,7 +39,9 @@ export class SelectComponent {
     selectedItems: any = [];
     dropdownSettings = {};
 
-    constructor(private globalService: GlobalService, private cdRef: ChangeDetectorRef) { }
+    form: FormGroup;
+
+    constructor(private globalService: GlobalService, private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef) { }
 
     ngOnInit() {
         this.subscribeToChangeFieldEmitter();
@@ -63,15 +66,18 @@ export class SelectComponent {
             this.selectedItems = this.arr.filter((item: any) => item === this.defaultSelectedInArr);
             this.setDefaultSelectedItemKey();
         }
+
+        this.form = this.formBuilder.group({
+            selections: ['']
+        });
     }
 
     onItemSelect(item: any) {
-        // the code below is duplicating the values selected
-        // if (this.multiple) {
-        //     this.selectedItems.push(item);
-        // } else {
-        //     this.selectedItems = [item];
-        // }
+        if (this.multiple) {
+            this.selectedItems.push(item);
+        } else {
+            this.selectedItems = [item];
+        }
         this.onSelectEvent.emit(this.selectedItems);
     }
 
@@ -81,7 +87,7 @@ export class SelectComponent {
     }
 
     onDeselect(item: any) {
-        this.selectedItems = this.selectedItems.filter((selectedItem: any) => selectedItem !== item);
+        this.selectedItems = this.selectedItems.filter((selectedItem: any) => selectedItem.pk !== item.pk);
         this.onDeSelectEvent.emit(this.selectedItems);
     }
 
@@ -129,6 +135,7 @@ export class SelectComponent {
             }
         }
 
+        this.form.get('selections')?.patchValue(this.selectedItems);
         this.cdRef.detectChanges();
     }
 
