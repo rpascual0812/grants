@@ -154,7 +154,6 @@ export class UsersComponent implements OnInit {
     }
 
     updateRole(role: any, user: any, evt: any) {
-        console.log(`1`);
         role.checked = evt.target.checked;
 
         this.userService
