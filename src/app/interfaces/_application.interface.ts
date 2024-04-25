@@ -270,12 +270,12 @@ export interface Review {
 
 export interface Document {
     pk?: number;
-    filename: string;
-    original_name: string;
-    path: string;
-    size: string;
-    mime_type: string;
-    type: string;
+    filename?: string;
+    original_name?: string;
+    path?: string;
+    size?: string;
+    mime_type?: string;
+    type?: string;
     archived?: boolean;
 }
 

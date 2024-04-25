@@ -10,6 +10,12 @@ import { USD_CURRENCY } from 'src/app/utilities/constants';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import * as _ from '../../../../../utilities/globals';
 import { DocumentService } from 'src/app/services/document.service';
+import { Document } from 'src/app/interfaces/_application.interface';
+
+type Attachments = {
+    bank_receipt: Document[];
+    report_file: Document[];
+};
 
 export type onHiddenDataFundingRelease = {
     isSaved: boolean;
@@ -53,14 +59,14 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
     form: FormGroup;
     groupedFundingReport: GroupedFundingReport = {};
 
-    attachments: any = {
+    attachments: Attachments = {
         bank_receipt: [],
         report_file: [],
     };
     SERVER: string = _.BASE_URL;
 
-    bank_receipt: any = {};
-    report_file: any = {};
+    bank_receipt: Document | null = null;
+    report_file: Document | null = null;
 
     granteeAcknowledgement = false;
     reportSection = SECTION;
@@ -81,7 +87,9 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
 
     ngOnInit() {
         this.setForm();
-        this.attachments.bank_receipt = this.funding?.bank_receipt_document ? [this.funding?.bank_receipt_document] : [];
+        this.attachments.bank_receipt = this.funding?.bank_receipt_document
+            ? [this.funding?.bank_receipt_document]
+            : [];
     }
 
     get f() {
@@ -104,9 +112,7 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
                 this.funding?.released_amount_other_currency ??
                 `${USD_CURRENCY.at(0)?.key} - ${USD_CURRENCY.at(0)?.label}`,
             ],
-            bank_receipt_pk: [
-                this.funding?.bank_receipt_pk ? this.funding?.bank_receipt_pk : null,
-            ],
+            bank_receipt_pk: [this.funding?.bank_receipt_pk ? this.funding?.bank_receipt_pk : null],
             grantee_acknowledgement: [
                 this.funding?.grantee_acknowledgement
                     ? parseFormDate(this.funding?.grantee_acknowledgement ?? '')
@@ -141,9 +147,12 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
             (this.groupedFundingReport[title] = this.groupedFundingReport[title] || []).push({
                 title,
                 status,
+                attachment_pk: this.attachments?.report_file?.at(0)?.pk,
                 date_created: new Date(),
+                document: this.attachments?.report_file?.at(0)
             });
         }
+        this.attachments.report_file = []
     }
 
     handleDelFundingReport(idx: number, key: string) {
@@ -231,6 +240,7 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
                             isSaved: true,
                             data: {
                                 ...data,
+                                bank_receipt_document: this.attachments?.bank_receipt?.at(0),
                             },
                         } as onHiddenDataFundingRelease);
                         this.handleClose();
@@ -270,9 +280,9 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
         };
         this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
 
-        this.documentUploaderRef.content.document.subscribe((res: any) => {
+        this.documentUploaderRef.content.document.subscribe((res: { file: Document }) => {
             if (type == 'bank_receipt') {
-                this.bank_receipt = res.file;
+                this.form.controls['bank_receipt_pk'].setValue(res?.file?.pk ?? '');
                 this.attachments.bank_receipt = [res.file];
             } else if (type == 'report') {
                 this.report_file = res.file;
@@ -283,7 +293,7 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
     }
 
     delete(index: number, type: string) {
-        this.attachments[type].splice(index, 1);
+        this.attachments[type as keyof typeof this.attachments].splice(index, 1);
         if (type == 'bank_receipt') {
             this.bank_receipt = {};
             this.form.get('bank_receipt_pk')?.patchValue(null);

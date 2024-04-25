@@ -31,8 +31,8 @@ export class MediumGrantsComponent implements OnInit {
 
     ngOnInit() {
         this.currentApplication?.documents?.forEach(doc => {
-            if (this.attachments[doc.type]) {
-                this.attachments[doc.type].push(doc);
+            if (this.attachments[doc?.type ?? '']) {
+                this.attachments[doc?.type ?? ''].push(doc);
             }
         });
     }
