@@ -73,11 +73,16 @@ export class SelectComponent {
     }
 
     onItemSelect(item: any) {
-        if (this.multiple) {
-            this.selectedItems.push(item);
-        } else {
-            this.selectedItems = [item];
+        const found = this.selectedItems.filter((sel: any) => { sel.pk == item.pk });
+
+        if(found.length == 0) {
+          if (this.multiple) {
+              this.selectedItems.push(item);
+          } else {
+              this.selectedItems = [item];
+          }
         }
+
         this.onSelectEvent.emit(this.selectedItems);
     }
 
