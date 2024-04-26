@@ -50,7 +50,7 @@ export class GrantTabLayoutComponent implements OnInit {
         { title: 'Lessons', content: LessonsComponent, customClass: 'custom-tab-class', active: false },
     ];
 
-    constructor(private changeDetectorRef: ChangeDetectorRef) {}
+    constructor(private changeDetectorRef: ChangeDetectorRef) { }
 
     ngOnInit() {
         this.grantSignalService.project.set(this.project);

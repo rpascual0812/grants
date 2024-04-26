@@ -23,7 +23,7 @@ export class ReviewComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        console.log(this.project);
+        // console.log(this.project);
     }
 
     recommendationSaved() {

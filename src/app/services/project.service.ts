@@ -7,7 +7,7 @@ import { ProjectFunding, ProjectFundingLiquidation, ProjectSite } from '../inter
     providedIn: 'root',
 })
 export class ProjectService {
-    constructor(public http: HttpClient) {}
+    constructor(public http: HttpClient) { }
 
     fetch() {
         return this.http.get(`${_.BASE_URL}/projects`);
@@ -93,5 +93,9 @@ export class ProjectService {
 
     updateFinancialManagementTraining(data: any) {
         return this.http.post(`${_.BASE_URL}/projects/update_financial_management_training`, data);
+    }
+
+    fetchEvents(pk: any) {
+        return this.http.get(`${_.BASE_URL}/projects/${pk}/events`);
     }
 }
