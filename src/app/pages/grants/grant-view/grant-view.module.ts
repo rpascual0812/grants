@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GrantViewComponent } from './grant-view.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AssessmentModule } from './modules/assessment/assessment.module';
 import { ActivitiesTimelineModule } from './modules/activities-timeline/activities-timeline.module';
@@ -25,6 +26,7 @@ import { InputDropdownModule } from '../../applications/application-new/modules/
 import { FundingReleaseTrancheModalComponent } from './modals/funding-release-tranche-modal/funding-release-tranche-modal.component';
 import { FundingReleaseLiquidationModalComponent } from './modals/funding-release-liquidation-modal/funding-release-liquidation-modal.component';
 import { EditDeadlineModalComponent } from './modals/edit-deadline-modal/edit-deadline-modal.component';
+import { AttendeesModalComponent } from './modules/grant-tab-views/attendees/attendees-modal/attendees-modal.component';
 
 @NgModule({
     declarations: [
@@ -44,6 +46,7 @@ import { EditDeadlineModalComponent } from './modals/edit-deadline-modal/edit-de
         FundingReleaseTrancheModalComponent,
         FundingReleaseLiquidationModalComponent,
         EditDeadlineModalComponent,
+        AttendeesModalComponent,
     ],
     exports: [
         GrantViewComponent
@@ -60,6 +63,7 @@ import { EditDeadlineModalComponent } from './modals/edit-deadline-modal/edit-de
         GrantTabLayoutModule,
         SelectModule,
         InputDropdownModule,
+        BsDatepickerModule.forRoot(),
     ]
 })
 export class GrantViewModule { }
