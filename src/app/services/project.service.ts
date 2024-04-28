@@ -98,4 +98,16 @@ export class ProjectService {
     fetchEvents(pk: any) {
         return this.http.get(`${_.BASE_URL}/projects/${pk}/events`);
     }
+
+    saveEvent(data: any) {
+        return this.http.post(`${_.BASE_URL}/projects/${data.project_pk}/events`, data);
+    }
+
+    saveAttendee(project_pk: number, data: any) {
+        return this.http.post(`${_.BASE_URL}/projects/${project_pk}/events/${data.project_event_pk}/attendee`, data);
+    }
+
+    destroyAttendee(data: any) {
+        return this.http.delete(`${_.BASE_URL}/projects/attendee/${data.pk}`);
+    }
 }

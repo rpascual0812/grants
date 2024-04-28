@@ -9,13 +9,15 @@ import * as _ from '../../../../../../../utilities/globals';
 import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
-  selector: 'app-attendees-modal',
-  templateUrl: './attendees-modal.component.html',
-  styleUrls: ['./attendees-modal.component.scss']
+    selector: 'app-attendees-modal',
+    templateUrl: './attendees-modal.component.html',
+    styleUrls: ['./attendees-modal.component.scss']
 })
 export class AttendeesModalComponent {
-  public callback: EventEmitter<any> = new EventEmitter();
+    public callback: EventEmitter<any> = new EventEmitter();
     title?: string;
+    project_pk: any = null;
+    event_pk: any = null;
     attendee: any = {};
 
     loading: boolean = false;
@@ -60,6 +62,7 @@ export class AttendeesModalComponent {
         this.attendee.birthday = new Date(this.attendee.birthday ? this.attendee.birthday : DateTime.now());
         this.form = this.formBuilder.group({
             pk: [''],
+            project_event_pk: [this.event_pk],
             name: [this.attendee ? this.attendee.name : '', Validators.required],
             birthday: [this.attendee ? new Date(this.attendee.birthday) : '', Validators.required],
             address: [this.attendee ? this.attendee.address : '', Validators.required],
@@ -83,7 +86,7 @@ export class AttendeesModalComponent {
         this.form.get('pk')?.patchValue(this.attendee.pk);
 
         this.projectService
-            .saveAttendee(this.form.value)
+            .saveAttendee(this.project_pk, this.form.value)
             .subscribe({
                 next: (data: any) => {
                     this.callback.emit({ data });
