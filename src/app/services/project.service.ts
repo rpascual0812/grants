@@ -110,4 +110,20 @@ export class ProjectService {
     destroyAttendee(data: any) {
         return this.http.delete(`${_.BASE_URL}/projects/attendee/${data.pk}`);
     }
+
+    fetchProjectOutput(data: { pk: number }) {
+        return this.http.get(`${_.BASE_URL}/projects/${data.pk}/output`);
+    }
+
+    fetchProjectObjectiveResults(data: { pk: number }) {
+        return this.http.get(`${_.BASE_URL}/projects/${data.pk}/objective-results`);
+    }
+
+    saveProjectObjectiveResults(data: any) {
+        return this.http.post(`${_.BASE_URL}/projects/${data.pk}/objective-results`, data.data);
+    }
+
+    saveProjectOutput(data: any) {
+        return this.http.post(`${_.BASE_URL}/projects/${data.pk}/output`, data.data);
+    }
 }
