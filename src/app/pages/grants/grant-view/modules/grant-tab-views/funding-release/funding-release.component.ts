@@ -111,7 +111,7 @@ export class FundingReleaseComponent implements OnInit {
                 const currentDate = DateTime.now();
                 const parsedDueDate = (funding?.report_due_date &&
                     DateTime.fromISO(String(funding?.report_due_date))) as DateTime;
-                return currentDate.startOf('day') <= parsedDueDate.startOf('day');
+                return currentDate?.startOf('day') <= parsedDueDate?.startOf('day');
             })
             .sort((reportA, reportB) => {
                 const reportDueDateA = DateTime.fromISO(String(reportA?.report_due_date));
@@ -132,7 +132,7 @@ export class FundingReleaseComponent implements OnInit {
                 const currentDate = DateTime.now();
                 const parsedDateCreated = (funding?.date_created &&
                     DateTime.fromISO(String(funding?.date_created))) as DateTime;
-                return currentDate.startOf('day') >= parsedDateCreated.startOf('day');
+                return currentDate?.startOf('day') >= parsedDateCreated?.startOf('day');
             })
             .sort((reportA, reportB) => {
                 const reportDueDateA = DateTime.fromISO(String(reportA?.date_created));
@@ -150,7 +150,7 @@ export class FundingReleaseComponent implements OnInit {
                 const currentDate = DateTime.now();
                 const parsedDueDate = (funding?.report_due_date &&
                     DateTime.fromISO(String(funding?.report_due_date))) as DateTime;
-                return currentDate.startOf('day') >= parsedDueDate.startOf('day');
+                return currentDate?.startOf('day') >= parsedDueDate?.startOf('day');
             })
             ?.filter((funding) => {
                 return funding?.grantee_acknowledgement || funding?.bank_receipt_pk;
@@ -158,7 +158,7 @@ export class FundingReleaseComponent implements OnInit {
             ?.sort((reportA, reportB) => {
                 const reportDueDateA = DateTime.fromISO(String(reportA?.date_created));
                 const reportDueDateB = DateTime.fromISO(String(reportB?.date_created));
-                return reportDueDateA.startOf('day') >= reportDueDateB.startOf('day') ? -1 : 1;
+                return reportDueDateA?.startOf('day') >= reportDueDateB?.startOf('day') ? -1 : 1;
             });
 
         return overdueReport?.at(0) ?? null;

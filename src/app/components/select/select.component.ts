@@ -41,12 +41,18 @@ export class SelectComponent {
 
     form: FormGroup;
 
-    constructor(private globalService: GlobalService, private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef) { }
+    constructor(
+        private globalService: GlobalService,
+        private formBuilder: FormBuilder,
+        private cdRef: ChangeDetectorRef
+    ) {}
 
     ngOnInit() {
         this.subscribeToChangeFieldEmitter();
+        this.form = this.formBuilder.group({
+            selections: [''],
+        });
         this.selectedItems = [];
-
         this.dropdownSettings = {
             singleSelection: !this.multiple,
             idField: this.listItemKey,
@@ -66,21 +72,19 @@ export class SelectComponent {
             this.selectedItems = this.arr.filter((item: any) => item === this.defaultSelectedInArr);
             this.setDefaultSelectedItemKey();
         }
-
-        this.form = this.formBuilder.group({
-            selections: ['']
-        });
     }
 
     onItemSelect(item: any) {
-        const found = this.selectedItems.filter((sel: any) => { sel.pk == item.pk });
+        const found = this.selectedItems.filter((sel: any) => {
+            sel.pk == item.pk;
+        });
 
-        if(found.length == 0) {
-          if (this.multiple) {
-              this.selectedItems.push(item);
-          } else {
-              this.selectedItems = [item];
-          }
+        if (found.length == 0) {
+            if (this.multiple) {
+                this.selectedItems.push(item);
+            } else {
+                this.selectedItems = [item];
+            }
         }
 
         this.onSelectEvent.emit(this.selectedItems);
@@ -131,8 +135,7 @@ export class SelectComponent {
                     });
                 });
             }
-        }
-        else {
+        } else {
             if (this.defaultSelectedItemKey) {
                 this.selectedItems = this.dropdownList?.filter(
                     (item: any) => item[this.listItemKey] === this.defaultSelectedItemKey
@@ -151,6 +154,8 @@ export class SelectComponent {
                 if (tmpKey === this.key) {
                     if (data?.selectedItems) {
                         this.selectedItems = data.selectedItems;
+                        this.form.get('selections')?.patchValue(this.selectedItems);
+                        this.cdRef.detectChanges();
                     }
 
                     if (data?.arr) {
