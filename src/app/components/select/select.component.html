@@ -1,6 +1,6 @@
 <form role="form" [formGroup]="form">
     <ng-multiselect-dropdown [placeholder]="placeholder" [settings]="dropdownSettings" [data]="dropdownList"
         formControlName="selections" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
-        (onDeSelect)="onDeselect($event)">
+        (onDeSelect)="onDeselect($event)" [disabled]="disabled">
     </ng-multiselect-dropdown>
 </form>

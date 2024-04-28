@@ -14,7 +14,7 @@ export class ApplicationAuthComponent implements OnInit {
     year: any;
     user: any;
 
-    constructor(private router: Router, private formBuilder: FormBuilder) {}
+    constructor(private router: Router, private formBuilder: FormBuilder) { }
 
     ngOnInit(): void {
         this.form = this.formBuilder.group({
