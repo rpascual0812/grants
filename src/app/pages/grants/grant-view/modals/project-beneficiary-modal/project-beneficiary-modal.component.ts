@@ -6,6 +6,7 @@ import { Project } from 'src/app/interfaces/_project.interface';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectBeneficiary } from 'src/app/interfaces/_application.interface';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
+import * as _ from '../../../../../utilities/globals';
 
 export type OnHiddenData = {
     isSaved: boolean;
@@ -140,7 +141,23 @@ export class ProjectBeneficiaryModalComponent implements OnInit {
     }
 
     handleDelete(projectBeneficiaryPk?: number) {
-        this.deleteForm(projectBeneficiaryPk as number);
+        _.confirmMessage(
+            {
+                title: '<strong>Are you sure you want to delete this beneficiary record?</strong>',
+                icon: 'question',
+                buttons: {
+                    showClose: true,
+                    showCancel: true,
+                    focusConfirm: false,
+                },
+                confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
+            },
+            () => {
+                this.deleteForm(projectBeneficiaryPk as number);
+            }
+        );
+
     }
 
     handleClose() {
