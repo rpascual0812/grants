@@ -27,6 +27,7 @@ import { FundingReleaseTrancheModalComponent } from './modals/funding-release-tr
 import { FundingReleaseLiquidationModalComponent } from './modals/funding-release-liquidation-modal/funding-release-liquidation-modal.component';
 import { EditDeadlineModalComponent } from './modals/edit-deadline-modal/edit-deadline-modal.component';
 import { AttendeesModalComponent } from './modules/grant-tab-views/attendees/attendees-modal/attendees-modal.component';
+import { ProjectBeneficiaryModalComponent } from './modals/project-beneficiary-modal/project-beneficiary-modal.component';
 
 @NgModule({
     declarations: [
@@ -47,6 +48,7 @@ import { AttendeesModalComponent } from './modules/grant-tab-views/attendees/att
         FundingReleaseLiquidationModalComponent,
         EditDeadlineModalComponent,
         AttendeesModalComponent,
+        ProjectBeneficiaryModalComponent,
     ],
     exports: [
         GrantViewComponent

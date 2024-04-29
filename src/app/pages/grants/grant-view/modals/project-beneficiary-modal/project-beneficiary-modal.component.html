@@ -1,0 +1,118 @@
+<div class="modal-header bg-gray-300">
+    <h4 class="modal-title pull-left text-dark">Project Beneficiaries</h4>
+    <button type="button" class="btn btn-default pull-right" aria-label="Close" (click)="handleClose()">
+        <i class="material-icons">close</i>
+    </button>
+</div>
+
+<div class="modal-body">
+    <div class="container">
+        <div class="beneficiary-list-container">
+            <div class="card bg-info rounded-1">
+                <div class="row p-2 align-items-center">
+                    <div class="col-12 col-md-2">
+                        <p class="text-white p-0 m-0">Date</p>
+                    </div>
+                    <div class="col-12 col-md-1">
+                        <p class="text-white p-0 m-0">Male</p>
+                    </div>
+                    <div class="col-12 col-md-1">
+                        <p class="text-white p-0 m-0">Female</p>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <p class="text-white p-0 m-0">Male Youth</p>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <p class="text-white p-0 m-0">Female Youth</p>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <p class="text-white p-0 m-0">Total</p>
+                    </div>
+                    <div class="col-12 col-md-2"></div>
+                </div>
+            </div>
+
+            <div class="max-height-500 overflow-y-auto">
+                <div *ngFor="let item of projectBeneficiary" class="card rounded-1 my-2">
+                    <div class="row p-2 align-items-center">
+                        <div class="col-12 col-md-2">
+                            <p class="text-info p-0 m-0 text-xs">{{ item?.date_created | date : 'dd-MMM-yyyy' }}</p>
+                        </div>
+                        <div class="col-12 col-md-1">
+                            <p class="text-dark p-0 m-0">{{ item?.men_count }}</p>
+                        </div>
+                        <div class="col-12 col-md-1">
+                            <p class="text-dark p-0 m-0">{{ item?.women_count }}</p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <p class="text-dark p-0 m-0">{{ item?.young_men_count }}</p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <p class="text-dark p-0 m-0">{{ item?.young_women_count }}</p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <p class="text-dark p-0 m-0">
+                                {{
+                                    getTotal({
+                                        men_count: item?.men_count ?? 0,
+                                        young_women_count: item?.young_women_count ?? 0,
+                                        women_count: item?.women_count ?? 0,
+                                        young_men_count: item?.young_men_count ?? 0
+                                    })
+                                }}
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <button class="btn btn-icon-only btn-danger btn-round" (click)="handleDelete(item?.pk)">
+                                <i class="material-icons" style="position: relative; top: -2px; left: -2px">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+
+            <div class="beneficiary-list-add-container bg-gray-200">
+                <div class="row p-2 align-items-center" [formGroup]="form">
+                    <div class="col-12 col-md-1"></div>
+                    <div class="col-12 col-md-2">
+                        <input
+                            formControlName="men_count"
+                            type="number"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <input
+                            formControlName="women_count"
+                            type="number"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <input
+                            formControlName="young_men_count"
+                            type="number"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <input
+                            formControlName="young_women_count"
+                            type="number"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-1"></div>
+                    <div class="col-12 col-md-1">
+                        <button class="btn btn-info text-capitalize" type="button" (click)="handleAdd()">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer my-3">
+            <button type="button" class="btn btn-white text-capitalize" (click)="handleClose()">Cancel</button>
+        </div>
+    </div>
+</div>

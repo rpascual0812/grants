@@ -25,7 +25,7 @@ export interface Project {
     financial_management_training?: boolean;
     date_created?: Date;
     project_proposal?: ProjectProposal;
-    project_beneficiary?: ProjectBeneficiary[];
+    project_beneficiary?: ProjectBeneficiary;
     project_location?: ProjectLocation[];
     recommendations?: Recommendation[];
     partner_pk?: number;
