@@ -43,8 +43,7 @@ export class FundingReleaseComponent implements OnInit {
         private changeDetection: ChangeDetectorRef,
         private projectService: ProjectService,
         private toastr: ToastrService,
-        public documentUploaderRef: BsModalRef,
-        private cdr: ChangeDetectorRef
+        public documentUploaderRef: BsModalRef
     ) {}
 
     ngOnInit() {
@@ -278,7 +277,7 @@ export class FundingReleaseComponent implements OnInit {
         this.documentUploaderRef.content.document.subscribe((res: any) => {
             this.projectFunding?.[index].project_funding_liquidation?.documents?.push(res.file);
             this.linkAttachment(res.file, this.projectFunding?.[index].project_funding_liquidation);
-            this.cdr.detectChanges();
+            this.changeDetection.detectChanges();
         });
     }
 

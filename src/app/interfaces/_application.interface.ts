@@ -189,7 +189,7 @@ export interface Project {
     type_pk?: number;
     date_created?: Date;
     project_proposal?: ProjectProposal;
-    project_beneficiary?: ProjectBeneficiary[];
+    project_beneficiary?: ProjectBeneficiary;
     project_location?: ProjectLocation[];
     type?: Type;
 }
@@ -202,12 +202,22 @@ export interface Type {
 }
 
 export interface ProjectBeneficiary {
-    pk?: number;
     project_pk?: number;
-    type?: string;
-    name?: string;
-    count?: number;
+    women_count?: number;
+    women_diffable_count?: number;
+    women_other_vulnerable_sector_count?: number;
+    young_women_count?: number;
+    young_women_diffable_count?: number;
+    young_women_other_vulnerable_sector_count?: number;
+    men_count?: number;
+    men_diffable_count?: number;
+    men_other_vulnerable_sector_count?: number;
+    young_men_count?: number;
+    young_men_diffable_count?: number;
+    young_men_other_vulnerable_sector_count?: number;
+    pk?: number;
     date_created?: Date;
+    date_updated?: Date;
 }
 
 export interface ProjectLocation {

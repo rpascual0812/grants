@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from '../utilities/globals';
 import { ProjectFunding, ProjectFundingLiquidation, ProjectSite } from '../interfaces/_project.interface';
+import { ProjectBeneficiary } from '../interfaces/_application.interface';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ProjectService {
-    constructor(public http: HttpClient) { }
+    constructor(public http: HttpClient) {}
 
     fetch() {
         return this.http.get(`${_.BASE_URL}/projects`);
@@ -125,5 +126,19 @@ export class ProjectService {
 
     saveProjectOutput(data: any) {
         return this.http.post(`${_.BASE_URL}/projects/${data.pk}/output`, data.data);
+    }
+
+    saveProjectBeneficiary(data: Partial<ProjectBeneficiary>) {
+        return this.http.post(`${_.BASE_URL}/projects/project_beneficiary`, data);
+    }
+
+    fetchProjectBeneficiary(data: { project_pk: number }) {
+        return this.http.get(`${_.BASE_URL}/projects/${data?.project_pk}/project_beneficiary`);
+    }
+
+    deleteProjectBeneficiary(data: { project_pk: number; project_beneficiary_pk: number }) {
+        return this.http.delete(
+            `${_.BASE_URL}/projects/${data?.project_pk}/project_beneficiary/${data?.project_beneficiary_pk}`
+        );
     }
 }

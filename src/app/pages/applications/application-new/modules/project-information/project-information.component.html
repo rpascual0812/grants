@@ -110,117 +110,213 @@
                         <p class="text-dark font-weight-bold p-0 m-0">How many will benefit from the project*</p>
                         <p class="text-dark font-weight-bold p-0 m-0">Direct:</p>
                         <div class="border-top border-2"></div>
-                        <div class="row">
-                            <div class="col-12 col-lg-6">
-                                <div
-                                    formArrayName="project_beneficiary"
-                                    *ngFor="let item of formProjBeneficiary.controls.slice(0, 3); index as i"
-                                    [attr.data-index]="i"
-                                    class="form-group row my-1"
-                                >
-                                    <ng-container [formGroupName]="i">
-                                        <label class="col-7 font-weight-bold text-dark text-capitalize"
-                                            >{{ formProjBeneficiary.controls.at(i)?.get('name')?.value }}:</label
-                                        >
+                        <ng-container [formGroup]="formGroupProjectBeneficiary">
+                            <div class="row">
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-group row my-1">
+                                        <label class="col-7 font-weight-bold text-dark text-capitalize">Women:</label>
                                         <div class="col-3">
                                             <input
-                                                formControlName="count"
+                                                formControlName="women_count"
                                                 type="number"
                                                 min="0"
                                                 class="form-control border rounded-1 p-1"
                                                 [ngClass]="{
-                                                    'is-invalid':
-                                                        submitted && formProjBeneficiary.at(i).get('count')?.errors
+                                                    'is-invalid': submitted && formProjectBeneficiary['errors']
                                                 }"
                                             />
                                         </div>
-                                    </ng-container>
-                                </div>
-                            </div>
-                            <div class="col-12 col-lg-6">
-                                <div
-                                    formArrayName="project_beneficiary"
-                                    *ngFor="let item of formProjBeneficiary.controls.slice(3, 6); index as i"
-                                    [attr.data-index]="i + 3"
-                                    class="form-group row my-1"
-                                >
-                                    <ng-container [formGroupName]="i + 3">
+                                    </div>
+                                    <div class="form-group row my-1">
                                         <label class="col-7 font-weight-bold text-dark text-capitalize"
-                                            >{{ formProjBeneficiary.controls.at(i + 3)?.get('name')?.value }}:</label
+                                            >Diffable Women:</label
                                         >
                                         <div class="col-3">
                                             <input
-                                                formControlName="count"
+                                                formControlName="women_diffable_count"
                                                 type="number"
                                                 min="0"
                                                 class="form-control border rounded-1 p-1"
                                                 [ngClass]="{
-                                                    'is-invalid':
-                                                        submitted && formProjBeneficiary.at(i + 3).get('count')?.errors
+                                                    'is-invalid': submitted && formProjectBeneficiary['errors']
                                                 }"
                                             />
                                         </div>
-                                    </ng-container>
+                                    </div>
+                                    <div class="form-group row my-1">
+                                        <label class="col-7 font-weight-bold text-dark text-capitalize"
+                                            >Other Vulnerable Sector:</label
+                                        >
+                                        <div class="col-3">
+                                            <input
+                                                formControlName="women_other_vulnerable_sector_count"
+                                                type="number"
+                                                min="0"
+                                                class="form-control border rounded-1 p-1"
+                                                [ngClass]="{
+                                                    'is-invalid': submitted && formProjectBeneficiary['errors']
+                                                }"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-group row my-1">
+                                        <label class="col-7 font-weight-bold text-dark text-capitalize">Men:</label>
+                                        <div class="col-3">
+                                            <input
+                                                formControlName="men_count"
+                                                type="number"
+                                                min="0"
+                                                class="form-control border rounded-1 p-1"
+                                                [ngClass]="{
+                                                    'is-invalid': submitted && formProjectBeneficiary['errors']
+                                                }"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row my-1">
+                                        <label class="col-7 font-weight-bold text-dark text-capitalize"
+                                            >Diffable Men:</label
+                                        >
+                                        <div class="col-3">
+                                            <input
+                                                formControlName="men_diffable_count"
+                                                type="number"
+                                                min="0"
+                                                class="form-control border rounded-1 p-1"
+                                                [ngClass]="{
+                                                    'is-invalid': submitted && formProjectBeneficiary['errors']
+                                                }"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row my-1">
+                                        <label class="col-7 font-weight-bold text-dark text-capitalize"
+                                            >Other Vulnerable Sector:</label
+                                        >
+                                        <div class="col-3">
+                                            <input
+                                                formControlName="men_other_vulnerable_sector_count"
+                                                type="number"
+                                                min="0"
+                                                class="form-control border rounded-1 p-1"
+                                                [ngClass]="{
+                                                    'is-invalid': submitted && formProjectBeneficiary['errors']
+                                                }"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </ng-container>
 
                         <div class="border-top border-2"></div>
-                        <div class="row">
-                            <div class="col-12 col-lg-6">
-                                <div
-                                    formArrayName="project_beneficiary"
-                                    *ngFor="let item of formProjBeneficiary.controls.slice(6, 9); index as i"
-                                    [attr.data-index]="i + 6"
-                                    class="form-group row my-1"
-                                >
-                                    <ng-container [formGroupName]="i + 6">
+                        <ng-container [formGroup]="formGroupProjectBeneficiary">
+                            <div class="row">
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-group row my-1">
                                         <label class="col-7 font-weight-bold text-dark text-capitalize"
-                                            >{{ formProjBeneficiary.controls.at(i + 6)?.get('name')?.value }}:</label
+                                            >Young Women:</label
                                         >
                                         <div class="col-3">
                                             <input
-                                                formControlName="count"
+                                                formControlName="young_women_count"
                                                 type="number"
                                                 min="0"
                                                 class="form-control border rounded-1 p-1"
                                                 [ngClass]="{
-                                                    'is-invalid':
-                                                        submitted && formProjBeneficiary.at(i + 6).get('count')?.errors
+                                                    'is-invalid': submitted && formProjectBeneficiary['errors']
                                                 }"
                                             />
                                         </div>
-                                    </ng-container>
+                                    </div>
+                                    <div class="form-group row my-1">
+                                        <label class="col-7 font-weight-bold text-dark text-capitalize"
+                                            >Diffable Women:</label
+                                        >
+                                        <div class="col-3">
+                                            <input
+                                                formControlName="young_women_diffable_count"
+                                                type="number"
+                                                min="0"
+                                                class="form-control border rounded-1 p-1"
+                                                [ngClass]="{
+                                                    'is-invalid': submitted && formProjectBeneficiary['errors']
+                                                }"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row my-1">
+                                        <label class="col-7 font-weight-bold text-dark text-capitalize"
+                                            >Other Vulnerable Sector:</label
+                                        >
+                                        <div class="col-3">
+                                            <input
+                                                formControlName="young_women_other_vulnerable_sector_count"
+                                                type="number"
+                                                min="0"
+                                                class="form-control border rounded-1 p-1"
+                                                [ngClass]="{
+                                                    'is-invalid': submitted && formProjectBeneficiary['errors']
+                                                }"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-12 col-lg-6">
-                                <div
-                                    formArrayName="project_beneficiary"
-                                    *ngFor="let item of formProjBeneficiary.controls.slice(9, 12); index as i"
-                                    [attr.data-index]="i + 9"
-                                    class="form-group row my-1"
-                                >
-                                    <ng-container [formGroupName]="i + 9">
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-group row my-1">
                                         <label class="col-7 font-weight-bold text-dark text-capitalize"
-                                            >{{ formProjBeneficiary.controls.at(i + 9)?.get('name')?.value }}:</label
+                                            >Young Men:</label
                                         >
                                         <div class="col-3">
                                             <input
-                                                formControlName="count"
+                                                formControlName="young_men_count"
                                                 type="number"
                                                 min="0"
                                                 class="form-control border rounded-1 p-1"
                                                 [ngClass]="{
-                                                    'is-invalid':
-                                                        submitted && formProjBeneficiary.at(i + 9).get('count')?.errors
+                                                    'is-invalid': submitted && formProjectBeneficiary['errors']
                                                 }"
                                             />
                                         </div>
-                                    </ng-container>
+                                    </div>
+                                    <div class="form-group row my-1">
+                                        <label class="col-7 font-weight-bold text-dark text-capitalize"
+                                            >Diffable Men:</label
+                                        >
+                                        <div class="col-3">
+                                            <input
+                                                formControlName="young_men_diffable_count"
+                                                type="number"
+                                                min="0"
+                                                class="form-control border rounded-1 p-1"
+                                                [ngClass]="{
+                                                    'is-invalid': submitted && formProjectBeneficiary['errors']
+                                                }"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row my-1">
+                                        <label class="col-7 font-weight-bold text-dark text-capitalize"
+                                            >Other Vulnerable Sector:</label
+                                        >
+                                        <div class="col-3">
+                                            <input
+                                                formControlName="young_men_other_vulnerable_sector_count"
+                                                type="number"
+                                                min="0"
+                                                class="form-control border rounded-1 p-1"
+                                                [ngClass]="{
+                                                    'is-invalid': submitted && formProjectBeneficiary['errors']
+                                                }"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </ng-container>
 
                         <div class="form-group my-3">
                             <label class="font-weight-bold text-dark"

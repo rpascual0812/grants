@@ -1,183 +1,129 @@
 <div class="container">
-    <div class="row row-header">
-        <div class="col-2">
-            <!-- spacer -->
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">Proposed</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">Directly involved/benefitted</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">Indigenous (Y/N)</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">Indirectly Benefitted</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">Indigenous (Y/N)</p>
-        </div>
-    </div>
-    <div class="row row-header border-top border-dark my-2">
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">Women</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">125</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-    </div>
-    <div class="row row-header border-top border-dark my-2">
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">Young Women</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">125</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-    </div>
-    <div class="row row-header border-top border-dark my-2">
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">Diffable women</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">125</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-    </div>
-    <div class="row row-header border-top border-dark my-2">
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">Other Vulnerable sector</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">125</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
+    <div class="card my-3">
+        <div class="card-body">
+            <ng-container>
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <div class="form-group row my-1">
+                            <label class="col-7 font-weight-bold text-dark text-capitalize">Women:</label>
+                            <div class="col-3">
+                                <p class="text-dark p-0 m-0">{{ projectBeneficiaryTotalCount?.women_count }}</p>
+                            </div>
+                        </div>
+                        <div class="form-group row my-1">
+                            <label class="col-7 font-weight-bold text-dark text-capitalize">Diffable Women:</label>
+                            <div class="col-3">
+                                <p class="text-dark p-0 m-0">
+                                    {{ projectBeneficiaryTotalCount?.women_diffable_count }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row my-1">
+                            <label class="col-7 font-weight-bold text-dark text-capitalize"
+                                >Other Vulnerable Sector:</label
+                            >
+                            <div class="col-3">
+                                <p class="text-dark p-0 m-0">
+                                    {{ projectBeneficiaryTotalCount?.women_other_vulnerable_sector_count }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="form-group row my-1">
+                            <label class="col-7 font-weight-bold text-dark text-capitalize">Men:</label>
+                            <div class="col-3">
+                                <p class="text-dark p-0 m-0">{{ projectBeneficiaryTotalCount?.men_count }}</p>
+                            </div>
+                        </div>
+                        <div class="form-group row my-1">
+                            <label class="col-7 font-weight-bold text-dark text-capitalize">Diffable Men:</label>
+                            <div class="col-3">
+                                <p class="text-dark p-0 m-0">
+                                    {{ projectBeneficiaryTotalCount?.men_diffable_count }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row my-1">
+                            <label class="col-7 font-weight-bold text-dark text-capitalize"
+                                >Other Vulnerable Sector:</label
+                            >
+                            <div class="col-3">
+                                <p class="text-dark p-0 m-0">
+                                    {{ projectBeneficiaryTotalCount?.men_other_vulnerable_sector_count }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div class="border-top border-2"></div>
+            <ng-container>
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <div class="form-group row my-1">
+                            <label class="col-7 font-weight-bold text-dark text-capitalize">Young Women:</label>
+                            <div class="col-3">
+                                <p class="text-dark p-0 m-0">
+                                    {{ projectBeneficiaryTotalCount?.young_women_count }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row my-1">
+                            <label class="col-7 font-weight-bold text-dark text-capitalize">Diffable Women:</label>
+                            <div class="col-3">
+                                <p class="text-dark p-0 m-0">
+                                    {{ projectBeneficiaryTotalCount?.young_women_diffable_count }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row my-1">
+                            <label class="col-7 font-weight-bold text-dark text-capitalize"
+                                >Other Vulnerable Sector:</label
+                            >
+                            <div class="col-3">
+                                <p class="text-dark p-0 m-0">
+                                    {{ projectBeneficiaryTotalCount?.young_women_other_vulnerable_sector_count }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+                        <div class="form-group row my-1">
+                            <label class="col-7 font-weight-bold text-dark text-capitalize">Young Men:</label>
+                            <div class="col-3">
+                                <p class="text-dark p-0 m-0">{{ projectBeneficiaryTotalCount?.young_men_count }}</p>
+                            </div>
+                        </div>
+                        <div class="form-group row my-1">
+                            <label class="col-7 font-weight-bold text-dark text-capitalize">Diffable Men:</label>
+                            <div class="col-3">
+                                <p class="text-dark p-0 m-0">
+                                    {{ projectBeneficiaryTotalCount?.young_men_diffable_count }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row my-1">
+                            <label class="col-7 font-weight-bold text-dark text-capitalize"
+                                >Other Vulnerable Sector:</label
+                            >
+                            <div class="col-3">
+                                <p class="text-dark p-0 m-0">
+                                    {{ projectBeneficiaryTotalCount?.young_men_other_vulnerable_sector_count }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
         </div>
     </div>
 
-    <div class="row row-header border-dark mt-4">
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">Men</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">125</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-    </div>
-    <div class="row row-header border-top border-dark my-2">
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">Young Men</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">125</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-    </div>
-    <div class="row row-header border-top border-dark my-2">
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">Diffable Men</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">125</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-    </div>
-    <div class="row row-header border-top border-dark my-2">
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">Other Vulnerable sector</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">125</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">100</p>
-        </div>
-        <div class="col-2">
-            <p class="text-dark p-0 m-0">1</p>
-        </div>
+    <div class="btn-container">
+        <button class="btn btn-dark-blue text-capitalize" type="button" (click)="handleAddBeneficiary()">
+            Add Beneficiary
+        </button>
     </div>
 </div>
