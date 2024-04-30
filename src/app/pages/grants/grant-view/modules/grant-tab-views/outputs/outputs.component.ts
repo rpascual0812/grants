@@ -105,17 +105,17 @@ export class OutputsComponent implements OnInit {
         this.projectService.fetchProjectOutput({ pk: this.project?.pk as number }).subscribe({
             next: (res: any) => {
                 this.project_output = res;
-                this.form.get('tenure_security_form')?.patchValue(res.tenure_security_form);
-                this.form.get('territory')?.patchValue(res.territory);
-                this.form.get('hectares')?.patchValue(res.hectares);
-                this.form.get('livelihood')?.patchValue(res.livelihood);
-                this.form.get('individual_income')?.patchValue(res.individual_income);
-                this.form.get('individual_income')?.patchValue(res.individual_income);
-                this.form.get('household_income')?.patchValue(res.household_income);
-                this.form.get('individual')?.patchValue(res.individual);
-                this.form.get('household')?.patchValue(res.household);
-                this.form.get('disability_rights')?.patchValue(res.disability_rights);
-                this.form.get('intervention_type')?.patchValue(res.intervention_type);
+                this.form.get('tenure_security_form')?.patchValue(res?.tenure_security_form);
+                this.form.get('territory')?.patchValue(res?.territory);
+                this.form.get('hectares')?.patchValue(res?.hectares);
+                this.form.get('livelihood')?.patchValue(res?.livelihood);
+                this.form.get('individual_income')?.patchValue(res?.individual_income);
+                this.form.get('individual_income')?.patchValue(res?.individual_income);
+                this.form.get('household_income')?.patchValue(res?.household_income);
+                this.form.get('individual')?.patchValue(res?.individual);
+                this.form.get('household')?.patchValue(res?.household);
+                this.form.get('disability_rights')?.patchValue(res?.disability_rights);
+                this.form.get('intervention_type')?.patchValue(res?.intervention_type);
             },
             error: (err: any) => {
                 const { statusCode, errorMessage } = extractErrorMessage(err);

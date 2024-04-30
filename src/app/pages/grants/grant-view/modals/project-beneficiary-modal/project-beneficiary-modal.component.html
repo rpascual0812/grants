@@ -36,14 +36,44 @@
                 <div *ngFor="let item of projectBeneficiary" class="card rounded-1 my-2">
                     <div class="row p-2 align-items-center">
                         <div class="col-12 col-md-1">
-                            <p class="text-center text-info p-0 m-0 text-xs">{{ item?.date_created | date :
-                                'dd-MMM-yyyy' }}</p>
+                            <input
+                                *ngIf="editableRow?.pk === item.pk"
+                                type="number"
+                                class="form-control border rounded-1 p-2 bg-white"
+                                [(ngModel)]="editableRow && editableRow.men_count"
+                            />
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0">{{ item?.men_count }}</p>
+                        </div>
+                        <div class="col-12 col-md-1">
+                            <input
+                                *ngIf="editableRow?.pk === item.pk"
+                                type="number"
+                                class="form-control border rounded-1 p-2 bg-white"
+                                [(ngModel)]="editableRow && editableRow.women_count"
+                            />
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0">{{ item?.women_count }}</p>
                         </div>
                         <div class="col-12 col-md-2">
-                            <p class="text-center text-dark p-0 m-0">{{ item?.men_count }}</p>
+                            <input
+                                *ngIf="editableRow?.pk === item.pk"
+                                type="number"
+                                class="form-control border rounded-1 p-2 bg-white"
+                                [(ngModel)]="editableRow && editableRow.young_men_count"
+                            />
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0">
+                                {{ item?.young_men_count }}
+                            </p>
                         </div>
                         <div class="col-12 col-md-2">
-                            <p class="text-center text-dark p-0 m-0">{{ item?.women_count }}</p>
+                            <input
+                                *ngIf="editableRow?.pk === item.pk"
+                                type="number"
+                                class="form-control border rounded-1 p-2 bg-white"
+                                [(ngModel)]="editableRow && editableRow.young_women_count"
+                            />
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0">
+                                {{ item?.young_women_count }}
+                            </p>
                         </div>
                         <div class="col-12 col-md-2">
                             <p class="text-center text-dark p-0 m-0">{{ item?.young_men_count }}</p>
@@ -63,16 +93,33 @@
                                 }}
                             </p>
                         </div>
-                        <div class="col-12 col-md-1">
-                            <button class="btn btn-sm btn-danger btn-icon-only btn-round"
-                                style="padding: .2rem !important;" (click)="handleDelete(item?.pk)">
-                                <i class="fa fa-trash" style="font-size: 0.8rem !important;"></i>
+                        <div class="col-12 col-md-2">
+                            <button
+                                *ngIf="editableRow?.pk === item?.pk"
+                                class="btn btn-icon-only btn-info btn-round mx-1"
+                                (click)="handleSaveRow()"
+                            >
+                                <i class="material-icons" style="position: relative; top: -2px; left: -2px">save</i>
+                            </button>
+
+                            <button
+                                *ngIf="editableRow?.pk !== item?.pk"
+                                class="btn btn-icon-only btn-info btn-round mx-1"
+                                (click)="handleEdit(item)"
+                            >
+                                <i class="material-icons" style="position: relative; top: -2px; left: -2px">edit</i>
+                            </button>
+
+                            <button
+                                class="btn btn-icon-only btn-danger btn-round mx-1"
+                                (click)="handleDelete(item?.pk)"
+                            >
+                                <i class="material-icons" style="position: relative; top: -2px; left: -2px">delete</i>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-
 
             <div class="beneficiary-list-add-container bg-gray-200">
                 <div class="row p-2 align-items-center" [formGroup]="form">
