@@ -24,6 +24,7 @@ export class ProjectBeneficiaryModalComponent implements OnInit {
     processing = false;
     project: Project | null = null;
     projectBeneficiary: ProjectBeneficiary[] = [];
+    editableRow: ProjectBeneficiary | null = null;
     form: FormGroup;
     isSaved: boolean = false;
 
@@ -56,8 +57,23 @@ export class ProjectBeneficiaryModalComponent implements OnInit {
         });
     }
 
-    saveFormValue() {
-        const { value } = this.form;
+    modifyList(list: ProjectBeneficiary[], data: ProjectBeneficiary) {
+        const existing = list.find((item) => item.pk === data.pk);
+        if (existing) {
+            return list.map((item) => {
+                if (item.pk === existing.pk) {
+                    item = data;
+                }
+                return {
+                    ...item,
+                };
+            });
+        } else {
+            return [...list, data];
+        }
+    }
+
+    saveFormValue(value: ProjectBeneficiary) {
         this.projectService
             .saveProjectBeneficiary({
                 project_pk: this.project?.pk,
@@ -77,10 +93,12 @@ export class ProjectBeneficiaryModalComponent implements OnInit {
                     const status = res.status;
                     if (status) {
                         this.setForm();
-                        this.projectBeneficiary.push(data);
+                        this.projectBeneficiary = this.modifyList(this.projectBeneficiary, data);
                         this.cdr.detectChanges();
                         this.isSaved = true;
                         this.toastr.success('Project Beneficiary has been successfully saved', 'SUCCESS!');
+                        // always resets row value
+                        this.editableRow = null;
                     } else {
                         this.toastr.error(
                             `An error occurred while saving Project Beneficiary. Please try again.`,
@@ -134,9 +152,19 @@ export class ProjectBeneficiaryModalComponent implements OnInit {
     handleAdd() {
         this.submitted = true;
         this.processing = true;
-        const { valid } = this.form;
+        const { valid, value } = this.form;
         if (valid) {
-            this.saveFormValue();
+            this.saveFormValue(value);
+        }
+    }
+
+    handleEdit(item: ProjectBeneficiary) {
+        this.editableRow = item;
+    }
+
+    handleSaveRow() {
+        if (this.editableRow) {
+            this.saveFormValue(this.editableRow);
         }
     }
 

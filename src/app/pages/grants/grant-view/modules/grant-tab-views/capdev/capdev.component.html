@@ -1,10 +1,9 @@
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <div class="row p-2">
-                <div class="col-1">
-                </div>
-                <div class="col-12 col-md-4">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-12 col-md-3">
                     <p class="font-weight-bold text-dark p-0 m-0">Knowledge gained</p>
                 </div>
                 <div class="col-12 col-md-4">
@@ -16,39 +15,126 @@
                 <div class="col-12 col-md-3">
                     <p class="font-weight-bold text-dark p-0 m-0">Other remarks</p>
                 </div>
+                <div class="col-12 col-md-1"></div>
             </div>
-            <div class="row border-top border-dark my-2 p-2">
-                <div class="col-1">
-                    <p class="p-0 m-0">1</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <p class="p-0 m-0">Lorem ipsum dolor sit amet.</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <p class="p-0 m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, neque ab nesciunt voluptates sapiente ad tenetur placeat aperiam alias? Nam aliquam atque saepe recusandae odit ad illo modi perspiciatis iusto!</p>
-                </div>
-                <div class="col-12 col-md-3">
-                    <p class="p-0 m-0">Lorem ipsum dolor sit amet.</p>
+
+            <div class="overflow-y-auto max-height-400" *ngIf="!loading.knowledge">
+                <div *ngFor="let item of projectCapDevKnowledge; index as i" class="row border-top border-dark my-2">
+                    <div class="col-1">
+                        <p class="p-0 m-0">
+                            {{ i + 1 }}
+                        </p>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <input
+                            [(ngModel)]="capDevKnowledgeFormRow.knowledge"
+                            name="knowledge"
+                            *ngIf="editableRow.capDevKnowledgeRow === i"
+                            class="form-control border rounded p-1"
+                            [value]="item.knowledge"
+                            type="text"
+                        />
+                        <p *ngIf="editableRow.capDevKnowledgeRow !== i" class="p-0 m-0">
+                            {{ item.knowledge }}
+                        </p>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <input
+                            [(ngModel)]="capDevKnowledgeFormRow.instruction"
+                            name="instruction"
+                            *ngIf="editableRow.capDevKnowledgeRow === i"
+                            class="form-control border rounded p-1"
+                            [value]="item.instruction"
+                            type="text"
+                        />
+                        <p *ngIf="editableRow.capDevKnowledgeRow !== i" class="p-0 m-0">
+                            {{ item.instruction }}
+                        </p>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <input
+                            [(ngModel)]="capDevKnowledgeFormRow.remarks"
+                            name="remarks"
+                            *ngIf="editableRow.capDevKnowledgeRow === i"
+                            class="form-control border rounded p-1"
+                            [value]="item.remarks"
+                            type="text"
+                        />
+                        <p *ngIf="editableRow.capDevKnowledgeRow !== i" class="p-0 m-0">
+                            {{ item.remarks }}
+                        </p>
+                    </div>
+
+                    <div class="col-12 col-md-1">
+                        <button
+                            (click)="handleSavePerRow('capDevKnowledgeRow')"
+                            *ngIf="editableRow.capDevKnowledgeRow === i"
+                            class="btn btn-sm btn-info btn-icon-only btn-round mx-1"
+                            style="padding: 0.1rem !important"
+                        >
+                            <i class="material-icons" style="font-size: 0.8rem !important">save</i>
+                        </button>
+
+                        <button
+                            *ngIf="editableRow.capDevKnowledgeRow !== i"
+                            class="btn btn-sm btn-info btn-icon-only btn-round mx-1"
+                            style="padding: 0.1rem !important"
+                            (click)="handleEdit('capDevKnowledgeRow', i, item?.pk)"
+                        >
+                            <i class="material-icons" style="font-size: 0.8rem !important">edit</i>
+                        </button>
+
+                        <button
+                            (click)="deleteKnowledge(item)"
+                            class="btn btn-sm btn-danger btn-icon-only btn-round mx-1"
+                            style="padding: 0.1rem !important"
+                        >
+                            <i class="material-icons" style="font-size: 0.8rem !important">delete</i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div class="row border-top border-dark my-2 p-2">
                 <div class="col-1">
-                    <p class="p-0 m-0">2</p>
+                    <p class="p-0 m-0">
+                        {{ projectCapDevKnowledge.length + 1 }}
+                    </p>
+                </div>
+                <div class="col-12 col-md-2">
+                    <input
+                        [(ngModel)]="capDevKnowledgeForm.knowledge"
+                        name="knowledge"
+                        class="form-control border rounded p-1"
+                        type="text"
+                        [required]="true"
+                    />
                 </div>
                 <div class="col-12 col-md-4">
-                    <input class="form-control border rounded p-1" type="text"/>
-                </div>
-                <div class="col-12 col-md-4">
-                    <input class="form-control border rounded p-1" type="text"/>
+                    <input
+                        [(ngModel)]="capDevKnowledgeForm.instruction"
+                        name="instruction"
+                        class="form-control border rounded p-1"
+                        type="text"
+                        [required]="true"
+                    />
                 </div>
                 <div class="col-12 col-md-3">
-                    <input class="form-control border rounded p-1" type="text"/>
+                    <input
+                        [(ngModel)]="capDevKnowledgeForm.remarks"
+                        name="remarks"
+                        class="form-control border rounded p-1"
+                        type="text"
+                        [required]="true"
+                    />
                 </div>
+                <div class="col-12 col-md-2"></div>
             </div>
 
             <div class="d-flex justify-content-end">
-                <button class="btn btn-dark-blue">save</button>
+                <button class="btn btn-dark-blue" type="button" (click)="handleSaveKnowledge(capDevKnowledgeForm)">
+                    save
+                </button>
             </div>
         </div>
     </div>
@@ -56,12 +142,11 @@
     <div class="card my-3">
         <div class="card-body">
             <div class="row p-2">
-                <div class="col-1">
-                </div>
-                <div class="col-12 col-md-3">
+                <div class="col-1"></div>
+                <div class="col-12 col-md-2">
                     <p class="font-weight-bold text-dark p-0 m-0">Skills gained or enhanced</p>
                 </div>
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-3">
                     <p class="font-weight-bold text-dark p-0 m-0">
                         Instruction to User/Encoder. Put here topics, processes (ex: how to make a letter and other
                         knowledge gained, one item per line)
@@ -69,53 +154,148 @@
                 </div>
                 <div class="col-12 col-md-2">
                     <p class="font-weight-bold text-dark p-0 m-0">
-                        New Skill = 1 
-                        <br>
+                        New Skill = 1
+                        <br />
                         Enhanced Skill = 2
                     </p>
                 </div>
-                <div class="col-12 col-md-2">
+                <div class="col-12 col-md-3">
                     <p class="font-weight-bold text-dark p-0 m-0">Other remarks</p>
                 </div>
+                <div class="col-12 col-md-2"></div>
             </div>
-            <div class="row border-top border-dark my-2 p-2">
-                <div class="col-1">
-                    <p class="p-0 m-0">1</p>
-                </div>
-                <div class="col-12 col-md-3">
-                    <p class="p-0 m-0">Lorem ipsum dolor sit amet.</p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <p class="p-0 m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, neque ab nesciunt voluptates sapiente ad tenetur placeat aperiam alias? Nam aliquam atque saepe recusandae odit ad illo modi perspiciatis iusto!</p>
-                </div>
-                <div class="col-12 col-md-2">
-                    <p class="p-0 m-0">1</p>
-                </div>
-                <div class="col-12 col-md-2">
-                    <p class="p-0 m-0">Lorem ipsum dolor sit amet.</p>
+            <div class="overflow-y-auto max-height-400" *ngIf="!loading.skill">
+                <div *ngFor="let item of projectCapDevSkill; index as i" class="row border-top border-dark my-2 p-2">
+                    <div class="col-1">
+                        <p class="p-0 m-0">
+                            {{ i + 1 }}
+                        </p>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <input
+                            *ngIf="editableRow.capDevSkillRow === i"
+                            [(ngModel)]="capDevSkillFormRow.skill_gained"
+                            name="skill_gained"
+                            class="form-control border rounded p-1"
+                            type="text"
+                            [required]="true"
+                        />
+                        <p *ngIf="editableRow.capDevSkillRow !== i" class="p-0 m-0">
+                            {{ item.skill_gained }}
+                        </p>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <input
+                            *ngIf="editableRow.capDevSkillRow === i"
+                            [(ngModel)]="capDevSkillFormRow.instruction"
+                            name="instruction"
+                            class="form-control border rounded p-1"
+                            type="text"
+                            [required]="true"
+                        />
+                        <p *ngIf="editableRow.capDevSkillRow !== i" class="p-0 m-0">
+                            {{ item.instruction }}
+                        </p>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <select
+                            *ngIf="editableRow.capDevSkillRow === i"
+                            name="skill"
+                            class="form-select border rounded p-1"
+                            [(ngModel)]="capDevSkillFormRow.skill"
+                        >
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                        <p *ngIf="editableRow.capDevSkillRow !== i" class="p-0 m-0">
+                            {{ item.skill }}
+                        </p>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <input
+                            *ngIf="editableRow.capDevSkillRow === i"
+                            [(ngModel)]="capDevSkillFormRow.remarks"
+                            name="remarks"
+                            class="form-control border rounded p-1"
+                            type="text"
+                            [required]="true"
+                        />
+                        <p *ngIf="editableRow.capDevSkillRow !== i" class="p-0 m-0">
+                            {{ item.remarks }}
+                        </p>
+                    </div>
+                    <div class="col-12 col-md-1">
+                        <button
+                            (click)="handleSavePerRow('capDevSkillRow')"
+                            *ngIf="editableRow.capDevSkillRow === i"
+                            class="btn btn-sm btn-info btn-icon-only btn-round mx-1"
+                            style="padding: 0.1rem !important"
+                        >
+                            <i class="material-icons" style="font-size: 0.8rem !important">save</i>
+                        </button>
+
+                        <button
+                            *ngIf="editableRow.capDevSkillRow !== i"
+                            class="btn btn-sm btn-info btn-icon-only btn-round mx-1"
+                            style="padding: 0.1rem !important"
+                            (click)="handleEdit('capDevSkillRow', i, item?.pk)"
+                        >
+                            <i class="material-icons" style="font-size: 0.8rem !important">edit</i>
+                        </button>
+
+                        <button
+                            (click)="deleteSkill(item)"
+                            class="btn btn-sm btn-danger btn-icon-only btn-round mx-1"
+                            style="padding: 0.1rem !important"
+                        >
+                            <i class="material-icons" style="font-size: 0.8rem !important">delete</i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div class="row border-top border-dark my-2 p-2">
                 <div class="col-1">
-                    <p class="p-0 m-0">2</p>
+                    <p class="p-0 m-0">{{ projectCapDevSkill.length + 1 }}</p>
+                </div>
+                <div class="col-12 col-md-2">
+                    <input
+                        [(ngModel)]="capDevSkillForm.skill_gained"
+                        name="skill_gained"
+                        class="form-control border rounded p-1"
+                        type="text"
+                        [required]="true"
+                    />
                 </div>
                 <div class="col-12 col-md-3">
-                    <input class="form-control border rounded p-1" type="text"/>
-                </div>
-                <div class="col-12 col-md-4">
-                    <input class="form-control border rounded p-1" type="text"/>
+                    <input
+                        [(ngModel)]="capDevSkillForm.instruction"
+                        name="instruction"
+                        class="form-control border rounded p-1"
+                        type="text"
+                        [required]="true"
+                    />
                 </div>
                 <div class="col-12 col-md-2">
-                    <input class="form-control border rounded p-1" type="text"/>
+                    <select name="skill" class="form-select border rounded p-1" [(ngModel)]="capDevSkillForm.skill">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
                 </div>
-                <div class="col-12 col-md-2">
-                    <input class="form-control border rounded p-1" type="text"/>
+                <div class="col-12 col-md-3">
+                    <input
+                        [(ngModel)]="capDevSkillForm.remarks"
+                        name="remarks"
+                        class="form-control border rounded p-1"
+                        type="text"
+                        [required]="true"
+                    />
                 </div>
+                <div class="col-12 col-md-2"></div>
             </div>
 
             <div class="d-flex justify-content-end">
-                <button class="btn btn-dark-blue">save</button>
+                <button class="btn btn-dark-blue" type="button" (click)="handleSaveSkill(capDevSkillForm)">save</button>
             </div>
         </div>
     </div>
@@ -123,32 +303,75 @@
     <div class="card my-3">
         <div class="card-body">
             <div class="row p-2">
-                <div class="col-1">
-                </div>
+                <div class="col-1"></div>
                 <div class="col-12 col-md-10">
-                    <p class="font-weight-bold text-dark p-0 m-0">Observed/Reported changes in attitude applying the knowledge and skills gained</p>
+                    <p class="font-weight-bold text-dark p-0 m-0">
+                        Observed/Reported changes in attitude applying the knowledge and skills gained
+                    </p>
                 </div>
             </div>
-            <div class="row border-top border-dark my-2 p-2">
-                <div class="col-1">
-                    <p class="p-0 m-0">1</p>
-                </div>
-                <div class="col-12 col-md-10">
-                    <p class="p-0 m-0">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cumque, nihil deserunt laboriosam autem debitis quod esse amet excepturi asperiores nesciunt rem corrupti necessitatibus architecto voluptatibus libero tempora non accusantium similique!</p>
+
+            <div class="overflow-y-auto max-height-400" *ngIf="!loading.observe">
+                <div *ngFor="let item of projectCapDevObserve; index as i" class="row border-top border-dark my-2 p-2">
+                    <div class="col-1">
+                        <p class="p-0 m-0">{{ i + 1 }}</p>
+                    </div>
+                    <div class="col-12 col-md-10">
+                        <textarea
+                            *ngIf="editableRow.capDevObserveRow === i"
+                            [(ngModel)]="capDevObserveFormRow.observed"
+                            class="form-control border rounded p-1"
+                            rows="3"
+                        ></textarea>
+                        <p *ngIf="editableRow.capDevObserveRow !== i" class="p-0 m-0" [innerText]="item.observed"></p>
+                    </div>
+                    <div class="col-12 col-md-1">
+                        <button
+                            (click)="handleSavePerRow('capDevObserveRow')"
+                            *ngIf="editableRow.capDevObserveRow === i"
+                            class="btn btn-sm btn-info btn-icon-only btn-round mx-1"
+                            style="padding: 0.1rem !important"
+                        >
+                            <i class="material-icons" style="font-size: 0.8rem !important">save</i>
+                        </button>
+
+                        <button
+                            *ngIf="editableRow.capDevObserveRow !== i"
+                            class="btn btn-sm btn-info btn-icon-only btn-round mx-1"
+                            style="padding: 0.1rem !important"
+                            (click)="handleEdit('capDevObserveRow', i, item?.pk)"
+                        >
+                            <i class="material-icons" style="font-size: 0.8rem !important">edit</i>
+                        </button>
+
+                        <button
+                            (click)="deleteObserve(item)"
+                            class="btn btn-sm btn-danger btn-icon-only btn-round mx-1"
+                            style="padding: 0.1rem !important"
+                        >
+                            <i class="material-icons" style="font-size: 0.8rem !important">delete</i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div class="row border-top border-dark my-2 p-2">
                 <div class="col-1">
-                    <p class="p-0 m-0">2</p>
+                    <p class="p-0 m-0">{{ projectCapDevObserve.length + 1 }}</p>
                 </div>
                 <div class="col-12 col-md-10">
-                    <textarea class="form-control border rounded p-1" rows="3"></textarea>
+                    <textarea
+                        [(ngModel)]="capDevObserveForm.observed"
+                        class="form-control border rounded p-1"
+                        rows="3"
+                    ></textarea>
                 </div>
             </div>
 
             <div class="d-flex justify-content-end">
-                <button class="btn btn-dark-blue">save</button>
+                <button class="btn btn-dark-blue" type="button" (click)="handleSaveObserve(capDevObserveForm)">
+                    save
+                </button>
             </div>
         </div>
     </div>

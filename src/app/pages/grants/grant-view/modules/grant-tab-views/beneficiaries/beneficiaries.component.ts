@@ -1,5 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { GrantSignalService } from 'src/app/services/grant.signal.service';
@@ -42,7 +41,6 @@ export class BeneficiariesComponent implements OnInit {
     grantSignalService = inject(GrantSignalService);
 
     constructor(
-        private formBuilder: FormBuilder,
         private modalService: BsModalService,
         private changeDetection: ChangeDetectorRef,
         private projectService: ProjectService,

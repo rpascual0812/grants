@@ -84,3 +84,35 @@ export interface ProjectSite {
     created_by?: number;
     date_created?: Date;
 }
+
+export interface ProjectCapDevKnowledge {
+    project_pk?: number;
+    created_by?: number;
+    knowledge?: string;
+    instruction?: string;
+    remarks?: string;
+    pk?: number;
+    date_created?: Date;
+    archived?: boolean;
+}
+
+export interface ProjectCapDevSkill {
+    pk?: number;
+    project_pk?: number;
+    skill_gained?: string;
+    instruction?: string;
+    skill?: string;
+    remarks?: string;
+    created_by?: number;
+    date_created?: Date;
+    archived?: boolean;
+}
+
+export interface ProjectCapDevObserve {
+    pk?: number;
+    project_pk?: number;
+    observed?: string;
+    created_by?: number;
+    date_created?: Date;
+    archived?: boolean;
+}

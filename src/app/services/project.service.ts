@@ -1,7 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from '../utilities/globals';
-import { ProjectFunding, ProjectFundingLiquidation, ProjectSite } from '../interfaces/_project.interface';
+import {
+    ProjectCapDevKnowledge as ProjectCapDevKnowledge,
+    ProjectCapDevObserve,
+    ProjectCapDevSkill,
+    ProjectFunding,
+    ProjectFundingLiquidation,
+    ProjectSite,
+} from '../interfaces/_project.interface';
 import { ProjectBeneficiary } from '../interfaces/_application.interface';
 
 @Injectable({
@@ -141,4 +148,41 @@ export class ProjectService {
             `${_.BASE_URL}/projects/${data?.project_pk}/project_beneficiary/${data?.project_beneficiary_pk}`
         );
     }
+
+    fetchProjectCapDevKnowledge(data: { project_pk: number }) {
+        return this.http.get(`${_.BASE_URL}/projects/${data?.project_pk}/project_capdev_knowledge`);
+    }
+
+    saveProjectCapDevKnowledge(data: ProjectCapDevKnowledge) {
+        return this.http.post(`${_.BASE_URL}/projects/project_capdev_knowledge`, data);
+    }
+
+    deleteProjectCapKnowledge(data: { project_pk: number, pk: number }) {
+        return this.http.delete(`${_.BASE_URL}/projects/${data?.project_pk}/project_capdev_knowledge/${data.pk}`);
+    }
+
+    fetchProjectCapDevSkill(data: { project_pk: number }) {
+        return this.http.get(`${_.BASE_URL}/projects/${data?.project_pk}/project_capdev_skill`);
+    }
+
+    saveProjectCapDevSkill(data: ProjectCapDevSkill) {
+        return this.http.post(`${_.BASE_URL}/projects/project_capdev_skill`, data);
+    }
+
+    deleteProjectCapDevSkill(data: { project_pk: number, pk: number }) {
+        return this.http.delete(`${_.BASE_URL}/projects/${data?.project_pk}/project_capdev_skill/${data.pk}`);
+    }
+
+    fetchProjectCapDevObserve(data: { project_pk: number }) {
+        return this.http.get(`${_.BASE_URL}/projects/${data?.project_pk}/project_capdev_observe`);
+    }
+
+    saveProjectCapDevObserve(data: ProjectCapDevObserve) {
+        return this.http.post(`${_.BASE_URL}/projects/project_capdev_observe`, data);
+    }
+
+    deleteProjectCapDevObserve(data: { project_pk: number, pk: number }) {
+        return this.http.delete(`${_.BASE_URL}/projects/${data?.project_pk}/project_capdev_observe/${data.pk}`);
+    }
+
 }
