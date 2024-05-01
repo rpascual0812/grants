@@ -87,17 +87,6 @@ export const THEMATIC_AREAS = [
     'Disability Rights in the Intersection of Environmental Justice',
 ];
 
-export const BENEFICIARY_TYPE = ['women', 'men', 'young_women', 'young_men'];
-export const BENEFICIARY_NAME = (type: string) => {
-    const mainName = type?.split('_').join(' ');
-    const tempName = type?.split('_');
-    let diffName = type?.split('_')?.at(0);
-    if (tempName.length > 1) {
-        diffName = type?.split('_')?.at(1);
-    }
-    return [mainName, `diffable ${diffName}`, 'other vulnerable sector'];
-};
-
 export const REFERENCES_FACTORY = () => {
     return [
         {
@@ -123,3 +112,10 @@ export const REFERENCES_FACTORY = () => {
         },
     ];
 };
+
+export const PROJECT_LESSON_TYPES = {
+    challenges: 'challenges',
+    lessons: 'lessons',
+};
+
+export type ProjectLessonTypeKey = keyof typeof PROJECT_LESSON_TYPES;

@@ -10,13 +10,13 @@
         <div class="beneficiary-list-container">
             <div class="card bg-info rounded-1">
                 <div class="row p-2 align-items-center">
-                    <div class="col-12 col-md-1">
+                    <div class="col-12 col-md-2">
                         <p class="text-white text-center p-0 m-0">Date</p>
                     </div>
-                    <div class="col-12 col-md-2">
+                    <div class="col-12 col-md-1">
                         <p class="text-white text-center p-0 m-0">Male</p>
                     </div>
-                    <div class="col-12 col-md-2">
+                    <div class="col-12 col-md-1">
                         <p class="text-white text-center p-0 m-0">Female</p>
                     </div>
                     <div class="col-12 col-md-2">
@@ -35,6 +35,9 @@
             <div class="max-height-500 overflow-y-auto">
                 <div *ngFor="let item of projectBeneficiary" class="card rounded-1 my-2">
                     <div class="row p-2 align-items-center">
+                        <div class="col-12 col-md-2">
+                            <p class="text-dark text-xs p-0 m-0 text-center">{{ item?.date_created | date : 'dd-MMM-YYYY' }}</p>
+                        </div>
                         <div class="col-12 col-md-1">
                             <input
                                 *ngIf="editableRow?.pk === item.pk"
@@ -42,7 +45,7 @@
                                 class="form-control border rounded-1 p-2 bg-white"
                                 [(ngModel)]="editableRow && editableRow.men_count"
                             />
-                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0">{{ item?.men_count }}</p>
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">{{ item?.men_count }}</p>
                         </div>
                         <div class="col-12 col-md-1">
                             <input
@@ -51,7 +54,7 @@
                                 class="form-control border rounded-1 p-2 bg-white"
                                 [(ngModel)]="editableRow && editableRow.women_count"
                             />
-                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0">{{ item?.women_count }}</p>
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">{{ item?.women_count }}</p>
                         </div>
                         <div class="col-12 col-md-2">
                             <input
@@ -60,7 +63,7 @@
                                 class="form-control border rounded-1 p-2 bg-white"
                                 [(ngModel)]="editableRow && editableRow.young_men_count"
                             />
-                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0">
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
                                 {{ item?.young_men_count }}
                             </p>
                         </div>
@@ -71,25 +74,19 @@
                                 class="form-control border rounded-1 p-2 bg-white"
                                 [(ngModel)]="editableRow && editableRow.young_women_count"
                             />
-                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0">
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
                                 {{ item?.young_women_count }}
                             </p>
                         </div>
                         <div class="col-12 col-md-2">
-                            <p class="text-center text-dark p-0 m-0">{{ item?.young_men_count }}</p>
-                        </div>
-                        <div class="col-12 col-md-2">
-                            <p class="text-center text-dark p-0 m-0">{{ item?.young_women_count }}</p>
-                        </div>
-                        <div class="col-12 col-md-2">
-                            <p class="text-center text-dark p-0 m-0">
+                            <p class="text-center text-dark p-0 m-0 text-center">
                                 {{
-                                getTotal({
-                                men_count: item?.men_count ?? 0,
-                                young_women_count: item?.young_women_count ?? 0,
-                                women_count: item?.women_count ?? 0,
-                                young_men_count: item?.young_men_count ?? 0
-                                })
+                                    getTotal({
+                                        men_count: item?.men_count ?? 0,
+                                        young_women_count: item?.young_women_count ?? 0,
+                                        women_count: item?.women_count ?? 0,
+                                        young_men_count: item?.young_men_count ?? 0
+                                    })
                                 }}
                             </p>
                         </div>
@@ -123,25 +120,41 @@
 
             <div class="beneficiary-list-add-container bg-gray-200">
                 <div class="row p-2 align-items-center" [formGroup]="form">
-                    <div class="col-12 col-md-1"></div>
-                    <div class="col-12 col-md-2">
-                        <input formControlName="men_count" type="number" min="0"
-                            class="form-control border rounded-1 p-2 bg-white" />
-                    </div>
-                    <div class="col-12 col-md-2">
-                        <input formControlName="women_count" type="number" min="0"
-                            class="form-control border rounded-1 p-2 bg-white" />
-                    </div>
-                    <div class="col-12 col-md-2">
-                        <input formControlName="young_men_count" type="number" min="0"
-                            class="form-control border rounded-1 p-2 bg-white" />
-                    </div>
-                    <div class="col-12 col-md-2">
-                        <input formControlName="young_women_count" type="number" min="0"
-                            class="form-control border rounded-1 p-2 bg-white" />
-                    </div>
-                    <div class="col-12 col-md-1"></div>
+                    <div class="col-12 col-md-2"></div>
                     <div class="col-12 col-md-1">
+                        <input
+                            formControlName="men_count"
+                            type="number"
+                            min="0"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-1">
+                        <input
+                            formControlName="women_count"
+                            type="number"
+                            min="0"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <input
+                            formControlName="young_men_count"
+                            type="number"
+                            min="0"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <input
+                            formControlName="young_women_count"
+                            type="number"
+                            min="0"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-2"></div>
+                    <div class="col-12 col-md-2">
                         <button class="btn btn-info text-capitalize" type="button" (click)="handleAdd()">Add</button>
                     </div>
                 </div>

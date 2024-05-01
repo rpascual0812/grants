@@ -116,3 +116,15 @@ export interface ProjectCapDevObserve {
     date_created?: Date;
     archived?: boolean;
 }
+
+export interface ProjectLesson {
+    project_pk?: number;
+    created_by?: number;
+    type?: string;
+    type_content?: string;
+    description?: string;
+    pk?: number;
+    date_created?: Date;
+    date_updated?: Date;
+    archived?: boolean;
+}

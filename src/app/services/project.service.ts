@@ -7,6 +7,7 @@ import {
     ProjectCapDevSkill,
     ProjectFunding,
     ProjectFundingLiquidation,
+    ProjectLesson,
     ProjectSite,
 } from '../interfaces/_project.interface';
 import { ProjectBeneficiary } from '../interfaces/_application.interface';
@@ -157,7 +158,7 @@ export class ProjectService {
         return this.http.post(`${_.BASE_URL}/projects/project_capdev_knowledge`, data);
     }
 
-    deleteProjectCapKnowledge(data: { project_pk: number, pk: number }) {
+    deleteProjectCapKnowledge(data: { project_pk: number; pk: number }) {
         return this.http.delete(`${_.BASE_URL}/projects/${data?.project_pk}/project_capdev_knowledge/${data.pk}`);
     }
 
@@ -169,7 +170,7 @@ export class ProjectService {
         return this.http.post(`${_.BASE_URL}/projects/project_capdev_skill`, data);
     }
 
-    deleteProjectCapDevSkill(data: { project_pk: number, pk: number }) {
+    deleteProjectCapDevSkill(data: { project_pk: number; pk: number }) {
         return this.http.delete(`${_.BASE_URL}/projects/${data?.project_pk}/project_capdev_skill/${data.pk}`);
     }
 
@@ -181,8 +182,19 @@ export class ProjectService {
         return this.http.post(`${_.BASE_URL}/projects/project_capdev_observe`, data);
     }
 
-    deleteProjectCapDevObserve(data: { project_pk: number, pk: number }) {
+    deleteProjectCapDevObserve(data: { project_pk: number; pk: number }) {
         return this.http.delete(`${_.BASE_URL}/projects/${data?.project_pk}/project_capdev_observe/${data.pk}`);
     }
 
+    fetchProjectLesson(data: { project_pk: number; query?: string }) {
+        return this.http.get(`${_.BASE_URL}/projects/${data?.project_pk}/project_lesson${data?.query ?? ''}`);
+    }
+
+    saveProjectLesson(data: ProjectLesson) {
+        return this.http.post(`${_.BASE_URL}/projects/project_lesson`, data);
+    }
+
+    deleteProjectLesson(data: { project_pk: number; pk: number }) {
+        return this.http.delete(`${_.BASE_URL}/projects/${data?.project_pk}/project_lesson/${data.pk}`);
+    }
 }
