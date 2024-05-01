@@ -6,22 +6,105 @@
                 <div class="col-12 col-md-5">
                     <p class="text-dark font-weight-bold p-0 m-0">Challenges</p>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-4">
                     <p class="text-dark font-weight-bold p-0 m-0">How it was addressed/changes in the plan</p>
                 </div>
+                <div class="col-12 col-md-2"></div>
             </div>
-            <div class="row my-3 border-top p-2">
-                <div class="col-1">1</div>
+
+            <div *ngFor="let item of projectChallenges; index as i" class="row my-3 border-top p-2">
+                <div class="col-1">{{ i + 1 }}</div>
                 <div class="col-12 col-md-5">
-                    <p class="text-dark p-0 m-0">Lorem ipsum dolor sit amet consectetur?</p>
+                    <input
+                        *ngIf="editableRow.challengeRow === item.pk"
+                        [(ngModel)]="challengeFormRow.type_content"
+                        [value]="item.type_content"
+                        class="form-control border p-2"
+                        required
+                        type="text"
+                    />
+                    <p
+                        *ngIf="editableRow.challengeRow !== item.pk"
+                        class="text-dark p-0 m-0"
+                        [innerText]="item?.type_content ?? ''"
+                    ></p>
                 </div>
-                <div class="col-12 col-md-6">
-                    <p class="text-dark p-0 m-0">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem minima quis perspiciatis vel exercitationem odio doloribus quam. Ipsum, delectus dolores eum alias commodi, molestiae expedita quas, eveniet architecto nam iusto.</p>
+                <div class="col-12 col-md-4">
+                    <input
+                        *ngIf="editableRow.challengeRow === item.pk"
+                        [(ngModel)]="challengeFormRow.description"
+                        [value]="item.description"
+                        class="form-control border p-2"
+                        required
+                        type="text"
+                    />
+                    <p
+                        *ngIf="editableRow.challengeRow !== item.pk"
+                        class="text-dark p-0 m-0"
+                        [innerText]="item?.description ?? ''"
+                    ></p>
+                </div>
+                <div class="col-12 col-md-2">
+                    <button
+                        (click)="handleSaveRow('challenges', item.pk)"
+                        *ngIf="editableRow.challengeRow === item.pk"
+                        class="btn btn-sm btn-info btn-icon-only btn-round mx-1"
+                        style="padding: 0.1rem !important"
+                    >
+                        <i class="material-icons" style="font-size: 0.8rem !important">save</i>
+                    </button>
+
+                    <button
+                        (click)="handleEdit('challenges', item)"
+                        *ngIf="editableRow.challengeRow !== item.pk"
+                        class="btn btn-sm btn-info btn-icon-only btn-round mx-1"
+                        style="padding: 0.1rem !important"
+                    >
+                        <i class="material-icons" style="font-size: 0.8rem !important">edit</i>
+                    </button>
+
+                    <button
+                        (click)="delete(item, 'challenges')"
+                        class="btn btn-sm btn-danger btn-icon-only btn-round mx-1"
+                        style="padding: 0.1rem !important"
+                    >
+                        <i class="material-icons" style="font-size: 0.8rem !important">delete</i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row my-3 border-top p-2">
+                <div class="col-1">{{ projectChallenges.length + 1 }}</div>
+                <div class="col-12 col-md-5">
+                    <input
+                        [(ngModel)]="challengeForm.type_content"
+                        class="form-control border p-2"
+                        required
+                        type="text"
+                    />
+                </div>
+                <div class="col-12 col-md-4">
+                    <input
+                        [(ngModel)]="challengeForm.description"
+                        class="form-control border p-2"
+                        required
+                        type="text"
+                    />
+                </div>
+                <div class="col-12 col-md-2">
+                    <button
+                        class="btn btn-dark-blue"
+                        (click)="handleAdd('challenges')"
+                        [disabled]="
+                            challengeForm.description?.trim() === '' || challengeForm.type_content?.trim() === ''
+                        "
+                    >
+                        Add
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-
 
     <div class="card my-3">
         <div class="card-body">
@@ -30,17 +113,89 @@
                 <div class="col-12 col-md-5">
                     <p class="text-dark font-weight-bold p-0 m-0">Lessons</p>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-4">
                     <p class="text-dark font-weight-bold p-0 m-0">Recommendations</p>
                 </div>
+                <div class="col-12 col-md-2"></div>
             </div>
-            <div class="row my-3 border-top p-2">
-                <div class="col-1">1</div>
+
+            <div *ngFor="let item of projectLessons; index as i" class="row my-3 border-top p-2">
+                <div class="col-1">{{ i + 1 }}</div>
                 <div class="col-12 col-md-5">
-                    <p class="text-dark p-0 m-0">Lorem ipsum dolor sit amet consectetur?</p>
+                    <input
+                        *ngIf="editableRow.lessonRow === item.pk"
+                        [(ngModel)]="lessonFormRow.type_content"
+                        [value]="item.type_content"
+                        class="form-control border p-2"
+                        required
+                        type="text"
+                    />
+                    <p
+                        *ngIf="editableRow.lessonRow !== item.pk"
+                        class="text-dark p-0 m-0"
+                        [innerText]="item?.type_content ?? ''"
+                    ></p>
                 </div>
-                <div class="col-12 col-md-6">
-                    <p class="text-dark p-0 m-0">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem minima quis perspiciatis vel exercitationem odio doloribus quam. Ipsum, delectus dolores eum alias commodi, molestiae expedita quas, eveniet architecto nam iusto.</p>
+                <div class="col-12 col-md-4">
+                    <input
+                        *ngIf="editableRow.lessonRow === item.pk"
+                        [(ngModel)]="lessonFormRow.description"
+                        [value]="item.description"
+                        class="form-control border p-2"
+                        required
+                        type="text"
+                    />
+                    <p
+                        *ngIf="editableRow.lessonRow !== item.pk"
+                        class="text-dark p-0 m-0"
+                        [innerText]="item?.description ?? ''"
+                    ></p>
+                </div>
+                <div class="col-12 col-md-2">
+                    <button
+                        (click)="handleSaveRow('lessons', item.pk)"
+                        *ngIf="editableRow.lessonRow === item.pk"
+                        class="btn btn-sm btn-info btn-icon-only btn-round mx-1"
+                        style="padding: 0.1rem !important"
+                    >
+                        <i class="material-icons" style="font-size: 0.8rem !important">save</i>
+                    </button>
+
+                    <button
+                        (click)="handleEdit('lessons', item)"
+                        *ngIf="editableRow.lessonRow !== item.pk"
+                        class="btn btn-sm btn-info btn-icon-only btn-round mx-1"
+                        style="padding: 0.1rem !important"
+                    >
+                        <i class="material-icons" style="font-size: 0.8rem !important">edit</i>
+                    </button>
+
+                    <button
+                        (click)="delete(item, 'lessons')"
+                        class="btn btn-sm btn-danger btn-icon-only btn-round mx-1"
+                        style="padding: 0.1rem !important"
+                    >
+                        <i class="material-icons" style="font-size: 0.8rem !important">delete</i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row my-3 border-top p-2">
+                <div class="col-1">{{ projectLessons.length + 1 }}</div>
+                <div class="col-12 col-md-5">
+                    <input [(ngModel)]="lessonForm.type_content" class="form-control border p-2" required type="text" />
+                </div>
+                <div class="col-12 col-md-5">
+                    <input [(ngModel)]="lessonForm.description" class="form-control border p-2" required type="text" />
+                </div>
+                <div class="col-12 col-md-1">
+                    <button
+                        class="btn btn-dark-blue"
+                        (click)="handleAdd('lessons')"
+                        [disabled]="lessonForm.description?.trim() === '' || lessonForm.type_content?.trim() === ''"
+                    >
+                        Add
+                    </button>
                 </div>
             </div>
         </div>
