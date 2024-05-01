@@ -28,6 +28,12 @@ import { FundingReleaseLiquidationModalComponent } from './modals/funding-releas
 import { EditDeadlineModalComponent } from './modals/edit-deadline-modal/edit-deadline-modal.component';
 import { AttendeesModalComponent } from './modules/grant-tab-views/attendees/attendees-modal/attendees-modal.component';
 import { ProjectBeneficiaryModalComponent } from './modals/project-beneficiary-modal/project-beneficiary-modal.component';
+import { DocumentationModalComponent } from './modules/grant-tab-views/documentations/documentation-modal/documentation-modal.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { PhotosComponent } from './modules/grant-tab-views/documentations/modules/photos/photos.component';
+import { VideosComponent } from './modules/grant-tab-views/documentations/modules/videos/videos.component';
+import { DocumentsComponent } from './modules/grant-tab-views/documentations/modules/documents/documents.component';
+import { LinksComponent } from './modules/grant-tab-views/documentations/modules/links/links.component';
 
 @NgModule({
     declarations: [
@@ -49,6 +55,11 @@ import { ProjectBeneficiaryModalComponent } from './modals/project-beneficiary-m
         EditDeadlineModalComponent,
         AttendeesModalComponent,
         ProjectBeneficiaryModalComponent,
+        DocumentationModalComponent,
+        PhotosComponent,
+        VideosComponent,
+        DocumentsComponent,
+        LinksComponent,
     ],
     exports: [
         GrantViewComponent
@@ -66,6 +77,7 @@ import { ProjectBeneficiaryModalComponent } from './modals/project-beneficiary-m
         SelectModule,
         InputDropdownModule,
         BsDatepickerModule.forRoot(),
+        NgxPaginationModule,
     ]
 })
 export class GrantViewModule { }
