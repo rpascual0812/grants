@@ -104,6 +104,9 @@ export class SelectComponent {
         this.globalService.selectFetch(this.url).subscribe({
             next: (data: any) => {
                 this.dropdownList = data.data;
+                if (Object.keys(this.indexZero).length > 0) {
+                    this.dropdownList.unshift(this.indexZero);
+                }
                 this.setDefaultSelectedItemKey();
             },
             error: (error: any) => {
@@ -113,9 +116,6 @@ export class SelectComponent {
                 }, 500);
             },
             complete: () => {
-                if (Object.keys(this.indexZero).length > 0) {
-                    this.dropdownList.unshift(this.indexZero);
-                }
                 console.log('Complete');
                 setTimeout(() => {
                     this.loading = false;

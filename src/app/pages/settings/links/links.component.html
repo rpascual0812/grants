@@ -4,10 +4,15 @@
     </nav>
     <div class="mb-2">
         <div class="row">
-            <div class="col-lg-4 col-7 ">
+            <div class="col-lg-4 col-7">
                 <div class="form-group input-group input-group-outline my-3">
-                    <input class="form-control shadow-none" type="text" [(ngModel)]="filters.keyword"
-                        placeholder="Search..." (keyup)="fetch()">
+                    <input
+                        class="form-control shadow-none"
+                        type="text"
+                        [(ngModel)]="filters.keyword"
+                        placeholder="Search..."
+                        (keyup)="fetch()"
+                    />
                 </div>
             </div>
             <div class="col-lg-8 col-5 my-auto text-end">
@@ -34,39 +39,56 @@
                             <thead>
                                 <tr>
                                     <th class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Partner's Name</th>
-                                    <th
-                                        class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Contact Number</th>
-                                    <th
-                                        class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Link Sent To</th>
-                                    <th
-                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Provided Link</th>
-                                    <th
-                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Partner's Name
                                     </th>
+                                    <th
+                                        class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                    >
+                                        Contact Number
+                                    </th>
+                                    <th
+                                        class="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                    >
+                                        Link Sent To
+                                    </th>
+                                    <th
+                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                                    >
+                                        Provided Link
+                                    </th>
+                                    <th
+                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                                    ></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr
-                                    *ngFor="let application of applications | paginate : { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.count }; let i = index">
+                                    *ngFor="
+                                        let application of applications
+                                            | paginate
+                                                : {
+                                                      itemsPerPage: pagination.tableSize,
+                                                      currentPage: pagination.page,
+                                                      totalItems: pagination.count
+                                                  };
+                                        let i = index
+                                    "
+                                >
                                     <td scope="row">
                                         <div class="d-flex px-2 py-1">
-                                            <span class="mb-0 text-sm">{{application.partner.name}}</span>
+                                            <span class="mb-0 text-sm">{{ application?.partner?.name }}</span>
                                         </div>
                                     </td>
                                     <td scope="row">
                                         <div class="d-flex px-2 py-1">
-                                            <span class="mb-0 text-sm">{{application.partner.contact_number}}</span>
+                                            <span class="mb-0 text-sm">{{ application?.partner?.contact_number }}</span>
                                         </div>
                                     </td>
                                     <td class="w-25 align-middle text-sm">
-                                        <span class="mb-0 text-sm">{{application.partner.email_address}}</span>
+                                        <span class="mb-0 text-sm">{{ application?.partner?.email_address }}</span>
                                     </td>
                                     <td class="w-25 align-middle text-center text-sm">
-                                        <span class="text-xs">{{link + application.uuid}}</span>
+                                        <span class="text-xs">{{ link + application?.uuid }}</span>
                                     </td>
                                     <td class="w-15 align-middle text-center text-sm">
                                         <a href="javascript:void(0)" class="text-danger">Remove</a>
@@ -76,13 +98,18 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="100%">
-                                        <div class="d-flex flex-row-reverse mt-2" *ngIf="pagination.count>0">
-                                            <pagination-controls [responsive]="true" previousLabel="Prev"
+                                        <div class="d-flex flex-row-reverse mt-2" *ngIf="pagination.count > 0">
+                                            <pagination-controls
+                                                [responsive]="true"
+                                                previousLabel="Prev"
                                                 nextLabel="Next"
-                                                (pageChange)="onTableDataChange($event)"></pagination-controls>
+                                                (pageChange)="onTableDataChange($event)"
+                                            ></pagination-controls>
                                             <div>
-                                                <select (change)="onTableSizeChange($event)"
-                                                    class="form-control form-control-sm pagination-select">
+                                                <select
+                                                    (change)="onTableSizeChange($event)"
+                                                    class="form-control form-control-sm pagination-select"
+                                                >
                                                     <option *ngFor="let size of tableSizes" [value]="size">
                                                         {{ size }}
                                                     </option>
