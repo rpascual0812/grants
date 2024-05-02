@@ -93,4 +93,20 @@ export class LinksComponent {
             this.applications.unshift(data);
         });
     }
+
+    resendEmail(type: any, i: number) {
+        this.applicationService.resendSuccessEmail({ application_pk: this.applications[i].pk, type }).subscribe({
+            next: (res: any) => {
+                console.log(res);
+            },
+            error: (err) => {
+                const { errorMessage, statusCode } = extractErrorMessage(err)
+                this.toastr.error(
+                    `An error occurred while resending an email. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+                this.loading = false
+            },
+        });
+    }
 }
