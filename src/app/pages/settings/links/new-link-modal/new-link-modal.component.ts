@@ -1,12 +1,10 @@
 import { Component, EventEmitter, ViewChild } from '@angular/core';
-import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { LinkGeneratorComponent } from 'src/app/components/link-generator/link-generator.component';
-import { APPLICATION_REVIEW_LIST_KEY } from 'src/app/services/link-generator.signal.service';
-
 @Component({
     selector: 'app-new-link-modal',
     templateUrl: './new-link-modal.component.html',
-    styleUrls: ['./new-link-modal.component.scss']
+    styleUrls: ['./new-link-modal.component.scss'],
 })
 export class NewLinkModalComponent {
     public callback: EventEmitter<any> = new EventEmitter();
@@ -18,22 +16,21 @@ export class NewLinkModalComponent {
 
     @ViewChild(LinkGeneratorComponent) linkGeneratorComponent: LinkGeneratorComponent;
 
-    constructor(public bsModalRef: BsModalRef) { }
+    constructor(public bsModalRef: BsModalRef) {}
 
-    ngOnInit() { }
+    ngOnInit() {}
 
     partnerSelected(event: any) {
         this.linkGeneratorComponent.partnerSelected(event);
     }
 
     submit() {
-        this.loading = true;
-        this.linkGeneratorComponent.refetchKey = APPLICATION_REVIEW_LIST_KEY;
+        this.loading = this.linkGeneratorComponent.loading;
         this.linkGeneratorComponent.submit();
     }
 
     saved(ev: any) {
-        this.loading = false;
         this.callback.emit(ev);
+        this.loading = this.linkGeneratorComponent.loading;
     }
 }

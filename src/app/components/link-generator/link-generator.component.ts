@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Output, ViewChild, inject } from '@angular/core';
-import { FormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { v4 as uuidv4 } from 'uuid';
 import { ToastrService } from 'ngx-toastr';
 import { ApplicationService } from 'src/app/services/application.service';
 import { SelectComponent } from '../select/select.component';
-import { LinkGeneratorRefetchKey, LinkGeneratorSignalService } from 'src/app/services/link-generator.signal.service';
+import { LinkGeneratorSignalService } from 'src/app/services/link-generator.signal.service';
 
 @Component({
     selector: 'app-link-generator',
@@ -15,7 +15,6 @@ import { LinkGeneratorRefetchKey, LinkGeneratorSignalService } from 'src/app/ser
 export class LinkGeneratorComponent {
     @ViewChild(SelectComponent) select: SelectComponent;
     @Output() callback: EventEmitter<any> = new EventEmitter();
-    refetchKey: string = '';
     loading: boolean = false;
     title?: string;
     saveBtnName?: string;
@@ -39,7 +38,7 @@ export class LinkGeneratorComponent {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) { }
+    ) {}
 
     get f() {
         return this.form.controls;
@@ -66,41 +65,54 @@ export class LinkGeneratorComponent {
             uuid: [this.uuid, Validators.required],
             link: [this.link, Validators.required],
             email_address: [this.email_address, Validators.required],
-            partner_pk: [this.partner_pk, Validators.required],
+            partner_pk: [this.partner_pk],
             partner_name: [this.partner_name, Validators.required],
         });
     }
 
     partnerSelected(event: any) {
-        this.form.get('partner_pk')?.patchValue(event[0].pk);
-        this.partner_pk = event[0].pk;
+        const name = event.at(0)?.name ?? '';
+        const formName = name === 'New' ? '' : name;
+        const partnerPk = event.at(0)?.pk;
+        this.form.get('partner_pk')?.patchValue(partnerPk);
+        this.form.get('partner_name')?.patchValue(formName);
+        this.partner_pk = partnerPk;
     }
 
     submit() {
         this.submitted = true;
-
-        this.applicationService
-            .generate(this.form.value)
-            .subscribe({
-                next: (data: any) => {
-                    this.callback.emit({ data });
-                    this.linkGeneratorSignalService.linkGeneratorData.set({
-                        data,
-                        refetchKey: this.refetchKey as LinkGeneratorRefetchKey,
-                    });
-                    this.toastr.success('The link has been successfully sent to ' + this.form.value.email_address, 'SUCCESS!');
+        this.loading = true;
+        const { valid } = this.form;
+        if (valid) {
+            this.applicationService.generate(this.form.value).subscribe({
+                next: (res: any) => {
+                    const status = res?.status;
+                    const data = res?.data;
+                    if (status) {
+                        this.callback.emit({ data });
+                        this.toastr.success(
+                            `The link has been successfully sent to ${this.form.value?.email_address ?? ''}`,
+                            'SUCCESS!'
+                        );
+                    } else {
+                        this.toastr.error('An error occurred while sending the link. Please try again', 'ERROR!');
+                    }
+                    this.loading = false;
                 },
                 error: (error: any) => {
-                    console.log(error);
+                    this.loading = false;
                     this.toastr.error('An error occurred while sending the link. Please try again', 'ERROR!');
-                    setTimeout(() => { this.loading = false; }, 500);
                 },
                 complete: () => {
                     this.reset();
                     this.select.reset();
-                    setTimeout(() => { this.loading = false; }, 500);
+                    setTimeout(() => {
+                        this.loading = false;
+                    }, 500);
                     this.bsModalRef.hide();
-                }
+                },
             });
+        }
+        this.loading = false;
     }
 }
