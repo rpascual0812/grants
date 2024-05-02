@@ -57,8 +57,8 @@
                                         Provided Link
                                     </th>
                                     <th
-                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                                    ></th>
+                                        class="col text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -91,7 +91,23 @@
                                         <span class="text-xs">{{ link + application?.uuid }}</span>
                                     </td>
                                     <td class="w-15 align-middle text-center text-sm">
-                                        <a href="javascript:void(0)" class="text-danger">Remove</a>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn btn-sm btn-icon-only btn-round mx-1"
+                                                style="padding: 0.1rem !important" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <i class="fa fa-cog" style="font-size: 1rem !important"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <!-- <li><a class="dropdown-item" href="javascript:void(0)"
+                                                        (click)="resendEmail('application', i)">Resend Application
+                                                        Email</a></li> -->
+                                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                                        (click)="resendEmail('success', i)">Resend Success Email</a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="javascript:void(0)">Delete</a></li>
+                                            </ul>
+                                        </div>
+                                        <!-- <a href="javascript:void(0)" class="text-danger">Remove</a> -->
                                     </td>
                                 </tr>
                             </tbody>

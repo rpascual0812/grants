@@ -146,4 +146,8 @@ export class ApplicationService {
     sendSuccessEmail(pk: any) {
         return this.http.post(`${_.BASE_URL}/application/${pk}/success/email`, {});
     }
+
+    resendSuccessEmail(data: any) {
+        return this.http.post(`${_.BASE_URL}/application/${data.application_pk}/email`, data);
+    }
 }
