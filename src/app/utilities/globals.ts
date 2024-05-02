@@ -79,3 +79,13 @@ export function exportFile(mimetype: string, filename: string, content: string) 
     window.URL.revokeObjectURL(url);
     a.remove();
 }
+
+export function download(doc: any) {
+    var link = document.createElement("a");
+    link.target = "_blank";
+    link.download = doc.original_name;
+    link.href = `${environment.api}/${doc.path}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}

@@ -16,7 +16,7 @@ import { ProjectBeneficiary } from '../interfaces/_application.interface';
     providedIn: 'root',
 })
 export class ProjectService {
-    constructor(public http: HttpClient) {}
+    constructor(public http: HttpClient) { }
 
     fetch() {
         return this.http.get(`${_.BASE_URL}/projects`);
@@ -196,5 +196,21 @@ export class ProjectService {
 
     deleteProjectLesson(data: { project_pk: number; pk: number }) {
         return this.http.delete(`${_.BASE_URL}/projects/${data?.project_pk}/project_lesson/${data.pk}`);
+    }
+
+    fetchProjectDocuments(filter: any) {
+        return this.http.get(`${_.BASE_URL}/projects/${filter.project_pk}/documents`, { params: filter });
+    }
+
+    fetchProjectLinks(filter: any) {
+        return this.http.get(`${_.BASE_URL}/projects/${filter.project_pk}/links`, { params: filter });
+    }
+
+    saveProjectLink(data: any) {
+        return this.http.post(`${_.BASE_URL}/projects/${data.project_pk}/links`, data);
+    }
+
+    destroyProjectLinks(filter: any) {
+        return this.http.get(`${_.BASE_URL}/projects/${filter.project_pk}/links`, { params: filter });
     }
 }

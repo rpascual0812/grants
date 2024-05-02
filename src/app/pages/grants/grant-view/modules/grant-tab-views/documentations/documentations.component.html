@@ -1,10 +1,10 @@
 <div class="container">
     <div class="d-flex flex-wrap flex-row my-3 justify-content-between">
         <h4 class="text-dark">Documentations</h4>
-        <button class="btn btn-icon-only btn-info btn-round" data-bs-toggle="dropdown">
+        <button class="btn btn-icon-only btn-info btn-round" (click)="uploadFiles()">
             <i class="material-icons" style="position: relative; top: -2px; left: -2px">add</i>
         </button>
-        <ul class="dropdown-menu">
+        <!-- <ul class="dropdown-menu">
             <li>
                 <p class="text-dark font-weight-bold p-2 m-0">I Want to:</p>
             </li>
@@ -20,8 +20,21 @@
             <li class="p-2">
                 <button class="btn btn-info text-capitalize w-100">Add Files</button>
             </li>
-        </ul>
+        </ul> -->
+    </div>
+    <div class="card my-3">
+        <app-photos></app-photos>
     </div>
 
-    <div class="card my-3"></div>
+    <div class="card my-3">
+        <app-videos></app-videos>
+    </div>
+
+    <div class="card my-3">
+        <app-documents></app-documents>
+    </div>
+
+    <div class="card my-3">
+        <app-links></app-links>
+    </div>
 </div>
