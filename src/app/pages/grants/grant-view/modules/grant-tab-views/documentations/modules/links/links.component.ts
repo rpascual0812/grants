@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import * as _ from '../../../../../../../../utilities/globals';
-import { DocumentService } from 'src/app/services/document.service';
-import { DocumentationModalComponent } from '../../documentation-modal/documentation-modal.component';
-import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { ProjectService } from 'src/app/services/project.service';
+import { Project } from 'src/app/interfaces/_project.interface';
+import { GrantSignalService } from 'src/app/services/grant.signal.service';
 
 @Component({
     selector: 'app-links',
@@ -10,10 +10,9 @@ import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
     styleUrls: ['./links.component.scss']
 })
 export class LinksComponent {
-    bsModalRef?: BsModalRef;
 
     show: boolean = false;
-    documents: any = [];
+    links: any = [];
     url: String = _.BASE_URL;
 
     selected: any = [];
@@ -22,18 +21,22 @@ export class LinksComponent {
     pagination: any = _.PAGINATION;
     tableSizes: any = _.TABLE_SIZES;
 
+    link: string = '';
+
+    project: Project | null = null;
+    grantSignalService = inject(GrantSignalService);
+
     constructor(
-        private documentService: DocumentService,
-        private modalService: BsModalService,
+        private projectService: ProjectService,
     ) {
 
     }
 
     ngOnInit(): void {
+        this.project = this.grantSignalService.project();
+
         this.filters = {
             keyword: '',
-            mimetype: 'image',
-            type: 'link',
             archived: false,
             skip: 0,
             take: this.pagination.tableSize
@@ -46,11 +49,11 @@ export class LinksComponent {
         this.filters.skip = (this.pagination.page * this.pagination.tableSize) - this.pagination.tableSize;
         this.filters.take = this.pagination.tableSize;
 
-        this.documentService
-            .fetch(this.filters)
+        this.projectService
+            .fetchProjectLinks(this.filters)
             .subscribe({
                 next: (data: any) => {
-                    this.documents = data.data;
+                    this.links = data.data;
 
                     this.pagination.count = data.total;
                 },
@@ -63,33 +66,26 @@ export class LinksComponent {
             });
     }
 
-    toggleDocument(i: any) {
-        this.documents[i].selected = !this.documents[i].selected;
-        (this.documents[i].selected) ?
-            this.selected.push(this.documents[i])
-            :
-            this.selected = this.selected.filter((selected: any) => selected.pk != this.documents[i].pk);
-    }
+    save() {
+        if (this.link.replace(/\s/g, '') !== '') {
+            this.projectService.saveProjectLink({ project_pk: this.project?.pk, link: this.link }).subscribe({
+                next: (res: any) => {
+                    this.link = '';
+                    // const link = res.data;
+                    // this.links.unshift(link);
+                    this.fetch();
+                },
+                error: (err: any) => {
 
-    view(i: number) {
-        const event = this.documents[i];
-        const title = this.documents[i].original_name;
-
-        const initialState: ModalOptions = {
-            class: 'modal-lg',
-            initialState: {
-                title: title,
-                document: this.documents[i]
-            }
-        };
-        this.bsModalRef = this.modalService.show(DocumentationModalComponent, initialState);
-        this.bsModalRef.content.closeBtnName = 'Close';
+                },
+            });
+        }
     }
 
     delete(i: number) {
         _.confirmMessage(
             {
-                title: '<strong>Are you sure you want to delete this attachment?</strong>',
+                title: '<strong>Are you sure you want to delete this link?</strong>',
                 icon: 'question',
                 buttons: {
                     showClose: true,
@@ -100,11 +96,11 @@ export class LinksComponent {
                 cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
             },
             () => {
-                this.documentService
-                    .destroy(this.documents[i].pk)
+                this.projectService
+                    .destroyProjectLinks(this.links[i].pk)
                     .subscribe({
                         next: (data: any) => {
-                            this.documents.splice(i, 1);
+                            this.links.splice(i, 1);
                         },
                         error: (error: any) => {
                             console.log(error);
@@ -127,9 +123,5 @@ export class LinksComponent {
         this.pagination.tableSize = event.target.value;
         this.pagination.page = 1;
         this.fetch();
-    }
-
-    onImgError(event: any) {
-        event.target.src = this.url + '/assets/images/not-found.png';
     }
 }

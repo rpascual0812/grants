@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import * as _ from '../../../../../../../../utilities/globals';
-import { DocumentService } from 'src/app/services/document.service';
 import { DocumentationModalComponent } from '../../documentation-modal/documentation-modal.component';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { GrantSignalService } from 'src/app/services/grant.signal.service';
+import { Project } from 'src/app/interfaces/_project.interface';
+import { ProjectService } from 'src/app/services/project.service';
+import { DocumentService } from 'src/app/services/document.service';
 
 @Component({
     selector: 'app-photos',
@@ -19,10 +22,14 @@ export class PhotosComponent {
     selected: any = [];
     filters: any = {};
 
-    pagination: any = _.PAGINATION;
-    tableSizes: any = _.TABLE_SIZES;
+    paginationPhotos: any = _.PAGINATION;
+    tableSizesPhotos: any = _.TABLE_SIZES;
+
+    project: Project | null = null;
+    grantSignalService = inject(GrantSignalService);
 
     constructor(
+        private projectService: ProjectService,
         private documentService: DocumentService,
         private modalService: BsModalService,
     ) {
@@ -30,28 +37,36 @@ export class PhotosComponent {
     }
 
     ngOnInit(): void {
+        this.project = this.grantSignalService.project();
+
         this.filters = {
             keyword: '',
+            project_pk: this.project?.pk,
             mimetype: 'image',
             archived: false,
             skip: 0,
-            take: this.pagination.tableSize
+            take: this.paginationPhotos.tableSize
         };
 
         this.fetch();
     }
 
-    fetch() {
-        this.filters.skip = (this.pagination.page * this.pagination.tableSize) - this.pagination.tableSize;
-        this.filters.take = this.pagination.tableSize;
+    append(file: any) {
+        // this.documents.unshift(file);
+        this.fetch();
+    }
 
-        this.documentService
-            .fetch(this.filters)
+    fetch() {
+        this.filters.skip = (this.paginationPhotos.page * this.paginationPhotos.tableSize) - this.paginationPhotos.tableSize;
+        this.filters.take = this.paginationPhotos.tableSize;
+
+        this.projectService
+            .fetchProjectDocuments(this.filters)
             .subscribe({
                 next: (data: any) => {
                     this.documents = data.data;
 
-                    this.pagination.count = data.total;
+                    this.paginationPhotos.count = data.total;
                 },
                 error: (error: any) => {
                     console.log(error);
@@ -118,13 +133,13 @@ export class PhotosComponent {
     }
 
     onTableDataChange(event: any) {
-        this.pagination.page = event;
+        this.paginationPhotos.page = event;
         this.fetch();
     }
 
     onTableSizeChange(event: any): void {
-        this.pagination.tableSize = event.target.value;
-        this.pagination.page = 1;
+        this.paginationPhotos.tableSize = event.target.value;
+        this.paginationPhotos.page = 1;
         this.fetch();
     }
 

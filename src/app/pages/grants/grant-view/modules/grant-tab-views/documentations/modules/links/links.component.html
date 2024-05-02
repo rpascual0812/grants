@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12" style="margin-top: 10px;">
-        <h4 class="text-dark" style="margin: 0 26px 0 26px;">Photos</h4>
+        <h4 class="text-dark" style="margin: 0 26px 0 26px;">Links</h4>
         <div class="card card-primary">
             <div class="card-body">
                 <div>
@@ -11,24 +11,34 @@
                             </div>
                         </div>
                         <div>
-                            <label class="image-checkbox" [class]="document.selected ? 'image-checkbox-checked' : ''"
-                                *ngFor="let document of documents| paginate : { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.count }; let i = index">
-                                <img src="{{url}}/{{document.path}}" (click)="toggleDocument(i)"
-                                    (error)="onImgError($event)" />
-                                <i class="fa fa-times" (click)="toggleDocument(i)" style="margin-right: 3px;"></i>
-                                <i class="fa fa-eye" (click)="view(i)" style="margin-top: 20px;"></i>
-                                <i class="fa fa-trash" (click)="delete(i)"
-                                    style="margin-top: 40px; margin-right: 2px;"></i>
-                            </label>
-                            <div class="overlay" *ngIf="!show && documents.length == 0">
-                                <div class="m-5" role="status">
-                                    No documents found
+                            <div class="row" *ngFor="let link of links; let i = index">
+                                <div class="col-12 col-md-5">
+                                    <p class="text-dark p-0 m-0">
+                                        {{link.link}}
+                                    </p>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <div class="d-flex flex-row gap-1">
+                                        <button class="btn btn-sm btn-danger btn-icon-only btn-round"
+                                            style="padding: .1rem !important;" (click)="delete(i)">
+                                            <i class="material-icons" style="font-size: 0.8rem !important;">delete</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <div class="col-12 col-md-6">
+                                    <input class="form-control border border-1 p-2" placeholder="Link"
+                                        [(ngModel)]="link" />
+                                </div>
+                                <div class="col-12 col-md-2">
+                                    <button class="btn btn-dark-blue" (click)="save()">save</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex flex-row-reverse mt-2" *ngIf="pagination.count>0">
-                            <pagination-controls [responsive]="true" previousLabel="Prev" nextLabel="Next"
-                                (pageChange)="onTableDataChange($event)"></pagination-controls>
+                        <div class="d-flex flex-row-reverse mt-2" *ngIf="false && pagination.count>0">
+                            <pagination-controls id="documents" [responsive]="true" previousLabel="Prev"
+                                nextLabel="Next" (pageChange)="onTableDataChange($event)"></pagination-controls>
                             <div>
                                 <select (change)="onTableSizeChange($event)"
                                     class="form-control form-control-sm pagination-select">

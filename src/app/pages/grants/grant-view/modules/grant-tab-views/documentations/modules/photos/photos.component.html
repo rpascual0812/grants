@@ -12,7 +12,7 @@
                         </div>
                         <div>
                             <label class="image-checkbox" [class]="document.selected ? 'image-checkbox-checked' : ''"
-                                *ngFor="let document of documents| paginate : { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.count }; let i = index">
+                                *ngFor="let document of documents| paginate : { id: 'photos', itemsPerPage: paginationPhotos.tableSize, currentPage: paginationPhotos.page, totalItems: paginationPhotos.count }; let i = index">
                                 <img src="{{url}}/{{document.path}}" (click)="toggleDocument(i)"
                                     (error)="onImgError($event)" />
                                 <i class="fa fa-times" (click)="toggleDocument(i)" style="margin-right: 3px;"></i>
@@ -21,18 +21,18 @@
                                     style="margin-top: 40px; margin-right: 2px;"></i>
                             </label>
                             <div class="overlay" *ngIf="!show && documents.length == 0">
-                                <div class="m-5" role="status">
-                                    No documents found
+                                <div class="m-5 text-center" role="status">
+                                    No photos found
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex flex-row-reverse mt-2" *ngIf="pagination.count>0">
-                            <pagination-controls [responsive]="true" previousLabel="Prev" nextLabel="Next"
+                        <div class="d-flex flex-row-reverse mt-2" *ngIf="false && paginationPhotos.count>0">
+                            <pagination-controls id="photos" [responsive]="true" previousLabel="Prev" nextLabel="Next"
                                 (pageChange)="onTableDataChange($event)"></pagination-controls>
                             <div>
                                 <select (change)="onTableSizeChange($event)"
                                     class="form-control form-control-sm pagination-select">
-                                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                                    <option *ngFor="let size of tableSizesPhotos" [ngValue]="size">
                                         {{ size }}
                                     </option>
                                 </select>

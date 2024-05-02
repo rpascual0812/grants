@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import * as _ from '../../../../../../../../utilities/globals';
 import { DocumentService } from 'src/app/services/document.service';
 import { DocumentationModalComponent } from '../../documentation-modal/documentation-modal.component';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { Project } from 'src/app/interfaces/_project.interface';
+import { GrantSignalService } from 'src/app/services/grant.signal.service';
+import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
     selector: 'app-documents',
@@ -22,7 +25,11 @@ export class DocumentsComponent {
     pagination: any = _.PAGINATION;
     tableSizes: any = _.TABLE_SIZES;
 
+    project: Project | null = null;
+    grantSignalService = inject(GrantSignalService);
+
     constructor(
+        private projectService: ProjectService,
         private documentService: DocumentService,
         private modalService: BsModalService,
     ) {
@@ -30,8 +37,11 @@ export class DocumentsComponent {
     }
 
     ngOnInit(): void {
+        this.project = this.grantSignalService.project();
+
         this.filters = {
             keyword: '',
+            project_pk: this.project?.pk,
             mimetype: 'application',
             archived: false,
             skip: 0,
@@ -41,12 +51,17 @@ export class DocumentsComponent {
         this.fetch();
     }
 
+    append(file: any) {
+        // this.documents.unshift(file);
+        this.fetch();
+    }
+
     fetch() {
         this.filters.skip = (this.pagination.page * this.pagination.tableSize) - this.pagination.tableSize;
         this.filters.take = this.pagination.tableSize;
 
-        this.documentService
-            .fetch(this.filters)
+        this.projectService
+            .fetchProjectDocuments(this.filters)
             .subscribe({
                 next: (data: any) => {
                     this.documents = data.data;
