@@ -1,6 +1,6 @@
 import { ApplicationListSignalService } from './../../services/application-list.signal.service';
 import { Component, ViewEncapsulation, inject } from '@angular/core';
-import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { GRANT_TYPES } from 'src/app/utilities/constants';
 
 type SelectItem = {
@@ -29,21 +29,7 @@ export class ApplicationsComponent {
     selectedActiveDonorId = '';
 
     appListSignalService = inject(ApplicationListSignalService);
-    constructor(private modalService: BsModalService) {
-        // mock active donors
-        this.init();
-    }
-
-    init() {
-        for (let i = 1; i <= 6; i++) {
-            this.activeDonors.push({
-                id: `${i}`,
-                code: `${i}`,
-                label: `Global Greengrants Fund/GGF ${i}`,
-            });
-        }
-        this.selectedFilterIds.add('grantApplication');
-    }
+    constructor(private modalService: BsModalService) {}
 
     handleCheckedFilterSelect(checked: boolean, id: string) {
         this.filterSelections = this.filterSelections.map((selection) => ({
@@ -77,15 +63,15 @@ export class ApplicationsComponent {
         return this.selectedFilterIds.has('grantApplication') || this.selectedFilterIds.has('fundRelease');
     }
 
-    apply() {
-        this.init();
-        this.appListSignalService.applyFilter.set(true)
-    }
+    // apply() {
+    //     this.appListSignalService.applyFilter.set(true);
+    // }
 
     onChangeSelectedItem(item: SelectItem[] | string[], key: string) {
         const extractedItem = item?.at(0);
         const pk = (extractedItem as SelectItem)?.pk ?? '';
-        const currentFilters = this.appListSignalService.filters()
+        const currentFilters = this.appListSignalService.filters();
+        this.appListSignalService.applyFilter.set(true);
         this.appListSignalService.filters.set({
             ...currentFilters,
             [key]: pk,
