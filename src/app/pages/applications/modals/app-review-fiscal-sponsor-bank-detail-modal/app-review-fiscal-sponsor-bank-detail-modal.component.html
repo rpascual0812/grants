@@ -14,11 +14,12 @@
                         <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">If none, is there a Fiscal
                             Sponsor?</label>
                         <div class="col-8">
-                            <select class="form-select bg-white p-1 border border-1 rounded w-20"
-                                [(ngModel)]="isHidden">
+                            <select class="form-select bg-white p-1 border border-1 rounded w-20" [(ngModel)]="isHidden"
+                                *ngIf="action == 'edit'">
                                 <option value="yes">Yes</option>
                                 <option value="no">No</option>
                             </select>
+                            <p *ngIf="action == 'view'">{{isHidden == 'yes' ? 'Yes' : 'No'}}</p>
                         </div>
                     </div>
 
@@ -33,14 +34,16 @@
                                     Sponsor</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="name" />
+                                        formControlName="name" *ngIf="action == 'edit'" />
+                                    <p *ngIf="action == 'view'">{{f['name'].value}}</p>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Address</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="address" />
+                                        formControlName="address" *ngIf="action == 'edit'" />
+                                    <p *ngIf="action == 'view'">{{f['address'].value}}</p>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
@@ -48,7 +51,8 @@
                                     organization</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="head" />
+                                        formControlName="head" *ngIf="action == 'edit'" />
+                                    <p *ngIf="action == 'view'">{{f['head'].value}}</p>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
@@ -56,14 +60,16 @@
                                     name</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="person_in_charge" />
+                                        formControlName="person_in_charge" *ngIf="action == 'edit'" />
+                                    <p *ngIf="action == 'view'">{{f['person_in_charge'].value}}</p>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Contact Number</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="contact_number" />
+                                        formControlName="contact_number" *ngIf="action == 'edit'" />
+                                    <p *ngIf="action == 'view'">{{f['contact_number'].value}}</p>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
@@ -71,7 +77,8 @@
                                     address</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="email_address" />
+                                        formControlName="email_address" *ngIf="action == 'edit'" />
+                                    <p *ngIf="action == 'view'">{{f['contact_number'].value}}</p>
                                 </div>
                             </div>
 
@@ -83,28 +90,32 @@
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Account name</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="bank_account_name" />
+                                        formControlName="bank_account_name" *ngIf="action == 'edit'" />
+                                    <p *ngIf="action == 'view'">{{f['bank_account_name'].value}}</p>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Account number</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="account_number" />
+                                        formControlName="account_number" *ngIf="action == 'edit'" />
+                                    <p *ngIf="action == 'view'">{{f['account_number'].value}}</p>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Bank name</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="bank_name" />
+                                        formControlName="bank_name" *ngIf="action == 'edit'" />
+                                    <p *ngIf="action == 'view'">{{f['bank_name'].value}}</p>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Bank branch</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="bank_branch" />
+                                        formControlName="bank_branch" *ngIf="action == 'edit'" />
+                                    <p *ngIf="action == 'view'">{{f['bank_branch'].value}}</p>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
@@ -112,21 +123,23 @@
                                     address</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="bank_address" />
+                                        formControlName="bank_address" *ngIf="action == 'edit'" />
+                                    <p *ngIf="action == 'view'">{{f['bank_address'].value}}</p>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">SWIFT code</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="swift_code" />
+                                        formControlName="swift_code" *ngIf="action == 'edit'" />
+                                    <p *ngIf="action == 'view'">{{f['swift_code'].value}}</p>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">(Upload here signed
                                     agreement between
                                     Grantee-Partner and Fiscal Sponsor)</label>
-                                <div class="input-group custom-file-input col-8">
+                                <div class="input-group custom-file-input col-8" *ngIf="action == 'edit'">
                                     <button class="btn btn-white" type="button" (click)="uploadFiles()">
                                         <div class="d-flex flex-column text-start">
                                             <p class="p-0 m-0 text-sm text-dark font-weight-bold">Attach Documents</p>
@@ -155,7 +168,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" (click)="this.bsModalRef.hide()">Cancel</button>
-                <button type="button" class="btn btn-dark-blue" (click)="submit()">Save</button>
+                <button type="button" class="btn btn-dark-blue" (click)="submit()"
+                    *ngIf="action == 'edit'">Save</button>
             </div>
         </div>
     </div>

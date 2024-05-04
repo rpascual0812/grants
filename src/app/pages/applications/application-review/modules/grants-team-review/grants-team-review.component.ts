@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from 'src/app/services/user.service';
 import { DateTime } from 'luxon';
@@ -6,11 +6,12 @@ import { ToastrService } from 'ngx-toastr';
 import { FormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { ApplicationService } from 'src/app/services/application.service';
-import { Application } from 'src/app/interfaces/_application.interface';
+import { Application, User } from 'src/app/interfaces/_application.interface';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import * as _ from '../../../../../utilities/globals';
 import { HttpErrorResponse } from '@angular/common/http';
 import { formatDate } from '@angular/common';
+import { UserSignalService } from 'src/app/services/user.signal.service';
 
 @Component({
     selector: 'app-grants-team-review',
@@ -23,7 +24,7 @@ export class GrantsTeamReviewComponent implements OnInit {
     @Output() recommendationSaved = new EventEmitter<boolean>();
     reviews: any = [];
     dateNow = DateTime.now().toFormat('LLLL dd, yyyy');
-    user: any = {};
+    user: User | null = {};
 
     submitted: boolean = false;
     form: FormGroup;
@@ -33,6 +34,11 @@ export class GrantsTeamReviewComponent implements OnInit {
 
     content: any;
     SERVER: string = _.BASE_URL;
+
+    userSignalService = inject(UserSignalService);
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
 
     constructor(
         public documentUploaderRef: BsModalRef,
@@ -47,7 +53,12 @@ export class GrantsTeamReviewComponent implements OnInit {
 
     ngOnInit() {
         this.setForm();
-        this.fetchUser();
+
+        this.user = this.userSignalService.user();
+
+        this.user?.user_role?.forEach((user_role: any) => {
+            this.permission.grant_application = this.restrictions[user_role.role.restrictions.grant_application] > this.restrictions[this.permission.grant_application] ? user_role.role.restrictions.grant_application : this.permission.grant_application;
+        });
 
         this.SERVER = _.BASE_URL;
 
@@ -76,21 +87,6 @@ export class GrantsTeamReviewComponent implements OnInit {
             type: ['grants_team_review'],
             documents: ['']
         });
-    }
-
-    fetchUser() {
-        this.userService.fetch()
-            .subscribe({
-                next: (data: any) => {
-                    this.user = data;
-                },
-                error: (error: any) => {
-                    console.log(error);
-                },
-                complete: () => {
-                    console.log('Complete');
-                }
-            });
     }
 
     submit() {

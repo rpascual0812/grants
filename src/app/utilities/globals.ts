@@ -13,6 +13,19 @@ export const PAGINATION: object = {
     tableSize: 10
 };
 
+export const RESTRICTIONS: any = {
+    restricted: 0,
+    'read-only': 1,
+    comments: 2,
+    recommendation: 3
+}
+
+export const PERMISSIONS: any = {
+    grant_application: 'restricted',
+    fund_release: 'restricted',
+    contract_finalization: 'restricted',
+}
+
 export function numbersOnly(event: any) {
     const pattern = /^[0-9\-]*$/;
     if (!pattern.test(event.target.value)) {

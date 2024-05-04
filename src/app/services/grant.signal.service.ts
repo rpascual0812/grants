@@ -14,5 +14,5 @@ export interface ProjectForm extends Project {
 export class GrantSignalService {
     public editSectionKey = signal<null | string>(null);
     public project = signal<Project | null>(null);
-    constructor() {}
+    constructor() { }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation, inject } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { DateTime } from 'luxon';
 import { ToastrService } from 'ngx-toastr';
@@ -10,6 +10,7 @@ import { FileUploaderComponent } from 'src/app/components/file-uploader/file-upl
 import { HttpErrorResponse } from '@angular/common/http';
 import { formatDate } from '@angular/common';
 import * as _ from '../../../../../utilities/globals';
+import { UserSignalService } from 'src/app/services/user.signal.service';
 
 @Component({
     selector: 'app-financial-management-capacity',
@@ -30,6 +31,11 @@ export class FinancialManagementCapacityComponent implements OnInit {
     recommendation: any = '';
     SERVER: string = _.BASE_URL;
 
+    userSignalService = inject(UserSignalService);
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
+
     constructor(
         public documentUploaderRef: BsModalRef,
         private modalService: BsModalService,
@@ -42,7 +48,8 @@ export class FinancialManagementCapacityComponent implements OnInit {
 
     ngOnInit() {
         this.setForm();
-        this.fetchUser();
+
+        this.user = this.userSignalService.user();
 
         if (this.currentApplication?.reviews) {
             this.reviews = this.currentApplication?.reviews.filter((review: any) => review.type == 'financial_management_capacity');
@@ -69,21 +76,6 @@ export class FinancialManagementCapacityComponent implements OnInit {
             type: ['financial_management_capacity'],
             documents: ['']
         });
-    }
-
-    fetchUser() {
-        this.userService.fetch()
-            .subscribe({
-                next: (data: any) => {
-                    this.user = data;
-                },
-                error: (error: any) => {
-                    console.log(error);
-                },
-                complete: () => {
-                    console.log('Complete');
-                }
-            });
     }
 
     submit() {

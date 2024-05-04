@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation, inject } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { DateTime } from 'luxon';
 import { ToastrService } from 'ngx-toastr';
@@ -10,6 +10,7 @@ import { FileUploaderComponent } from 'src/app/components/file-uploader/file-upl
 import { HttpErrorResponse } from '@angular/common/http';
 import * as _ from '../../../../../utilities/globals';
 import { formatDate } from '@angular/common';
+import { UserSignalService } from 'src/app/services/user.signal.service';
 
 type GrantTypeItem = {
     pk?: number;
@@ -37,6 +38,11 @@ export class DueDiligenceFinalReviewComponent {
     timeout: any = null;
     SERVER: string = _.BASE_URL;
 
+    userSignalService = inject(UserSignalService);
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
+
     constructor(
         public documentUploaderRef: BsModalRef,
         private modalService: BsModalService,
@@ -49,7 +55,8 @@ export class DueDiligenceFinalReviewComponent {
 
     ngOnInit() {
         this.setForm();
-        this.fetchUser();
+
+        this.user = this.userSignalService.user();
 
         this.donor = this.currentApplication?.donor;
 
@@ -78,21 +85,6 @@ export class DueDiligenceFinalReviewComponent {
             type: ['final_review'],
             documents: ['']
         });
-    }
-
-    fetchUser() {
-        this.userService.fetch()
-            .subscribe({
-                next: (data: any) => {
-                    this.user = data;
-                },
-                error: (error: any) => {
-                    console.log(error);
-                },
-                complete: () => {
-                    console.log('Complete');
-                }
-            });
     }
 
     submit() {

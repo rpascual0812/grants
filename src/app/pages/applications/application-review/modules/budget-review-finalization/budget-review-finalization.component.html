@@ -3,7 +3,8 @@
         <h5 class="text-dark">Budget Review and Finalization</h5>
         <div class="vr"></div>
         <h5 class="text-dark text-light">Comments</h5>
-        <button class="btn btn-info p-1 text-capitalize" style="background-color: #034241">
+        <button class="btn btn-info p-1 text-capitalize" style="background-color: #034241"
+            *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
             <i class="material-icons">download</i>
             Download comments
         </button>
@@ -36,7 +37,8 @@
                             </div>
                             <div class="col-md-9">
                                 <button class="btn btn-default text-info bg-gray-300 p-2"
-                                    (click)="uploadFiles('original_budget_proposal')">
+                                    (click)="uploadFiles('original_budget_proposal')"
+                                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                                     <i class="material-icons">add</i>
                                     Attach File
                                 </button>
@@ -54,7 +56,8 @@
                             </div>
                             <div class="col-md-9">
                                 <button class="btn btn-default text-info bg-gray-300 p-2"
-                                    (click)="uploadFiles('revised_budget_proposal')">
+                                    (click)="uploadFiles('revised_budget_proposal')"
+                                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                                     <i class="material-icons">add</i>
                                     Attach File
                                 </button>
@@ -72,7 +75,8 @@
                             </div>
                             <div class="col-md-9">
                                 <button class="btn btn-default text-info bg-gray-300 p-2"
-                                    (click)="uploadFiles('approved_budget_proposal')">
+                                    (click)="uploadFiles('approved_budget_proposal')"
+                                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                                     <i class="material-icons">add</i>
                                     Attach File
                                 </button>
@@ -93,9 +97,18 @@
                         <h5 class="m-0">Organization Bank Account Information</h5>
                     </div>
                     <div class="col-md-8">
-                        <button class="btn btn-default text-info" (click)="handleShowModal('orgBankAccntInfo')">
-                            View | Edit
-                        </button>
+                        <a style="font-size: 12px; color: #1a73e8 !important;" href="javascript:;"
+                            (click)="handleShowModal('orgBankAccntInfo', 'view')"
+                            *ngIf="permission.grant_application != 'restricted'">
+                            VIEW
+                        </a>
+                        <span *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+                            |
+                            <a style="font-size: 12px; color: #1a73e8 !important;" href="javascript:;"
+                                (click)="handleShowModal('orgBankAccntInfo', 'edit')">
+                                EDIT
+                            </a>
+                        </span>
                     </div>
                 </div>
                 <div class="d-flex flex-row align-items-center">
@@ -103,9 +116,18 @@
                         <h5 class="m-0">Fiscal Sponsor Bank Details</h5>
                     </div>
                     <div class="col-md-8">
-                        <button class="btn btn-default text-info" (click)="handleShowModal('fiscalSponsorBankDetail')">
-                            View | Edit
-                        </button>
+                        <a style="font-size: 12px; color: #1a73e8 !important;" href="javascript:;"
+                            (click)="handleShowModal('fiscalSponsorBankDetail', 'view')"
+                            *ngIf="permission.grant_application != 'restricted'">
+                            VIEW
+                        </a>
+                        <span *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+                            |
+                            <a style="font-size: 12px; color: #1a73e8 !important;" href="javascript:;"
+                                (click)="handleShowModal('fiscalSponsorBankDetail', 'edit')">
+                                EDIT
+                            </a>
+                        </span>
                     </div>
                 </div>
                 <div class="d-flex flex-row align-items-center">
@@ -113,13 +135,22 @@
                         <h5 class="m-0">Other Information</h5>
                     </div>
                     <div class="col-md-8">
-                        <button class="btn btn-default text-info" (click)="handleShowModal('otherInfo')">
-                            View | Edit
-                        </button>
+                        <a style="font-size: 12px; color: #1a73e8 !important;" href="javascript:;"
+                            (click)="handleShowModal('otherInfo', 'view')"
+                            *ngIf="permission.grant_application != 'restricted'">
+                            VIEW
+                        </a>
+                        <span *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+                            |
+                            <a style="font-size: 12px; color: #1a73e8 !important;" href="javascript:;"
+                                (click)="handleShowModal('otherInfo', 'edit')">
+                                EDIT
+                            </a>
+                        </span>
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end" *ngIf="['recommendation'].includes(permission.grant_application)">
                 <div>
                     <h4 class="text-dark">Recommendation</h4>
                     <ng-select style="--border-color: #034241" class="custom-recommendation-select"

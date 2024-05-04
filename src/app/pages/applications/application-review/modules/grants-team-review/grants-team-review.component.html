@@ -3,7 +3,8 @@
         <h5 class="text-dark">Grants Team Review</h5>
         <div class="vr"></div>
         <h5 class="text-dark text-light">Comments</h5>
-        <button class="btn btn-info p-1 text-capitalize" style="background-color: #f98f38" (click)="export()">
+        <button class="btn btn-info p-1 text-capitalize" style="background-color: #f98f38" (click)="export()"
+            *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
             <i class="material-icons">download</i>
             Download comments
         </button>
@@ -38,7 +39,8 @@
                                 <span class="badge text-bg-success text-white mx-2" *ngIf="review.resolved">Marked as
                                     Resolved</span>
                             </p>
-                            <button class="btn btn-icon-only btn-danger rounded-circle" (click)="delete(i)">
+                            <button class="btn btn-icon-only btn-danger rounded-circle" (click)="delete(i)"
+                                *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                                 <i class="material-icons text-xl">delete</i>
                             </button>
                         </div>
@@ -46,20 +48,27 @@
                 </div>
                 <div class="card-body">
                     <div class="content">
-                        <p>
-                            {{review.message}}
-                        </p>
+                        <div [class]="permission.grant_application == 'restricted' ? 'blur' : ''">
+                            <p>
+                                {{review.message}}
+                            </p>
+                        </div>
+                        <div class="restricted" *ngIf="permission.grant_application == 'restricted'">
+                            <h3><span class="badge badge-danger">Restricted</span></h3>
+                        </div>
 
-                        <div class="row mt-3 mb-3">
+                        <div class="row mt-3 mb-3" *ngIf="permission.grant_application != 'restricted'">
                             <div class="md-12" *ngFor="let attachment of review.documents; let j = index">
                                 <a href="{{SERVER + '/' + attachment.path}}"
                                     target="_blank">{{attachment.original_name}}</a> <a
-                                    (click)="deleteAttachment(i, j, 'grants_team_review')"><i
+                                    (click)="deleteAttachment(i, j, 'grants_team_review')"
+                                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)"><i
                                         class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-end"
+                        *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                         <button (click)="resolve(i)" class="btn btn-outline-secondary btn-white p-1"
                             *ngIf="review.needs_resolution && !review.resolved">Mark as Resolved</button>
                     </div>
@@ -82,10 +91,10 @@
                 </div>
             </div>
 
-            <div class="card my-3">
+            <div class="card my-3" *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                 <div class="card-header p-3" style="background-color: #f98f38">
                     <div class="d-flex flex-column flex-md-row text-white gap-1">
-                        <p class="m-0">{{dateNow | date : 'dd-MMM-YYYY'}} - {{user.first_name}} {{user.last_name}}</p>
+                        <p class="m-0">{{dateNow | date : 'dd-MMM-YYYY'}} - {{user?.first_name}} {{user?.last_name}}</p>
                     </div>
                 </div>
                 <div class="card-body">
@@ -145,7 +154,7 @@
                     </form>
                 </div>
             </div>
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end" *ngIf="['recommendation'].includes(permission.grant_application)">
                 <div>
                     <h4 class="text-dark">Recommendation</h4>
                     <ng-select style="--border-color: #f98f38" class="custom-recommendation-select"

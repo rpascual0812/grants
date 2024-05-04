@@ -68,6 +68,8 @@ export class RolesModalComponent {
             return;
         }
 
+        this.form.get('pk')?.patchValue(this.role.pk);
+
         this.roleService
             .save(this.form.value)
             .subscribe({
