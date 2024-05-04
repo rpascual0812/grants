@@ -17,6 +17,7 @@ export class AppReviewOrgBankAccntInfoModalComponent {
     form: FormGroup;
     bank_account: PartnerOrganizationBank | undefined = undefined;
     currentApplication: Application = {};
+    action: string = 'view';
 
     loading: boolean = false;
     submitted: boolean = false;

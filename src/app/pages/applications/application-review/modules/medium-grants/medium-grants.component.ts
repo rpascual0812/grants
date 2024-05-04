@@ -2,9 +2,10 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, effe
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
-import { Application } from 'src/app/interfaces/_application.interface';
+import { Application, User } from 'src/app/interfaces/_application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import * as _ from '../../../../../utilities/globals';
+import { UserSignalService } from 'src/app/services/user.signal.service';
 
 @Component({
     selector: 'app-medium-grants',
@@ -21,6 +22,13 @@ export class MediumGrantsComponent implements OnInit {
 
     SERVER: string = _.BASE_URL;
 
+    user: User | null = {};
+
+    userSignalService = inject(UserSignalService);
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
+
     constructor(
         public documentUploaderRef: BsModalRef,
         private cdr: ChangeDetectorRef,
@@ -35,6 +43,8 @@ export class MediumGrantsComponent implements OnInit {
                 this.attachments[doc?.type ?? ''].push(doc);
             }
         });
+
+        this.user = this.userSignalService.user();
     }
 
     uploadFiles(type: string) {

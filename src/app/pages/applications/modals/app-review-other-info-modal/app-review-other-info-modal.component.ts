@@ -15,8 +15,10 @@ import * as _ from '../../../../utilities/globals';
     styleUrls: ['./app-review-other-info-modal.component.scss'],
 })
 export class AppReviewOtherInfoModalComponent implements OnInit {
-    currentApplication: Application | null = null;
     @Output() callback = new EventEmitter<any>();
+
+    currentApplication: Application | null = null;
+    action: string = 'view';
 
     form: FormGroup;
     otherInformation: PartnerOrganizationOtherInformation | undefined = undefined;

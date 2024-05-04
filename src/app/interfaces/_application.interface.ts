@@ -312,6 +312,8 @@ export interface PartnerAssessment {
 export interface User {
     pk?: number;
     account_pk?: number;
+    account?: Account;
+    user_role?: UserRole[];
     uuid?: string;
     unique_id?: string;
     last_name?: string;
@@ -322,6 +324,38 @@ export interface User {
     mobile_number?: string;
     email_address?: string;
     archived?: boolean;
+}
+
+export interface Account {
+    pk?: number;
+    username: string;
+    password?: string;
+    active?: boolean;
+    verified?: boolean;
+    password_reset?: string;
+    archived?: boolean;
+}
+
+export interface UserRole {
+    pk?: number;
+    role_pk: number;
+    user_pk?: number;
+    date_created?: Date;
+    role?: Role;
+}
+
+export interface Role {
+    pk?: number;
+    name: string;
+    details?: string;
+    archived?: boolean;
+    restrictions: Restriction;
+}
+
+export interface Restriction {
+    grant_application?: string;
+    fund_release?: string;
+    contract_finalization?: string;
 }
 
 export interface Province {

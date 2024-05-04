@@ -12,6 +12,7 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from '../../../../../utilities/globals';
+import { UserSignalService } from 'src/app/services/user.signal.service';
 
 @Component({
     selector: 'app-budget-review-finalization',
@@ -37,6 +38,11 @@ export class BudgetReviewFinalizationComponent implements OnInit {
 
     SERVER: string = _.BASE_URL;
 
+    userSignalService = inject(UserSignalService);
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
+
     constructor(
         public documentUploaderRef: BsModalRef,
         private modalService: BsModalService,
@@ -47,7 +53,7 @@ export class BudgetReviewFinalizationComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.fetchUser();
+        this.user = this.userSignalService.user();
 
         if (this.currentApplication?.documents) {
             this.currentApplication?.documents.forEach(doc => {
@@ -58,26 +64,12 @@ export class BudgetReviewFinalizationComponent implements OnInit {
         }
     }
 
-    fetchUser() {
-        this.userService.fetch()
-            .subscribe({
-                next: (data: any) => {
-                    this.user = data;
-                },
-                error: (error: any) => {
-                    console.log(error);
-                },
-                complete: () => {
-                    console.log('Complete');
-                }
-            });
-    }
-
-    handleShowModal(key: 'orgBankAccntInfo' | 'fiscalSponsorBankDetail' | 'otherInfo') {
+    handleShowModal(key: 'orgBankAccntInfo' | 'fiscalSponsorBankDetail' | 'otherInfo', action: string) {
         const initialState: ModalOptions = {
             class: 'modal-lg',
             initialState: {
-                currentApplication: this.currentApplication
+                currentApplication: this.currentApplication,
+                action: action
             }
         };
 

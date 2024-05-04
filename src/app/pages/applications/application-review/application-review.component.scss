@@ -1,0 +1,20 @@
+.blur {
+    /* ^ for Firefox */
+    -webkit-filter: blur(6px);
+    /* ^ Webkit browsers */
+    filter: blur(6px);
+}
+
+.restricted {
+    position: absolute;
+    top: 50%;
+    left: 43%;
+}
+
+.badge {
+    background-color: red;
+    color: white;
+    padding: 4px 8px;
+    text-align: center;
+    border-radius: 5px;
+}

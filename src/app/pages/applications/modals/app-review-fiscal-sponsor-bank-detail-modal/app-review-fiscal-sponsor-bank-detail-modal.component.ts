@@ -17,6 +17,7 @@ import { ApplicationSignalService } from 'src/app/services/application.signal.se
 })
 export class AppReviewFiscalSponsorBankDetailModalComponent {
     currentApplication: Application | null = null
+    action: string = 'view';
 
     @Output() callback = new EventEmitter<any>();
 

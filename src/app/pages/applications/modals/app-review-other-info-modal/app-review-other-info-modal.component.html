@@ -16,10 +16,12 @@
                     <div class="col-6">
                         <select #boolHasProject formControlName="has_project"
                             class="form-select bg-white p-1 border border-1 rounded w-20"
-                            (change)="onChangeSelectedBoolOpt(boolHasProject.value, 'has_project')">
+                            (change)="onChangeSelectedBoolOpt(boolHasProject.value, 'has_project')"
+                            *ngIf="action == 'edit'">
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                         </select>
+                        <p *ngIf="action == 'view'">{{f['has_project'].value == true ? 'Yes' : 'No'}}</p>
                     </div>
                 </div>
 
@@ -29,10 +31,12 @@
                     <div class="col-6">
                         <select #boolHasFinancialPolicy formControlName="has_financial_policy"
                             class="form-select bg-white p-1 border border-1 rounded w-20"
-                            (change)="onChangeSelectedBoolOpt(boolHasFinancialPolicy.value, 'has_financial_policy')">
+                            (change)="onChangeSelectedBoolOpt(boolHasFinancialPolicy.value, 'has_financial_policy')"
+                            [hidden]="action == 'view'">
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                         </select>
+                        <p *ngIf="action == 'view'">{{f['has_financial_policy'].value == true ? 'Yes' : 'No'}}</p>
                     </div>
                     <label class="col-12 text-dark text-sm px-2 m-0 font-weight-bold my-2">If no, what is the
                         practice?</label>
@@ -41,7 +45,8 @@
                             formControlName="has_financial_policy_no_reason"
                             [readOnly]="boolHasFinancialPolicy.value === 'true'" [ngClass]="{
                                 'is-invalid': submitted && f['has_financial_policy_no_reason'].errors
-                            }"></textarea>
+                            }" *ngIf="action == 'edit'"></textarea>
+                        <p *ngIf="action == 'view'">{{f['has_financial_policy_no_reason'].value}}</p>
                         <div *ngIf="submitted && f['has_financial_policy_no_reason'].errors" class="invalid-feedback">
                             <div *ngIf="
                                 f['has_financial_policy_no_reason'].errors?.['required']
@@ -58,10 +63,12 @@
                     <div class="col-6">
                         <select #boolHasFinancialSystem formControlName="has_financial_system"
                             class="form-select bg-white p-1 border border-1 rounded w-20"
-                            (change)="onChangeSelectedBoolOpt(boolHasFinancialSystem.value, 'has_financial_system')">
+                            (change)="onChangeSelectedBoolOpt(boolHasFinancialSystem.value, 'has_financial_system')"
+                            [hidden]="action == 'view'">
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                         </select>
+                        <p *ngIf="action == 'view'">{{f['has_financial_system'].value == true ? 'Yes' : 'No'}}</p>
                     </div>
                     <label class="col-12 text-dark text-sm px-2 m-0 font-weight-bold my-2">If no financial system, what
                         is the practice?</label>
@@ -70,7 +77,8 @@
                             formControlName="has_financial_system_no_reason"
                             [readOnly]="boolHasFinancialSystem.value === 'true'" [ngClass]="{
                                 'is-invalid': submitted && f['has_financial_system_no_reason'].errors
-                            }"></textarea>
+                            }" *ngIf="action == 'edit'"></textarea>
+                        <p *ngIf="action == 'view'">{{f['has_financial_system_no_reason'].value}}</p>
 
                         <div *ngIf="submitted && f['has_financial_system_no_reason'].errors" class="invalid-feedback">
                             <div *ngIf="f['has_financial_system_no_reason'].errors?.['required']">
@@ -105,7 +113,9 @@
                     <div class="col-5">
                         <div class="d-flex flex-row flex-wrap gap-1">
                             <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                [value]="item?.['name']" (change)="handleChangeEditInput($event, i)" />
+                                [value]="item?.['name']" (change)="handleChangeEditInput($event, i)"
+                                *ngIf="action == 'edit'" />
+                            <p class="text-center" *ngIf="action == 'view'">{{item?.['name']}}</p>
                         </div>
                     </div>
 
@@ -115,17 +125,19 @@
                         <app-select class="custom-select p-0" (onSelectEvent)="handleOnEditSelect($event, i)"
                             (onDeSelectEvent)="handleOnEditSelect($event, i)"
                             [defaultSelectedInArr]="item?.['designation']"
-                            [arr]="['Finance Officer', 'Treasurer', 'Finance Manager', 'Accountant']"></app-select>
+                            [arr]="['Finance Officer', 'Treasurer', 'Finance Manager', 'Accountant']"
+                            *ngIf="action == 'edit'"></app-select>
+                        <p class="text-center" *ngIf="action == 'view'">{{item?.['designation']}}</p>
                     </div>
                     <div class="col-3 text-center">
                         <button class="btn btn-default m-0 text-danger p-0 text-xxs" type="button"
-                            (click)="handleDeleteHumanResource(i)">
+                            (click)="handleDeleteHumanResource(i)" *ngIf="action == 'edit'">
                             Delete
                         </button>
                     </div>
                 </div>
 
-                <div class="row gap-0 align-items-center p-1">
+                <div class="row gap-0 align-items-center p-1" *ngIf="action == 'edit'">
                     <button type="button" class="btn btn-sm btn-success" (click)="handleAddHumanResource()">
                         <i class="fa fa-plus"></i> Add a Financial Human Resource
                     </button>
@@ -138,17 +150,18 @@
                         <select #boolAuditFinancialAvailable formControlName="audit_financial_available"
                             class="form-select bg-white p-1 border border-1 rounded w-20" (change)="
                                 onChangeSelectedBoolOpt(boolAuditFinancialAvailable.value, 'audit_financial_available')
-                            ">
+                            " [hidden]="action == 'view'">
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                         </select>
+                        <p *ngIf="action == 'view'">{{f['audit_financial_available'].value == true ? 'Yes' : 'No'}}</p>
                     </div>
                 </div>
 
                 <div class="row gap-0 align-items-center my-3">
                     <label class="col-6 text-dark text-sm px-2 m-0 font-weight-bold">Upload Latest Financial
                         Statement</label>
-                    <div class="input-group custom-file-input col-8">
+                    <div class="input-group custom-file-input col-8" *ngIf="action == 'edit'">
                         <button class="btn btn-white" type="button" (click)="uploadFiles()">
                             <div class="d-flex flex-column text-start">
                                 <p class="p-0 m-0 text-sm text-dark font-weight-bold">Attach Documents</p>
@@ -176,10 +189,12 @@
                         system and conducted due diligence on the proponent</label>
                     <div class="col-6">
                         <select #boolHasReviewedFinancialSystem formControlName="has_reviewed_financial_system"
-                            class="form-select bg-white p-1 border border-1 rounded w-20">
+                            class="form-select bg-white p-1 border border-1 rounded w-20" *ngIf="action == 'edit'">
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                         </select>
+                        <p *ngIf="action == 'view'">{{f['has_reviewed_financial_system'].value == true ? 'Yes' : 'No'}}
+                        </p>
                     </div>
                 </div>
 
@@ -187,7 +202,9 @@
                     <label class="col-12 text-dark text-sm px-2 m-0 font-weight-bold">Recommendation</label>
                     <div class="col-12 my-1">
                         <textarea type="text" rows="3" class="form-control border rounded-1 p-2 bg-white"
-                            formControlName="recommendation"></textarea>
+                            formControlName="recommendation" *ngIf="action == 'edit'"></textarea>
+                        <p *ngIf="action == 'view'">{{f['recommendation'].value}}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -196,7 +213,8 @@
                 <button type="button" class="btn btn-white" (click)="this.bsModalRef.hide()" type="button">
                     Cancel
                 </button>
-                <button type="button" class="btn btn-dark-blue" (click)="submit()">Save</button>
+                <button type="button" class="btn btn-dark-blue" (click)="submit()"
+                    *ngIf="action == 'edit'">Save</button>
             </div>
         </form>
     </div>
