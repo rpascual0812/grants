@@ -58,6 +58,10 @@ export class DueDiligenceFinalReviewComponent {
 
         this.user = this.userSignalService.user();
 
+        this.user?.user_role?.forEach((user_role: any) => {
+            this.permission.grant_application = this.restrictions[user_role.role.restrictions.grant_application] > this.restrictions[this.permission.grant_application] ? user_role.role.restrictions.grant_application : this.permission.grant_application;
+        });
+
         this.donor = this.currentApplication?.donor;
 
         if (this.currentApplication?.reviews) {

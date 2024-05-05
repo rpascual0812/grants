@@ -13,7 +13,6 @@ export class FooterComponent {
     constructor(private router: Router) { }
 
     ngOnInit(): void {
-        console.log(this.router.url, this.router.url.includes("auth"));
         this.theme = this.router.url.includes("auth") ? 'auth' : 'other';
         this.year = DateTime.now().year;
     }

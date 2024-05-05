@@ -25,7 +25,8 @@ export class NavbarComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.fetch();
+        this.user = this.userSignalService.user();
+
         this.user = {
             picture: 'assets/img/default-profile.png',
             name: 'Rafael'
@@ -34,22 +35,6 @@ export class NavbarComponent implements OnInit {
 
     toggle() {
         this.sidebarService.show.set(!this.sidebarService.show());
-    }
-
-    fetch() {
-        this.userService
-            .fetch()
-            .subscribe({
-                next: (data: any) => {
-                    this.userSignalService.user.set(data);
-                },
-                error: (error: any) => {
-                    console.log(error);
-                },
-                complete: () => {
-                    console.log('Complete');
-                }
-            });
     }
 
     logout() {

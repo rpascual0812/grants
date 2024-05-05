@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { UserService } from './services/user.service';
+import { UserSignalService } from './services/user.signal.service';
 
 @Component({
     selector: 'app-root',
@@ -6,6 +8,31 @@ import { Component } from '@angular/core';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    title = 'grants';
+    user: any;
 
+    userSignalService = inject(UserSignalService);
+
+    constructor(
+        private userService: UserService
+    ) { }
+
+    ngOnInit(): void {
+        this.fetch();
+    }
+
+    fetch() {
+        this.userService
+            .fetch()
+            .subscribe({
+                next: (data: any) => {
+                    this.userSignalService.user.set(data);
+                },
+                error: (error: any) => {
+                    console.log(error);
+                },
+                complete: () => {
+                    console.log('Complete');
+                }
+            });
+    }
 }

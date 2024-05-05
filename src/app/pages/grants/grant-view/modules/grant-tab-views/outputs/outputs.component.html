@@ -20,7 +20,8 @@
                     <input *ngIf="objective.editable" class="form-control border border-1 p-2" placeholder="Content"
                         [(ngModel)]="editable.objective.commentor" />
                 </div>
-                <div class="col-12 col-md-3">
+                <div class="col-12 col-md-3"
+                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                     <div class="d-flex flex-row gap-1">
                         <button *ngIf="objective.editable" class="btn btn-sm btn-success btn-icon-only btn-round"
                             style="padding: .1rem !important;" (click)="update(i, 'objective')">
@@ -38,7 +39,7 @@
                 </div>
             </div>
 
-            <div class="row my-2">
+            <div class="row my-2" *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                 <div class="col-12 col-md-1">
                     <p class="text-dark p-0 m-0">{{ objectives.length + 1}}</p>
                 </div>
@@ -80,7 +81,8 @@
                         [(ngModel)]="editable.result.commentor" />
                 </div>
 
-                <div class="col-12 col-md-3">
+                <div class="col-12 col-md-3"
+                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                     <div class="d-flex flex-row gap-1">
                         <button *ngIf="result.editable" class="btn btn-sm btn-success btn-icon-only btn-round"
                             style="padding: .1rem !important;" (click)="update(i, 'result')">
@@ -98,7 +100,7 @@
                 </div>
             </div>
 
-            <div class="row my-2">
+            <div class="row my-2" *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                 <div class="col-12 col-md-1">
                     <p class="text-dark p-0 m-0">{{ results.length + 1}}</p>
                 </div>
@@ -288,7 +290,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-12 d-flex flex-wrap flex-row justify-content-end mt-2">
+                <div class="col-12 col-md-12 d-flex flex-wrap flex-row justify-content-end mt-2"
+                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                     <button class="btn btn-dark-blue">save</button>
                 </div>
             </form>

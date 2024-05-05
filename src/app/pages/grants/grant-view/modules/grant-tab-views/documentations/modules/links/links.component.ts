@@ -3,6 +3,7 @@ import * as _ from '../../../../../../../../utilities/globals';
 import { ProjectService } from 'src/app/services/project.service';
 import { Project } from 'src/app/interfaces/_project.interface';
 import { GrantSignalService } from 'src/app/services/grant.signal.service';
+import { UserSignalService } from 'src/app/services/user.signal.service';
 
 @Component({
     selector: 'app-links',
@@ -26,6 +27,12 @@ export class LinksComponent {
     project: Project | null = null;
     grantSignalService = inject(GrantSignalService);
 
+    user: any = {};
+    userSignalService = inject(UserSignalService);
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
+
     constructor(
         private projectService: ProjectService,
     ) {
@@ -44,6 +51,12 @@ export class LinksComponent {
         };
 
         this.fetch();
+
+        this.user = this.userSignalService.user();
+
+        this.user?.user_role?.forEach((user_role: any) => {
+            this.permission.grant_application = this.restrictions[user_role.role.restrictions.grant_application] > this.restrictions[this.permission.grant_application] ? user_role.role.restrictions.grant_application : this.permission.grant_application;
+        });
     }
 
     fetch() {

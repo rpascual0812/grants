@@ -22,6 +22,7 @@ import { FileUploaderComponent } from 'src/app/components/file-uploader/file-upl
 import * as _ from '../../../../../../utilities/globals';
 import { DateTime } from 'luxon';
 import { EditDeadlineModalComponent } from '../../../modals/edit-deadline-modal/edit-deadline-modal.component';
+import { UserSignalService } from 'src/app/services/user.signal.service';
 
 @Component({
     selector: 'app-funding-release',
@@ -38,17 +39,30 @@ export class FundingReleaseComponent implements OnInit {
     SERVER: string = _.BASE_URL;
 
     grantSignalService = inject(GrantSignalService);
+
+    user: any = {};
+    userSignalService = inject(UserSignalService);
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
+
     constructor(
         private modalService: BsModalService,
         private changeDetection: ChangeDetectorRef,
         private projectService: ProjectService,
         private toastr: ToastrService,
         public documentUploaderRef: BsModalRef
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.project = this.grantSignalService.project();
         this.fetchProjectFunding();
+
+        this.user = this.userSignalService.user();
+
+        this.user?.user_role?.forEach((user_role: any) => {
+            this.permission.fund_release = this.restrictions[user_role.role.restrictions.fund_release] > this.restrictions[this.permission.fund_release] ? user_role.role.restrictions.fund_release : this.permission.fund_release;
+        });
     }
 
     fetchProjectFunding() {
@@ -283,7 +297,7 @@ export class FundingReleaseComponent implements OnInit {
 
     linkAttachment(file: any, liquidation: any) {
         this.projectService.saveLiquidationAttachment({ liquidation_pk: liquidation?.pk, file: file }).subscribe({
-            next: (data: any) => {},
+            next: (data: any) => { },
             error: (error: any) => {
                 console.log(error);
                 this.toastr.error('An error occurred while uploading attachments. Please try again', 'ERROR!');

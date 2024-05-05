@@ -8,6 +8,9 @@ import { PhotosComponent } from './modules/photos/photos.component';
 import { VideosComponent } from './modules/videos/videos.component';
 import { DocumentsComponent } from './modules/documents/documents.component';
 import { LinksComponent } from './modules/links/links.component';
+import { UserSignalService } from 'src/app/services/user.signal.service';
+import * as _ from '../../../../../../utilities/globals';
+
 @Component({
     selector: 'app-documentations',
     templateUrl: './documentations.component.html',
@@ -22,6 +25,12 @@ export class DocumentationsComponent implements OnInit {
     project: Project | null = null;
     grantSignalService = inject(GrantSignalService);
 
+    user: any = {};
+    userSignalService = inject(UserSignalService);
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
+
     constructor(
         public documentUploaderRef: BsModalRef,
         private cdr: ChangeDetectorRef,
@@ -33,6 +42,12 @@ export class DocumentationsComponent implements OnInit {
 
     ngOnInit(): void {
         this.project = this.grantSignalService.project();
+
+        this.user = this.userSignalService.user();
+
+        this.user?.user_role?.forEach((user_role: any) => {
+            this.permission.grant_application = this.restrictions[user_role.role.restrictions.grant_application] > this.restrictions[this.permission.grant_application] ? user_role.role.restrictions.grant_application : this.permission.grant_application;
+        });
     }
 
     uploadFiles() {
