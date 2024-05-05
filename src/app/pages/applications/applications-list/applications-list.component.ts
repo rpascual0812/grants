@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, QueryList, ViewChildren, effect, inject } from '@angular/core';
+import { Component, Input, QueryList, ViewChildren, effect, inject } from '@angular/core';
 import { NgbdSortableHeaderDirective, SortEvent } from '../../../directives/ngbd-sortable-header.directive';
 import { ApplicationService } from 'src/app/services/application.service';
 import { TransformApplicationForList, compare, transformApplicationForList } from 'src/app/utilities/application.utils';
@@ -29,10 +29,10 @@ type GrantApplicationTableObj = {
 @Component({
     selector: 'app-applications-list',
     templateUrl: './applications-list.component.html',
-    styleUrls: ['./applications-list.component.scss']
+    styleUrls: ['./applications-list.component.scss'],
 })
 export class ApplicationsListComponent {
-    @Input() filter: Set<string>
+    @Input() filter: Set<string>;
 
     isLoading = true;
     tableSizes: any = _.TABLE_SIZES;
@@ -78,7 +78,7 @@ export class ApplicationsListComponent {
     linkGeneratorSignalService = inject(LinkGeneratorSignalService);
     appListSignalService = inject(ApplicationListSignalService);
 
-    constructor(private applicationService: ApplicationService, private toastr: ToastrService) { }
+    constructor(private applicationService: ApplicationService, private toastr: ToastrService) {}
 
     generatorSignalEffect = effect(() => {
         const data = this.linkGeneratorSignalService.linkGeneratorData();
@@ -87,16 +87,19 @@ export class ApplicationsListComponent {
         }
     });
 
-    appListSignalEffect = effect(() => {
-        const filters = this.appListSignalService.filters();
-        const applyFilters = this.appListSignalService.applyFilter()
-        if (applyFilters) {
-            this.handleFetchApplication(filters ?? undefined);
-            this.appListSignalService.applyFilter.set(false)
+    appListSignalEffect = effect(
+        () => {
+            const filters = this.appListSignalService.filters();
+            const applyFilters = this.appListSignalService.applyFilter();
+            if (applyFilters) {
+                this.handleFetchApplication(filters ?? undefined);
+                this.appListSignalService.applyFilter.set(false);
+            }
+        },
+        {
+            allowSignalWrites: true,
         }
-    }, {
-        allowSignalWrites: true,
-    });
+    );
 
     ngOnInit() {
         this.handleFetchApplication();
@@ -118,14 +121,22 @@ export class ApplicationsListComponent {
                     const advisers_review = data.filter((d: any) => d.status == 'Advisers Review');
                     const due_diligence = data.filter((d: any) => d.status == 'Due Diligence Final Review');
                     const budget_review = data.filter((d: any) => d.status == 'Budget Review and Finalization');
-                    const financial_management_capacity = data.filter((d: any) => d.status == 'Financial Management Capacity');
+                    const financial_management_capacity = data.filter(
+                        (d: any) => d.status == 'Financial Management Capacity'
+                    );
 
-                    this.grantApplication.proposals.list = transformApplicationForList(received_proposals as Application[]);
+                    this.grantApplication.proposals.list = transformApplicationForList(
+                        received_proposals as Application[]
+                    );
                     this.grantApplication.grantsTeamReview.list = transformApplicationForList(
                         grants_team_review as Application[]
                     );
-                    this.grantApplication.advisersReview.list = transformApplicationForList(advisers_review as Application[]);
-                    this.grantApplication.dueDiligence.list = transformApplicationForList(due_diligence as Application[]);
+                    this.grantApplication.advisersReview.list = transformApplicationForList(
+                        advisers_review as Application[]
+                    );
+                    this.grantApplication.dueDiligence.list = transformApplicationForList(
+                        due_diligence as Application[]
+                    );
 
                     this.grantApplication.budgetReviewAndFinalization.list = transformApplicationForList(
                         budget_review as Application[]

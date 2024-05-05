@@ -36,6 +36,7 @@ export class LinksComponent {
         this.project = this.grantSignalService.project();
 
         this.filters = {
+            project_pk: this.project?.pk as number,
             keyword: '',
             archived: false,
             skip: 0,
