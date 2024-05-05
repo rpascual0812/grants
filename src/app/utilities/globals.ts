@@ -22,8 +22,8 @@ export const RESTRICTIONS: any = {
 
 export const PERMISSIONS: any = {
     grant_application: 'restricted',
-    fund_release: 'restricted',
     contract_finalization: 'restricted',
+    fund_release: 'restricted',
 }
 
 export function numbersOnly(event: any) {

@@ -9,6 +9,8 @@ import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { UserService } from 'src/app/services/user.service';
 import { ProjectEditModalComponent } from '../../modals/project-edit-modal/project-edit-modal.component';
 import { Project } from 'src/app/interfaces/_project.interface';
+import { UserSignalService } from 'src/app/services/user.signal.service';
+import * as _ from '../../../../../utilities/globals';
 
 @Component({
     selector: 'app-assessment',
@@ -28,6 +30,12 @@ export class AssessmentComponent {
     user: User | null = null;
 
     partnerSignalService = inject(PartnerSignalService);
+
+    userSignalService = inject(UserSignalService);
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
+
     constructor(
         private modalService: BsModalService,
         private changeDetection: ChangeDetectorRef,
@@ -38,26 +46,13 @@ export class AssessmentComponent {
 
     ngOnInit() {
         this.partner = this.project?.partner;
-        this.fetchUser();
-        this.fetch();
-    }
+        this.user = this.userSignalService.user();
 
-    fetchUser() {
-        this.loading = true;
-        this.userService.fetch().subscribe({
-            next: (data: any) => {
-                this.user = data;
-                this.loading = false;
-            },
-            error: (err: any) => {
-                const { statusCode, errorMessage } = extractErrorMessage(err);
-                this.toastr.error(
-                    `An error occurred while fetching user. ${statusCode} ${errorMessage} Please try again.`,
-                    'ERROR!'
-                );
-                this.loading = false;
-            },
+        this.user?.user_role?.forEach((user_role: any) => {
+            this.permission.contract_finalization = this.restrictions[user_role.role.restrictions.contract_finalization] > this.restrictions[this.permission.contract_finalization] ? user_role.role.restrictions.contract_finalization : this.permission.contract_finalization;
         });
+
+        this.fetch();
     }
 
     fetch() {

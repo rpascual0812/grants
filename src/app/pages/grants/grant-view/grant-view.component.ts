@@ -8,6 +8,9 @@ import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import * as _ from '../../../utilities/globals';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
+import { User } from 'src/app/interfaces/_application.interface';
+import { UserSignalService } from 'src/app/services/user.signal.service';
+import { setTime } from 'ngx-bootstrap/chronos/utils/date-setters';
 
 export type OnHiddenData = {
     isSaved: boolean;
@@ -28,7 +31,14 @@ export class GrantViewComponent implements OnInit {
 
     SERVER: string = _.BASE_URL;
 
+    userSignalService = inject(UserSignalService);
     grantSignalService = inject(GrantSignalService);
+
+    user: User | null = {};
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
+
     constructor(
         public documentUploaderRef: BsModalRef,
         private cdr: ChangeDetectorRef,
@@ -41,6 +51,13 @@ export class GrantViewComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.user = this.userSignalService.user();
+        console.log(777, this.user);
+
+        this.user?.user_role?.forEach((user_role: any) => {
+            this.permission.contract_finalization = this.restrictions[user_role.role.restrictions.contract_finalization] > this.restrictions[this.permission.contract_finalization] ? user_role.role.restrictions.contract_finalization : this.permission.contract_finalization;
+        });
+
         this.fetch();
     }
 

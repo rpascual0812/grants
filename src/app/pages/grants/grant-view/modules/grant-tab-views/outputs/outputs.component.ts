@@ -7,6 +7,7 @@ import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import * as _ from '../../../../../../utilities/globals';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserSignalService } from 'src/app/services/user.signal.service';
 
 @Component({
     selector: 'app-outputs',
@@ -50,6 +51,12 @@ export class OutputsComponent implements OnInit {
 
     grantSignalService = inject(GrantSignalService);
 
+    user: any = {};
+    userSignalService = inject(UserSignalService);
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
+
     constructor(
         private globalService: GlobalService,
         private projectService: ProjectService,
@@ -78,6 +85,12 @@ export class OutputsComponent implements OnInit {
             // C
             disability_rights: [this.project_output.disability_rights ? this.project_output.disability_rights : 'yes', [Validators.required]],
             intervention_type: [this.project_output.intervention_type ? this.project_output.intervention_type : '', [Validators.required]]
+        });
+
+        this.user = this.userSignalService.user();
+
+        this.user?.user_role?.forEach((user_role: any) => {
+            this.permission.grant_application = this.restrictions[user_role.role.restrictions.grant_application] > this.restrictions[this.permission.grant_application] ? user_role.role.restrictions.grant_application : this.permission.grant_application;
         });
     }
 

@@ -9,7 +9,9 @@ import {
 } from 'src/app/interfaces/_project.interface';
 import { GrantSignalService } from 'src/app/services/grant.signal.service';
 import { ProjectService } from 'src/app/services/project.service';
+import { UserSignalService } from 'src/app/services/user.signal.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
+import * as _ from '../../../../../../utilities/globals';
 
 type EditableRow = {
     capDevKnowledgeRow: number | null;
@@ -84,17 +86,29 @@ export class CapdevComponent implements OnInit {
 
     grantSignalService = inject(GrantSignalService);
 
+    user: any = {};
+    userSignalService = inject(UserSignalService);
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
+
     constructor(
         private projectService: ProjectService,
         private toastr: ToastrService,
         private cdr: ChangeDetectorRef
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.project = this.grantSignalService.project();
         this.fetchKnowledge();
         this.fetchSkill();
         this.fetchObserve();
+
+        this.user = this.userSignalService.user();
+
+        this.user?.user_role?.forEach((user_role: any) => {
+            this.permission.grant_application = this.restrictions[user_role.role.restrictions.grant_application] > this.restrictions[this.permission.grant_application] ? user_role.role.restrictions.grant_application : this.permission.grant_application;
+        });
     }
 
     fetchKnowledge() {

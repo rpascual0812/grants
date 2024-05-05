@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation, inject } from '@angular/core';
 import * as _ from '../../../../../../../utilities/globals';
 import { ProjectService } from 'src/app/services/project.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -10,6 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 import { DateTime } from 'luxon';
 import { Project } from 'src/app/interfaces/_project.interface';
 import { formatDate } from '@angular/common';
+import { UserSignalService } from 'src/app/services/user.signal.service';
 
 @Component({
     selector: 'app-partner-signing',
@@ -29,6 +30,11 @@ export class PartnerSigningComponent {
     dateNow = DateTime.now().toFormat('LLLL dd, yyyy');
     recommendation: any = '';
 
+    userSignalService = inject(UserSignalService);
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
+
     constructor(
         private projectService: ProjectService,
         private toastr: ToastrService,
@@ -43,8 +49,13 @@ export class PartnerSigningComponent {
 
     ngOnInit() {
         this.setForm();
-        this.fetchUser();
         this.reviews = this.project?.reviews.filter((review: any) => review.type == 'partner_signing');
+
+        this.user = this.userSignalService.user();
+
+        this.user?.user_role?.forEach((user_role: any) => {
+            this.permission.contract_finalization = this.restrictions[user_role.role.restrictions.contract_finalization] > this.restrictions[this.permission.contract_finalization] ? user_role.role.restrictions.contract_finalization : this.permission.contract_finalization;
+        });
     }
 
     get f() { return this.form.controls; }
@@ -57,21 +68,6 @@ export class PartnerSigningComponent {
             type: ['partner_signing'],
             documents: ['']
         });
-    }
-
-    fetchUser() {
-        this.userService.fetch()
-            .subscribe({
-                next: (data: any) => {
-                    this.user = data;
-                },
-                error: (error: any) => {
-                    console.log(error);
-                },
-                complete: () => {
-                    console.log('Complete');
-                }
-            });
     }
 
     delete(i: number) {

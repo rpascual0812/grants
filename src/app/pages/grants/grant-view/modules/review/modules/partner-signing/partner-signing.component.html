@@ -3,7 +3,8 @@
         <h5 class="text-dark">Partner Signing</h5>
         <div class="vr"></div>
         <h5 class="text-dark text-light">Comments</h5>
-        <button class="btn btn-info p-1 text-capitalize" style="background-color: #f98f38" (click)="export()">
+        <button class="btn btn-info p-1 text-capitalize" style="background-color: #f98f38" (click)="export()"
+            *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
             <i class="material-icons">download</i>
             Download comments
         </button>
@@ -23,7 +24,8 @@
                     }}</p>
                 <div class="d-flex flex-column flex-md-row gap-1 align-items-md-center">
 
-                    <button class="btn btn-icon-only btn-danger rounded-circle" (click)="delete(i)">
+                    <button class="btn btn-icon-only btn-danger rounded-circle" (click)="delete(i)"
+                        *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
                         <i class="material-icons text-xl">delete</i>
                     </button>
                 </div>
@@ -31,14 +33,20 @@
         </div>
         <div class="card-body">
             <div class="content">
-                <p>
-                    {{review.message}}
-                </p>
+                <div [class]="permission.contract_finalization == 'restricted' ? 'blur' : ''">
+                    <p>
+                        {{review.message}}
+                    </p>
+                </div>
+                <div class="restricted" *ngIf="permission.contract_finalization == 'restricted'">
+                    <h3><span class="badge badge-danger">Restricted</span></h3>
+                </div>
 
                 <div class="row mt-3 mb-3">
                     <div class="md-12" *ngFor="let attachment of review.documents; let j = index">
                         <a href="{{SERVER + '/' + attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
-                            (click)="deleteAttachment(i, j, 'advisers_review')"><i
+                            (click)="deleteAttachment(i, j, 'advisers_review')"
+                            *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)"><i
                                 class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                     </div>
                 </div>
@@ -46,7 +54,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card" *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
         <div class="card-body bg-gray-300">
             <div class="card my-3">
                 <div class="card-header p-3" style="background-color: #034241">
@@ -98,7 +106,7 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-end" *ngIf="['recommendation'].includes(permission.contract_finalization)">
         <div>
             <h4 class="text-dark">Recommendation</h4>
             <ng-select style="--border-color: #f98f38" class="custom-recommendation-select"

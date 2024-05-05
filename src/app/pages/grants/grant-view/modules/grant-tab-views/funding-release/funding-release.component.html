@@ -29,21 +29,13 @@
                         <div class="d-flex flex-wrap flex-row gap-1">
                             <div class="form-check m-0 p-1">
                                 <label class="form-check-label text-dark font-weight-bold mx-1">Acknowledgement</label>
-                                <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    disabled
-                                    [checked]="getOverdueReport()?.grantee_acknowledgement"
-                                />
+                                <input class="form-check-input" type="checkbox" disabled
+                                    [checked]="getOverdueReport()?.grantee_acknowledgement" />
                             </div>
                             <div class="form-check m-0 p-1">
                                 <label class="form-check-label text-dark font-weight-bold mx-1">Official Receipt</label>
-                                <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    disabled
-                                    [checked]="getOverdueReport()?.bank_receipt_pk"
-                                />
+                                <input class="form-check-input" type="checkbox" disabled
+                                    [checked]="getOverdueReport()?.bank_receipt_pk" />
                             </div>
                         </div>
                     </div>
@@ -61,7 +53,8 @@
                         {{ funding?.report_due_date | date : 'dd-MMM-YYYY' }} |
                         {{ funding?.released_amount_usd | number }} USD
                     </p>
-                    <button class="btn btn-icon-only" (click)="handleEditTranche(funding?.pk)">
+                    <button class="btn btn-icon-only" (click)="handleEditTranche(funding?.pk)"
+                        *ngIf="['comments', 'recommendation'].includes(permission.fund_release)">
                         <i class="material-icons">edit</i>
                     </button>
                 </div>
@@ -72,7 +65,8 @@
             <div class="col-12 col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-flex flex-wrap flex-row">
+                        <div class="d-flex flex-wrap flex-row"
+                            *ngIf="['comments', 'recommendation'].includes(permission.fund_release)">
                             <button class="btn btn-dark-blue m-1" (click)="openEditDeadlineModal(funding?.pk)">
                                 edit deadline
                             </button>
@@ -102,15 +96,11 @@
                         <div class="my-2">
                             <p class="m-0 p-0" style="text-decoration: underline">grantee's acknowledgement</p>
                             <div class="form-check m-0 p-1">
-                                <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    disabled
-                                    [checked]="funding?.grantee_acknowledgement"
-                                />
+                                <input class="form-check-input" type="checkbox" disabled
+                                    [checked]="funding?.grantee_acknowledgement" />
                                 <label class="form-check-label font-weight-light mx-1">{{
                                     funding?.grantee_acknowledgement | date : 'dd-MMM-YYYY'
-                                }}</label>
+                                    }}</label>
                             </div>
                         </div>
                     </div>
@@ -125,10 +115,8 @@
                     </h6>
                 </div>
 
-                <div
-                    *ngFor="let item of groupedFundingReport(funding?.project_funding_report ?? []) | keyvalue"
-                    class="card my-3"
-                >
+                <div *ngFor="let item of groupedFundingReport(funding?.project_funding_report ?? []) | keyvalue"
+                    class="card my-3">
                     <div class="d-flex flex-wrap flex-row p-2 align-items-center">
                         <p class="mx-2 p-0 m-0" style="text-decoration: underline">{{ item.key }}</p>
                         <!-- <button class="btn btn-info btn-icon-only btn-rounded">
@@ -137,7 +125,7 @@
                     </div>
                     <div class="row p-3 align-items-center" *ngFor="let subItem of item.value">
                         <div class="col-12 col-md-3">
-                            <a style="text-decoration: underline"  href="{{SERVER + '/' + subItem?.document?.path}}">
+                            <a style="text-decoration: underline" href="{{SERVER + '/' + subItem?.document?.path}}">
                                 {{subItem?.document?.original_name}}
                             </a>
                         </div>
@@ -160,7 +148,8 @@
 
         <div *ngIf="funding?.project_funding_liquidation?.pk" class="card bg-gray-400 my-3">
             <div class="d-flex flex-wrap flex-row">
-                <button class="btn btn-icon-only" (click)="handleEditLiquidation(funding?.project_funding_liquidation)">
+                <button class="btn btn-icon-only" (click)="handleEditLiquidation(funding?.project_funding_liquidation)"
+                    *ngIf="['comments', 'recommendation'].includes(permission.fund_release)">
                     <i class="material-icons">edit</i>
                 </button>
             </div>
@@ -171,10 +160,11 @@
                             Liquidation
                             <span class="font-weight-light">{{
                                 funding?.project_funding_liquidation?.date_released | date : 'dd-MMM-yyyy'
-                            }}</span>
+                                }}</span>
                         </h5>
                         <div class="container bg-white rounded">
-                            <p class="text-secondary p-1 min-height-100" [innerText]="funding?.project_funding_liquidation?.description"></p>
+                            <p class="text-secondary p-1 min-height-100"
+                                [innerText]="funding?.project_funding_liquidation?.description"></p>
                         </div>
                     </div>
 
@@ -190,27 +180,23 @@
                     <div class="col-12 col-md-2">
                         <h5 class="text-dark">Attachment</h5>
 
-                        <div
-                            class="row mt-3 mb-3"
-                            [hidden]="funding?.project_funding_liquidation?.documents?.length == 0"
-                        >
-                            <div
-                                class="md-12"
-                                *ngFor="
+                        <div class="row mt-3 mb-3"
+                            [hidden]="funding?.project_funding_liquidation?.documents?.length == 0">
+                            <div class="md-12" *ngFor="
                                     let attachment of funding?.project_funding_liquidation?.documents;
                                     let j = index
-                                "
-                            >
+                                ">
                                 <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
                                     attachment.original_name
-                                }}</a>
+                                    }}</a>
                                 <a (click)="deleteAttachment(i, j)"
-                                    ><i class="fa fa-times text-danger mx-2 cursor-pointer"></i
-                                ></a>
+                                    *ngIf="['comments', 'recommendation'].includes(permission.fund_release)"><i
+                                        class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                             </div>
                         </div>
 
-                        <button class="btn btn-default" (click)="uploadFiles(i)">
+                        <button class="btn btn-default" (click)="uploadFiles(i)"
+                            *ngIf="['comments', 'recommendation'].includes(permission.fund_release)">
                             <div class="d-flex flex-column text-start">
                                 <p class="p-0 m-0 text-sm text-info font-weight-bold">
                                     <span class="icon icon-sm">
@@ -239,7 +225,8 @@
             </div>
         </div>
     </div>
-    <div class="d-flex flex-wrap flex-row gap-2 my-3">
+    <div class="d-flex flex-wrap flex-row gap-2 my-3"
+        *ngIf="['comments', 'recommendation'].includes(permission.fund_release)">
         <button class="btn btn-dark-blue text-capitalize" (click)="handleAddTranche()">Add New Tranche</button>
         <button class="btn btn-secondary text-capitalize" (click)="handleAddLiquidation()">Add New Liquidation</button>
     </div>

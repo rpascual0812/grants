@@ -2,7 +2,8 @@
     <div>
         <div class="row">
             <div class="col-12 col-md-12">
-                <div class="d-flex justify-content-end">
+                <div class="d-flex justify-content-end"
+                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                     <input type="text" class="form-control"
                         style="border: solid 1px #ccc; max-width: 250px; margin-right: 5px; padding: 5px; background-color: white;"
                         [(ngModel)]="event_name">
@@ -22,7 +23,8 @@
                         <p class="text-dark text-sm font-weight-bold m-0 p-0">{{ event.name }}</p>
                     </div>
                     <button type="button" class="btn btn-sm btn-info btn-icon-only btn-round" title="Add"
-                        (click)="$event.stopPropagation(); openModal(i, {})" style="padding: .2rem !important;">
+                        (click)="$event.stopPropagation(); openModal(i, {})" style="padding: .2rem !important;"
+                        *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                         <i class="fa fa-plus" style="font-size: 0.8rem !important;"></i>
                     </button>
                 </div>
@@ -49,7 +51,8 @@
                             </p>
                         </div>
                         <div class="col-12 col-md-1">
-                            <div class="d-flex flex-row gap-1">
+                            <div class="d-flex flex-row gap-1"
+                                *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
                                 <button class="btn btn-sm btn-info btn-icon-only btn-round" title="Edit"
                                     style="padding: .2rem !important;" (click)="openModal(i, attendee)">
                                     <i class="fa fa-pencil" style="font-size: 0.8rem !important;"></i>

@@ -51,6 +51,10 @@ export class AdvisersReviewComponent implements OnInit {
 
         this.user = this.userSignalService.user();
 
+        this.user?.user_role?.forEach((user_role: any) => {
+            this.permission.grant_application = this.restrictions[user_role.role.restrictions.grant_application] > this.restrictions[this.permission.grant_application] ? user_role.role.restrictions.grant_application : this.permission.grant_application;
+        });
+
         if (this.currentApplication?.reviews) {
             this.reviews = this.currentApplication?.reviews.filter((review: any) => review.type == 'advisers_review');
         }

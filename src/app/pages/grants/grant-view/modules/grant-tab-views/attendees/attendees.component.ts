@@ -6,6 +6,7 @@ import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { AttendeesModalComponent } from './attendees-modal/attendees-modal.component';
 import * as _ from '../../../../../../utilities/globals';
 import { ToastrService } from 'ngx-toastr';
+import { UserSignalService } from 'src/app/services/user.signal.service';
 
 @Component({
     selector: 'app-attendees',
@@ -27,6 +28,13 @@ export class AttendeesComponent implements OnInit {
 
     currentExpandedIdx = -1
     mockRandomEvent: number[] = []
+
+    user: any = {};
+    userSignalService = inject(UserSignalService);
+
+    restrictions: any = _.RESTRICTIONS;
+    permission = _.PERMISSIONS;
+
     constructor(
         private projectService: ProjectService,
         private modalService: BsModalService,
@@ -40,6 +48,12 @@ export class AttendeesComponent implements OnInit {
     ngOnInit(): void {
         this.project = this.grantSignalService.project();
         this.fetch();
+
+        this.user = this.userSignalService.user();
+
+        this.user?.user_role?.forEach((user_role: any) => {
+            this.permission.grant_application = this.restrictions[user_role.role.restrictions.grant_application] > this.restrictions[this.permission.grant_application] ? user_role.role.restrictions.grant_application : this.permission.grant_application;
+        });
     }
 
     handleIsOpenChange($event: boolean, idx: number) {
