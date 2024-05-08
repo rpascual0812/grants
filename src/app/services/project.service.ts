@@ -213,4 +213,8 @@ export class ProjectService {
     destroyProjectLinks(filter: any) {
         return this.http.get(`${_.BASE_URL}/projects/${filter.project_pk}/links`, { params: filter });
     }
+
+    fetchGroupProjectType() {
+        return this.http.get(`${_.BASE_URL}/projects/group_project_type`);
+    }
 }
