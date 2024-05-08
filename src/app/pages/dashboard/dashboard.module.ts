@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
+import { TotalGrantFunctionModule } from './total-grant-function/total-grant-function.module';
 
 
 
@@ -9,7 +10,7 @@ import { DashboardComponent } from './dashboard.component';
         DashboardComponent
     ],
     imports: [
-        CommonModule
+        CommonModule, TotalGrantFunctionModule
     ]
 })
 export class DashboardModule { }

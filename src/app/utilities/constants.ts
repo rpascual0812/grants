@@ -66,6 +66,42 @@ export const PROVINCE_URL_FETCH_STATUS = {
     ready: 'ready',
 };
 
+export const TOTAL_GRANT_PER_FUNCTION = {
+    'Travel Grant': {
+        associatedKey: ['Travel Grant'],
+        total: 0,
+        imagePath: '../../../assets/images/travel-icon.png',
+        color: "#23327FFF",
+    },
+    'CapDev / Institutional Development Support': {
+        associatedKey: ['Capacity Development', 'Institutional Development'],
+        total: 0,
+        imagePath: '../../../assets/images/group-icon.png',
+        color: "#3B5E61FF",
+    },
+    'Urgent Grant Action': {
+        associatedKey: ['Urgent Grant'],
+        total: 0,
+        imagePath: '../../../assets/images/police-light-icon.png',
+        color: "#84A6EFFF",
+    },
+    'Education Grant and Indigenous Knowledge Building': {
+        associatedKey: ['Education Grant', 'Indigenous Knowledge Building'],
+        total: 0,
+        imagePath: '../../../assets/images/education-icon.png',
+        color: "#fcc203",
+    },
+    'Resiliency Building and Social Justice Grant': {
+        associatedKey: ['Resiliency Building', 'Social Justice Grant'],
+        total: 0,
+        imagePath: '../../../assets/images/justice-hammer-icon.png',
+        color: "#7591EDFF",
+    },
+};
+
+export type TotalGrantPerFunction = typeof TOTAL_GRANT_PER_FUNCTION;
+export type TotalGrantPerFunctionKey = keyof typeof TOTAL_GRANT_PER_FUNCTION;
+
 export const GRANT_TYPES = [
     'Travel Grant',
     'Capacity Development',

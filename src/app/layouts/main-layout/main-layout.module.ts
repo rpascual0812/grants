@@ -16,6 +16,7 @@ import { GrantsModule } from 'src/app/pages/grants/grants.module';
 import { LinksModule } from 'src/app/pages/settings/links/links.module';
 import { GrantViewModule } from 'src/app/pages/grants/grant-view/grant-view.module';
 import { DonorModule } from 'src/app/pages/donor/donor.module';
+import { DashboardModule } from 'src/app/pages/dashboard/dashboard.module';
 
 @NgModule({
     imports: [
@@ -24,6 +25,7 @@ import { DonorModule } from 'src/app/pages/donor/donor.module';
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
+        DashboardModule,
         ModalModule.forRoot(),
         ApplicationsModule,
         GrantsModule,

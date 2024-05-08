@@ -1,0 +1,36 @@
+<div class="my-5">
+    <div class="card">
+        <div class="card-header bg-dark-blue">
+            <div class="d-flex flex-wrap flex-row justify-content-between">
+                <h6 class="text-white">Total per Grant Function</h6>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="container text-center" *ngIf="loading.groupProjectType || loading.types">
+                <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <ng-container *ngIf="!loading.groupProjectType && !loading.types">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-2" *ngFor="let item of groupedProjectType">
+                        <div class="card rounded">
+                            <div class="image-container border-radius-top-end border-radius-top-start" [ngStyle]="{ 'background-color': item.color }">
+                                <div class="d-flex flex-wrap flex-column p-2 text-center mt-3" style="height: 120px">
+                                    <div class="inner-container" style="height: 40px">
+                                        <img [src]="item.imagePath" style="width: 40px; height: 30px" />
+                                    </div>
+                                    <p class="p-0 m-0 text-sm text-white">{{ item.name }}</p>
+                                </div>
+                            </div>
+                            <div class="count-container text-center">
+                                <h4 class="p-0 m-0  font-weight-bold" [ngStyle]="{ 'color': item.color }">{{ item.total }}</h4>
+                                <p class="p-0 m-0 text-sm">contracts</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

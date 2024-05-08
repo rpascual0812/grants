@@ -1,7 +1,6 @@
 import { ApplicationListSignalService } from './../../services/application-list.signal.service';
 import { Component, ViewEncapsulation, inject } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { GRANT_TYPES } from 'src/app/utilities/constants';
 
 type SelectItem = {
     pk: number;
@@ -15,7 +14,6 @@ type SelectItem = {
     encapsulation: ViewEncapsulation.None,
 })
 export class ApplicationsComponent {
-    grantTypes = GRANT_TYPES;
     selectiveIndicator = [];
     bsModalRef?: BsModalRef;
     currentExpandedAccordion = new Set();
