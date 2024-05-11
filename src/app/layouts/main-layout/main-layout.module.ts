@@ -26,7 +26,6 @@ import { DashboardModule } from 'src/app/pages/dashboard/dashboard.module';
         DashboardModule,
         ReactiveFormsModule,
         HttpClientModule,
-        DashboardModule,
         ModalModule.forRoot(),
         ApplicationsModule,
         GrantsModule,
