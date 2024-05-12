@@ -16,7 +16,7 @@ import { ProjectBeneficiary } from '../interfaces/_application.interface';
     providedIn: 'root',
 })
 export class ProjectService {
-    constructor(public http: HttpClient) { }
+    constructor(public http: HttpClient) {}
 
     fetch() {
         return this.http.get(`${_.BASE_URL}/projects`);
@@ -216,5 +216,15 @@ export class ProjectService {
 
     fetchGroupProjectType() {
         return this.http.get(`${_.BASE_URL}/projects/group_project_type`);
+    }
+
+    fetchGroupProjectDateCreated(query: { to_date?: string }) {
+        return this.http.get(`${_.BASE_URL}/projects/group_project_date_created`, {
+            params: query,
+        });
+    }
+
+    fetchGroupProjectCountry() {
+        return this.http.get(`${_.BASE_URL}/projects/group_project_country`);
     }
 }
