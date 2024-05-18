@@ -14,7 +14,7 @@ export class SidebarComponent {
             label: 'Dashboard',
             icon: {
                 type: 'material',
-                name: 'home'
+                name: 'dashboard'
             }
         },
         {
@@ -87,6 +87,14 @@ export class SidebarComponent {
                     icon: {
                         type: 'material',
                         name: 'link'
+                    }
+                },
+                {
+                    name: 'templates',
+                    label: 'Email Templates',
+                    icon: {
+                        type: 'material',
+                        name: 'wysiwyg'
                     }
                 },
             ]

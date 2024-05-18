@@ -1,0 +1,85 @@
+<div class="container-fluid mb-3">
+    <nav aria-label="breadcrumb">
+        <h4 class="font-weight-bolder mb-0 mb-5">Email Templates</h4>
+    </nav>
+
+    <div class="w-100 text-center my-3" *ngIf="loading">
+        <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div class="row mb-4" *ngIf="!loading">
+        <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <form [formGroup]="form" (ngSubmit)="submit()">
+                        <div class="form-control ">
+                            <h5 class="card-title">Password Reset Template</h5>
+                            <div class="d-flex border rounded-2 p-1">
+                                <input type="text" class="form-control text-dark p-1" placeholder="Email Subject"
+                                    formControlName="passwordResetSubject"
+                                    [ngClass]="{ 'is-invalid': submitted && f['passwordResetSubject'].errors }" />
+                            </div>
+                            <div *ngIf=" f['passwordResetSubject'].errors" class="invalid-feedback">
+                                <div *ngIf="f['passwordResetSubject'].errors['required']">Password Reset is required
+                                </div>
+                            </div>
+                            <br>
+                            <app-text-editor #passwordReset [variables]="variables.passwordResetVariables"
+                                [conditions]="{ showUploader: true }" [content]="template.passwordReset"
+                                [height]="700"></app-text-editor>
+                            <div *ngIf=" f['passwordReset'].errors" class="invalid-feedback">
+                                <div *ngIf="f['passwordReset'].errors['required']">Password Reset is required</div>
+                            </div>
+                            <hr>
+
+                            <h5 class="card-title">Application Template</h5>
+                            <div class="d-flex border rounded-2 p-1">
+                                <input type="text" class="form-control text-dark p-1" placeholder="Email Subject"
+                                    formControlName="applicationSubject"
+                                    [ngClass]="{ 'is-invalid': submitted && f['applicationSubject'].errors }" />
+                            </div>
+                            <div *ngIf=" f['applicationSubject'].errors" class="invalid-feedback">
+                                <div *ngIf="f['applicationSubject'].errors['required']">Password Reset is required
+                                </div>
+                            </div>
+                            <br>
+                            <app-text-editor #application [variables]="variables.applicationVariables"
+                                [conditions]="{ showUploader: true }" [content]="template.application"
+                                [height]="700"></app-text-editor>
+                            <div *ngIf=" f['application'].errors" class="invalid-feedback">
+                                <div *ngIf="f['application'].errors['required']">Application is required</div>
+                            </div>
+                            <hr>
+
+                            <h5 class="card-title">Application Submitted Template</h5>
+                            <div class="d-flex border rounded-2 p-1">
+                                <input type="text" class="form-control text-dark p-1" placeholder="Email Subject"
+                                    formControlName="applicationSubmittedSubject"
+                                    [ngClass]="{ 'is-invalid': submitted && f['applicationSubmittedSubject'].errors }" />
+                            </div>
+                            <div *ngIf=" f['applicationSubmittedSubject'].errors" class="invalid-feedback">
+                                <div *ngIf="f['applicationSubmittedSubject'].errors['required']">Password Reset is
+                                    required
+                                </div>
+                            </div>
+                            <br>
+                            <app-text-editor #applicationSubmitted [variables]="variables.applicationSubmittedVariables"
+                                [conditions]="{ showUploader: true }" [content]="template.applicationSubmitted"
+                                [height]="700"></app-text-editor>
+                            <div *ngIf=" f['applicationSubmitted'].errors" class="invalid-feedback">
+                                <div *ngIf="f['applicationSubmitted'].errors['required']">Application Submitted is
+                                    required</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-md btn-primary text-right">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
