@@ -30,7 +30,12 @@
                         "inlineStyleLanguage": "scss",
                         "assets": [
                             "src/favicon.ico",
-                            "src/assets"
+                            "src/assets",
+                            {
+                                "glob": "**/*",
+                                "input": "node_modules/tinymce",
+                                "output": "/"
+                            }
                         ],
                         "styles": [
                             "src/styles.scss",
@@ -38,12 +43,18 @@
                             "node_modules/ngx-toastr/toastr.css"
                         ],
                         "scripts": [
+                            "node_modules/tinymce/tinymce.min.js",
                             "node_modules/jquery/dist/jquery.min.js",
                             "node_modules/bootstrap/dist/js/bootstrap.js",
                             "src/assets/js/core/material-dashboard.min.js"
                         ],
                         "allowedCommonJsDependencies": [
-                            "sweetalert2"
+                            "sweetalert2",
+                            "gatekeeper-client-sdk",
+                            "path",
+                            "os",
+                            "fs",
+                            "angular2-chartjs"
                         ]
                     },
                     "configurations": {

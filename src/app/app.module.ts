@@ -45,4 +45,4 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
     ],
     bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

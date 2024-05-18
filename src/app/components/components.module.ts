@@ -33,6 +33,7 @@ import { InputComponent } from './input/input.component';
         PermissionsComponent,
         LogsComponent,
         InputComponent,
+
     ],
     exports: [
         NavbarComponent,
