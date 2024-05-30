@@ -118,6 +118,8 @@ export class GrantsTeamReviewComponent implements OnInit {
     clear() {
         this.attachments = [];
         this.form.reset();
+        this.form.get('grantee')?.patchValue(false);
+        this.form.get('needs_resolution')?.patchValue(false);
         this.form.get('type')?.patchValue('grants_team_review');
     }
 
