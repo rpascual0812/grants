@@ -95,11 +95,11 @@ export class DueDiligenceFinalReviewComponent {
         this.submitted = true;
         if (!this.form.invalid) {
             this.form.get('application_pk')?.patchValue(this.currentApplication?.pk);
-            console.log(this.form.value);
             this.applicationService
                 .saveReview(this.form.value)
                 .subscribe({
                     next: (data: any) => {
+                        console.log('user', data.data);
                         data.data.user = this.user;
                         this.reviews.push(data.data);
                         this.clear();
@@ -121,6 +121,8 @@ export class DueDiligenceFinalReviewComponent {
     clear() {
         this.attachments = [];
         this.form.reset();
+        this.form.get('grantee')?.patchValue(false);
+        this.form.get('needs_resolution')?.patchValue(false);
         this.form.get('type')?.patchValue('final_review');
     }
 
