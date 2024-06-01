@@ -89,6 +89,9 @@ export class OrganizationProfileComponent implements OnInit {
         const appOrg = currentApplication?.partner?.organization;
         const orgPk = appOrg?.organization_pk;
         this.selectedOrganization = orgPk ? orgList?.find((org) => org.pk === orgPk)?.name ?? '' : '';
+        if (this.selectedOrganization === KIND_OF_ORGANIZATION_MAPPER[4]) {
+            this.addValidators(`tribe`);
+        }
     }
 
     fetchOrgList() {
@@ -143,6 +146,7 @@ export class OrganizationProfileComponent implements OnInit {
 
             const defaultFalseFields = ['youth_organization', 'fisherfolks', 'farmers_group'];
             defaultFalseFields.forEach((key) => this.onChangeSelectedBoolOpt('false', key));
+            this.removeValidators(`tribe`);
             return;
         }
 
@@ -155,6 +159,7 @@ export class OrganizationProfileComponent implements OnInit {
                 'fisherfolks',
             ];
             defaultTrueFields.forEach((key) => this.onChangeSelectedBoolOpt('true', key));
+            this.removeValidators(`tribe`);
             return;
         }
 
@@ -168,8 +173,20 @@ export class OrganizationProfileComponent implements OnInit {
             ];
             defaultFalseFields.forEach((key) => this.onChangeSelectedBoolOpt('false', key));
             this.form.controls['tribe'].setValue(this.tribeIndicateList?.at(0) ?? '');
+            this.addValidators(`tribe`);
             return;
         }
+    }
+
+    addValidators(key: string) {
+        this.form.controls[key]?.addValidators(Validators?.required);
+        this.form.controls[key]?.updateValueAndValidity();
+    }
+
+    removeValidators(key: string) {
+        this.form?.controls?.[key]?.setErrors(null);
+        this.form?.controls?.[key]?.clearValidators();
+        this.form?.controls?.[key]?.updateValueAndValidity();
     }
 
     onChangeSelectedBoolOpt(value: string, key: string) {

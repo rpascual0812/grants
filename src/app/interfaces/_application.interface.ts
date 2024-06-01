@@ -370,3 +370,10 @@ export interface Province {
     user_pk?: number;
     archived?: boolean;
 }
+
+export interface KindOfOrganization {
+    pk?: number;
+    name?: string;
+    description?: string;
+    archived?: boolean;
+}
