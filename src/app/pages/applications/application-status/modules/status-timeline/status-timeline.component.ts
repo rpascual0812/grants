@@ -46,7 +46,13 @@ export class StatusTimelineComponent implements OnInit {
         'grants_team_review': 'Grants Team Review',
         'advisers_review': 'Advisers Review',
         'financial_management_capacity': 'Financial Management Capacity',
-        'final_review': 'Due Diligence Final Review'
+        'final_review': 'Due Diligence Final Review',
+
+        'contract_preparation': 'Contract Preparation',
+        'final_approval': 'Final Approval',
+        'partner_signing': 'Partner Signing',
+        'fund_release': 'Fund Release',
+        'completed': 'Completed',
     };
 
     data = APPLICATION_TIMELINE_STATUS_DATA_MOCK as ApplicationStatusData[];
@@ -56,6 +62,7 @@ export class StatusTimelineComponent implements OnInit {
     ngOnInit() {
         const applicationStatuses = ['Grants Team Review', 'Advisers Review', 'Financial Management Capacity', 'Due Diligence Final Review', 'Approved'];
         const applicationType = ['grants_team_review', 'advisers_review', 'financial_management_capacity', 'final_review'];
+        const projectType = ['contract_preparation', 'final_approval', 'partner_signing', 'fund_release', 'completed'];
 
         let applicationTimeline = [];
         let grants_application: any = {
@@ -120,13 +127,37 @@ export class StatusTimelineComponent implements OnInit {
             }
 
             let approved: any = {
-                title: 'Approved',
+                title: 'Grants Approved',
                 items: [],
                 status: this.application?.status == 'Approved' ? 'complete' : 'on-progress',
-                showVerticalLine: false
+                showVerticalLine: true
             }
 
+            // check project reviews
+            let isCompleted = false;
+            this.application?.project?.recommendations?.filter(recommendation => projectType.includes(recommendation.type))
+                .forEach(recommendation => {
+                    const item = {
+                        label: this.types[recommendation.type],
+                        message: '',
+                        status: 'complete'
+                    };
+                    approved.items.push(item);
+
+                    if (recommendation.type == 'completed') {
+                        isCompleted = true;
+                    }
+                });
+
             applicationTimeline.push(approved);
+
+            let completed: any = {
+                title: 'Completed',
+                items: [],
+                status: isCompleted ? 'complete' : 'on-progress',
+                showVerticalLine: false
+            }
+            applicationTimeline.push(completed);
         }
 
         this.timeline = applicationTimeline;

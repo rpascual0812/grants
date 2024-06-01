@@ -191,6 +191,8 @@ export interface Project {
     project_proposal?: ProjectProposal;
     project_beneficiary?: ProjectBeneficiary;
     project_location?: ProjectLocation[];
+    reviews?: Review[];
+    recommendations?: Recommendation[];
     type?: Type;
 }
 
