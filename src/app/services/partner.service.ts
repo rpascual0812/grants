@@ -24,6 +24,10 @@ export class PartnerService {
         return this.http.post(`${_.BASE_URL}/partner/assessment`, data);
     }
 
+    deletePartnerAssessment(partnerPk?: number, partnerAssessmentPk?: number) {
+        return this.http.delete(`${_.BASE_URL}/partner/${partnerPk}/assessment/${partnerAssessmentPk}`);
+    }
+
     save(data: any) {
         return this.http.post(`${_.BASE_URL}/partner`, data);
     }
