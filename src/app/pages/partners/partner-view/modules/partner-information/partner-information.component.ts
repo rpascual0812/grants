@@ -16,7 +16,7 @@ export class PartnerInformationComponent implements OnInit {
     partnerSignalService = inject(PartnerSignalService);
     SERVER: string = _.BASE_URL;
 
-    constructor(private modalService: BsModalService, private changeDetection: ChangeDetectorRef) { }
+    constructor(private modalService: BsModalService, private changeDetection: ChangeDetectorRef) {}
 
     partnerSignalEffect = effect(
         () => {
