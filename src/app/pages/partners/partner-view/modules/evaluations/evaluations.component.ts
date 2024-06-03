@@ -81,6 +81,29 @@ export class EvaluationsComponent implements OnInit {
         });
     }
 
+    deleteAssessment(assessmentPk?: number) {
+        this.partnerService.deletePartnerAssessment(this.partner?.pk, assessmentPk).subscribe({
+            next: (res: any) => {
+                const status = res?.status;
+                if (status) {
+                    this.partnerAssessments = this.partnerAssessments?.filter(
+                        (assessment) => assessment?.pk !== assessmentPk
+                    );
+                    this.changeDetection.detectChanges();
+                } else {
+                    this.toastr.error(`An error occurred while deleting Assessments. Please try again.`, 'ERROR!');
+                }
+            },
+            error: (err) => {
+                const { statusCode, errorMessage } = extractErrorMessage(err);
+                this.toastr.error(
+                    `An error occurred while deleting Assessments. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+            },
+        });
+    }
+
     modifyList(data: PartnerAssessment) {
         const partnerAssessment = data;
         const existingAssessment = this.partnerAssessments?.find((item) => item.pk === partnerAssessment?.pk);
@@ -141,5 +164,9 @@ export class EvaluationsComponent implements OnInit {
     handleEdit(pk?: number) {
         this.partnerAssessment = this.partnerAssessments.find((item) => item?.pk === pk) ?? null;
         this.handleOpenModal();
+    }
+
+    handleDelete(pk?: number) {
+        this.deleteAssessment(pk);
     }
 }

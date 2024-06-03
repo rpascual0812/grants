@@ -27,7 +27,8 @@
                 </div>
             </div>
 
-            <div *ngFor="let item of partnerAssessments; index as i" 
+            <div
+                *ngFor="let item of partnerAssessments; index as i"
                 class="row align-items-center mx-0 my-3"
                 [ngClass]="{ 'border-top border-secondary': i !== 0 }"
             >
@@ -62,6 +63,9 @@
                         (click)="handleEdit(item?.pk)"
                     >
                         <i class="material-icons">edit</i>
+                    </button>
+                    <button (click)="handleDelete(item?.pk)" class="btn btn-icon-only my-1" *ngIf="item?.created_by === user?.pk">
+                        <i class="material-icons">delete</i>
                     </button>
                 </div>
             </div>
