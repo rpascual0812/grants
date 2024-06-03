@@ -126,7 +126,7 @@ export class StatusTimelineComponent implements OnInit {
                 review_and_processing.status = 'complete';
             }
 
-            let approved: any = {
+            let grantsApproved: any = {
                 title: 'Grants Approved',
                 items: [],
                 status: this.application?.status == 'Approved' ? 'complete' : 'on-progress',
@@ -142,14 +142,25 @@ export class StatusTimelineComponent implements OnInit {
                         message: '',
                         status: 'complete'
                     };
-                    approved.items.push(item);
+                    grantsApproved.items.push(item);
 
                     if (recommendation.type == 'completed') {
                         isCompleted = true;
                     }
+
+                    if (this.types[recommendation.type] == 'Fund Release') {
+                        this.application?.project?.project_funding?.forEach((fund: any) => {
+                            const tranches = {
+                                label: fund.title + ' - ' + fund.project_funding_report[fund.project_funding_report.length - 1].status,
+                                message: '',
+                                status: fund.project_funding_report[fund.project_funding_report.length - 1].status ?? 'none'
+                            };
+                            grantsApproved.items.push(tranches);
+                        });
+                    }
                 });
 
-            applicationTimeline.push(approved);
+            applicationTimeline.push(grantsApproved);
 
             let completed: any = {
                 title: 'Completed',

@@ -36,11 +36,14 @@
                         <ul class="timeline-content-list-group m-0 p-0 my-1">
                             <li *ngFor="let item of timeline?.items"
                                 class="timeline-content-list-item d-flex flex-wrap gap-2 align-items-center m-0 my-2 p-0">
-                                <span *ngIf="['approved', 'complete', 'on-progress'].includes(item?.status ?? '')"
+                                <span
+                                    *ngIf="['approved', 'complete', 'on-progress', 'incomplete', 'for review', 'none'].includes(item?.status ?? '')"
                                     [ngClass]="{
                                                     'bg-info': item?.status === 'complete',
                                                     'bg-secondary': item?.status === 'on-progress',
-                                                    'bg-success': item?.status === 'approved'
+                                                    'bg-success': item?.status === 'approved',
+                                                    'bg-dark': item?.status === 'none' || item?.status === 'for review',
+                                                    'bg-warning': item?.status === 'incomplete'
                                                 }" class="fill-bullet border border-0 rounded-circle"></span>
 
                                 <div class="row">

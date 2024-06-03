@@ -1,3 +1,5 @@
+import { ProjectFunding } from "./_project.interface";
+
 // TODO: please use this for the new application save
 export interface Application {
     pk?: number;
@@ -191,6 +193,7 @@ export interface Project {
     project_proposal?: ProjectProposal;
     project_beneficiary?: ProjectBeneficiary;
     project_location?: ProjectLocation[];
+    project_funding?: ProjectFunding[];
     reviews?: Review[];
     recommendations?: Recommendation[];
     type?: Type;
