@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Project } from 'src/app/interfaces/_application.interface';
+import { DateTime } from 'luxon';
 import { PartnerForm, PartnerSignalService } from 'src/app/services/partner.signal.service';
 
 @Component({
@@ -13,5 +13,13 @@ export class ProjectsComponent implements OnInit {
 
     ngOnInit() {
         this.partner = this.partnerSignalService.partnerForm();
+    }
+
+    getDateEnd(duration: string, dateCreated?: Date) {
+        const numberOfMonth = duration?.split(' ')?.at(0);
+        if (dateCreated && numberOfMonth) {
+            return DateTime.fromJSDate(new Date(dateCreated)).plus({ month: Number(numberOfMonth)}).toJSDate()
+        }
+        return ''
     }
 }
