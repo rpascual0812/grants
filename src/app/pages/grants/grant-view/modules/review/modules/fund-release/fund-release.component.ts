@@ -51,11 +51,14 @@ export class FundReleaseComponent {
         this.setForm();
         this.reviews = this.project?.reviews.filter((review: any) => review.type == 'fund_release');
 
-        this.user = this.userSignalService.user();
+        setTimeout(() => {
+            this.user = this.userSignalService.user();
 
-        this.user?.user_role?.forEach((user_role: any) => {
-            this.permission.fund_release = this.restrictions[user_role.role.restrictions.fund_release] > this.restrictions[this.permission.fund_release] ? user_role.role.restrictions.fund_release : this.permission.fund_release;
-        });
+            this.user?.user_role?.forEach((user_role: any) => {
+                this.permission.fund_release = this.restrictions[user_role.role.restrictions.fund_release] > this.restrictions[this.permission.fund_release] ? user_role.role.restrictions.fund_release : this.permission.fund_release;
+            });
+            this.cdr.detectChanges();
+        }, 1000);
 
         if (this.project?.recommendations) {
             this.project?.recommendations.forEach(recommendation => {
