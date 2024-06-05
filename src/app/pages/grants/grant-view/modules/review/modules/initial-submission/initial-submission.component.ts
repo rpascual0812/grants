@@ -51,11 +51,14 @@ export class InitialSubmissionComponent implements OnInit {
         this.setForm();
         this.reviews = this.project?.reviews.filter((review: any) => review.type == 'initial_submission');
 
-        this.user = this.userSignalService.user();
+        setTimeout(() => {
+            this.user = this.userSignalService.user();
 
-        this.user?.user_role?.forEach((user_role: any) => {
-            this.permission.contract_finalization = this.restrictions[user_role.role.restrictions.contract_finalization] > this.restrictions[this.permission.contract_finalization] ? user_role.role.restrictions.contract_finalization : this.permission.contract_finalization;
-        });
+            this.user?.user_role?.forEach((user_role: any) => {
+                this.permission.contract_finalization = this.restrictions[user_role.role.restrictions.contract_finalization] > this.restrictions[this.permission.contract_finalization] ? user_role.role.restrictions.contract_finalization : this.permission.contract_finalization;
+            });
+            this.cdr.detectChanges();
+        }, 1000);
 
         if (this.project?.recommendations) {
             this.project?.recommendations.forEach(recommendation => {

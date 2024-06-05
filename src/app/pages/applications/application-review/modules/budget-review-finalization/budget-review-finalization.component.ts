@@ -53,11 +53,14 @@ export class BudgetReviewFinalizationComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.user = this.userSignalService.user();
+        setTimeout(() => {
+            this.user = this.userSignalService.user();
 
-        this.user?.user_role?.forEach((user_role: any) => {
-            this.permission.grant_application = this.restrictions[user_role.role.restrictions.grant_application] > this.restrictions[this.permission.grant_application] ? user_role.role.restrictions.grant_application : this.permission.grant_application;
-        });
+            this.user?.user_role?.forEach((user_role: any) => {
+                this.permission.grant_application = this.restrictions[user_role.role.restrictions.grant_application] > this.restrictions[this.permission.grant_application] ? user_role.role.restrictions.grant_application : this.permission.grant_application;
+            });
+            this.cdr.detectChanges();
+        }, 1000);
 
         if (this.currentApplication?.documents) {
             this.currentApplication?.documents.forEach(doc => {
