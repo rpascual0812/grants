@@ -10,9 +10,6 @@
                 <div class="col-2">
                     <p class="text-dark text-sm p-0 m-0 font-weight-bold">Project</p>
                 </div>
-                <!-- <div class="col-2">
-                    <p class="text-dark text-sm p-0 m-0 font-weight-bold">Grants</p>
-                </div> -->
                 <div class="col-2">
                     <p class="text-dark text-sm p-0 m-0 font-weight-bold">Grant Amount</p>
                 </div>
@@ -37,24 +34,24 @@
                         {{ item?.project?.title }}
                     </a>
                 </div>
-                <!-- <div class="col-2">
-                    <p class="text-gray text-sm p-0 m-0 font-weight-bold">Grants</p>
-                </div> -->
                 <div class="col-2">
-                    <p class="text-gray text-sm p-0 m-0 font-weight-bold"></p>
+                    <p class="text-gray text-sm p-0 m-0 font-weight-bold">
+                        {{ item?.project?.project_proposal?.budget_request_usd | number }} USD
+                    </p>
                 </div>
                 <div class="col-2">
-                    <p class="text-gray text-sm p-0 m-0 font-weight-bold"></p>
+                    <p class="text-gray text-sm p-0 m-0 font-weight-bold">
+                        {{ item?.project?.date_created | date : 'shortDate' }}
+                    </p>
                 </div>
                 <div class="col-1">
-                    <p class="text-gray text-sm p-0 m-0 font-weight-bold"></p>
+                    <p class="text-gray text-sm p-0 m-0 font-weight-bold">
+                        {{
+                            getDateEnd(item?.project?.duration ?? '', item?.project?.date_created) | date : 'shortDate'
+                        }}
+                    </p>
                 </div>
-                <div class="col-3">
-                    <!-- <div class="flex d-flex flex-row">
-                        <button class="btn btn-default text-dark-blue text-capitalize text-sm">Approved</button>
-                        <button class="btn btn-dark-blue text-capitalize text-sm">Open</button>
-                    </div> -->
-                </div>
+                <div class="col-3"></div>
             </div>
         </div>
     </div>
