@@ -41,18 +41,12 @@ export class EmailTemplatesComponent implements OnInit {
             'reset_password_url'
         ],
         applicationVariables: [
-            'first_name',
-            'middle_name',
-            'last_name',
+            'partner_name',
             'email_address',
 
             'application_url',
         ],
         applicationSubmittedVariables: [
-            'first_name',
-            'middle_name',
-            'last_name',
-            'email_address',
 
             'application_date',
             'application_donor',
@@ -66,9 +60,7 @@ export class EmailTemplatesComponent implements OnInit {
             'proponent_id',
             'proponent_name',
             'proponent_website',
-            'proponent_organization_name',
 
-            'project_amount_requested',
             'project_background',
             'project_country',
             'project_local_currency',

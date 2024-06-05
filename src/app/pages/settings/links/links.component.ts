@@ -95,7 +95,7 @@ export class LinksComponent {
     }
 
     resendEmail(type: any, i: number) {
-        this.applicationService.resendSuccessEmail({ application_pk: this.applications[i].pk, type }).subscribe({
+        this.applicationService.resendSuccessEmail({ application_pk: this.applications[i].pk, type, url: window.location.origin }).subscribe({
             next: (res: any) => {
                 console.log(res);
             },

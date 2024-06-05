@@ -38,7 +38,7 @@ export class LinkGeneratorComponent {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     get f() {
         return this.form.controls;
@@ -63,6 +63,7 @@ export class LinkGeneratorComponent {
         this.form = this.formBuilder.group({
             pk: [''],
             uuid: [this.uuid, Validators.required],
+            url: [window.location.origin, Validators.required],
             link: [this.link, Validators.required],
             email_address: [this.email_address, Validators.required],
             partner_pk: [this.partner_pk],
