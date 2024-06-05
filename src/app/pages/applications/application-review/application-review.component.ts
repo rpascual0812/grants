@@ -54,6 +54,7 @@ export class ApplicationReviewComponent implements OnInit {
                 });
 
                 this.currentApplication = data;
+
                 this.loading = false;
             },
             error: (err: any) => {

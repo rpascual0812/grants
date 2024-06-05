@@ -9,6 +9,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
 import { UserService } from 'src/app/services/user.service';
 import { DateTime } from 'luxon';
+import { ApplicationService } from 'src/app/services/application.service';
+import { Application } from 'src/app/interfaces/_application.interface';
 
 @Component({
     selector: 'app-review',
@@ -20,13 +22,31 @@ export class ReviewComponent implements OnInit {
     @Input() project: Project | null = null;
     @Output() callback = new EventEmitter<boolean>();
 
-    constructor() { }
+    application: Application | null = null;
+
+    constructor(
+        private applicationService: ApplicationService
+    ) { }
 
     ngOnInit() {
-        // console.log(this.project);
+        this.fetchApplication();
     }
 
     recommendationSaved() {
         this.callback.emit(true);
+    }
+
+    fetchApplication() {
+        this.applicationService.review(this.project?.application?.number).subscribe({
+            next: (res: any) => {
+                const data: Application = res?.data ?? null;
+
+                this.application = data;
+                console.log('application', this.application);
+            },
+            error: (err: any) => {
+                console.log(err);
+            },
+        });
     }
 }

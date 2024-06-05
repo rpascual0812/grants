@@ -39,9 +39,8 @@
                                 <span
                                     *ngIf="['approved', 'complete', 'on-progress', 'incomplete', 'for review', 'none'].includes(item?.status ?? '')"
                                     [ngClass]="{
-                                                    'bg-info': item?.status === 'complete',
+                                                    'bg-info': item?.status === 'complete' || item?.status === 'approved',
                                                     'bg-secondary': item?.status === 'on-progress',
-                                                    'bg-success': item?.status === 'approved',
                                                     'bg-dark': item?.status === 'none' || item?.status === 'for review',
                                                     'bg-warning': item?.status === 'incomplete'
                                                 }" class="fill-bullet border border-0 rounded-circle"></span>

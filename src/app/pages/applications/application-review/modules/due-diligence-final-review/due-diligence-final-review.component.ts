@@ -24,6 +24,7 @@ type GrantTypeItem = {
 })
 export class DueDiligenceFinalReviewComponent {
     @Input() currentApplication: Application | null;
+    @Input() module: string | null;
     @Output() recommendationSaved = new EventEmitter<boolean>();
     reviews: any = [];
     dateNow = DateTime.now().toFormat('LLLL dd, yyyy');

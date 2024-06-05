@@ -52,7 +52,6 @@ export class GrantViewComponent implements OnInit {
 
     ngOnInit() {
         this.user = this.userSignalService.user();
-        console.log(777, this.user);
 
         this.user?.user_role?.forEach((user_role: any) => {
             this.permission.contract_finalization = this.restrictions[user_role.role.restrictions.contract_finalization] > this.restrictions[this.permission.contract_finalization] ? user_role.role.restrictions.contract_finalization : this.permission.contract_finalization;

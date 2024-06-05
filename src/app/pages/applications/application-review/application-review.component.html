@@ -160,7 +160,7 @@
                 [currentApplication]="currentApplication"></app-financial-management-capacity>
             <app-due-diligence-final-review (recommendationSaved)="fetch()"
                 *ngIf="['Due Diligence Final Review', 'Approved'].includes(currentApplication?.status ?? '')"
-                [currentApplication]="currentApplication"></app-due-diligence-final-review>
+                [currentApplication]="currentApplication" [module]="'application'"></app-due-diligence-final-review>
         </ng-container>
     </div>
 </main>
