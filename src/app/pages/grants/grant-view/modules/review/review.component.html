@@ -1,12 +1,21 @@
 <div>
+    <app-grants-team-review *ngIf="application" [currentApplication]="application"></app-grants-team-review>
+    <app-advisers-review *ngIf="application" [currentApplication]="application"></app-advisers-review>
+    <app-budget-review-finalization *ngIf="application"
+        [currentApplication]="application"></app-budget-review-finalization>
+    <app-financial-management-capacity *ngIf="application"
+        [currentApplication]="application"></app-financial-management-capacity>
+    <app-due-diligence-final-review *ngIf="application" [currentApplication]="application"
+        [module]="'grants'"></app-due-diligence-final-review>
+
     <app-initial-submission [project]="project" (recommendationSaved)="recommendationSaved()"
-        *ngIf="['', 'Initial Submission', 'Contract Preparation', 'Final Approval', 'Partner Signing'].includes(project?.status ?? '')"></app-initial-submission>
+        *ngIf="['', 'Initial Submission', 'Contract Preparation', 'Final Approval', 'Partner Signing', 'Fund Release', 'Completed'].includes(project?.status ?? '')"></app-initial-submission>
     <app-contract-preparation [project]="project" (recommendationSaved)="recommendationSaved()"
-        *ngIf="['Contract Preparation', 'Final Approval', 'Partner Signing'].includes(project?.status ?? '')"></app-contract-preparation>
+        *ngIf="['Contract Preparation', 'Final Approval', 'Partner Signing', 'Fund Release', 'Completed'].includes(project?.status ?? '')"></app-contract-preparation>
     <app-final-approval [project]="project" (recommendationSaved)="recommendationSaved()"
-        *ngIf="['Final Approval', 'Partner Signing'].includes(project?.status ?? '')"></app-final-approval>
+        *ngIf="['Final Approval', 'Partner Signing', 'Fund Release', 'Completed'].includes(project?.status ?? '')"></app-final-approval>
     <app-partner-signing [project]="project" (recommendationSaved)="recommendationSaved()"
-        *ngIf="['Partner Signing'].includes(project?.status ?? '')"></app-partner-signing>
+        *ngIf="['Partner Signing', 'Fund Release', 'Completed'].includes(project?.status ?? '')"></app-partner-signing>
     <app-fund-release [project]="project" (recommendationSaved)="recommendationSaved()"
         *ngIf="['Fund Release', 'Completed'].includes(project?.status ?? '')"></app-fund-release>
     <app-completed [project]="project" (recommendationSaved)="recommendationSaved()"
