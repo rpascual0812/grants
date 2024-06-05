@@ -143,8 +143,8 @@ export class ApplicationService {
         );
     }
 
-    sendSuccessEmail(pk: any) {
-        return this.http.post(`${_.BASE_URL}/application/${pk}/success/email`, {});
+    sendSuccessEmail(uuid: any) {
+        return this.http.post(`${_.BASE_URL}/application/${uuid}/success/email`, { url: window.location.origin });
     }
 
     resendSuccessEmail(data: any) {

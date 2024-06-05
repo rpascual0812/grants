@@ -45,8 +45,8 @@ export class ApplicationSuccessComponent implements OnInit {
     }
 
     sendEmail(data: any) {
-        this.applicationService.sendSuccessEmail(data.pk).subscribe({
-            next: (res: any) => {},
+        this.applicationService.sendSuccessEmail(data.uuid).subscribe({
+            next: (res: any) => { },
             error: (err) => {
                 const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
                 const statusCode = err?.status ? `status: ${err?.status}` : '';
