@@ -28,18 +28,20 @@
                     }}</p>
                 <div class="d-flex flex-column flex-md-row gap-1 align-items-md-center">
                     <p class="m-0">
-                        Flag:
+                        <span *ngIf="review.needs_resolution || review.grantee">Flag: </span>
                         <span *ngIf="review.needs_resolution">Needs Resolution</span>
                         <span class="mx-2" *ngIf="review.needs_resolution && review.grantee">|</span>
                         <span *ngIf="review.grantee">Grantee</span>
-                        <span class="badge text-bg-danger text-white mx-2" *ngIf="!review.resolved">Not Yet
+                        <span class="badge text-bg-danger text-white mx-2" *ngIf="review.needs_resolution && !review.resolved">Not Yet
                             Started</span>
-                        <span class="badge text-bg-success text-white mx-2" *ngIf="review.resolved">Marked as
+                        <span class="badge text-bg-success text-white mx-2" *ngIf="review.needs_resolution && review.resolved">Marked as
                             Resolved</span>
                     </p>
                     <button class="btn btn-icon-only btn-danger rounded-circle" (click)="delete(i)"
                         *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
-                        <i class="material-icons text-xl">delete</i>
+                        <span class="position-relative bottom-10 end-10">
+                            <i class="material-icons">delete</i>
+                        </span>
                     </button>
                 </div>
             </div>
@@ -131,7 +133,7 @@
                                         for="final_review-grantee">Grantee</label>
                                 </div>
                                 <button class="btn btn-dark p-1" style="min-width: 150px; max-height: 30px"
-                                    [disabled]="submitted">Save</button>
+                                    [disabled]="form.invalid">Save</button>
                             </div>
                         </div>
                     </form>
