@@ -8,6 +8,7 @@ import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
 type GrantPerCountry = {
     country_name: string;
+    country_code: string;
     country_pk: string;
     total: string;
 };
@@ -28,9 +29,10 @@ const toKebabCase = (text: string) => {
 const getCountryFlagPng = (country: string) => {
     // Country flag references
     // https://emojipedia.org/joypixels/8.0/
-    const FLAG_ASSET_BASE_PATH = `../../../assets/images/flags`;
-    const countryName = toKebabCase(country);
-    const png = `${FLAG_ASSET_BASE_PATH}/flag-${countryName}.png`;
+    // const FLAG_ASSET_BASE_PATH = `../../../assets/images/flags`;
+    // const countryName = toKebabCase(country);
+    // const png = `${FLAG_ASSET_BASE_PATH}/flag-${countryName}.png`;
+    const png = `https://flagsapi.com/${country}/flat/64.png`;
     const image = new Image();
     image.src = png;
     return image;
@@ -97,7 +99,7 @@ export class TotalGrantsPerCountryComponent implements OnInit {
         },
     ];
 
-    constructor(private projectService: ProjectService, private toastr: ToastrService) {}
+    constructor(private projectService: ProjectService, private toastr: ToastrService) { }
 
     ngOnInit() {
         this.fetch();
@@ -109,9 +111,10 @@ export class TotalGrantsPerCountryComponent implements OnInit {
         let highestData = 0;
         groupedProjectCountry.forEach((project) => {
             const total = Number(project?.total ?? 0);
-            const label = project?.country_name ?? '';
+            // const label = project?.country_name ?? '';
+            const code = project?.country_code ?? '';
             highestData = Math.max(highestData, total);
-            labels.push(label);
+            labels.push(code);
             data.push(total);
         });
         return {
