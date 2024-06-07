@@ -87,6 +87,7 @@ export class UsersComponent implements OnInit {
     fetch() {
         this.filters.skip = (this.pagination.page * this.pagination.tableSize) - this.pagination.tableSize;
         this.filters.take = this.pagination.tableSize;
+        this.filters.orderBy = 'Sort by Name';
 
         this.userService
             .fetchAll(this.filters)
