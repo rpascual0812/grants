@@ -1,6 +1,10 @@
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
-import { Application, Document, FinancialHumanResources, PartnerOrganizationOtherInformation } from 'src/app/interfaces/_application.interface';
+import {
+    Application,
+    Document,
+    PartnerOrganizationOtherInformation,
+} from 'src/app/interfaces/_application.interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { ApplicationService } from 'src/app/services/application.service';
@@ -42,15 +46,18 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
         public documentUploaderRef: BsModalRef,
         private cdr: ChangeDetectorRef,
         private documentService: DocumentService
-    ) { }
+    ) {}
 
     ngOnInit(): void {
-        this.attachments = this.currentApplication?.partner?.organization?.partner_organization_other_information?.documents ?? [];
+        this.attachments =
+            this.currentApplication?.partner?.organization?.partner_organization_other_information?.documents ?? [];
         this.setForm();
     }
 
     setForm() {
-        this.otherInformation = this.currentApplication?.partner?.organization?.partner_organization_other_information ?? {};
+        this.otherInformation =
+            this.currentApplication?.partner?.organization?.partner_organization_other_information ?? {};
+
         this.humanResources = this.otherInformation?.organization_other_information_financial_human_resources ?? [];
 
         this.form = this.formBuilder.group({
@@ -63,9 +70,9 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
             has_reviewed_financial_system: [this.otherInformation?.has_reviewed_financial_system ?? false],
             recommendation: [this.otherInformation?.recommendation ?? ''],
             documents: [''],
-            human_resources: ['']
+            human_resources: [''],
         });
-        this.initialPartnerOrgOtherInfo();
+        this.initialPartnerOrgOtherInfo(this.otherInformation);
     }
 
     get f() {
@@ -123,37 +130,31 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
             partner_organization_pk: this.currentApplication?.partner?.organization?.pk,
             pk: this.otherInformation?.pk,
             ...value,
-        }
+        };
 
-        this.applicationService
-            .savePartnerOtherInfo(otherInfo)
-            .subscribe({
-                next: (data: any) => {
-                    this.callback.emit({ ...otherInfo });
-                    this.toastr.success(
-                        'The Other Information has been successfully ' +
-                        (otherInfo?.pk ? 'updated' : 'added'),
-                        'SUCCESS!'
-                    );
-                },
-                error: (error: any) => {
-                    console.log(error);
-                    this.toastr.error(
-                        'An error occurred while updating the Other Information. Please try again',
-                        'ERROR!'
-                    );
-                    setTimeout(() => {
-                        this.loading = false;
-                    }, 500);
-                },
-                complete: () => {
-                    console.log('Complete');
-                    setTimeout(() => {
-                        this.loading = false;
-                    }, 500);
-                    this.bsModalRef.hide();
-                },
-            });
+        this.applicationService.savePartnerOtherInfo(otherInfo).subscribe({
+            next: (data: any) => {
+                this.callback.emit({ ...otherInfo });
+                this.toastr.success(
+                    'The Other Information has been successfully ' + (otherInfo?.pk ? 'updated' : 'added'),
+                    'SUCCESS!'
+                );
+            },
+            error: (error: any) => {
+                console.log(error);
+                this.toastr.error('An error occurred while updating the Other Information. Please try again', 'ERROR!');
+                setTimeout(() => {
+                    this.loading = false;
+                }, 500);
+            },
+            complete: () => {
+                console.log('Complete');
+                setTimeout(() => {
+                    this.loading = false;
+                }, 500);
+                this.bsModalRef.hide();
+            },
+        });
     }
 
     handleAddHumanResource() {
@@ -203,7 +204,7 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
 
     uploadFiles() {
         const initialState: ModalOptions = {
-            class: 'modal-lg'
+            class: 'modal-lg',
         };
         this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
 
