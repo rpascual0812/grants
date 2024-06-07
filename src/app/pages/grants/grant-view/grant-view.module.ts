@@ -34,6 +34,7 @@ import { PhotosComponent } from './modules/grant-tab-views/documentations/module
 import { VideosComponent } from './modules/grant-tab-views/documentations/modules/videos/videos.component';
 import { DocumentsComponent } from './modules/grant-tab-views/documentations/modules/documents/documents.component';
 import { LinksComponent } from './modules/grant-tab-views/documentations/modules/links/links.component';
+import { EventModalComponent } from './modules/grant-tab-views/attendees/event-modal/event-modal.component';
 
 @NgModule({
     declarations: [
@@ -60,6 +61,7 @@ import { LinksComponent } from './modules/grant-tab-views/documentations/modules
         VideosComponent,
         DocumentsComponent,
         LinksComponent,
+        EventModalComponent,
     ],
     exports: [
         GrantViewComponent

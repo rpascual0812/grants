@@ -7,6 +7,7 @@ import { AttendeesModalComponent } from './attendees-modal/attendees-modal.compo
 import * as _ from '../../../../../../utilities/globals';
 import { ToastrService } from 'ngx-toastr';
 import { UserSignalService } from 'src/app/services/user.signal.service';
+import { EventModalComponent } from './event-modal/event-modal.component';
 
 @Component({
     selector: 'app-attendees',
@@ -88,7 +89,7 @@ export class AttendeesComponent implements OnInit {
         }
         else {
             this.projectService
-                .saveEvent({ project_pk: this.project?.pk, name: this.event_name })
+                .saveEvent({ project_pk: this.project?.pk, pk: null, name: this.event_name })
                 .subscribe({
                     next: (data: any) => {
                         data.data.name = this.event_name;
@@ -134,6 +135,36 @@ export class AttendeesComponent implements OnInit {
         });
     }
 
+    openEventModal(i: number | null) {
+        const title = i ? 'Edit ' + this.events[i].name : 'Add Event';
+
+        const initialState: ModalOptions = {
+            class: 'modal-lg',
+            initialState: {
+                title: title,
+                project_pk: this.project?.pk,
+                event: i !== null ? this.events[i] : {},
+            }
+        };
+        this.bsModalRef = this.modalService.show(EventModalComponent, initialState);
+        this.bsModalRef.content.saveBtnName = 'Save';
+        this.bsModalRef.content.closeBtnName = 'Close';
+        this.bsModalRef.content.activateBtnName = 'Activate';
+
+        this.bsModalRef.content.callback.subscribe((res: any) => {
+            try {
+                if (i !== null) {
+                    this.events[i] = res.data.data;
+                }
+                else {
+                    this.events.push(res.data.data);
+                }
+            } catch (error: any) {
+                _.errorMessage("This is a test error alert");
+            }
+        });
+    }
+
     deleteAttendee(attendee: any) {
         _.confirmMessage(
             {
@@ -161,6 +192,36 @@ export class AttendeesComponent implements OnInit {
                     error: (error: any) => {
                         console.log(error);
                         this.toastr.error('An error occurred while deleting attendee. Please try again', 'ERROR!');
+                    },
+                    complete: () => {
+                        console.log('Complete');
+                    },
+                });
+            }
+        );
+    }
+
+    deleteEvent(i: number) {
+        _.confirmMessage(
+            {
+                title: '<strong>Are you sure you want to delete this event?</strong>',
+                icon: 'question',
+                buttons: {
+                    showClose: true,
+                    showCancel: true,
+                    focusConfirm: false,
+                },
+                confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
+            },
+            () => {
+                this.projectService.destroyEvent(this.events[i]).subscribe({
+                    next: (data: any) => {
+                        this.events.splice(i, 1);
+                    },
+                    error: (error: any) => {
+                        console.log(error);
+                        this.toastr.error('An error occurred while deleting event. Please try again', 'ERROR!');
                     },
                     complete: () => {
                         console.log('Complete');

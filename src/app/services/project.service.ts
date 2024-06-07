@@ -120,6 +120,10 @@ export class ProjectService {
         return this.http.delete(`${_.BASE_URL}/projects/attendee/${data.pk}`);
     }
 
+    destroyEvent(data: any) {
+        return this.http.delete(`${_.BASE_URL}/projects/${data.project_pk}/events/${data.pk}`);
+    }
+
     fetchProjectOutput(data: { pk: number }) {
         return this.http.get(`${_.BASE_URL}/projects/${data.pk}/output`);
     }
