@@ -3,142 +3,277 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title pull-left">Fiscal Sponsor Bank Details</h4>
-                <button type="button" style="font-size: 20px !important; line-height: normal !important;"
-                    class="btn-close close btn-close-white" aria-label="Close" (click)="bsModalRef.hide()">
+                <button
+                    type="button"
+                    style="font-size: 20px !important; line-height: normal !important"
+                    class="btn-close close btn-close-white"
+                    aria-label="Close"
+                    (click)="bsModalRef.hide()"
+                >
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="row gap-0 align-items-center mt-3">
-                        <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">If none, is there a Fiscal
-                            Sponsor?</label>
+                        <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold"
+                            >If none, is there a Fiscal Sponsor?</label
+                        >
                         <div class="col-8">
-                            <select class="form-select bg-white p-1 border border-1 rounded w-20" [(ngModel)]="isHidden"
-                                *ngIf="action == 'edit'">
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
+                            <select
+                                class="form-select bg-white p-1 border border-1 rounded w-20"
+                                #selectIsVisibleField
+                                (change)="handleOnIsVisible(selectIsVisibleField.value)"
+                                *ngIf="action == 'edit'"
+                            >
+                                <option value="yes" [selected]="isVisible === 'yes'">Yes</option>
+                                <option value="no" [selected]="isVisible === 'no'">No</option>
                             </select>
-                            <p *ngIf="action == 'view'">{{isHidden == 'yes' ? 'Yes' : 'No'}}</p>
+                            <p *ngIf="action == 'view'">{{ isVisible === 'yes' ? 'Yes' : 'No' }}</p>
                         </div>
                     </div>
 
-                    <div class="row" *ngIf="isHidden == 'no'">
+                    <div class="row" *ngIf="isVisible === 'yes'">
                         <form [formGroup]="form" class="text-start" (ngSubmit)="submit()">
                             <div class="row gap-0 align-items-center my-3">
-                                <label class="col-8 text-dark text-sm px-2 m-0 font-weight-bold">If yes, Fiscal Sponsor
-                                    details:</label>
+                                <label class="col-8 text-dark text-sm px-2 m-0 font-weight-bold"
+                                    >If yes, Fiscal Sponsor details:</label
+                                >
                             </div>
                             <div class="row gap-0 align-items-center my-3">
-                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Name of the Fiscal
-                                    Sponsor</label>
+                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold"
+                                    >Name of the Fiscal Sponsor</label
+                                >
                                 <div class="col-8">
-                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="name" *ngIf="action == 'edit'" />
-                                    <p *ngIf="action == 'view'">{{f['name'].value}}</p>
+                                    <input
+                                        type="text"
+                                        class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="name"
+                                        *ngIf="action == 'edit'"
+                                        [ngClass]="{
+                                            'is-invalid': submitted && f['name'].errors
+                                        }"
+                                    />
+                                    <p *ngIf="action == 'view'">{{ f['name'].value }}</p>
+                                    <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['name'].errors['required']">Name of the Fiscal Sponsor is required</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Address</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="address" *ngIf="action == 'edit'" />
-                                    <p *ngIf="action == 'view'">{{f['address'].value}}</p>
+                                    <input
+                                        type="text"
+                                        class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="address"
+                                        *ngIf="action == 'edit'"
+                                        [ngClass]="{
+                                            'is-invalid': submitted && f['address'].errors
+                                        }"
+                                    />
+                                    <p *ngIf="action == 'view'">{{ f['address'].value }}</p>
+                                    <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['address'].errors['required']">Address is required</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
-                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Head of Fiscal Sponsor
-                                    organization</label>
+                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold"
+                                    >Head of Fiscal Sponsor organization</label
+                                >
                                 <div class="col-8">
-                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="head" *ngIf="action == 'edit'" />
-                                    <p *ngIf="action == 'view'">{{f['head'].value}}</p>
+                                    <input
+                                        type="text"
+                                        class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="head"
+                                        *ngIf="action == 'edit'"
+                                        [ngClass]="{
+                                            'is-invalid': submitted && f['head'].errors
+                                        }"
+                                    />
+                                    <p *ngIf="action == 'view'">{{ f['head'].value }}</p>
+                                    <div *ngIf="submitted && f['head'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['head'].errors['required']">Head of Fiscal Sponsor organization is required</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
-                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Point person
-                                    name</label>
+                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold"
+                                    >Point person name</label
+                                >
                                 <div class="col-8">
-                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="person_in_charge" *ngIf="action == 'edit'" />
-                                    <p *ngIf="action == 'view'">{{f['person_in_charge'].value}}</p>
+                                    <input
+                                        type="text"
+                                        class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="person_in_charge"
+                                        *ngIf="action == 'edit'"
+                                        [ngClass]="{
+                                            'is-invalid': submitted && f['person_in_charge'].errors
+                                        }"
+                                    />
+                                    <p *ngIf="action == 'view'">{{ f['person_in_charge'].value }}</p>
+                                    <div *ngIf="submitted && f['person_in_charge'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['person_in_charge'].errors['required']">Point person name is required</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Contact Number</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="contact_number" *ngIf="action == 'edit'" />
-                                    <p *ngIf="action == 'view'">{{f['contact_number'].value}}</p>
+                                    <input
+                                        type="text"
+                                        class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="contact_number"
+                                        *ngIf="action == 'edit'"
+                                        [ngClass]="{
+                                            'is-invalid': submitted && f['contact_number'].errors
+                                        }"
+                                    />
+                                    <p *ngIf="action == 'view'">{{ f['contact_number'].value }}</p>
+                                    <div *ngIf="submitted && f['contact_number'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['contact_number'].errors['required']">Contact Number is required</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
-                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Email
-                                    address</label>
+                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Email address</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="email_address" *ngIf="action == 'edit'" />
-                                    <p *ngIf="action == 'view'">{{f['contact_number'].value}}</p>
+                                    <input
+                                        type="text"
+                                        class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="email_address"
+                                        *ngIf="action == 'edit'"
+                                        [ngClass]="{
+                                            'is-invalid': submitted && f['email_address'].errors
+                                        }"
+                                    />
+                                    <p *ngIf="action == 'view'">{{ f['email_address'].value }}</p>
+                                    <div *ngIf="submitted && f['email_address'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['email_address'].errors['required']">Email address is required</div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="row gap-0 align-items-center my-3">
-                                <label class="col-8 text-dark text-sm px-2 m-0 font-weight-bold">Fiscal Sponsor
-                                    Details</label>
+                                <label class="col-8 text-dark text-sm px-2 m-0 font-weight-bold"
+                                    >Fiscal Sponsor Details</label
+                                >
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Account name</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="bank_account_name" *ngIf="action == 'edit'" />
-                                    <p *ngIf="action == 'view'">{{f['bank_account_name'].value}}</p>
+                                    <input
+                                        type="text"
+                                        class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="bank_account_name"
+                                        *ngIf="action == 'edit'"
+                                        [ngClass]="{
+                                            'is-invalid': submitted && f['bank_account_name'].errors
+                                        }"
+                                    />
+                                    <p *ngIf="action == 'view'">{{ f['bank_account_name'].value }}</p>
+                                    <div *ngIf="submitted && f['bank_account_name'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['bank_account_name'].errors['required']">Account name is required</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Account number</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="account_number" *ngIf="action == 'edit'" />
-                                    <p *ngIf="action == 'view'">{{f['account_number'].value}}</p>
+                                    <input
+                                        type="text"
+                                        class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="account_number"
+                                        *ngIf="action == 'edit'"
+                                        [ngClass]="{
+                                            'is-invalid': submitted && f['account_number'].errors
+                                        }"
+                                    />
+                                    <p *ngIf="action == 'view'">{{ f['account_number'].value }}</p>
+                                    <div *ngIf="submitted && f['account_number'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['account_number'].errors['required']">Account number is required</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Bank name</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="bank_name" *ngIf="action == 'edit'" />
-                                    <p *ngIf="action == 'view'">{{f['bank_name'].value}}</p>
+                                    <input
+                                        type="text"
+                                        class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="bank_name"
+                                        *ngIf="action == 'edit'"
+                                        [ngClass]="{
+                                            'is-invalid': submitted && f['bank_name'].errors
+                                        }"
+                                    />
+                                    <p *ngIf="action == 'view'">{{ f['bank_name'].value }}</p>
+                                    <div *ngIf="submitted && f['bank_name'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['bank_name'].errors['required']">Bank name is required</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Bank branch</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="bank_branch" *ngIf="action == 'edit'" />
-                                    <p *ngIf="action == 'view'">{{f['bank_branch'].value}}</p>
+                                    <input
+                                        type="text"
+                                        class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="bank_branch"
+                                        *ngIf="action == 'edit'"
+                                        [ngClass]="{
+                                            'is-invalid': submitted && f['bank_branch'].errors
+                                        }"
+                                    />
+                                    <p *ngIf="action == 'view'">{{ f['bank_branch'].value }}</p>
+                                    <div *ngIf="submitted && f['bank_branch'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['bank_branch'].errors['required']">Bank branch is required</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
-                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">Bank complete
-                                    address</label>
+                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold"
+                                    >Bank complete address</label
+                                >
                                 <div class="col-8">
-                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="bank_address" *ngIf="action == 'edit'" />
-                                    <p *ngIf="action == 'view'">{{f['bank_address'].value}}</p>
+                                    <input
+                                        type="text"
+                                        class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="bank_address"
+                                        *ngIf="action == 'edit'"
+                                        [ngClass]="{
+                                            'is-invalid': submitted && f['bank_address'].errors
+                                        }"
+                                    />
+                                    <p *ngIf="action == 'view'">{{ f['bank_address'].value }}</p>
+                                    <div *ngIf="submitted && f['bank_address'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['bank_address'].errors['required']">Bank complete address is required</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
                                 <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">SWIFT code</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control border rounded-1 p-1 bg-white"
-                                        formControlName="swift_code" *ngIf="action == 'edit'" />
-                                    <p *ngIf="action == 'view'">{{f['swift_code'].value}}</p>
+                                    <input
+                                        type="text"
+                                        class="form-control border rounded-1 p-1 bg-white"
+                                        formControlName="swift_code"
+                                        *ngIf="action == 'edit'"
+                                        [ngClass]="{
+                                            'is-invalid': submitted && f['swift_code'].errors
+                                        }"
+                                    />
+                                    <p *ngIf="action == 'view'">{{ f['swift_code'].value }}</p>
+                                    <div *ngIf="submitted && f['swift_code'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['swift_code'].errors['required']">SWIFT code is required</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row gap-0 align-items-center my-3">
-                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold">(Upload here signed
-                                    agreement between
-                                    Grantee-Partner and Fiscal Sponsor)</label>
+                                <label class="col-4 text-dark text-sm px-2 m-0 font-weight-bold"
+                                    >(Upload here signed agreement between Grantee-Partner and Fiscal Sponsor)</label
+                                >
                                 <div class="input-group custom-file-input col-8" *ngIf="action == 'edit'">
                                     <button class="btn btn-white" type="button" (click)="uploadFiles()">
                                         <div class="d-flex flex-column text-start">
@@ -155,10 +290,12 @@
 
                                 <div class="row mt-3 mb-3">
                                     <div class="md-12" *ngFor="let attachment of attachments; let i = index">
-                                        <a href="{{SERVER + '/' + attachment.path}}"
-                                            target="_blank">{{attachment.original_name}}</a> <a
-                                            (click)="deleteAttachment(i)"><i
-                                                class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
+                                        <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
+                                            attachment.original_name
+                                        }}</a>
+                                        <a (click)="deleteAttachment(i)"
+                                            ><i class="fa fa-times text-danger mx-2 cursor-pointer"></i
+                                        ></a>
                                     </div>
                                 </div>
                             </div>
@@ -168,8 +305,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" (click)="this.bsModalRef.hide()">Cancel</button>
-                <button type="button" class="btn btn-dark-blue" (click)="submit()"
-                    *ngIf="action == 'edit'">Save</button>
+                <button type="button" class="btn btn-dark-blue" (click)="submit()" *ngIf="action == 'edit'">
+                    Save
+                </button>
             </div>
         </div>
     </div>

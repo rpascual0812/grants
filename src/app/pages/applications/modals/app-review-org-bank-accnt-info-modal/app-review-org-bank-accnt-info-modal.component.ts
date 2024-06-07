@@ -5,6 +5,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Application, PartnerOrganizationBank } from 'src/app/interfaces/_application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 
+type IsHidden = 'yes' | 'no';
+
+const NUMBER_OF_REQUIRED_FIELDS = 6;
+
 @Component({
     selector: 'app-app-review-org-bank-accnt-info-modal',
     templateUrl: './app-review-org-bank-accnt-info-modal.component.html',
@@ -21,7 +25,7 @@ export class AppReviewOrgBankAccntInfoModalComponent {
 
     loading: boolean = false;
     submitted: boolean = false;
-    isHidden: string = 'no';
+    isHidden: IsHidden = 'no';
 
     constructor(
         public bsModalRef: BsModalRef,
@@ -29,28 +33,69 @@ export class AppReviewOrgBankAccntInfoModalComponent {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.setForm();
+        this.validateFormValues();
+        this.determineRequiredFields();
     }
 
     setForm() {
         this.bank_account = this.currentApplication?.partner?.organization?.partner_organization_bank;
         this.form = this.formBuilder.group({
-            pk: [this.bank_account?.pk ?? ''],
-            partner_organization_pk: [this.currentApplication?.partner?.organization?.pk ?? ''],
-            account_name: [this.bank_account?.account_name ?? '', Validators.required],
-            account_number: [this.bank_account?.account_number ?? '', Validators.required],
-            bank_name: [this.bank_account?.bank_name ?? '', Validators.required],
-            bank_branch: [this.bank_account?.bank_branch ?? '', Validators.required],
-            bank_address: [this.bank_account?.bank_address ?? '', Validators.required],
-            swift_code: [this.bank_account?.swift_code ?? '', Validators.required],
+            account_name: [this.bank_account?.account_name ?? ''],
+            account_number: [this.bank_account?.account_number ?? ''],
+            bank_name: [this.bank_account?.bank_name ?? ''],
+            bank_branch: [this.bank_account?.bank_branch ?? ''],
+            bank_address: [this.bank_account?.bank_address ?? ''],
+            swift_code: [this.bank_account?.swift_code ?? ''],
         });
+    }
+
+    determineRequiredFields() {
+        const { value: formValue } = this.form;
+        if (this.isHidden === 'no') {
+            Object.keys(formValue).forEach((key) => this.addValidators(key));
+        } else {
+            Object.keys(formValue).forEach((key) => this.removeValidators(key));
+        }
+    }
+
+    addValidators(key: string) {
+        this.form.controls[key]?.addValidators(Validators?.required);
+        this.form.controls[key]?.updateValueAndValidity();
+    }
+
+    removeValidators(key: string) {
+        this.form?.controls?.[key]?.setErrors(null);
+        this.form?.controls?.[key]?.clearValidators();
+        this.form?.controls?.[key]?.updateValueAndValidity();
+    }
+
+    validateFormValues() {
+        const { value: formValue } = this.form;
+        const ObjToArr = Object.keys(formValue).filter(
+            (key) => !formValue?.[key] || (formValue?.[key] ?? '').trim() === ''
+        );
+        if (NUMBER_OF_REQUIRED_FIELDS === ObjToArr?.length) {
+            this.isHidden = 'yes';
+        }
     }
 
     get f() {
         return this.form.controls;
+    }
+
+    handleOnIsHidden(isHidden: string) {
+        this.isHidden = isHidden as IsHidden;
+        const { value: formValue } = this.form;
+        if (this.isHidden === 'yes') {
+            Object.keys(formValue).forEach((key) => this.removeValidators(key));
+            Object.keys(formValue).forEach((key) => this.form?.controls?.[key].setValue(''));
+        } else {
+            Object.keys(formValue).forEach((key) => this.addValidators(key));
+        }
     }
 
     submit() {
@@ -61,20 +106,22 @@ export class AppReviewOrgBankAccntInfoModalComponent {
             return;
         }
 
-        this.form.get('pk')?.patchValue(this.bank_account?.pk);
-
         const bankAccount = {
             partner_organization_pk: this.currentApplication?.partner?.organization?.pk,
             pk: this.bank_account?.pk,
             ...this.form.value,
-        }
+        };
 
-        this.applicationService.savePartnerOrgBank(this.form.value).subscribe({
+        this.save(bankAccount);
+    }
+
+    save(bankAccount: PartnerOrganizationBank) {
+        this.applicationService.savePartnerOrgBank(bankAccount).subscribe({
             next: (data: any) => {
                 this.callback.emit({ ...bankAccount });
                 this.toastr.success(
                     'The Organizational Bank Account Information has been successfully ' +
-                    (bankAccount?.pk ? 'updated' : 'added'),
+                        (bankAccount?.pk ? 'updated' : 'added'),
                     'SUCCESS!'
                 );
             },
