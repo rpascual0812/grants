@@ -102,23 +102,13 @@
                                         </p>
                                     </div>
                                 </div>
-                                <!-- <div class="row p-0 m-0">
-                                    <div class="col-md-6">
-                                        <span class="d-inline-block rounded-circle bg-success position-relative"
-                                            style="height: 20px; width: 20px; bottom: 2px"></span>
-                                        <p class="text-dark d-inline font-weight-bold p-0 m-0 text-sm">Active</p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p class="text-dark font-weight-bold p-0 m-0 text-sm">
-                                            {{donor?.['code']}}
-                                        </p>
-                                    </div>
-                                </div> -->
-
 
                                 <div>
                                     <p class="text-dark text-sm word text-wrap m-0 p-2 text-start">
-                                        {{donor?.['name']}}
+                                        {{donor?.['name'] && (donor?.['name'] ?? '').length > 50 ?
+                                        donor?.['name']?.substring(0, 47) + "..."
+                                        :
+                                        donor?.['name']}}
                                     </p>
                                 </div>
                             </div>
