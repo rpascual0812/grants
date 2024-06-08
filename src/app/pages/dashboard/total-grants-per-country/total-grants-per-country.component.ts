@@ -8,29 +8,20 @@ import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
 type GrantPerCountry = {
     country_name: string;
+    country_code: string;
     country_pk: string;
     total: string;
 };
 
 interface TotalGrantsPerCountry {
     labels: GrantPerCountry['country_name'][];
+    codes: GrantPerCountry['country_code'][]
     data: number[];
     highestData: number;
 }
 
-const toKebabCase = (text: string) => {
-    return text
-        .trim()
-        .replace(/\s+|[^\w-]/g, '-')
-        .toLowerCase();
-};
-
 const getCountryFlagPng = (country: string) => {
-    // Country flag references
-    // https://emojipedia.org/joypixels/8.0/
-    const FLAG_ASSET_BASE_PATH = `../../../assets/images/flags`;
-    const countryName = toKebabCase(country);
-    const png = `${FLAG_ASSET_BASE_PATH}/flag-${countryName}.png`;
+    const png = `https://flagsapi.com/${country}/flat/64.png`;
     const image = new Image();
     image.src = png;
     return image;
@@ -89,15 +80,18 @@ export class TotalGrantsPerCountryComponent implements OnInit {
                 const ctx = chart.ctx;
                 const yAxis = chart.scales['y'];
                 yAxis.ticks.forEach((value, index: number) => {
+                    const name: any = value?.label;
+                    const pos: number = this.totalGrantsPerCountry?.labels.indexOf(name) ?? 0;
+
                     const y = yAxis.getPixelForTick(index);
-                    const countryFlag = getCountryFlagPng((value?.label as string) ?? '');
+                    const countryFlag = getCountryFlagPng((this.totalGrantsPerCountry?.codes[pos] as string) ?? '');
                     ctx.drawImage(countryFlag, yAxis.right + 30, y - 25, 50, 50);
                 });
             },
         },
     ];
 
-    constructor(private projectService: ProjectService, private toastr: ToastrService) {}
+    constructor(private projectService: ProjectService, private toastr: ToastrService) { }
 
     ngOnInit() {
         this.fetch();
@@ -105,17 +99,21 @@ export class TotalGrantsPerCountryComponent implements OnInit {
 
     transformTotalGrantsPerCountry(groupedProjectCountry: GrantPerCountry[]): TotalGrantsPerCountry {
         const labels: string[] = [];
+        const codes: string[] = [];
         const data: number[] = [];
         let highestData = 0;
         groupedProjectCountry.forEach((project) => {
             const total = Number(project?.total ?? 0);
             const label = project?.country_name ?? '';
+            const code = project?.country_code ?? '';
             highestData = Math.max(highestData, total);
             labels.push(label);
+            codes.push(code);
             data.push(total);
         });
         return {
             labels,
+            codes,
             data,
             highestData,
         };
