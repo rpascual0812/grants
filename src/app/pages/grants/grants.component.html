@@ -104,9 +104,10 @@
                                 </div>
 
                                 <div>
-                                    <p class="text-dark text-sm word text-wrap m-0 p-2 text-start">
-                                        {{donor?.['name'] && (donor?.['name'] ?? '').length > 50 ?
-                                        donor?.['name']?.substring(0, 47) + "..."
+                                    <p class="text-dark text-sm word text-wrap m-0 p-2 text-start"
+                                        title="{{donor?.['name'] ?? ''}}">
+                                        {{donor?.['name'] && (donor?.['name'] ?? '').length > 47 ?
+                                        donor?.['name']?.substring(0, 44) + "..."
                                         :
                                         donor?.['name']}}
                                     </p>

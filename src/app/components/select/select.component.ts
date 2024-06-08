@@ -45,7 +45,7 @@ export class SelectComponent {
         private globalService: GlobalService,
         private formBuilder: FormBuilder,
         private cdRef: ChangeDetectorRef
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.subscribeToChangeFieldEmitter();
@@ -126,7 +126,7 @@ export class SelectComponent {
 
     setDefaultSelectedItemKey() {
         if (this.multiple) {
-            if (this.defaultSelectedItemKeyArr.length > 0) {
+            if (this.defaultSelectedItemKeyArr && this.defaultSelectedItemKeyArr.length > 0) {
                 this.dropdownList.forEach((item: any) => {
                     this.defaultSelectedItemKeyArr.forEach((selected: any) => {
                         if (item.pk == selected.pk) {
