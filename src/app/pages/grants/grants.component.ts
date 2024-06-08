@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Chart, ChartConfiguration, ChartData, ChartEvent, ChartType, plugins } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { DonorService } from 'src/app/services/donor.service';
 
 @Component({
     selector: 'app-grants',
@@ -16,8 +17,9 @@ export class GrantsComponent implements OnInit {
         { label: 'Fund Release', id: 'fundRelease', checked: false },
     ];
     selectedFilterIds = 'contractFinalization'
-    activeDonors: Record<string, string>[] = [];
+    donors: Record<string, string>[] = [];
     selectedActiveDonorId = '';
+    showFormerDonors: boolean = false;
 
     // Pie Chart
     @ViewChild(BaseChartDirective) pieChart: BaseChartDirective | undefined;
@@ -204,21 +206,44 @@ export class GrantsComponent implements OnInit {
 
     public barChartPlugins = [ChartDataLabels];
 
-    constructor() {
+    constructor(
+        private donorService: DonorService
+    ) {
         // mock active donors
         this.init();
     }
 
-    ngOnInit() {}
+    ngOnInit() { }
 
     init() {
-        for (let i = 1; i <= 6; i++) {
-            this.activeDonors.push({
-                id: `${i}`,
-                code: `${i}`,
-                label: `Global Greengrants Fund/GGF ${i}`,
-            });
+        this.fetchDonors();
+        // for (let i = 1; i <= 6; i++) {
+        //     this.donors.push({
+        //         id: `${i}`,
+        //         code: `${i}`,
+        //         label: `Global Greengrants Fund/GGF ${i}`,
+        //     });
+        // }
+    }
+
+    fetchDonors() {
+        const filters = {
+            showInactive: this.showFormerDonors
         }
+        this.donorService.fetch(filters).subscribe({
+            next: (res: any) => {
+                console.log(res.data);
+                this.donors = res.data;
+            },
+            error: (err) => {
+                // const { statusCode, errorMessage } = extractErrorMessage(err);
+                // this.toastr.error(
+                //     `An error occurred while fetching Total Grants per Country. ${statusCode} ${errorMessage} Please try again.`,
+                //     'ERROR!'
+                // );
+                // this.loading = false;
+            },
+        });
     }
 
     handleCheckedFilterSelect(id: string) {
@@ -237,7 +262,9 @@ export class GrantsComponent implements OnInit {
         this.selectedActiveDonorId = id;
     }
 
-    handleToggleShowInactiveDonors($event: Event, showInactiveDonors: boolean) {
+    handleToggleShowInactiveDonors($event: any, showInactiveDonors: boolean) {
+        this.showFormerDonors = $event.target.checked;
+        this.fetchDonors();
         $event.stopPropagation();
     }
 }

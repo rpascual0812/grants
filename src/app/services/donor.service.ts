@@ -11,8 +11,8 @@ export class DonorService {
         public http: HttpClient,
     ) { }
 
-    fetch() {
-        return this.http.get(`${_.BASE_URL}/donors`);
+    fetch(filters: any) {
+        return this.http.get(`${_.BASE_URL}/donors`, { params: filters });
     }
 
     save(donor: any) {
