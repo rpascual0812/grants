@@ -85,23 +85,40 @@
                 <div>
                     <h6 class="text-dark">Current Donors</h6>
                     <div class="d-flex flex-wrap flex-row gap-1">
-                        <button *ngFor="let activeDonor of activeDonors" class="card max-width-200"
-                            [ngClass]="{'border-2 border-dark-blue': selectedActiveDonorId === activeDonor?.['id']}"
-                            (click)="handleSelectActiveDonor(activeDonor?.['id'] ?? '')">
-                            <div class="card-body p-2 m-0">
-                                <div class="d-flex flex-wrap flex-row justify-content-between align-items-center">
-                                    <div class="d-flex flex-row align-items-center gap-1">
+                        <button *ngFor="let donor of donors" class="card" style="width: 200px; height: 100px;"
+                            [ngClass]="{'border-2 border-dark-blue': selectedActiveDonorId === donor?.['id']}"
+                            (click)="handleSelectActiveDonor(donor?.['id'] ?? '')">
+                            <div class="card-body p-0" style="width: 200px;">
+                                <div class="row" style="padding: 10px 0px;">
+                                    <div class="col-md-6">
+                                        <span
+                                            class="d-inline-block rounded-circle {{ donor?.['active'] ? 'bg-success' : 'bg-danger' }} position-relative"
+                                            style="height: 20px; width: 20px; bottom: -3px"></span>
+                                        <p class="text-dark d-inline font-weight-bold p-0 m-0 text-sm">Active</p>
+                                    </div>
+                                    <div class="col-md-6" style="padding: 5px 0px 0px 0px;">
+                                        <p class="text-dark font-weight-bold p-0 m-0 text-sm align-right">
+                                            {{donor?.['code']}}
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- <div class="row p-0 m-0">
+                                    <div class="col-md-6">
                                         <span class="d-inline-block rounded-circle bg-success position-relative"
                                             style="height: 20px; width: 20px; bottom: 2px"></span>
                                         <p class="text-dark d-inline font-weight-bold p-0 m-0 text-sm">Active</p>
                                     </div>
-                                    <p class="text-dark font-weight-bold p-0 m-0 text-sm">
-                                        CODE {{activeDonor?.['code']}}
-                                    </p>
-                                </div>
-                                <div class="my-1">
-                                    <p class="text-dark text-xs word text-wrap m-0 p-0 text-start">
-                                        {{activeDonor?.['label']}}
+                                    <div class="col-md-6">
+                                        <p class="text-dark font-weight-bold p-0 m-0 text-sm">
+                                            {{donor?.['code']}}
+                                        </p>
+                                    </div>
+                                </div> -->
+
+
+                                <div>
+                                    <p class="text-dark text-sm word text-wrap m-0 p-2 text-start">
+                                        {{donor?.['name']}}
                                     </p>
                                 </div>
                             </div>
