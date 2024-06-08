@@ -12,6 +12,7 @@ declare var tinymce: any;
     styleUrls: ['./email-templates.component.scss']
 })
 export class EmailTemplatesComponent implements OnInit {
+    @ViewChild('newAccountCreated') newAccountCreatedEditor: TextEditorComponent;
     @ViewChild('passwordReset') passwordResetEditor: TextEditorComponent;
     @ViewChild('application') applicationEditor: TextEditorComponent;
     @ViewChild('applicationSubmitted') applicationSubmittedEditor: TextEditorComponent;
@@ -19,6 +20,8 @@ export class EmailTemplatesComponent implements OnInit {
     form: FormGroup;
     loading = false;
     template: any = {
+        newAccountCreatedSubject: '',
+        newAccountCreated: '',
         passwordResetSubject: '',
         passwordReset: '',
         applicationSubject: '',
@@ -32,6 +35,16 @@ export class EmailTemplatesComponent implements OnInit {
     submitted: boolean = false;
 
     variables = {
+        newAccountCreatedVariables: [
+            'first_name',
+            'middle_name',
+            'last_name',
+            'email_address',
+            'unique_id',
+            'temporary_password',
+            'app_url'
+        ],
+
         passwordResetVariables: [
             'first_name',
             'middle_name',
@@ -91,6 +104,8 @@ export class EmailTemplatesComponent implements OnInit {
 
     setForm() {
         this.form = this.formBuilder.group({
+            newAccountCreatedSubject: [this.template.newAccountCreatedSubject ? this.template.newAccountCreatedSubject : '', Validators.required],
+            newAccountCreated: [this.template.newAccountCreated ? this.template.newAccountCreated : '', Validators.required],
             passwordResetSubject: [this.template.passwordResetSubject ? this.template.passwordResetSubject : '', Validators.required],
             passwordReset: [this.template.passwordReset ? this.template.passwordReset : '', Validators.required],
             applicationSubject: [this.template.applicationSubject ? this.template.applicationSubject : '', Validators.required],
@@ -111,6 +126,7 @@ export class EmailTemplatesComponent implements OnInit {
                     data.data.forEach((template: any) => {
                         this.template[template.type] = template.template;
 
+                        this.form.get('newAccountCreatedSubject')?.patchValue(this.templates.filter((template: any) => template.type == 'newAccountCreated')[0].subject);
                         this.form.get('passwordResetSubject')?.patchValue(this.templates.filter((template: any) => template.type == 'passwordReset')[0].subject);
                         this.form.get('applicationSubject')?.patchValue(this.templates.filter((template: any) => template.type == 'application')[0].subject);
                         this.form.get('applicationSubmittedSubject')?.patchValue(this.templates.filter((template: any) => template.type == 'applicationSubmitted')[0].subject);
@@ -131,10 +147,12 @@ export class EmailTemplatesComponent implements OnInit {
 
     submit() {
         this.submitted = true;
+        const newAccountCreated = this.newAccountCreatedEditor.returnMessage();
         const passwordReset = this.passwordResetEditor.returnMessage();
         const application = this.applicationEditor.returnMessage();
         const applicationSubmitted = this.applicationSubmittedEditor.returnMessage();
 
+        this.form.get('newAccountCreated')?.patchValue(newAccountCreated);
         this.form.get('passwordReset')?.patchValue(passwordReset);
         this.form.get('application')?.patchValue(application);
         this.form.get('applicationSubmitted')?.patchValue(applicationSubmitted);
@@ -145,6 +163,11 @@ export class EmailTemplatesComponent implements OnInit {
         }
 
         const data: any = [
+            {
+                type: 'newAccountCreated',
+                subject: this.form.value.newAccountCreatedSubject,
+                template: this.form.value.newAccountCreated
+            },
             {
                 type: 'passwordReset',
                 subject: this.form.value.passwordResetSubject,

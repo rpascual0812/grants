@@ -139,13 +139,13 @@ export class UsersModalComponent {
             return;
         }
 
-        const activeRoles = this.roles.filter((role: any) => role.checked == true);
+        // const activeRoles = this.roles.filter((role: any) => role.checked == true);
 
         let formattedDate = formatDate(this.form.value.birthdate, 'yyyy-MM-dd', "en-US");
         this.form.get('birthdate')?.patchValue(formattedDate);
         this.form.get('pk')?.patchValue(this.user.pk);
         this.form.get('image')?.patchValue(this.user.user_document);
-        this.form.get('roles')?.patchValue(activeRoles);
+        // this.form.get('roles')?.patchValue(activeRoles);
 
         this.userService
             .save(this.form.value)
@@ -179,5 +179,10 @@ export class UsersModalComponent {
 
             this.cdr.detectChanges();
         });
+    }
+
+    roleUpdate(ev: any) {
+        this.form.get('roles')?.patchValue(ev);
+        // this.form.get('roles')?.patchValue(activeRoles);
     }
 }

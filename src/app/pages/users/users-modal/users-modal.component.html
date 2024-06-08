@@ -31,15 +31,21 @@
                         <form [formGroup]="form" class="text-start" (ngSubmit)="submit()">
                             <div class="form-group">
                                 <!-- <label for="example-email-input" class="form-control-label">Role</label> -->
-                                <div class="shadow-sm p-2 bg-white rounded w-20 cursor-pointer"
+                                <!-- <div class="shadow-sm p-2 bg-white rounded w-20 cursor-pointer"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="badge rounded-pill bg-grant-primary"
                                         style="padding-top: 6px; padding-left: 7px; padding-right: 7px;">{{getActiveRoles()}}</span>
                                     <span class="p-2">Roles</span>
                                     <i class="fa fa-caret-down"></i>
+                                </div> -->
+                                <div style="width: 200px">
+                                    <app-select url="roles" [multiple]="true" [itemsShowLimit]="3"
+                                        (onSelectEvent)="roleUpdate($event)" (onDeSelectEvent)="roleUpdate($event)"
+                                        [defaultSelectedItemKeyArr]="user.roles"
+                                        placeholder="Please select"></app-select>
                                 </div>
-                                asdfasdf
-                                <ul class="dropdown-menu  dropdown-menu-end px-3 py-3 me-sm-n4"
+
+                                <!-- <ul class="dropdown-menu  dropdown-menu-end px-3 py-3 me-sm-n4"
                                     aria-labelledby="dropdownMenuButton">
                                     <li class="form-check form-switch" *ngFor="let role of roles; let i = index"
                                         (click)="$event.stopPropagation()">
@@ -50,7 +56,7 @@
                                             {{role.name}}
                                         </label>
                                     </li>
-                                </ul>
+                                </ul> -->
                                 <div *ngIf="submitted && f['email_address'].errors" class="invalid-feedback">
                                     <div *ngIf="f['email_address'].errors['required']">Role is required</div>
                                 </div>
