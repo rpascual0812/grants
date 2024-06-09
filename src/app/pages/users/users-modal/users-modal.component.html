@@ -143,7 +143,7 @@
             <div class="modal-footer">
                 <button *ngIf="user.archived" type="button" class="btn btn-danger"
                     (click)="submit()">{{activateBtnName}}</button>
-                <button *ngIf="!user.archived" type="button" class="btn btn-primary"
+                <button *ngIf="!user.archived" type="button" class="btn bg-grant-primary text-white"
                     (click)="submit()">{{saveBtnName}}</button>
                 <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">{{closeBtnName}}</button>
             </div>
