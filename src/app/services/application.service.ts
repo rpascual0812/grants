@@ -19,7 +19,7 @@ export class ApplicationService {
     public navigate_next = signal(false);
     public navigate_back = signal(false);
 
-    constructor(public http: HttpClient) { }
+    constructor(public http: HttpClient) {}
 
     fetch(filters?: any) {
         return this.http.get(`${_.BASE_URL}/application`, { params: filters });
@@ -92,6 +92,13 @@ export class ApplicationService {
 
     savePartnerOtherInfo(data: PartnerOrganizationOtherInformation) {
         return this.http.post(`${_.BASE_URL}/application/organization_other_information`, data);
+    }
+
+    deletePartnerOtherInfoFinancialHumanResources(params: { otherInfoPk: number; financialHumanResourcePk: number }) {
+        const { otherInfoPk, financialHumanResourcePk } = params;
+        return this.http.delete(
+            `${_.BASE_URL}/application/organization_other_information/${otherInfoPk}/organization_other_information_financial_human_resources/${financialHumanResourcePk}`
+        );
     }
 
     deleteAppProposalAct(params: { proposalPk: number; activityPk: number }) {
