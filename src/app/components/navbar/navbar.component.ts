@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { SidebarService } from 'src/app/services/sidebar.service';
 import { UserService } from 'src/app/services/user.service';
 import { UserSignalService } from 'src/app/services/user.signal.service';
+import * as _ from '../../utilities/globals';
 
 @Component({
     selector: 'app-navbar',
@@ -13,6 +14,7 @@ import { UserSignalService } from 'src/app/services/user.signal.service';
 })
 export class NavbarComponent implements OnInit {
     user: any;
+    url: String = _.BASE_URL;
 
     sidebarService = inject(SidebarService);
     userSignalService = inject(UserSignalService);
@@ -26,11 +28,6 @@ export class NavbarComponent implements OnInit {
 
     ngOnInit(): void {
         this.user = this.userSignalService.user();
-
-        this.user = {
-            picture: 'assets/img/default-profile.png',
-            name: 'Rafael'
-        }
     }
 
     toggle() {

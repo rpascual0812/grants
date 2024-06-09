@@ -14,7 +14,7 @@
                         </div>
                     </a>
                 </li>
-                <li class="nav-item dropdown pe-2 d-flex align-items-center">
+                <!-- <li class="nav-item dropdown pe-2 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-bell cursor-pointer" style="font-size: 20px;"></i>
@@ -96,11 +96,11 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
                 <li class="nav-item dropdown pe-2 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuProfile"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="30"
+                        <img src="{{url + '/' + user.documents[0].path}}" class="rounded-circle" height="30"
                             alt="Black and White Portrait of a Man" loading="lazy" />
                         <!-- <span class="d-sm-inline d-none">{{ user.name }}</span> -->
                     </a>
@@ -108,9 +108,8 @@
                         style="width: 18rem; top: 0 !important;" aria-labelledby="dropdownMenuProfile">
 
                         <div class="card-body">
-                            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-                                class="rounded-circle card-img-top" height="222" alt="Black and White Portrait of a Man"
-                                loading="lazy" />
+                            <img src="{{url + '/' + user.documents[0].path}}" class="rounded-circle card-img-top"
+                                height="222" alt="Black and White Portrait of a Man" loading="lazy" />
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
