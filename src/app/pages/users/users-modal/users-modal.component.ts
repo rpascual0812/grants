@@ -65,12 +65,13 @@ export class UsersModalComponent {
 
         this.setForm();
         this.getGenders();
+
+        const activeRoles = this.roles.filter((role: any) => role.checked == true);
+        this.form.get('roles')?.patchValue(activeRoles);
     }
 
-
-
     setForm() {
-        this.profilePicture = this.user && this.user.user_document ? this.url + '/' + this.user.user_document.document.path : './assets/images/default-profile.png';
+        this.profilePicture = this.user && this.user.documents.length > 0 ? this.url + '/' + this.user.documents[0].path : './assets/images/default-profile.png';
 
         this.user = this.user ? this.user : {
             user_role: []
@@ -97,8 +98,6 @@ export class UsersModalComponent {
             image: [''],
             roles: ['']
         });
-
-        // console.log('init user', this.user, this.profilePicture);
     }
 
     get f() { return this.form.controls; }
@@ -139,13 +138,11 @@ export class UsersModalComponent {
             return;
         }
 
-        // const activeRoles = this.roles.filter((role: any) => role.checked == true);
-
         let formattedDate = formatDate(this.form.value.birthdate, 'yyyy-MM-dd', "en-US");
         this.form.get('birthdate')?.patchValue(formattedDate);
         this.form.get('pk')?.patchValue(this.user.pk);
         this.form.get('image')?.patchValue(this.user.user_document);
-        // this.form.get('roles')?.patchValue(activeRoles);
+
 
         this.userService
             .save(this.form.value)
