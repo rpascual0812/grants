@@ -52,7 +52,7 @@ export class FundReleaseComponent implements OnInit {
 
     fetch() {
         this.loading = true;
-        this.projectService.fetch().subscribe({
+        this.projectService.fetch({}).subscribe({
             next: (res: any) => {
                 console.log(res);
                 const status = res?.status;

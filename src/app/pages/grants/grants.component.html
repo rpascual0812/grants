@@ -86,8 +86,8 @@
                     <h6 class="text-dark">Current Donors</h6>
                     <div class="d-flex flex-wrap flex-row gap-1">
                         <button *ngFor="let donor of donors" class="card" style="width: 200px; height: 100px;"
-                            [ngClass]="{'border-2 border-dark-blue': selectedActiveDonorId === donor?.['id']}"
-                            (click)="handleSelectActiveDonor(donor?.['id'] ?? '')">
+                            [ngClass]="{'selected': selectedActiveDonorIds.includes(donor?.['pk'])}"
+                            (click)="handleSelectActiveDonor(donor?.['pk'] ?? '')">
                             <div class="card-body p-0" style="width: 200px;">
                                 <div class="row" style="padding: 10px 0px;">
                                     <div class="col-md-6">

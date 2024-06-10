@@ -8,6 +8,7 @@ $padding: 0.5rem;
     border-radius: $borderRadius;
     border-left: $borderLeft;
     margin-top: $marginTop;
+
     .panel-heading {
         background-color: #fff;
         padding: $padding;
@@ -19,6 +20,7 @@ $padding: 0.5rem;
     border-radius: $borderRadius;
     border-left: $borderLeft;
     margin-top: $marginTop;
+
     .panel-heading {
         background-color: #dedede;
         padding: $padding;
@@ -30,11 +32,13 @@ $padding: 0.5rem;
     position: relative;
     height: 56vh;
     width: 100%;
+
     .pie-chart-container {
         height: 100%;
         width: 100%;
         display: flex;
         justify-content: center;
+
         .pie-chart {
             width: 100%;
             padding: 1rem;
@@ -43,7 +47,11 @@ $padding: 0.5rem;
 }
 
 .bar-chart {
-    position: relative; 
-    height: 50vh; 
+    position: relative;
+    height: 50vh;
     width: 100%;
+}
+
+.selected {
+    border: solid 1px #ff0000;
 }
