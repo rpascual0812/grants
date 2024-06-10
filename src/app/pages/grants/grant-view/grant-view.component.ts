@@ -8,9 +8,8 @@ import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import * as _ from '../../../utilities/globals';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
-import { User } from 'src/app/interfaces/_application.interface';
+import { Document, User } from 'src/app/interfaces/_application.interface';
 import { UserSignalService } from 'src/app/services/user.signal.service';
-import { setTime } from 'ngx-bootstrap/chronos/utils/date-setters';
 
 export type OnHiddenData = {
     isSaved: boolean;
@@ -27,7 +26,7 @@ export class GrantViewComponent implements OnInit {
     project: Project | null = null;
     pk = '';
     currentExpanded = new Set();
-    attachments: any = [];
+    attachments: Document[] = [];
 
     SERVER: string = _.BASE_URL;
 
@@ -54,7 +53,11 @@ export class GrantViewComponent implements OnInit {
         this.user = this.userSignalService.user();
 
         this.user?.user_role?.forEach((user_role: any) => {
-            this.permission.contract_finalization = this.restrictions[user_role.role.restrictions.contract_finalization] > this.restrictions[this.permission.contract_finalization] ? user_role.role.restrictions.contract_finalization : this.permission.contract_finalization;
+            this.permission.contract_finalization =
+                this.restrictions[user_role.role.restrictions.contract_finalization] >
+                this.restrictions[this.permission.contract_finalization]
+                    ? user_role.role.restrictions.contract_finalization
+                    : this.permission.contract_finalization;
         });
 
         this.fetch();
@@ -65,9 +68,9 @@ export class GrantViewComponent implements OnInit {
         this.projectService.fetchOne(this.pk).subscribe({
             next: (res: any) => {
                 const data = res?.data as Project;
-                this.attachments = res?.data.documents ?? [];
                 const status = res?.status;
                 if (status) {
+                    this.attachments = res?.data.documents ?? [];
                     this.project = data;
                 } else {
                     this.toastr.error(`An error occurred while fetching Grant Project. Please try again.`, 'ERROR!');
@@ -100,13 +103,12 @@ export class GrantViewComponent implements OnInit {
 
     uploadFiles(type: string) {
         const initialState: ModalOptions = {
-            class: 'modal-lg'
+            class: 'modal-lg',
         };
         this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
 
         this.documentUploaderRef.content.document.subscribe((res: any) => {
             this.linkAttachment(res.file, type);
-            this.cdr.detectChanges();
         });
     }
 
@@ -115,7 +117,8 @@ export class GrantViewComponent implements OnInit {
             .saveSignedContractAttachment({ project_pk: this.project?.pk, file: file, type: type })
             .subscribe({
                 next: (data: any) => {
-                    this.attachments[type].push(file);
+                    this.attachments.push(file);
+                    this.cdr.detectChanges();
                 },
                 error: (error: any) => {
                     console.log(error);
@@ -123,7 +126,7 @@ export class GrantViewComponent implements OnInit {
                 },
                 complete: () => {
                     console.log('Complete');
-                }
+                },
             });
     }
 
@@ -142,7 +145,11 @@ export class GrantViewComponent implements OnInit {
             },
             () => {
                 this.projectService
-                    .deleteProjectAttachment({ project_pk: this.project?.pk, document_pk: this.attachments[i].pk, type: 'document' })
+                    .deleteProjectAttachment({
+                        project_pk: this.project?.pk,
+                        document_pk: this.attachments[i].pk,
+                        type: 'document',
+                    })
                     .subscribe({
                         next: (data: any) => {
                             if (data.status) {
@@ -155,7 +162,7 @@ export class GrantViewComponent implements OnInit {
                         },
                         complete: () => {
                             console.log('Complete');
-                        }
+                        },
                     });
             }
         );
@@ -163,18 +170,19 @@ export class GrantViewComponent implements OnInit {
 
     toggleFinancialManagementTraining() {
         this.projectService
-            .updateFinancialManagementTraining({ project_pk: this.project?.pk, financial_management_training: !this.project?.financial_management_training })
+            .updateFinancialManagementTraining({
+                project_pk: this.project?.pk,
+                financial_management_training: !this.project?.financial_management_training,
+            })
             .subscribe({
-                next: (data: any) => {
-
-                },
+                next: (data: any) => {},
                 error: (error: any) => {
                     console.log(error);
                     this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
                 },
                 complete: () => {
                     console.log('Complete');
-                }
+                },
             });
     }
 }
