@@ -54,7 +54,7 @@ export class RolesModalComponent {
         this.form = this.formBuilder.group({
             pk: [''],
             name: [this.role ? this.role.name : '', Validators.required],
-            details: [this.role ? this.role.details : '', Validators.required],
+            details: [this.role ? this.role.details : ''],
         });
     }
 
