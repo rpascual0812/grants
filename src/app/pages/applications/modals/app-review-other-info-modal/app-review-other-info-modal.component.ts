@@ -209,7 +209,7 @@ export class AppReviewOtherInfoModalComponent implements OnInit {
                 const status = res?.status;
                 const data = res?.data;
                 if (status) {
-                    this.callback.emit({ ...data });
+                    this.callback.emit({ ...data, documents: this.attachments });
                     this.toastr.success(
                         'The Other Information has been successfully ' + (otherInfo?.pk ? 'updated' : 'added'),
                         'SUCCESS!'
