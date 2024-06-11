@@ -64,7 +64,6 @@ export class GrantsTeamReviewComponent implements OnInit {
         }, 1000);
 
         this.SERVER = _.BASE_URL;
-        console.log('GrantsTeamReviewComponent', this.currentApplication);
         if (this.currentApplication?.reviews) {
             this.reviews = this.currentApplication?.reviews.filter((review: any) => review.type == 'grants_team_review');
         }

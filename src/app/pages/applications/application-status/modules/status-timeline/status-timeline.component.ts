@@ -60,7 +60,7 @@ export class StatusTimelineComponent implements OnInit {
     constructor(private router: Router, private modalService: BsModalService) { }
 
     ngOnInit() {
-        const applicationStatuses = ['Grants Team Review', 'Advisers Review', 'Financial Management Capacity', 'Due Diligence Final Review', 'Approved'];
+        const applicationStatuses = ['Grants Team Review', 'Advisers Review', 'Financial Management Capacity', 'Budget Review and Finalization', 'Due Diligence Final Review', 'Approved'];
         const applicationType = ['grants_team_review', 'advisers_review', 'financial_management_capacity', 'final_review'];
         const projectType = ['contract_preparation', 'final_approval', 'partner_signing', 'fund_release', 'completed'];
 
