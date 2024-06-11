@@ -101,7 +101,7 @@
                     <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuProfile"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="{{url + '/' + user?.documents?.at(0)?.path}}" class="rounded-circle" height="30"
-                            alt="Black and White Portrait of a Man" loading="lazy" />
+                            alt="{{user?.first_name}}" loading="lazy" />
                         <!-- <span class="d-sm-inline d-none">{{ user.name }}</span> -->
                     </a>
                     <div class="card dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
@@ -109,7 +109,7 @@
 
                         <div class="card-body">
                             <img src="{{url + '/' + user?.documents?.at(0)?.path}}" class="rounded-circle card-img-top"
-                                height="222" alt="Black and White Portrait of a Man" loading="lazy" />
+                                height="222" alt="{{user?.first_name}}" loading="lazy" />
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
