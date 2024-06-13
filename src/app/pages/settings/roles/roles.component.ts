@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import * as _ from '../../../utilities/globals';
 import { UserService } from 'src/app/services/user.service';
@@ -10,7 +10,7 @@ import { LogsComponent } from 'src/app/components/logs/logs.component';
 @Component({
     selector: 'app-roles',
     templateUrl: './roles.component.html',
-    styleUrls: ['./roles.component.scss']
+    styleUrls: ['./roles.component.scss'],
 })
 export class RolesComponent {
     bsModalRef?: BsModalRef;
@@ -23,15 +23,13 @@ export class RolesComponent {
     pagination: any = _.PAGINATION;
     tableSizes: any = _.TABLE_SIZES;
 
-    selections: any = [
-        'restricted', 'read-only', 'comments', 'recommendation'
-    ];
+    selections: any = ['restricted', 'read-only', 'comments', 'recommendation'];
 
     restrictions: any = {
         grant_application: '',
         contract_finalization: '',
-        fund_release: ''
-    }
+        fund_release: '',
+    };
 
     page: number = 1;
 
@@ -40,39 +38,35 @@ export class RolesComponent {
         private formBuilder: FormBuilder,
         private modalService: BsModalService,
         private roleService: RoleService
-    ) {
-
-    }
+    ) {}
 
     ngOnInit(): void {
         this.filters = {
             keyword: '',
             archived: false,
             skip: 0,
-            take: this.pagination.tableSize
+            take: this.pagination.tableSize,
         };
 
         this.fetch();
     }
 
     fetch() {
-        this.roleService
-            .fetchAll(this.filters)
-            .subscribe({
-                next: (data: any) => {
-                    this.roles = data.data;
-                    this.roles.forEach((role: any) => {
-                        role.restrictions = role.restrictions ? role.restrictions : this.restrictions;
-                    });
-                    this.pagination.count = data.total;
-                },
-                error: (error: any) => {
-                    console.log(error);
-                },
-                complete: () => {
-                    console.log('Complete');
-                }
-            });
+        this.roleService.fetchAll(this.filters).subscribe({
+            next: (data: any) => {
+                this.roles = data.data;
+                this.roles.forEach((role: any) => {
+                    role.restrictions = role.restrictions ? role.restrictions : this.restrictions;
+                });
+                this.pagination.count = data.total;
+            },
+            error: (error: any) => {
+                console.log(error);
+            },
+            complete: () => {
+                console.log('Complete');
+            },
+        });
     }
 
     openModal(role: any) {
@@ -82,8 +76,8 @@ export class RolesComponent {
             class: 'modal-md',
             initialState: {
                 title: title,
-                role: role
-            }
+                role: role,
+            },
         };
         this.bsModalRef = this.modalService.show(RolesModalComponent, initialState);
         this.bsModalRef.content.saveBtnName = 'Save';
@@ -93,7 +87,7 @@ export class RolesComponent {
             try {
                 this.fetch();
             } catch (error: any) {
-                _.errorMessage("This is a test error alert");
+                _.errorMessage('This is a test error alert');
             }
         });
     }
@@ -105,8 +99,8 @@ export class RolesComponent {
             class: 'modal-lg',
             initialState: {
                 title: title,
-                module: role
-            }
+                module: role,
+            },
         };
         this.bsModalRef = this.modalService.show(LogsComponent, initialState);
         this.bsModalRef.content.saveBtnName = 'Save';
@@ -117,13 +111,13 @@ export class RolesComponent {
             try {
                 this.fetch();
             } catch (error: any) {
-                _.errorMessage("This is a test error alert");
+                _.errorMessage('This is a test error alert');
             }
         });
     }
 
     showRoles(role: any) {
-        this.roles.forEach((_role: any) => role.pk != _role.pk ? _role.show = false : '');
+        this.roles.forEach((_role: any) => (role.pk != _role.pk ? (_role.show = false) : ''));
         role.show = !role.show;
     }
 
@@ -144,30 +138,34 @@ export class RolesComponent {
     }
 
     onSelect(ev: any, i: number, type: string) {
-        this.restrictions[type] = ev[0];
-        this.roles[i].restrictions = this.restrictions;
+        const prevRestrictions = this.roles[i].restrictions;
+        this.roles[i].restrictions = {
+            ...prevRestrictions,
+            [type]: ev[0],
+        };
         this.saveRestriction(this.roles[i]);
     }
 
     onDeselect(ev: any, i: number, type: string) {
-        this.restrictions[type] = '';
-        this.roles[i].restrictions = this.restrictions;
+        const prevRestrictions = this.roles[i].restrictions;
+        this.roles[i].restrictions = {
+            ...prevRestrictions,
+            [type]: '',
+        };
         this.saveRestriction(this.roles[i]);
     }
 
     saveRestriction(role: any) {
-        this.roleService
-            .saveRestriction(role)
-            .subscribe({
-                next: (data: any) => {
-                    console.log(data);
-                },
-                error: (error: any) => {
-                    console.log(error);
-                },
-                complete: () => {
-                    console.log('Complete');
-                }
-            });
+        this.roleService.saveRestriction(role).subscribe({
+            next: (data: any) => {
+                console.log(data);
+            },
+            error: (error: any) => {
+                console.log(error);
+            },
+            complete: () => {
+                console.log('Complete');
+            },
+        });
     }
 }

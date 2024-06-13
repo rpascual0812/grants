@@ -4,6 +4,7 @@ import { Application, Country, PartnerAssessment, Province } from 'src/app/inter
 import { Project, ProjectSite } from 'src/app/interfaces/_project.interface';
 
 export const PROJECT_EDIT_MODAL_TITLE_MAPPER = {
+    topInformation: `Edit`,
     projectInformation: `Project Information`,
     activitiesAndTimeline: `Activities and Timeline`,
     assessment: `Assessment`,

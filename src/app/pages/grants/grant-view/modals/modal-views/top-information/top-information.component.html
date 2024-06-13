@@ -1,0 +1,161 @@
+<div class="modal-body">
+    <div class="container">
+        <form [formGroup]="form" (ngSubmit)="handleSave()">
+            <div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group my-3">
+                            <label class="font-weight-bold text-dark">Partner's name*</label>
+                            <input
+                                type="text"
+                                class="form-control border rounded-1 p-1"
+                                required
+                                [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+                                formControlName="name"
+                            />
+                            <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                                <div *ngIf="f['name'].errors['required']">Partner's name is required</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group my-3">
+                            <label class="font-weight-bold text-dark">Country*</label>
+                            <app-select
+                                [url]="'country'"
+                                (onSelectEvent)="onChangeSelectedItem($event, 'country_pk')"
+                                (onDeSelectEvent)="onChangeSelectedItem($event, 'country_pk')"
+                                [defaultSelectedItemKey]="form.controls['country_pk'].value"
+                                [ngClass]="{ 'is-invalid': submitted && f['country_pk'].errors }"
+                            ></app-select>
+                            <div *ngIf="submitted && f['country_pk'].errors" class="invalid-feedback">
+                                <div *ngIf="f['country_pk'].errors['required']">Country is required</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group my-3">
+                    <div class="row">
+                        <label class="font-weight-bold text-dark">Budget Request</label>
+                        <div class="col-6">
+                            <app-input-dropdown
+                                [data]="usdCurrencies"
+                                [defaultSelected]="usdCurrencies.at(0)?.key"
+                                [inputValue]="f['budget_request_usd'].value ?? ''"
+                                (inputValueChange)="onInputValueChange($event, 'budget_request_usd')"
+                                [disabledDropdown]="true"
+                            ></app-input-dropdown>
+                            <div *ngIf="submitted && f['budget_request_usd'].errors">
+                                <div
+                                    class="text-danger text-sm my-1"
+                                    *ngIf="f['budget_request_usd'].errors['required']"
+                                >
+                                    Field is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <app-input-dropdown
+                                [data]="availableCurrencies"
+                                [defaultSelected]="otherCurrenciesDefaultSelected"
+                                [inputValue]="f['budget_request_other'].value ?? ''"
+                                (onSelectItem)="onSelectItemDropdown($event, 'budget_request_other')"
+                                (inputValueChange)="onInputValueChange($event, 'budget_request_other')"
+                            ></app-input-dropdown>
+                            <div *ngIf="submitted && f['budget_request_other'].errors">
+                                <div
+                                    class="text-danger text-sm my-1"
+                                    *ngIf="f['budget_request_other'].errors['required']"
+                                >
+                                    Field is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group my-3">
+                    <label class="font-weight-bold text-dark">Duration*</label>
+                    <app-select
+                        class="shadow-none"
+                        [arr]="durationOpts"
+                        (onSelectEvent)="onChangeSelectedItem($event, 'duration')"
+                        (onDeSelectEvent)="onChangeSelectedItem($event, 'duration')"
+                        [defaultSelectedInArr]="
+                            durationOpts.includes(form.controls['duration'].value ?? '')
+                                ? form.controls['duration'].value
+                                : null
+                        "
+                    ></app-select>
+                    <div *ngIf="submitted && f['duration'].errors">
+                        <div *ngIf="f['duration'].errors['required']" class="text-sm text-danger">
+                            Duration is required
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group my-3">
+                    <label class="font-weight-bold text-dark">Objectives*</label>
+                    <textarea
+                        type="text"
+                        rows="5"
+                        class="form-control border rounded-1 p-2"
+                        style="resize: none"
+                        required
+                        [ngClass]="{ 'is-invalid': submitted && f['objective'].errors }"
+                        formControlName="objective"
+                    ></textarea>
+                    <div *ngIf="submitted && f['objective'].errors" class="invalid-feedback">
+                        <div *ngIf="f['objective'].errors['required']">Objectives is required</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="flex-row flex-wrap justify-content-between">
+                            <p class="text-sm font-weight-bold text-dark">Signed Contract</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="md-12" *ngFor="let attachment of attachments; let i = index">
+                            <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
+                                attachment.original_name
+                            }}</a>
+                            <a (click)="deleteAttachment(i, 'signed_contract')"
+                                ><i class="fa fa-times text-danger mx-2 cursor-pointer"></i
+                            ></a>
+                        </div>
+                        <button class="btn btn-default" (click)="uploadFiles('signed_contract')" type="button">
+                            <div class="d-flex flex-column text-start">
+                                <p class="p-0 m-0 text-sm text-info font-weight-bold">
+                                    <span class="icon icon-sm">
+                                        <i class="material-icons">add</i>
+                                    </span>
+                                    Attach File
+                                </p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-white"
+                    (click)="handleClose()"
+                    type="button"
+                    [disabled]="processing"
+                >
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-dark-blue" [disabled]="processing" (click)="handleSave()">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

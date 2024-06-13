@@ -244,6 +244,7 @@ export interface OperatedFor {
 
 export interface ProjectProposal {
     pk?: number;
+    project_pk?: number;
     application_pk?: number;
     monitor?: string;
     budget_request_usd?: string;

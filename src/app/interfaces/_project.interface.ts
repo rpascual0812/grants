@@ -32,6 +32,7 @@ export interface Project {
     partner?: Partner;
     type?: Type;
     reviews: Review[];
+    documents?: Document[]
 }
 
 export interface ProjectFunding {
