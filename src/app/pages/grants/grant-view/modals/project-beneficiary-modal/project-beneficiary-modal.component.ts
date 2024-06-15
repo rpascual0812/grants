@@ -13,6 +13,8 @@ export type OnHiddenData = {
     data: ProjectBeneficiary[];
 };
 
+type ProjectBeneficiaryKey = keyof ProjectBeneficiary;
+
 @Component({
     selector: 'app-project-beneficiary-modal',
     templateUrl: './project-beneficiary-modal.component.html',
@@ -24,7 +26,7 @@ export class ProjectBeneficiaryModalComponent implements OnInit {
     processing = false;
     project: Project | null = null;
     projectBeneficiary: ProjectBeneficiary[] = [];
-    editableRow: ProjectBeneficiary | null = null;
+    editableRow: ProjectBeneficiary = {};
     form: FormGroup;
     isSaved: boolean = false;
 
@@ -48,12 +50,60 @@ export class ProjectBeneficiaryModalComponent implements OnInit {
         return data?.young_men_count + data?.young_women_count + data?.women_count + data?.men_count;
     }
 
+    validValue(item: ProjectBeneficiary, projectBeneficiaryKeys: ProjectBeneficiaryKey[]) {
+        let totalValue = 0;
+        projectBeneficiaryKeys?.forEach((key) => {
+            const value = item[key];
+            if (typeof value === 'number') {
+                totalValue += value;
+            }
+        });
+        return totalValue > 0;
+    }
+
+    getListOfProjectBeneficiary(type: 'normal' | 'diffable' | 'other_vulnerable_sector') {
+        switch (type) {
+            case 'normal':
+                return this.projectBeneficiary.filter((item) =>
+                    this.validValue(item, ['men_count', 'women_count', 'young_men_count', 'young_women_count'])
+                );
+            case 'diffable':
+                return this.projectBeneficiary.filter((item) =>
+                    this.validValue(item, [
+                        'men_diffable_count',
+                        'women_diffable_count',
+                        'young_men_diffable_count',
+                        'young_women_diffable_count',
+                    ])
+                );
+                case 'other_vulnerable_sector':
+                    return this.projectBeneficiary.filter((item) =>
+                        this.validValue(item, [
+                            'men_other_vulnerable_sector_count',
+                            'women_other_vulnerable_sector_count',
+                            'young_men_other_vulnerable_sector_count',
+                            'young_women_other_vulnerable_sector_count',
+                        ])
+                    );
+            default:
+                return [];
+        }
+    }
+
     setForm() {
         this.form = this.formBuilder.group({
-            women_count: [0, Validators.required],
-            young_women_count: [0, Validators.required],
-            men_count: [0, Validators.required],
-            young_men_count: [0, Validators.required],
+            women_count: [0],
+            young_women_count: [0],
+            men_count: [0],
+            young_men_count: [0],
+            women_diffable_count: [0],
+            young_women_diffable_count: [0],
+            men_diffable_count: [0],
+            young_men_diffable_count: [0],
+            men_other_vulnerable_sector_count: [0],
+            young_men_other_vulnerable_sector_count: [0],
+            women_other_vulnerable_sector_count: [0],
+            young_women_other_vulnerable_sector_count: [0],
         });
     }
 
@@ -77,14 +127,6 @@ export class ProjectBeneficiaryModalComponent implements OnInit {
         this.projectService
             .saveProjectBeneficiary({
                 project_pk: this.project?.pk,
-                women_diffable_count: 0,
-                women_other_vulnerable_sector_count: 0,
-                young_women_diffable_count: 0,
-                young_women_other_vulnerable_sector_count: 0,
-                young_men_diffable_count: 0,
-                young_men_other_vulnerable_sector_count: 0,
-                men_diffable_count: 0,
-                men_other_vulnerable_sector_count: 0,
                 ...value,
             })
             .subscribe({
@@ -98,7 +140,7 @@ export class ProjectBeneficiaryModalComponent implements OnInit {
                         this.isSaved = true;
                         this.toastr.success('Project Beneficiary has been successfully saved', 'SUCCESS!');
                         // always resets row value
-                        this.editableRow = null;
+                        this.editableRow = {};
                     } else {
                         this.toastr.error(
                             `An error occurred while saving Project Beneficiary. Please try again.`,
@@ -149,22 +191,30 @@ export class ProjectBeneficiaryModalComponent implements OnInit {
             });
     }
 
-    handleAdd() {
+    handleAdd(projectBeneficiaryKeys: ProjectBeneficiaryKey[]) {
         this.submitted = true;
         this.processing = true;
-        const { valid, value } = this.form;
+        const { value } = this.form;
+        const valid = this.validValue(value, projectBeneficiaryKeys);
         if (valid) {
             this.saveFormValue(value);
+        } else {
+            this.toastr.warning(`Values cannot be less than Zero(0).`, 'WARNING!');
         }
     }
 
     handleEdit(item: ProjectBeneficiary) {
-        this.editableRow = item;
+        this.editableRow = {
+            ...item,
+        };
     }
 
-    handleSaveRow() {
-        if (this.editableRow) {
+    handleSaveRow(projectBeneficiaryKeys: ProjectBeneficiaryKey[]) {
+        const valid = this.validValue(this.editableRow, projectBeneficiaryKeys);
+        if (this.editableRow && valid) {
             this.saveFormValue(this.editableRow);
+        } else {
+            this.toastr.warning(`Values cannot be less than Zero(0).`, 'WARNING!');
         }
     }
 
@@ -185,7 +235,6 @@ export class ProjectBeneficiaryModalComponent implements OnInit {
                 this.deleteForm(projectBeneficiaryPk as number);
             }
         );
-
     }
 
     handleClose() {

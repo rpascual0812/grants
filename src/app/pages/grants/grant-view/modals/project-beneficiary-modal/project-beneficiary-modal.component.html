@@ -33,35 +33,41 @@
             </div>
 
             <div class="max-height-500 overflow-y-auto">
-                <div *ngFor="let item of projectBeneficiary" class="card rounded-1 my-2">
+                <div *ngFor="let item of getListOfProjectBeneficiary('normal')" class="card rounded-1 my-2">
                     <div class="row p-2 align-items-center">
                         <div class="col-12 col-md-2">
-                            <p class="text-dark text-xs p-0 m-0 text-center">{{ item?.date_created | date : 'dd-MMM-YYYY' }}</p>
+                            <p class="text-dark text-xs p-0 m-0 text-center">
+                                {{ item?.date_created | date : 'dd-MMM-YYYY' }}
+                            </p>
                         </div>
                         <div class="col-12 col-md-1">
                             <input
                                 *ngIf="editableRow?.pk === item.pk"
                                 type="number"
                                 class="form-control border rounded-1 p-2 bg-white"
-                                [(ngModel)]="editableRow && editableRow.men_count"
+                                [(ngModel)]="editableRow.men_count"
                             />
-                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">{{ item?.men_count }}</p>
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
+                                {{ item?.men_count }}
+                            </p>
                         </div>
                         <div class="col-12 col-md-1">
                             <input
                                 *ngIf="editableRow?.pk === item.pk"
                                 type="number"
                                 class="form-control border rounded-1 p-2 bg-white"
-                                [(ngModel)]="editableRow && editableRow.women_count"
+                                [(ngModel)]="editableRow.women_count"
                             />
-                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">{{ item?.women_count }}</p>
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
+                                {{ item?.women_count }}
+                            </p>
                         </div>
                         <div class="col-12 col-md-2">
                             <input
                                 *ngIf="editableRow?.pk === item.pk"
                                 type="number"
                                 class="form-control border rounded-1 p-2 bg-white"
-                                [(ngModel)]="editableRow && editableRow.young_men_count"
+                                [(ngModel)]="editableRow.young_men_count"
                             />
                             <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
                                 {{ item?.young_men_count }}
@@ -72,7 +78,7 @@
                                 *ngIf="editableRow?.pk === item.pk"
                                 type="number"
                                 class="form-control border rounded-1 p-2 bg-white"
-                                [(ngModel)]="editableRow && editableRow.young_women_count"
+                                [(ngModel)]="editableRow.young_women_count"
                             />
                             <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
                                 {{ item?.young_women_count }}
@@ -94,7 +100,9 @@
                             <button
                                 *ngIf="editableRow?.pk === item?.pk"
                                 class="btn btn-icon-only btn-info btn-round mx-1"
-                                (click)="handleSaveRow()"
+                                (click)="
+                                    handleSaveRow(['men_count', 'women_count', 'young_men_count', 'young_women_count'])
+                                "
                             >
                                 <i class="material-icons" style="position: relative; top: -2px; left: -2px">save</i>
                             </button>
@@ -155,7 +163,376 @@
                     </div>
                     <div class="col-12 col-md-2"></div>
                     <div class="col-12 col-md-2">
-                        <button class="btn btn-info text-capitalize" type="button" (click)="handleAdd()">Add</button>
+                        <button
+                            class="btn btn-info text-capitalize"
+                            type="button"
+                            (click)="handleAdd(['men_count', 'women_count', 'young_men_count', 'young_women_count'])"
+                        >
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diffable List -->
+        <div class="beneficiary-list-container my-3">
+            <div class="card bg-secondary rounded-1">
+                <div class="row p-2 align-items-center">
+                    <div class="col-12 col-md-2">
+                        <p class="text-white text-center p-0 m-0">Date</p>
+                    </div>
+                    <div class="col-12 col-md-1">
+                        <p class="text-white text-center p-0 m-0">Male Diffable</p>
+                    </div>
+                    <div class="col-12 col-md-1">
+                        <p class="text-white text-center p-0 m-0">Female Diffable</p>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <p class="text-white text-center p-0 m-0">Male Youth Diffable</p>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <p class="text-white text-center p-0 m-0">Female Youth Diffable</p>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <p class="text-white text-center p-0 m-0">Total</p>
+                    </div>
+                    <div class="col-2 col-md-2"></div>
+                </div>
+            </div>
+
+            <div class="max-height-500 overflow-y-auto">
+                <div *ngFor="let item of getListOfProjectBeneficiary('diffable')" class="card rounded-1 my-2">
+                    <div class="row p-2 align-items-center">
+                        <div class="col-12 col-md-2">
+                            <p class="text-dark text-xs p-0 m-0 text-center">
+                                {{ item?.date_created | date : 'dd-MMM-YYYY' }}
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-1">
+                            <input
+                                *ngIf="editableRow?.pk === item.pk"
+                                type="number"
+                                class="form-control border rounded-1 p-2 bg-white"
+                                [(ngModel)]="editableRow.men_diffable_count"
+                            />
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
+                                {{ item?.men_diffable_count }}
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-1">
+                            <input
+                                *ngIf="editableRow?.pk === item.pk"
+                                type="number"
+                                class="form-control border rounded-1 p-2 bg-white"
+                                [(ngModel)]="editableRow.women_diffable_count"
+                            />
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
+                                {{ item?.women_diffable_count }}
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <input
+                                *ngIf="editableRow?.pk === item.pk"
+                                type="number"
+                                class="form-control border rounded-1 p-2 bg-white"
+                                [(ngModel)]="editableRow.young_men_diffable_count"
+                            />
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
+                                {{ item?.young_men_diffable_count }}
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <input
+                                *ngIf="editableRow?.pk === item.pk"
+                                type="number"
+                                class="form-control border rounded-1 p-2 bg-white"
+                                [(ngModel)]="editableRow.young_women_diffable_count"
+                            />
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
+                                {{ item?.young_women_diffable_count }}
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <p class="text-center text-dark p-0 m-0 text-center">
+                                {{
+                                    getTotal({
+                                        men_count: item?.men_diffable_count ?? 0,
+                                        young_women_count: item?.young_women_diffable_count ?? 0,
+                                        women_count: item?.women_diffable_count ?? 0,
+                                        young_men_count: item?.young_men_diffable_count ?? 0
+                                    })
+                                }}
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <button
+                                *ngIf="editableRow?.pk === item?.pk"
+                                class="btn btn-icon-only btn-info btn-round mx-1"
+                                (click)="
+                                    handleSaveRow([
+                                        'men_diffable_count',
+                                        'women_diffable_count',
+                                        'young_men_diffable_count',
+                                        'young_women_diffable_count'
+                                    ])
+                                "
+                            >
+                                <i class="material-icons" style="position: relative; top: -2px; left: -2px">save</i>
+                            </button>
+
+                            <button
+                                *ngIf="editableRow?.pk !== item?.pk"
+                                class="btn btn-icon-only btn-info btn-round mx-1"
+                                (click)="handleEdit(item)"
+                            >
+                                <i class="material-icons" style="position: relative; top: -2px; left: -2px">edit</i>
+                            </button>
+
+                            <button
+                                class="btn btn-icon-only btn-danger btn-round mx-1"
+                                (click)="handleDelete(item?.pk)"
+                            >
+                                <i class="material-icons" style="position: relative; top: -2px; left: -2px">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="beneficiary-list-add-container bg-gray-200">
+                <div class="row p-2 align-items-center" [formGroup]="form">
+                    <div class="col-12 col-md-2"></div>
+                    <div class="col-12 col-md-1">
+                        <input
+                            formControlName="men_diffable_count"
+                            type="number"
+                            min="0"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-1">
+                        <input
+                            formControlName="women_diffable_count"
+                            type="number"
+                            min="0"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <input
+                            formControlName="young_men_diffable_count"
+                            type="number"
+                            min="0"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <input
+                            formControlName="young_women_diffable_count"
+                            type="number"
+                            min="0"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-2"></div>
+                    <div class="col-12 col-md-2">
+                        <button
+                            class="btn btn-info text-capitalize"
+                            type="button"
+                            (click)="
+                                handleAdd([
+                                    'men_diffable_count',
+                                    'women_diffable_count',
+                                    'young_men_diffable_count',
+                                    'young_women_diffable_count'
+                                ])
+                            "
+                        >
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+         <!-- Other Vulnerable Sector -->
+         <div class="beneficiary-list-container my-3">
+            <div class="card bg-warning rounded-1">
+                <div class="row p-2 align-items-center">
+                    <div class="col-12 col-md-2">
+                        <p class="text-white text-center p-0 m-0 text-sm">Date</p>
+                    </div>
+                    <div class="col-12 col-md-1">
+                        <p class="text-white text-center p-0 m-0 text-sm">Male Other Vulnerable Sector</p>
+                    </div>
+                    <div class="col-12 col-md-1">
+                        <p class="text-white text-center p-0 m-0 text-sm">Female Other Vulnerable Sector</p>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <p class="text-white text-center p-0 m-0 text-sm">Male Youth Other Vulnerable Sector</p>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <p class="text-white text-center p-0 m-0 text-sm">Female Youth Other Vulnerable Sector</p>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <p class="text-white text-center p-0 m-0 text-sm">Total</p>
+                    </div>
+                    <div class="col-2 col-md-2"></div>
+                </div>
+            </div>
+
+            <div class="max-height-500 overflow-y-auto">
+                <div *ngFor="let item of getListOfProjectBeneficiary('other_vulnerable_sector')" class="card rounded-1 my-2">
+                    <div class="row p-2 align-items-center">
+                        <div class="col-12 col-md-2">
+                            <p class="text-dark text-xs p-0 m-0 text-center">
+                                {{ item?.date_created | date : 'dd-MMM-YYYY' }}
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-1">
+                            <input
+                                *ngIf="editableRow?.pk === item.pk"
+                                type="number"
+                                class="form-control border rounded-1 p-2 bg-white"
+                                [(ngModel)]="editableRow.men_other_vulnerable_sector_count"
+                            />
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
+                                {{ item?.men_other_vulnerable_sector_count }}
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-1">
+                            <input
+                                *ngIf="editableRow?.pk === item.pk"
+                                type="number"
+                                class="form-control border rounded-1 p-2 bg-white"
+                                [(ngModel)]="editableRow.women_other_vulnerable_sector_count"
+                            />
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
+                                {{ item?.women_other_vulnerable_sector_count }}
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <input
+                                *ngIf="editableRow?.pk === item.pk"
+                                type="number"
+                                class="form-control border rounded-1 p-2 bg-white"
+                                [(ngModel)]="editableRow.young_men_other_vulnerable_sector_count"
+                            />
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
+                                {{ item?.young_men_other_vulnerable_sector_count }}
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <input
+                                *ngIf="editableRow?.pk === item.pk"
+                                type="number"
+                                class="form-control border rounded-1 p-2 bg-white"
+                                [(ngModel)]="editableRow.young_women_other_vulnerable_sector_count"
+                            />
+                            <p *ngIf="editableRow?.pk !== item.pk" class="text-dark p-0 m-0 text-center">
+                                {{ item?.young_women_other_vulnerable_sector_count }}
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <p class="text-center text-dark p-0 m-0 text-center">
+                                {{
+                                    getTotal({
+                                        men_count: item?.men_other_vulnerable_sector_count ?? 0,
+                                        young_women_count: item?.young_women_other_vulnerable_sector_count ?? 0,
+                                        women_count: item?.women_other_vulnerable_sector_count ?? 0,
+                                        young_men_count: item?.young_men_other_vulnerable_sector_count ?? 0
+                                    })
+                                }}
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <button
+                                *ngIf="editableRow?.pk === item?.pk"
+                                class="btn btn-icon-only btn-info btn-round mx-1"
+                                (click)="
+                                    handleSaveRow([
+                                        'men_other_vulnerable_sector_count',
+                                        'women_other_vulnerable_sector_count',
+                                        'young_men_other_vulnerable_sector_count',
+                                        'young_women_other_vulnerable_sector_count'
+                                    ])
+                                "
+                            >
+                                <i class="material-icons" style="position: relative; top: -2px; left: -2px">save</i>
+                            </button>
+
+                            <button
+                                *ngIf="editableRow?.pk !== item?.pk"
+                                class="btn btn-icon-only btn-info btn-round mx-1"
+                                (click)="handleEdit(item)"
+                            >
+                                <i class="material-icons" style="position: relative; top: -2px; left: -2px">edit</i>
+                            </button>
+
+                            <button
+                                class="btn btn-icon-only btn-danger btn-round mx-1"
+                                (click)="handleDelete(item?.pk)"
+                            >
+                                <i class="material-icons" style="position: relative; top: -2px; left: -2px">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="beneficiary-list-add-container bg-gray-200">
+                <div class="row p-2 align-items-center" [formGroup]="form">
+                    <div class="col-12 col-md-2"></div>
+                    <div class="col-12 col-md-1">
+                        <input
+                            formControlName="men_other_vulnerable_sector_count"
+                            type="number"
+                            min="0"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-1">
+                        <input
+                            formControlName="women_other_vulnerable_sector_count"
+                            type="number"
+                            min="0"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <input
+                            formControlName="young_men_other_vulnerable_sector_count"
+                            type="number"
+                            min="0"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <input
+                            formControlName="young_women_other_vulnerable_sector_count"
+                            type="number"
+                            min="0"
+                            class="form-control border rounded-1 p-2 bg-white"
+                        />
+                    </div>
+                    <div class="col-12 col-md-2"></div>
+                    <div class="col-12 col-md-2">
+                        <button
+                            class="btn btn-info text-capitalize"
+                            type="button"
+                            (click)="
+                                handleAdd([
+                                    'men_other_vulnerable_sector_count',
+                                    'women_other_vulnerable_sector_count',
+                                    'young_men_other_vulnerable_sector_count',
+                                    'young_women_other_vulnerable_sector_count'
+                                ])
+                            "
+                        >
+                            Add
+                        </button>
                     </div>
                 </div>
             </div>
