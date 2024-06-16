@@ -91,7 +91,7 @@ export class BeneficiariesComponent implements OnInit {
 
             youngWomenCount += beneficiary?.young_women_count ?? 0;
             youngWomenDiffableCount += beneficiary?.young_women_diffable_count ?? 0;
-            youngWomenOtherVulnerableSectorCount += beneficiary?.young_men_other_vulnerable_sector_count ?? 0;
+            youngWomenOtherVulnerableSectorCount += beneficiary?.young_women_other_vulnerable_sector_count ?? 0;
 
             youngMenCount += beneficiary?.young_men_count ?? 0;
             youngMenDiffableCount += beneficiary?.young_men_diffable_count ?? 0;
