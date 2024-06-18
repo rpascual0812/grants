@@ -18,8 +18,8 @@ import { ProjectBeneficiary } from '../interfaces/_application.interface';
 export class ProjectService {
     constructor(public http: HttpClient) { }
 
-    fetch() {
-        return this.http.get(`${_.BASE_URL}/projects`);
+    fetch(filters: any) {
+        return this.http.get(`${_.BASE_URL}/projects`, { params: filters });
     }
 
     fetchOne(pk: any) {

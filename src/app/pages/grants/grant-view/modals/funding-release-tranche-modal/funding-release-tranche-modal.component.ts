@@ -99,6 +99,7 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
     setForm() {
         this.form = this.formBuilder.group({
             title: [this.funding?.title ?? '', Validators.required],
+            donor_pk: [this.funding?.donor?.pk ?? '', Validators.required],
             released_date: [
                 this.funding?.released_date ? parseFormDate(this.funding?.released_date ?? '') : '',
                 Validators.required,
@@ -235,6 +236,7 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
                 next: (res: any) => {
                     const status = res?.status;
                     const data = res?.data;
+
                     if (status) {
                         this.bsModalRef.onHidden?.next({
                             isSaved: true,
@@ -298,5 +300,9 @@ export class FundingReleaseTrancheModalComponent implements OnInit {
             this.bank_receipt = {};
             this.form.get('bank_receipt_pk')?.patchValue(null);
         }
+    }
+
+    onChangeDonor(event: any) {
+        this.form.get('donor_pk')?.patchValue(event[0].pk);
     }
 }

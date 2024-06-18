@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Chart, ChartConfiguration, ChartData, ChartEvent, ChartType, plugins } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { DonorService } from 'src/app/services/donor.service';
+import { GrantsListComponent } from './grants-list/grants-list.component';
 
 @Component({
     selector: 'app-grants',
@@ -11,6 +12,8 @@ import { DonorService } from 'src/app/services/donor.service';
     encapsulation: ViewEncapsulation.None,
 })
 export class GrantsComponent implements OnInit {
+    @ViewChild(GrantsListComponent) grantListComponent: GrantsListComponent;
+
     currentExpandedAccordion = new Set();
     filterSelections = [
         { label: 'Contract Finalization', id: 'contractFinalization', checked: false },
@@ -18,7 +21,7 @@ export class GrantsComponent implements OnInit {
     ];
     selectedFilterIds = 'contractFinalization'
     donors: Record<string, string>[] = [];
-    selectedActiveDonorId = '';
+    selectedActiveDonorIds: any = [];
     showFormerDonors: boolean = false;
 
     // Pie Chart
@@ -207,7 +210,8 @@ export class GrantsComponent implements OnInit {
     public barChartPlugins = [ChartDataLabels];
 
     constructor(
-        private donorService: DonorService
+        private donorService: DonorService,
+        private cdr: ChangeDetectorRef,
     ) {
         // mock active donors
         this.init();
@@ -232,7 +236,6 @@ export class GrantsComponent implements OnInit {
         }
         this.donorService.fetch(filters).subscribe({
             next: (res: any) => {
-                console.log(res.data);
                 this.donors = res.data;
             },
             error: (err) => {
@@ -258,8 +261,18 @@ export class GrantsComponent implements OnInit {
         }
     }
 
-    handleSelectActiveDonor(id: string) {
-        this.selectedActiveDonorId = id;
+    handleSelectActiveDonor(pk: string) {
+        if (this.selectedActiveDonorIds.includes(pk)) {
+            const index = this.selectedActiveDonorIds.indexOf(pk);
+            this.selectedActiveDonorIds.splice(index, 1);
+        }
+        else {
+            this.selectedActiveDonorIds.push(pk);
+        }
+
+        this.grantListComponent.setDonors(this.selectedActiveDonorIds);
+
+        this.cdr.detectChanges();
     }
 
     handleToggleShowInactiveDonors($event: any, showInactiveDonors: boolean) {

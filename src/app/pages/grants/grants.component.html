@@ -22,6 +22,73 @@
             <button class="btn btn-dark-blue">Apply</button>
         </div>
 
+        <div class="active-donor-container">
+            <accordion [isAnimated]="true">
+                <accordion-group (isOpenChange)="handleExpandAccordion($event, 'activeDonor')" [panelClass]="
+                            currentExpandedAccordion.has('activeDonor')
+                                ? 'custom-accordion-expanded w-100'
+                                : 'custom-accordion-collapsed w-100'
+                        " class="my-3">
+                    <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
+                        <div class="pull-left float-left">
+                            <p class="text-dark text-sm font-weight-bold m-0 p-0">Choose which donor</p>
+                        </div>
+
+                        <div class="pull-right float-right">
+                            <div class="d-flex flex flex-row align-items-center">
+                                <div class="form-check form-switch">
+                                    <input #showInactiveDonors id="showInactiveDonors" class="form-check-input"
+                                        type="checkbox" role="switch"
+                                        (click)="handleToggleShowInactiveDonors($event, showInactiveDonors.checked)" />
+                                    <label for="showInactiveDonors" class="form-check-label p-0 m-0"
+                                        (click)="$event.stopPropagation()">Show Former Donors</label>
+                                </div>
+                                <button class="btn btn-icon-only">
+                                    <i class="material-icons">{{
+                                        currentExpandedAccordion.has('activeDonor') ? 'expand_less' : 'expand_more'
+                                        }}</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h6 class="text-dark">Current Donors</h6>
+                        <div class="d-flex flex-wrap flex-row gap-1">
+                            <button *ngFor="let donor of donors" class="card" style="width: 200px; height: 100px;"
+                                [ngClass]="{'selected': selectedActiveDonorIds.includes(donor?.['pk'])}"
+                                (click)="handleSelectActiveDonor(donor?.['pk'] ?? '');">
+                                <div class="card-body p-0" style="width: 200px;">
+                                    <div class="row" style="padding: 10px 0px;">
+                                        <div class="col-md-6">
+                                            <span
+                                                class="d-inline-block rounded-circle {{ donor?.['active'] ? 'bg-success' : 'bg-danger' }} position-relative"
+                                                style="height: 20px; width: 20px; bottom: -3px"></span>
+                                            <p class="text-dark d-inline font-weight-bold p-0 m-0 text-sm">Active</p>
+                                        </div>
+                                        <div class="col-md-6" style="padding: 5px 0px 0px 0px;">
+                                            <p class="text-dark font-weight-bold p-0 m-0 text-sm align-right">
+                                                {{donor?.['code']}}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <p class="text-dark text-sm word text-wrap m-0 p-2 text-start"
+                                            title="{{donor?.['name'] ?? ''}}">
+                                            {{donor?.['name'] && (donor?.['name'] ?? '').length > 47 ?
+                                            donor?.['name']?.substring(0, 44) + "..."
+                                            :
+                                            donor?.['name']}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </accordion-group>
+            </accordion>
+        </div>
+
         <ng-container *ngIf="selectedFilterIds === 'fundRelease'">
             <div class="row">
                 <div class="col-10">
@@ -53,72 +120,7 @@
     <app-grants-list [filter]="selectedFilterIds"></app-grants-list>
 
     <!-- Extras -->
-    <div class="active-donor-container">
-        <accordion [isAnimated]="true">
-            <accordion-group (isOpenChange)="handleExpandAccordion($event, 'activeDonor')" [panelClass]="
-                    currentExpandedAccordion.has('activeDonor')
-                        ? 'custom-accordion-expanded w-100'
-                        : 'custom-accordion-collapsed w-100'
-                " class="my-3">
-                <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
-                    <div class="pull-left float-left">
-                        <p class="text-dark text-sm font-weight-bold m-0 p-0">Choose which donor</p>
-                    </div>
 
-                    <div class="pull-right float-right">
-                        <div class="d-flex flex flex-row align-items-center">
-                            <div class="form-check form-switch">
-                                <input #showInactiveDonors id="showInactiveDonors" class="form-check-input"
-                                    type="checkbox" role="switch"
-                                    (click)="handleToggleShowInactiveDonors($event, showInactiveDonors.checked)" />
-                                <label for="showInactiveDonors" class="form-check-label p-0 m-0"
-                                    (click)="$event.stopPropagation()">Show Former Donors</label>
-                            </div>
-                            <button class="btn btn-icon-only">
-                                <i class="material-icons">{{
-                                    currentExpandedAccordion.has('activeDonor') ? 'expand_less' : 'expand_more'
-                                    }}</i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h6 class="text-dark">Current Donors</h6>
-                    <div class="d-flex flex-wrap flex-row gap-1">
-                        <button *ngFor="let donor of donors" class="card" style="width: 200px; height: 100px;"
-                            [ngClass]="{'border-2 border-dark-blue': selectedActiveDonorId === donor?.['id']}"
-                            (click)="handleSelectActiveDonor(donor?.['id'] ?? '')">
-                            <div class="card-body p-0" style="width: 200px;">
-                                <div class="row" style="padding: 10px 0px;">
-                                    <div class="col-md-6">
-                                        <span
-                                            class="d-inline-block rounded-circle {{ donor?.['active'] ? 'bg-success' : 'bg-danger' }} position-relative"
-                                            style="height: 20px; width: 20px; bottom: -3px"></span>
-                                        <p class="text-dark d-inline font-weight-bold p-0 m-0 text-sm">Active</p>
-                                    </div>
-                                    <div class="col-md-6" style="padding: 5px 0px 0px 0px;">
-                                        <p class="text-dark font-weight-bold p-0 m-0 text-sm align-right">
-                                            {{donor?.['code']}}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <p class="text-dark text-sm word text-wrap m-0 p-2 text-start"
-                                        title="{{donor?.['name'] ?? ''}}">
-                                        {{donor?.['name'] && (donor?.['name'] ?? '').length > 47 ?
-                                        donor?.['name']?.substring(0, 44) + "..."
-                                        :
-                                        donor?.['name']}}
-                                    </p>
-                                </div>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-            </accordion-group>
-        </accordion>
-    </div>
 
     <div class="active-donor-container">
         <accordion [isAnimated]="true">

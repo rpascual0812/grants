@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgbdSortableHeaderDirective, SortEvent } from 'src/app/directives/ngbd-sortable-header.directive';
 import { Application } from 'src/app/interfaces/_application.interface';
@@ -38,6 +38,7 @@ export class ContractFinalizationComponent implements OnInit {
     contractPreparation: Grant[] = [];
     finalApproval: Grant[] = [];
     partnerSigning: Grant[] = [];
+    donors: any = [];
 
     page: number = 1;
     @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective<Grant>>;
@@ -50,7 +51,10 @@ export class ContractFinalizationComponent implements OnInit {
 
     fetch() {
         this.loading = true;
-        this.projectService.fetch().subscribe({
+        const filters = {
+            donors: this.donors
+        }
+        this.projectService.fetch(filters).subscribe({
             next: (res: any) => {
                 const status = res?.status;
                 const data = (res?.data ?? []) as Project[];
@@ -108,5 +112,11 @@ export class ContractFinalizationComponent implements OnInit {
 
     handlePageChange($event: number) {
         this.page = $event;
+    }
+
+    setDonors(donors: any) {
+        this.donors = donors;
+
+        this.fetch();
     }
 }
