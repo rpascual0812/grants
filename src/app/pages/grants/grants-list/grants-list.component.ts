@@ -1,5 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { ContractFinalizationComponent } from './modules/contract-finalization/contract-finalization.component';
+import { FundReleaseComponent } from './modules/fund-release/fund-release.component';
 
 @Component({
     selector: 'app-grants-list',
@@ -8,10 +9,16 @@ import { ContractFinalizationComponent } from './modules/contract-finalization/c
 })
 export class GrantsListComponent {
     @ViewChild(ContractFinalizationComponent) contractFinalizationComponent: ContractFinalizationComponent;
+    @ViewChild(FundReleaseComponent) fundReleaseComponent: FundReleaseComponent;
 
     @Input() filter: string
 
     setDonors(donors: any) {
-        this.contractFinalizationComponent.setDonors(donors);
+        if (this.filter == 'contractFinalization') {
+            this.contractFinalizationComponent.setDonors(donors);
+        }
+        else {
+            this.fundReleaseComponent.setDonors(donors);
+        }
     }
 }

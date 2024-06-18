@@ -43,6 +43,7 @@ export class FundReleaseComponent implements OnInit {
     closingGrant: Grant[] = [];
     page: number = 1;
     @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective<Grant>>;
+    donors: any = [];
 
     constructor(private projectService: ProjectService, private toastr: ToastrService) { }
 
@@ -126,5 +127,11 @@ export class FundReleaseComponent implements OnInit {
     handleIsOpenChange($event: boolean, partnerId: string) {
         const currentIdx = this.fundRelease.findIndex((item) => item.partnerId === partnerId);
         this.fundRelease[currentIdx]['expanded'] = $event;
+    }
+
+    setDonors(donors: any) {
+        this.donors = donors;
+
+        this.fetch();
     }
 }
