@@ -38,7 +38,7 @@ export class RolesComponent {
         private formBuilder: FormBuilder,
         private modalService: BsModalService,
         private roleService: RoleService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.filters = {
@@ -52,6 +52,9 @@ export class RolesComponent {
     }
 
     fetch() {
+        this.filters.skip = (this.pagination.page * this.pagination.tableSize) - this.pagination.tableSize;
+        this.filters.take = this.pagination.tableSize;
+
         this.roleService.fetchAll(this.filters).subscribe({
             next: (data: any) => {
                 this.roles = data.data;
