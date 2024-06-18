@@ -37,6 +37,7 @@ export interface Project {
 
 export interface ProjectFunding {
     pk?: number;
+    donor?: Donor;
     title?: string;
     project_pk?: number;
     released_amount_usd?: string;
@@ -52,6 +53,17 @@ export interface ProjectFunding {
     date_updated?: Date;
     project_funding_report?: ProjectFundingReport[];
     project_funding_liquidation?: ProjectFundingLiquidation;
+}
+
+export interface Donor {
+    pk?: number;
+    name: string;
+    code: string;
+    active: boolean;
+    created_by?: number;
+    date_created?: Date;
+    date_updated?: Date;
+    archived?: boolean;
 }
 
 export interface ProjectFundingReport {
