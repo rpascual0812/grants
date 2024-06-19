@@ -189,6 +189,7 @@ export interface Project {
     how_will_affect?: string;
     status?: string;
     type_pk?: number;
+    partner_pk?: number;
     date_created?: Date;
     project_proposal?: ProjectProposal;
     project_beneficiary?: ProjectBeneficiary;

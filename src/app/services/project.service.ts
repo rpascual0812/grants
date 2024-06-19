@@ -10,13 +10,13 @@ import {
     ProjectLesson,
     ProjectSite,
 } from '../interfaces/_project.interface';
-import { ProjectBeneficiary } from '../interfaces/_application.interface';
+import { Project, ProjectBeneficiary } from '../interfaces/_application.interface';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ProjectService {
-    constructor(public http: HttpClient) { }
+    constructor(public http: HttpClient) {}
 
     fetch(filters: any) {
         return this.http.get(`${_.BASE_URL}/projects`, { params: filters });
@@ -230,5 +230,13 @@ export class ProjectService {
 
     fetchGroupProjectCountry() {
         return this.http.get(`${_.BASE_URL}/projects/group_project_country`);
+    }
+
+    updateProjectDetails(body: Pick<Project, 'pk' | 'partner_pk' | 'objective' | 'duration'>) {
+        return this.http.post(`${_.BASE_URL}/projects/${body?.pk}/project_details`, {
+            partner_pk: body?.partner_pk,
+            objective: body?.objective,
+            duration: body?.duration,
+        });
     }
 }

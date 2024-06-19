@@ -10,8 +10,15 @@ import { OnHiddenData } from '../../../grant-view.component';
 import { OTHER_CURRENCY_LIST, USD_CURRENCY } from 'src/app/utilities/constants';
 import { InputDropdownValue } from 'src/app/pages/applications/application-new/modules/input-dropdown/input-dropdown.component';
 import * as _ from '../../../../../../utilities/globals';
-import { Document } from 'src/app/interfaces/_application.interface';
+import { Application, Document, Partner } from 'src/app/interfaces/_application.interface';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';
+import { PartnerService } from 'src/app/services/partner.service';
+
+interface PartnerItem extends Partner {
+    applications?: Application[];
+    expanded?: boolean;
+    grand_total_amount?: number;
+}
 
 type SelectItem = {
     pk: number;
@@ -28,7 +35,10 @@ export class TopInformationComponent implements OnInit {
 
     form: FormGroup;
     currentProject: Project | null = null;
+    loading = true;
+    partnerList: PartnerItem[];
     countryName: string = '';
+    countryPk: number | undefined = undefined;
     usdCurrencies = USD_CURRENCY;
     availableCurrencies = OTHER_CURRENCY_LIST;
     otherCurrenciesDefaultSelected = OTHER_CURRENCY_LIST.at(0)?.key;
@@ -43,6 +53,7 @@ export class TopInformationComponent implements OnInit {
         public bsModalRef: BsModalRef,
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
+        private partnerService: PartnerService,
         private projectService: ProjectService,
         private modalService: BsModalService,
         private toastr: ToastrService,
@@ -51,6 +62,7 @@ export class TopInformationComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.fetchPartners();
         this.durationOpts = getDurationOpts();
         this.setForm();
     }
@@ -61,35 +73,74 @@ export class TopInformationComponent implements OnInit {
 
     setForm() {
         this.currentProject = this.project;
-        const partner = this.currentProject?.partner;
-        const organization = this.currentProject?.partner?.organization;
+        const partner = this.currentProject?.partner; // partner level
+        const organization = this.currentProject?.partner?.organization; // partner level
         const projProposal = this.currentProject?.project_proposal;
         this.countryName = organization?.country?.name ?? '';
+        this.countryPk = organization?.country?.pk;
         this.attachments = this.currentProject?.documents ?? [];
         this.form = this.formBuilder.group({
+            partner_pk: [partner?.pk ?? '', Validators.required],
             name: [partner?.name ?? '', Validators.required],
-            country_pk: [organization?.country_pk ?? '', Validators.required],
             budget_request_usd: [projProposal?.budget_request_usd ?? '', Validators.required],
             budget_request_other: [projProposal?.budget_request_other ?? '', Validators.required],
             budget_request_other_currency: [projProposal?.budget_request_other_currency ?? '', Validators.required],
             duration: [this.currentProject?.duration ?? '', Validators.required],
             objective: [this.currentProject?.objective ?? '', Validators.required],
         });
+        const selectedCurrencyKey = projProposal?.budget_request_other_currency?.split('-').at(0)?.trim();
+        this.otherCurrenciesDefaultSelected =
+            OTHER_CURRENCY_LIST.find((currency) => currency?.key?.includes(selectedCurrencyKey ?? ''))?.key ??
+            OTHER_CURRENCY_LIST.at(0)?.key;
     }
+
+    fetchPartners() {
+        this.loading = true;
+        this.partnerService.fetch().subscribe({
+            next: (res: any) => {
+                const status = res?.status;
+                const data = res?.data;
+                if (status) {
+                    this.partnerList = data;
+                } else {
+                    this.toastr.error(`An error occurred while fetching Partners. Please try again.`, 'ERROR!');
+                }
+
+                this.loading = false;
+            },
+            error: (err) => {
+                const { statusCode, errorMessage } = extractErrorMessage(err);
+                this.toastr.error(
+                    `An error occurred while fetching Partners. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+                this.loading = false;
+            },
+        });
+    }
+
+    changeSelectionMapper = (key: string, item: SelectItem[]) => {
+        if (key === 'country_pk') {
+            this.countryName = item?.at(0)?.name ?? '';
+        }
+
+        if (key === 'partner_pk') {
+            const selectedPartner = this.partnerList?.find((partner) => partner?.pk === item?.at(0)?.pk);
+            this.countryName = selectedPartner?.organization?.country?.name ?? '';
+            this.countryPk = selectedPartner?.organization?.country?.pk;
+            this.form.controls['name'].setValue(item?.at(0)?.name ?? '');
+        }
+    };
 
     onChangeSelectedItem(item: SelectItem[], key: string) {
         const extractedItem = item?.at(0);
         const pk = (extractedItem as SelectItem)?.pk ?? '';
-
         if (pk) {
             this.form.controls[key].setValue(pk);
         } else {
             this.form.controls[key].setValue(extractedItem ?? '');
         }
-
-        if (key === 'country_pk') {
-            this.countryName = item?.at(0)?.name ?? '';
-        }
+        this.changeSelectionMapper(key, item);
     }
 
     onInputValueChange($event: InputDropdownValue, key: string) {
@@ -174,29 +225,41 @@ export class TopInformationComponent implements OnInit {
         );
     }
 
-    savePartner() {
+    updateProjectDetails() {
         const { value } = this.form;
-        const partner = this.currentProject?.partner;
-        this.applicationService
-            .saveApplicationPartner({
-                pk: partner?.pk,
-                partner_id: partner?.partner_id,
-                name: value?.name,
+        this.projectService
+            .updateProjectDetails({
+                pk: this.currentProject?.pk,
+                partner_pk: value?.partner_pk,
+                objective: value?.objective,
+                duration: value?.duration,
             })
             .subscribe({
                 next: (res: any) => {
                     const status = res?.status;
-                    const data = res?.data;
                     if (status) {
                         this.toastr.success('Partner has been successfully saved', 'SUCCESS!');
                         this.currentProject = {
                             ...this.currentProject,
+                            partner_pk: value?.partner_pk,
+                            duration: value?.duration,
+                            objective: value?.objective,
                             partner: {
                                 ...this.currentProject?.partner,
-                                name: data?.name,
+                                pk: value?.partner_pk,
+                                name: value?.name,
+                                organization: {
+                                    ...this.currentProject?.partner?.organization,
+                                    country_pk: this.countryPk,
+                                    country: {
+                                        ...this.currentProject?.partner?.organization?.country,
+                                        pk: this.countryPk,
+                                        name: this.countryName,
+                                    },
+                                },
                             },
                         } as Project;
-                        this.savePartnerOrg();
+                        this.saveProjProposal();
                     } else {
                         this.toastr.error(`An error occurred while saving Partner. Please try again.`, 'ERROR!');
                     }
@@ -206,51 +269,6 @@ export class TopInformationComponent implements OnInit {
                     const { statusCode, errorMessage } = extractErrorMessage(err);
                     this.toastr.error(
                         `An error occurred while saving Partner. ${statusCode} ${errorMessage} Please try again.`,
-                        'ERROR!'
-                    );
-                    this.processing = false;
-                },
-            });
-    }
-
-    savePartnerOrg() {
-        const { value } = this.form;
-        const partner = this.currentProject?.partner;
-        this.applicationService
-            .saveApplicationPartnerOrg({
-                partner_id: partner?.partner_id,
-                country_pk: value?.country_pk,
-            })
-            .subscribe({
-                next: (res: any) => {
-                    const data = res?.data;
-                    const status = res.status;
-                    if (status) {
-                        this.currentProject = {
-                            ...this.currentProject,
-                            partner: {
-                                ...this.currentProject?.partner,
-                                organization: {
-                                    ...this.currentProject?.partner?.organization,
-                                    country_pk: data?.country_pk,
-                                    country: {
-                                        pk: data?.country_pk,
-                                        name: this.countryName,
-                                    },
-                                },
-                            },
-                        } as Project;
-                        this.toastr.success('Organization has been successfully saved', 'SUCCESS!');
-                        this.saveProjProposal();
-                    } else {
-                        this.toastr.error(`An error occurred while saving Organization. Please try again.`, 'ERROR!');
-                    }
-                    this.processing = false;
-                },
-                error: (err) => {
-                    const { statusCode, errorMessage } = extractErrorMessage(err);
-                    this.toastr.error(
-                        `An error occurred while saving Organization. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
                     this.processing = false;
@@ -281,7 +299,8 @@ export class TopInformationComponent implements OnInit {
                             },
                         } as Project;
                         this.toastr.success('Project Proposal has been successfully saved', 'SUCCESS!');
-                        this.saveProject();
+                        this.isSaved = true;
+                        this.handleClose();
                     } else {
                         this.toastr.error(
                             `An error occurred while saving Project Proposal. Please try again.`,
@@ -301,51 +320,12 @@ export class TopInformationComponent implements OnInit {
             });
     }
 
-    saveProject() {
-        const { value } = this.form;
-        const application = this.currentProject?.application;
-        this.applicationService
-            .saveApplicationProject({
-                pk: this.currentProject?.pk,
-                application_pk: application?.pk,
-                duration: value?.duration,
-                objective: value?.objective,
-            })
-            .subscribe({
-                next: (res: any) => {
-                    const data = res?.data;
-                    const status = res?.status;
-                    if (status) {
-                        this.currentProject = {
-                            ...this.currentProject,
-                            duration: data?.duration,
-                            objective: data?.objective,
-                        } as Project;
-                        this.toastr.success('Project has been successfully saved', 'SUCCESS!');
-                        this.isSaved = true;
-                        this.handleClose();
-                    } else {
-                        this.toastr.error(`An error occurred while saving Project. Please try again.`, 'ERROR!');
-                    }
-                    this.processing = false;
-                },
-                error: (err) => {
-                    const { statusCode, errorMessage } = extractErrorMessage(err);
-                    this.toastr.error(
-                        `An error occurred while saving Project. ${statusCode} ${errorMessage} Please try again.`,
-                        'ERROR!'
-                    );
-                    this.processing = false;
-                },
-            });
-    }
-
     handleSave() {
         this.submitted = true;
         const { status } = this.form;
         if (status === 'VALID') {
             this.processing = true;
-            this.savePartner();
+            this.updateProjectDetails();
         }
     }
 
