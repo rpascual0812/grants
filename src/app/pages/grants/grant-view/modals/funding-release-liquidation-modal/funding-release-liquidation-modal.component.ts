@@ -54,7 +54,8 @@ export class FundingReleaseLiquidationModalComponent implements OnInit {
     }
 
     getAvailableTranche = () => {
-        return this.projectFunding?.filter((item) => !item?.project_funding_liquidation?.pk);
+        // return this.projectFunding?.filter((item) => !item?.project_funding_liquidation?.pk);
+        return this.projectFunding;
     };
 
     setForm() {
@@ -93,7 +94,7 @@ export class FundingReleaseLiquidationModalComponent implements OnInit {
     saveFormValue() {
         const { value } = this.form;
         const status = value?.status;
-        const selectedProjectFunding = this.getAvailableTranche()?.find((funding) => funding?.title === status);
+        const selectedProjectFunding = this.projectFunding?.find((funding) => funding?.title === status);
         this.projectService
             .saveProjectFundingLiquidation({
                 project_funding_pk: selectedProjectFunding?.pk ?? this.projectFundingLiquidation?.project_funding_pk,

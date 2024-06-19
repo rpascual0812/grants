@@ -267,11 +267,7 @@ export class FundingReleaseComponent implements OnInit {
                 this.projectFunding =
                     this.projectFunding?.map((funding) => {
                         if (funding.pk === data?.project_funding_pk) {
-                            funding['project_funding_liquidation'] = {
-                                ...funding,
-                                ...data,
-                                documents: [...(funding?.project_funding_liquidation?.documents ?? [])],
-                            };
+                            funding['project_funding_liquidation']?.push(data);
                         }
                         return {
                             ...funding,
@@ -282,15 +278,16 @@ export class FundingReleaseComponent implements OnInit {
         });
     }
 
-    uploadFiles(index: number) {
+    uploadFiles(funding: number, liquidation: number) {
         const initialState: ModalOptions = {
             class: 'modal-lg',
         };
         this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
 
         this.documentUploaderRef.content.document.subscribe((res: any) => {
-            this.projectFunding?.[index].project_funding_liquidation?.documents?.push(res.file);
-            this.linkAttachment(res.file, this.projectFunding?.[index].project_funding_liquidation);
+            const funding_liquidation: any = this.projectFunding?.[funding].project_funding_liquidation ?? {};
+            funding_liquidation[liquidation]?.documents?.push(res.file);
+            this.linkAttachment(res.file, funding_liquidation[liquidation]);
             this.changeDetection.detectChanges();
         });
     }
@@ -308,7 +305,7 @@ export class FundingReleaseComponent implements OnInit {
         });
     }
 
-    deleteAttachment(funding_index: number, document_index: number) {
+    deleteAttachment(funding_index: number, liquidation_index: number, document_index: number) {
         _.confirmMessage(
             {
                 title: '<strong>Are you sure you want to delete this attachment?</strong>',
@@ -322,16 +319,18 @@ export class FundingReleaseComponent implements OnInit {
                 cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
             },
             () => {
+                const funding_liquidation: any = this.projectFunding?.[funding_index].project_funding_liquidation ?? {};
+
                 this.projectService
                     .deleteLiquidationAttachment({
-                        pk: this.projectFunding?.[funding_index].project_funding_liquidation?.documents?.[
+                        pk: funding_liquidation[liquidation_index]?.documents?.[
                             document_index
                         ].pk,
                     })
                     .subscribe({
                         next: (data: any) => {
                             if (data.status) {
-                                this.projectFunding?.[funding_index].project_funding_liquidation?.documents?.splice(
+                                funding_liquidation[liquidation_index]?.documents?.splice(
                                     document_index,
                                     1
                                 );
@@ -347,5 +346,33 @@ export class FundingReleaseComponent implements OnInit {
                     });
             }
         );
+    }
+
+    getAmount(liquidations: any, key: string) {
+        let amount = 0;
+        liquidations.forEach((liquidation: any) => {
+            amount += parseFloat(liquidation['amount_usd']);
+        });
+        return amount;
+    }
+
+    getOtherAmount(liquidations: any) {
+        let currencies: any = {};
+        liquidations.forEach((liquidation: any) => {
+            if (!currencies[liquidation.amount_other_currency]) {
+                currencies[liquidation.amount_other_currency] = 0;
+            }
+            currencies[liquidation.amount_other_currency] += parseFloat(liquidation.amount_other);
+        });
+
+        let final_currency: any = [];
+        const keys = Object.keys(currencies);
+        keys.forEach((key: any) => {
+            final_currency.push({
+                currency: key,
+                amount: currencies[key]
+            });
+        });
+        return final_currency;
     }
 }
