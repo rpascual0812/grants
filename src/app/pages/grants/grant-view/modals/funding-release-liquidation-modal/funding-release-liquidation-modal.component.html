@@ -10,30 +10,22 @@
         <form [formGroup]="form" (ngSubmit)="handleSave()">
             <div class="form-group my-2">
                 <label class="text-dark">Choose Tranche Number</label>
-                <p *ngIf="projectFundingLiquidation?.pk" class="text-secondary p-1 m-0 text-sm">{{ projectFundingLiquidation?.status }}</p>
-                <select
-                    *ngIf="!projectFundingLiquidation?.pk"
-                    #statusSelectOpt
-                    class="form-select border rounded-1 p-1 text-dark"
-                    formControlName="status"
-                    (change)="onChangeSelectedOpt(statusSelectOpt.value, 'status')"
-                >
+                <p *ngIf="projectFundingLiquidation?.pk" class="text-secondary p-1 m-0 text-sm">{{
+                    projectFundingLiquidation?.status }}</p>
+                <select *ngIf="!projectFundingLiquidation?.pk" #statusSelectOpt
+                    class="form-select border rounded-1 p-1 text-dark" formControlName="status"
+                    (change)="onChangeSelectedOpt(statusSelectOpt.value, 'status')">
                     >
-                    <option *ngFor="let tranche of getAvailableTranche()" [value]="tranche.title">
+                    <option *ngFor="let tranche of projectFunding" [value]="tranche.title">
                         {{ tranche.title }}
                     </option>
                 </select>
             </div>
             <div class="form-group my-2">
                 <label class="text-dark">Liquidation</label>
-                <textarea
-                    formControlName="description"
-                    type="text"
-                    class="form-control border rounded-1 p-1"
-                    [ngClass]="{
+                <textarea formControlName="description" type="text" class="form-control border rounded-1 p-1" [ngClass]="{
                         'is-invalid': submitted && f['description'].errors
-                    }"
-                ></textarea>
+                    }"></textarea>
                 <div *ngIf="submitted && f['description'].errors" class="invalid-feedback">
                     <div *ngIf="f['description'].errors['required']">Liquidation is required</div>
                 </div>
@@ -43,16 +35,10 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="input-group">
-                            <input
-                                type="number"
-                                min="0"
-                                class="form-control border border-end-0 rounded-1 p-1"
-                                required
-                                formControlName="amount_usd"
-                                [ngClass]="{
+                            <input type="number" min="0" class="form-control border border-end-0 rounded-1 p-1" required
+                                formControlName="amount_usd" [ngClass]="{
                                     'is-invalid': submitted && f['amount_usd'].errors
-                                }"
-                            />
+                                }" />
                             <div class="border border-start-0 border-end-1 p-1 text-sm">USD</div>
                             <div *ngIf="submitted && f['amount_usd'].errors" class="invalid-feedback">
                                 <div *ngIf="f['amount_usd'].errors['required']">Field is required</div>
@@ -60,13 +46,11 @@
                         </div>
                     </div>
                     <div class="col-6">
-                        <app-input-dropdown
-                            [data]="availableCurrencies"
+                        <app-input-dropdown [data]="availableCurrencies"
                             [defaultSelected]="otherCurrenciesDefaultSelected"
                             [inputValue]="f['amount_other'].value ?? ''"
                             (onSelectItem)="onSelectItemDropdown($event, 'amount_other_currency')"
-                            (inputValueChange)="onInputValueChange($event, 'amount_other')"
-                        ></app-input-dropdown>
+                            (inputValueChange)="onInputValueChange($event, 'amount_other')"></app-input-dropdown>
                         <div *ngIf="submitted && f['amount_other'].errors">
                             <div class="text-danger text-sm my-1" *ngIf="f['amount_other'].errors['required']">
                                 Field is required
@@ -78,15 +62,10 @@
 
             <div class="form-group my-2">
                 <label class="font-weight-bold text-dark">Date</label>
-                <input
-                    formControlName="date_released"
-                    class="form-control border rounded-1 p-1"
-                    type="date"
-                    required
+                <input formControlName="date_released" class="form-control border rounded-1 p-1" type="date" required
                     [ngClass]="{
                         'is-invalid': submitted && f['date_released'].errors
-                    }"
-                />
+                    }" />
                 <div *ngIf="submitted && f['date_released'].errors" class="invalid-feedback">
                     <div *ngIf="f['date_released'].errors['required']">Field is required</div>
                 </div>

@@ -52,7 +52,7 @@ export interface ProjectFunding {
     date_created?: Date;
     date_updated?: Date;
     project_funding_report?: ProjectFundingReport[];
-    project_funding_liquidation?: ProjectFundingLiquidation;
+    project_funding_liquidation?: ProjectFundingLiquidation[];
 }
 
 export interface Donor {

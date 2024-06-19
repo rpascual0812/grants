@@ -42,7 +42,6 @@ export class ReviewComponent implements OnInit {
                 const data: Application = res?.data ?? null;
 
                 this.application = data;
-                console.log('application', this.application);
             },
             error: (err: any) => {
                 console.log(err);

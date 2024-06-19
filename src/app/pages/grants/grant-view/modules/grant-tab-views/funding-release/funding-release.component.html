@@ -154,9 +154,11 @@
             </div>
         </div>
 
-        <div *ngIf="funding?.project_funding_liquidation?.pk" class="card bg-gray-400 my-3">
+
+        <div *ngFor="let liquidation of funding?.project_funding_liquidation; let j = index"
+            class="card bg-gray-400 my-3">
             <div class="d-flex flex-wrap flex-row">
-                <button class="btn btn-icon-only" (click)="handleEditLiquidation(funding?.project_funding_liquidation)"
+                <button class="btn btn-icon-only" (click)="handleEditLiquidation(liquidation)"
                     *ngIf="['comments', 'recommendation'].includes(permission.fund_release)">
                     <i class="material-icons">edit</i>
                 </button>
@@ -167,43 +169,41 @@
                         <h5 class="text-dark">
                             Liquidation
                             <span class="font-weight-light">{{
-                                funding?.project_funding_liquidation?.date_released | date : 'dd-MMM-yyyy'
+                                liquidation?.date_released | date : 'dd-MMM-yyyy'
                                 }}</span>
                         </h5>
                         <div class="container bg-white rounded">
-                            <p class="text-secondary p-1 min-height-100"
-                                [innerText]="funding?.project_funding_liquidation?.description"></p>
+                            <p class="text-secondary p-1 min-height-100" [innerText]="liquidation?.description"></p>
                         </div>
                     </div>
 
                     <div class="col-12 col-md-2">
                         <h5 class="text-dark">Amount</h5>
-                        <p class="text-dark">USD {{ funding?.project_funding_liquidation?.amount_usd | number }}</p>
+                        <p class="text-dark">USD {{ liquidation?.amount_usd | number }}</p>
                         <p class="text-dark">
-                            {{ parseCurrencyKey(funding?.project_funding_liquidation?.amount_other_currency) }}
-                            {{ funding?.project_funding_liquidation?.amount_other | number }}
+                            {{ parseCurrencyKey(liquidation?.amount_other_currency) }}
+                            {{ liquidation?.amount_other | number }}
                         </p>
                     </div>
 
                     <div class="col-12 col-md-2">
                         <h5 class="text-dark">Attachment</h5>
 
-                        <div class="row mt-3 mb-3"
-                            [hidden]="funding?.project_funding_liquidation?.documents?.length == 0">
+                        <div class="row mt-3 mb-3" [hidden]="liquidation?.documents?.length == 0">
                             <div class="md-12" *ngFor="
-                                    let attachment of funding?.project_funding_liquidation?.documents;
-                                    let j = index
+                                    let attachment of liquidation?.documents;
+                                    let k = index
                                 ">
                                 <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
                                     attachment.original_name
                                     }}</a>
-                                <a (click)="deleteAttachment(i, j)"
+                                <a (click)="deleteAttachment(i, j, k)"
                                     *ngIf="['comments', 'recommendation'].includes(permission.fund_release)"><i
                                         class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                             </div>
                         </div>
 
-                        <button class="btn btn-default" (click)="uploadFiles(i)"
+                        <button class="btn btn-default" (click)="uploadFiles(i, j)"
                             *ngIf="['comments', 'recommendation'].includes(permission.fund_release)">
                             <div class="d-flex flex-column text-start">
                                 <p class="p-0 m-0 text-sm text-info font-weight-bold">
@@ -219,15 +219,19 @@
             </div>
         </div>
 
-        <div *ngIf="funding?.project_funding_liquidation?.pk" class="card bg-gray-500 my-3">
+        <div *ngIf="funding?.project_funding_liquidation?.length ?? 0 > 0" class="card bg-gray-600 my-3">
             <div class="card-body">
                 <div class="d-flex flex-wrap flex-row justify-content-between">
                     <h6 class="text-white">{{ funding?.title }} | Liquidation Total</h6>
 
                     <h6 class="text-white font-weight-light">
-                        USD {{ funding?.project_funding_liquidation?.amount_usd | number }} |
-                        {{ parseCurrencyKey(funding?.project_funding_liquidation?.amount_other_currency) }}
-                        {{ funding?.project_funding_liquidation?.amount_other | number }}
+                        USD {{ getAmount(funding?.project_funding_liquidation, 'amount_usd') | number }}
+                        <span
+                            *ngFor="let liquidation of getOtherAmount(funding?.project_funding_liquidation); let i = index">
+                            | {{liquidation.currency}} {{liquidation.amount | number}}
+                        </span>
+                        <!-- {{ parseCurrencyKey(funding?.project_funding_liquidation?.amount_other_currency) }}
+                        {{ funding?.project_funding_liquidation?.amount_other | number }} -->
                     </h6>
                 </div>
             </div>
