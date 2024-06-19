@@ -198,7 +198,7 @@
                             <div class="col-12 col-md-6">
                                 <label class="form-label">Income Baseline</label>
                                 <input formControlName="individual_income"
-                                    class="border border-1 padding p-2 form-control" type="text"
+                                    class="border border-1 padding p-2 form-control" type="number" min="0"
                                     [class]="{ 'is-invalid': submitted && f['individual_income'].errors }" />
 
                                 <div *ngIf="submitted && f['individual_income'].errors" class="invalid-feedback">
@@ -208,9 +208,9 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
-                                <label class="form-label">Income Baseline</label>
+                                <label class="form-label">Income Increase</label>
                                 <input formControlName="household_income"
-                                    class="border border-1 padding p-2 form-control" type="text"
+                                    class="border border-1 padding p-2 form-control" type="number" min="0"
                                     [class]="{ 'is-invalid': submitted && f['household_income'].errors }" />
 
                                 <div *ngIf="submitted && f['household_income'].errors" class="invalid-feedback">
