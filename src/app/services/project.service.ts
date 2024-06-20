@@ -236,8 +236,9 @@ export class ProjectService {
         return this.http.get(`${_.BASE_URL}/projects/total_per_donor`);
     }
 
-    updateProjectDetails(body: Pick<Project, 'pk' | 'partner_pk' | 'objective' | 'duration'>) {
+    updateProjectDetails(body: Pick<Project, 'pk' | 'application_pk' | 'partner_pk' | 'objective' | 'duration'>) {
         return this.http.post(`${_.BASE_URL}/projects/${body?.pk}/project_details`, {
+            application_pk: body?.application_pk,
             partner_pk: body?.partner_pk,
             objective: body?.objective,
             duration: body?.duration,
