@@ -230,6 +230,7 @@ export class TopInformationComponent implements OnInit {
         this.projectService
             .updateProjectDetails({
                 pk: this.currentProject?.pk,
+                application_pk: this.currentProject?.application_pk,
                 partner_pk: value?.partner_pk,
                 objective: value?.objective,
                 duration: value?.duration,
