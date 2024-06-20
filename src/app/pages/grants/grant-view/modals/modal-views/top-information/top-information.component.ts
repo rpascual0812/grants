@@ -231,9 +231,13 @@ export class TopInformationComponent implements OnInit {
             .updateProjectDetails({
                 pk: this.currentProject?.pk,
 <<<<<<< HEAD
+<<<<<<< HEAD
                 application_pk: this.currentProject?.application_pk,
 =======
 >>>>>>> ae630e5 ([sc-458]: fix feedbacks)
+=======
+                application_pk: this.currentProject?.application_pk,
+>>>>>>> ee476c5 ([sc-458]: added application update for partner pk)
                 partner_pk: value?.partner_pk,
                 objective: value?.objective,
                 duration: value?.duration,
