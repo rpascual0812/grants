@@ -1,0 +1,38 @@
+<div class="my-3">
+    <div class="card">
+        <div class="card-header bg-dark-blue">
+            <div class="d-flex flex-wrap flex-row justify-content-between">
+                <h6 class="text-white">Total per Donor</h6>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="container text-center" *ngIf="loading">
+                <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <ng-container>
+                <div class="row">
+                    <div class="col-6 col-md-6">
+                        <h4>Current Donors</h4>
+                        <ul class="list-group">
+                            <li class="list-group-item" *ngFor="let donor of currentDonor">
+                                <a href="#" class="badge badge-primary" style="color: black;">{{donor.count}}</a>
+                                {{donor.name}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <h4>Former Donors</h4>
+                        <ul class="list-group">
+                            <li class="list-group-item" *ngFor="let donor of formerDonor">
+                                <a href="#" class="badge badge-primary" style="color: black;">{{donor.count}}</a>
+                                {{donor.name}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
