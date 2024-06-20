@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import * as _ from '../../../utilities/globals';
@@ -12,7 +12,7 @@ import { LogsComponent } from 'src/app/components/logs/logs.component';
     templateUrl: './roles.component.html',
     styleUrls: ['./roles.component.scss'],
 })
-export class RolesComponent {
+export class RolesComponent implements OnInit {
     bsModalRef?: BsModalRef;
 
     loading: boolean = false;

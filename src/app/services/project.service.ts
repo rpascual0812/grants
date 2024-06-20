@@ -231,4 +231,8 @@ export class ProjectService {
     fetchGroupProjectCountry() {
         return this.http.get(`${_.BASE_URL}/projects/group_project_country`);
     }
+
+    fetchTotalPerDonor() {
+        return this.http.get(`${_.BASE_URL}/projects/total_per_donor`);
+    }
 }

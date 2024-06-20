@@ -27,6 +27,7 @@ export class DonorComponent implements OnInit {
     pagination: any = _.PAGINATION;
     tableSizes: any = _.TABLE_SIZES;
     timeout: any = null;
+    showInactive: boolean = true;
 
     @ViewChild('modal', { read: ViewContainerRef })
     entry!: ViewContainerRef;
@@ -44,6 +45,7 @@ export class DonorComponent implements OnInit {
     ngOnInit(): void {
         this.filters = {
             keyword: '',
+            showInactive: this.showInactive,
             archived: false,
             skip: 0,
             take: this.pagination.tableSize
@@ -59,9 +61,16 @@ export class DonorComponent implements OnInit {
         }, 1000);
     }
 
+    statusChange(event: any) {
+        this.showInactive = event.target.checked;
+
+        this.fetch();
+    }
+
     fetch() {
         this.filters.skip = (this.pagination.page * this.pagination.tableSize) - this.pagination.tableSize;
         this.filters.take = this.pagination.tableSize;
+        this.filters.showInactive = this.showInactive;
 
         this.donorService
             .fetchAll(this.filters)
