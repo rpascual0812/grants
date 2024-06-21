@@ -1,20 +1,27 @@
 <div class="modal-body">
     <div class="container">
         <form [formGroup]="form" (ngSubmit)="handleSave()">
-            <div>
+            <div class="container text-center" *ngIf="loading">
+                <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <div *ngIf="!loading">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group my-3">
                             <label class="font-weight-bold text-dark">Partner's name*</label>
-                            <input
-                                type="text"
-                                class="form-control border rounded-1 p-1"
-                                required
-                                [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
-                                formControlName="name"
-                            />
-                            <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
-                                <div *ngIf="f['name'].errors['required']">Partner's name is required</div>
+                            <app-select
+                                [arr]="partnerList"
+                                (onSelectEvent)="onChangeSelectedItem($event, 'partner_pk')"
+                                (onDeSelectEvent)="onChangeSelectedItem($event, 'partner_pk')"
+                                [defaultSelectedItemKey]="form.controls['partner_pk'].value"
+                                [ngClass]="{ 'is-invalid': submitted && f['partner_pk'].errors }"
+                            >
+                            </app-select>
+                            <div *ngIf="submitted && f['partner_pk'].errors" class="invalid-feedback">
+                                <div *ngIf="f['partner_pk'].errors['required']">Partner's name is required</div>
                             </div>
                         </div>
                     </div>
@@ -24,16 +31,7 @@
                     <div class="col-md-12">
                         <div class="form-group my-3">
                             <label class="font-weight-bold text-dark">Country*</label>
-                            <app-select
-                                [url]="'country'"
-                                (onSelectEvent)="onChangeSelectedItem($event, 'country_pk')"
-                                (onDeSelectEvent)="onChangeSelectedItem($event, 'country_pk')"
-                                [defaultSelectedItemKey]="form.controls['country_pk'].value"
-                                [ngClass]="{ 'is-invalid': submitted && f['country_pk'].errors }"
-                            ></app-select>
-                            <div *ngIf="submitted && f['country_pk'].errors" class="invalid-feedback">
-                                <div *ngIf="f['country_pk'].errors['required']">Country is required</div>
-                            </div>
+                            <p class="text-dark">{{ countryName }}</p>
                         </div>
                     </div>
                 </div>
@@ -142,6 +140,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="modal-footer">
                 <button
                     type="button"
