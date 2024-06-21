@@ -6,6 +6,7 @@ import { TotalGrantFunctionModule } from './total-grant-function/total-grant-fun
 import { TotalGrantsPerCountryModule } from './total-grants-per-country/total-grants-per-country.module';
 import { TotalGrantsPerYearModule } from './total-grants-per-year/total-grants-per-year.module';
 import { TotalPerDonorModule } from './total-per-donor/total-per-donor.module';
+import { GrantsForModule } from './grants-for/grants-for.module';
 @NgModule({
     declarations: [DashboardComponent],
     imports: [
@@ -14,7 +15,8 @@ import { TotalPerDonorModule } from './total-per-donor/total-per-donor.module';
         TotalGrantFunctionModule,
         TotalGrantsPerCountryModule,
         TotalGrantsPerYearModule,
-        TotalPerDonorModule
+        TotalPerDonorModule,
+        GrantsForModule
     ],
 })
 export class DashboardModule { }

@@ -1,0 +1,16 @@
+.img-container {
+    height: 70px;
+    width: 70px;
+    position: relative;
+    top: 40px;
+    right: 15px;
+    z-index: 1;
+    background-color: white;
+    border-radius: 50%;
+
+    img {
+        border: 4px solid;
+        border-color: black;
+        padding: 10px;
+    }
+}
