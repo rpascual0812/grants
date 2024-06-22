@@ -1,0 +1,93 @@
+<div class="my-3">
+    <div class="card my-3">
+        <div class="card-header bg-dark-blue">
+            <div class="d-flex flex-wrap flex-row justify-content-between">
+                <h6 class="text-white">Grant Status</h6>
+            </div>
+        </div>
+        <div class="card-body py-2">
+            <div class="row p-2">
+                <!-- Grant Applications -->
+                <div class="d-flex flex-row flex-wrap gap-3">
+                    <div *ngFor="let item of applicationStatus" class="item-container">
+                        <div class="item-label border border-3 border-white" [style.background]="item.labelBgColor">
+                            <h4 class="text-white p-0 m-0">{{ item.labelText }}</h4>
+                        </div>
+                        <div class="item shadow-card">
+                            <div class="item-header" [style.background]="item.headerBgColor"></div>
+                            <div
+                                class="item-body text-bold text-lg"
+                                [style.background]="item.bodyBgColor"
+                                [style.color]="item.bodyTextColor"
+                            >
+                                {{ item.name }}
+                            </div>
+                        </div>
+                        <div class="item-badge">
+                            <span class="badge rounded-pill bg-danger text-md">{{ item.count }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contract Finalization -->
+                <div class="d-flex flex-row flex-wrap gap-3 my-3">
+                    <div *ngFor="let item of contractFinalizationStatus" class="item-container">
+                        <div class="item-label border border-3 border-white" [style.background]="item.labelBgColor">
+                            <h4 class="text-white p-0 m-0">{{ item.labelText }}</h4>
+                        </div>
+                        <div class="item shadow-card">
+                            <div class="item-header" [style.background]="item.headerBgColor"></div>
+                            <div
+                                class="item-body text-bold text-lg"
+                                [style.background]="item.bodyBgColor"
+                                [style.color]="item.bodyTextColor"
+                            >
+                                {{ item.name }}
+                            </div>
+                        </div>
+                        <div class="item-badge">
+                            <span class="badge rounded-pill bg-danger text-md">{{ item.count }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fund Release -->
+                <div class="d-flex flex-row flex-wrap gap-3 my-3">
+                    <div *ngFor="let item of fundReleaseStatus" class="item-container">
+                        <div class="item-label border border-3 border-white" [style.background]="item.labelBgColor">
+                            <h4 class="text-white p-0 m-0">{{ item.labelText }}</h4>
+                        </div>
+                        <div class="item shadow-card">
+                            <div class="item-header" [style.background]="item.headerBgColor"></div>
+                            <div
+                                class="item-body text-bold text-lg"
+                                [style.background]="item.bodyBgColor"
+                                [style.color]="item.bodyTextColor"
+                            >
+                                {{ item.name }}
+                            </div>
+                        </div>
+                        <div class="item-badge">
+                            <span class="badge rounded-pill bg-danger text-md">{{ item.count }}</span>
+                        </div>
+                    </div>
+
+                    <div class="item-container">
+                        <div class="item-label border border-3 border-white" [style.background]="'#0b2cb5'">
+                            <h4 class="text-white p-0 m-0">3.2</h4>
+                        </div>
+                        <div class="item shadow-card">
+                            <div class="item-header" [style.background]="'#0b2cb5'"></div>
+                            <div class="item-body text-bold text-lg" [style.background]="" [style.color]="'#0b2cb5'">
+                                Closing of Grants
+                            </div>
+                        </div>
+                        <div class="item-badge">
+                            <span class="badge rounded-pill bg-danger text-md">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

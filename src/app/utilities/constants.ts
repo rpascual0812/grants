@@ -71,47 +71,36 @@ export const TOTAL_GRANT_PER_FUNCTION = {
         associatedKey: ['Travel Grant'],
         total: 0,
         imagePath: '../../../assets/images/travel-icon.png',
-        color: "#23327FFF",
+        color: '#23327FFF',
     },
     'CapDev / Institutional Development Support': {
         associatedKey: ['Capacity Development', 'Institutional Development'],
         total: 0,
         imagePath: '../../../assets/images/group-icon.png',
-        color: "#3B5E61FF",
+        color: '#3B5E61FF',
     },
     'Urgent Grant Action': {
         associatedKey: ['Urgent Grant'],
         total: 0,
         imagePath: '../../../assets/images/police-light-icon.png',
-        color: "#84A6EFFF",
+        color: '#84A6EFFF',
     },
     'Education Grant and Indigenous Knowledge Building': {
         associatedKey: ['Education Grant', 'Indigenous Knowledge Building'],
         total: 0,
         imagePath: '../../../assets/images/education-icon.png',
-        color: "#fcc203",
+        color: '#fcc203',
     },
     'Resiliency Building and Social Justice Grant': {
         associatedKey: ['Resiliency Building', 'Social Justice Grant'],
         total: 0,
         imagePath: '../../../assets/images/justice-hammer-icon.png',
-        color: "#7591EDFF",
+        color: '#7591EDFF',
     },
 };
 
 export type TotalGrantPerFunction = typeof TOTAL_GRANT_PER_FUNCTION;
 export type TotalGrantPerFunctionKey = keyof typeof TOTAL_GRANT_PER_FUNCTION;
-
-export const GRANT_TYPES = [
-    'Travel Grant',
-    'Capacity Development',
-    'Urgent Grant',
-    'Education Grant',
-    'Indigenous Knowledge Building',
-    'Resiliency Building',
-    'Social Justice Grant',
-    'Institutional Development',
-];
 
 export const THEMATIC_AREAS = [
     'Tenure',
@@ -155,3 +144,34 @@ export const PROJECT_LESSON_TYPES = {
 };
 
 export type ProjectLessonTypeKey = keyof typeof PROJECT_LESSON_TYPES;
+
+export type AvailableApplicationStatus =
+    | 'Received Proposals'
+    | 'Grants Team Review'
+    | 'Advisers Review'
+    | 'Budget Review and Finalization'
+    | 'Financial Management Capacity'
+    | 'Due Diligence Final Review';
+
+export const AVAILABLE_APPLICATION_STATUS: AvailableApplicationStatus[] = [
+    'Received Proposals',
+    'Grants Team Review',
+    'Advisers Review',
+    'Budget Review and Finalization',
+    'Financial Management Capacity',
+    'Due Diligence Final Review',
+];
+
+export type AvailableProjectStatus =
+    | 'Contract Preparation'
+    | 'Final Approval'
+    | 'Partner Signing'
+    | 'Fund Release'
+    | 'Completed';
+export const AVAILABLE_PROJECT_STATUS: AvailableProjectStatus[] = [
+    'Contract Preparation',
+    'Final Approval',
+    'Partner Signing',
+    'Fund Release',
+    'Completed',
+];
