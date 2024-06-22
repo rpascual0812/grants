@@ -7,10 +7,6 @@
         </div>
         <div class="card-body py-2">
             <div class="row p-2">
-                <button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover"
-                    data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
-                    Popover on top
-                </button>
                 <div class="col-12 col-md-4 position-relative" *ngFor="let grant of grants; let i = index">
                     <div class="img-container" style="--border-color: #1a73e8;">
                         <img height="100%" src="{{grant.image}}" class="rounded-circle" data-toggle="popover"
