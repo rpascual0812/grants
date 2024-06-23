@@ -14,3 +14,17 @@
         padding: 10px;
     }
 }
+
+::ng-deep .popover-body {
+    width: 200px !important;
+    z-index: 9999999;
+}
+
+.my-custom-class {
+    background: aliceblue;
+    font-size: 125%;
+}
+
+.my-custom-class .arrow::after {
+    border-top-color: aliceblue;
+}
