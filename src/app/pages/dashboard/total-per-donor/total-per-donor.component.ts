@@ -55,8 +55,6 @@ export class TotalPerDonorComponent implements OnInit {
                     return x < y ? -1 : x > y ? 1 : 0;
                 });
 
-                console.log(sortable);
-
                 this.currentDonor = sortable.filter((donor: any) => donor.active);
                 this.formerDonor = sortable.filter((donor: any) => !donor.active);
             },

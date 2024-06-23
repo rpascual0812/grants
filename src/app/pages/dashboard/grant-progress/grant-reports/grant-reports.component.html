@@ -1,0 +1,124 @@
+<div class="my-3">
+    <div class="card my-3" style="border-radius: 0px;">
+        <div class="card-header bg-dark-blue" style="padding: 5px 0px 0px 10px; border-radius: 0px;">
+            <div class="d-flex flex-wrap flex-row justify-content-between">
+                <h6 class="text-white">Reports</h6>
+            </div>
+        </div>
+        <div class="card-body py-2" style="border-radius: 0px;">
+            <div class="row p-2">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-2">
+                    Partner ID
+                </div>
+                <div class="col-md-2">
+                    Title
+                </div>
+                <div class="col-md-1">
+                    Tranche No.
+                </div>
+                <div class="col-md-3">
+                    Downloadable Link
+                </div>
+                <div class="col-md">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="card panel mt-2 py-3" style="border-radius: 0px;">
+                    <div class="row" style="height: 50px; margin-right: 0px !important;">
+                        <div class="col-md-3"
+                            style="background-color: #224581; padding-top: 13px; text-align: center; color: white;">
+                            Interim Narrative
+                            Report</div>
+                        <div class="col-md-2" style="padding-top: 13px;">
+                            {{project?.partner?.partner_id}}
+                        </div>
+                        <div class="col-md-2" style="padding-top: 13px;">
+                            {{project?.title}}
+                        </div>
+                        <div class="col-md-1" style="padding-top: 13px;">
+                            {{interim_narrative_number}}
+                        </div>
+                        <div class="col-md-3" style="padding-top: 13px;">
+                            <a href="{{url}}/{{interim_narrative_download}}"
+                                *ngIf="interim_narrative_download">Download</a>
+                        </div>
+                        <div class="col-md" style="padding-top: 13px;">
+                            <a href="/grant/{{project.pk}}/review">Review</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card panel mt-2 py-3" style="border-radius: 0px;">
+                    <div class="row" style="height: 50px; margin-right: 0px !important;">
+                        <div class="col-md-3"
+                            style="background-color: #224581; padding-top: 13px; text-align: center; color: white;">
+                            Interim Financial Report</div>
+                        <div class="col-md-2" style="padding-top: 13px;">
+                            {{project?.partner?.partner_id}}
+                        </div>
+                        <div class="col-md-2" style="padding-top: 13px;">
+                            {{project?.title}}
+                        </div>
+                        <div class="col-md-1" style="padding-top: 13px;">
+                            {{interim_financial_number}}
+                        </div>
+                        <div class="col-md-3" style="padding-top: 13px;">
+                            <a href="{{url}}/{{interim_financial_download}}"
+                                *ngIf="interim_financial_download">Download</a>
+                        </div>
+                        <div class="col-md" style="padding-top: 13px;">
+                            <a href="/grant/{{project.pk}}/review">Review</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card panel mt-2 py-3" style="border-radius: 0px;">
+                    <div class="row" style="height: 50px; margin-right: 0px !important;">
+                        <div class="col-md-3"
+                            style="background-color: #224581; padding-top: 13px; text-align: center; color: white;">
+                            Final Narrative Report</div>
+                        <div class="col-md-2" style="padding-top: 13px;">
+                            {{project?.partner?.partner_id}}
+                        </div>
+                        <div class="col-md-2" style="padding-top: 13px;">
+                            {{project?.title}}
+                        </div>
+                        <div class="col-md-1" style="padding-top: 13px;">
+                            {{final_narrative_number}}
+                        </div>
+                        <div class="col-md-3" style="padding-top: 13px;">
+                            <a href="{{url}}/{{final_narrative_download}}" *ngIf="final_narrative_download">Download</a>
+                        </div>
+                        <div class="col-md" style="padding-top: 13px;">
+                            <a href="/grant/{{project.pk}}/review">Review</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card panel mt-2 py-3" style="border-radius: 0px;">
+                    <div class="row" style="height: 50px; margin-right: 0px !important;">
+                        <div class="col-md-3"
+                            style="background-color: #224581; padding-top: 13px; text-align: center; color: white;">
+                            Final Financial Report</div>
+                        <div class="col-md-2" style="padding-top: 13px;">
+                            {{project?.partner?.partner_id}}
+                        </div>
+                        <div class="col-md-2" style="padding-top: 13px;">
+                            {{project?.title}}
+                        </div>
+                        <div class="col-md-1" style="padding-top: 13px;">
+                            {{final_financial_number}}
+                        </div>
+                        <div class="col-md-3" style="padding-top: 13px;">
+                            <a href="{{url}}/{{final_financial_download}}" *ngIf="final_financial_download">Download</a>
+                        </div>
+                        <div class="col-md" style="padding-top: 13px;">
+                            <a href="/grant/{{project.pk}}/review">Review</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -72,7 +72,7 @@ export class GrantViewComponent implements OnInit {
         this.user?.user_role?.forEach((user_role: any) => {
             this.permission.contract_finalization =
                 this.restrictions[user_role.role.restrictions.contract_finalization] >
-                this.restrictions[this.permission.contract_finalization]
+                    this.restrictions[this.permission.contract_finalization]
                     ? user_role.role.restrictions.contract_finalization
                     : this.permission.contract_finalization;
         });
@@ -129,7 +129,7 @@ export class GrantViewComponent implements OnInit {
                 financial_management_training: !this.project?.financial_management_training,
             })
             .subscribe({
-                next: (data: any) => {},
+                next: (data: any) => { },
                 error: (error: any) => {
                     console.log(error);
                     this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
@@ -157,5 +157,28 @@ export class GrantViewComponent implements OnInit {
         });
 
         this.grantSignalService.editSectionKey.set(null);
+    }
+
+    setOverallStatus(ev: any, grant: any) {
+        ev.stopPropagation();
+        const data = {
+            pk: grant.pk,
+            overall_grant_status: ev.target.value
+        }
+        this.projectService.setGrantOverallStatus(data).subscribe({
+            next: (res: any) => {
+                this.toastr.success(
+                    `Overall Grant Status successfully saved`,
+                    'SUCCESS!'
+                );
+            },
+            error: (err) => {
+                const { statusCode, errorMessage } = extractErrorMessage(err)
+                this.toastr.error(
+                    `An error occurred while fetching Application. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+            },
+        });
     }
 }

@@ -1,0 +1,93 @@
+<div class="my-3">
+    <div class="card my-3">
+        <div class="card-header bg-dark-blue">
+            <div class="d-flex flex-wrap flex-row justify-content-between">
+                <h6 class="text-white">Closing</h6>
+            </div>
+        </div>
+        <div class="card-body py-2">
+            <div class="row p-2">
+                <div class="col-md-2">
+                    ID | Partner
+                </div>
+                <div class="col-md-3">
+                    Project Title
+                </div>
+                <div class="col-md-2">
+                    Last Tranche Report
+                </div>
+                <div class="col-md-2">
+                    Status
+                </div>
+                <div class="col-md-2">
+                    Pending Documents
+                </div>
+                <div class="col-md-1">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="card panel mt-2 py-3" style="border-radius: 0px;"
+                    *ngFor="let grant of grants; let i = index">
+                    <div class="row" style="margin-right: 0px !important;">
+                        <div class="col-md-2">
+                            {{grant.partner.partner_id}} | {{grant.partner.name}}
+                        </div>
+                        <div class="col-md-3" style="padding-top: 13px;">
+                            {{grant.title}}
+                        </div>
+                        <div class="col-md-2" style="padding-top: 13px;">
+                            <span
+                                *ngIf="grant.project_funding[grant.project_funding.length-1] && grant.project_funding[grant.project_funding.length-1].project_funding_report">
+                                {{grant.project_funding[grant.project_funding.length-1].project_funding_report[grant.project_funding[grant.project_funding.length-1].project_funding_report.length-1].date_created
+                                | date}}
+                            </span>
+                        </div>
+                        <div class="col-md-2" style="padding-top: 13px;">
+                            <div class="form-check" style="padding-left: 0px;">
+                                <input class="form-check-input" type="checkbox" name="closing_status" id="completed"
+                                    [checked]="grant.closing_status == 'Completed' ? true : false"
+                                    (change)="setClosingStatus('Completed', i)">
+                                <label class="form-check-label" for="completed">
+                                    Completed
+                                </label>
+                            </div>
+                            <div class="form-check" style="padding-left: 0px;">
+                                <input class="form-check-input" type="checkbox" name="closing_status" id="letter_sent"
+                                    [checked]="grant.closing_status == 'Closing Letter Sent' ? true : false"
+                                    (change)="setClosingStatus('Closing Letter Sent', i)">
+                                <label class="form-check-label" for="letter_sent">
+                                    Closing Letter Sent
+                                </label>
+                            </div>
+                            <div class="form-check" style="padding-left: 0px;">
+                                <input class="form-check-input" type="checkbox" name="closing_status" id="followup"
+                                    [checked]="grant.closing_status == 'For Follow Up' ? true : false"
+                                    (change)="setClosingStatus('For Follow Up', i)">
+                                <label class="form-check-label" for="followup">
+                                    For Follow Up
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-2" style="padding-top: 13px;">
+                            <ng-container *ngIf="grant.closing_status == 'For Follow Up'">
+                                <select
+                                    class="form-select px-3 border border-2 ronded-1 text-secondary text-md font-weight-bold"
+                                    [(ngModel)]="grant.pending_document" (change)="savePendingDocument(i)">
+                                    <option value="Final Narrative Report">Final Narrative Report</option>
+                                    <option value="FInal Financial Report">FInal Financial Report</option>
+                                    <option value="Outputs">Outputs</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </ng-container>
+                            <span *ngIf="grant.closing_status != 'For Follow Up'" class="text-danger">None</span>
+                        </div>
+                        <div class="col-md-1" style="padding-top: 13px;">
+                            <a href="/grant/{{grant.pk}}/review">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

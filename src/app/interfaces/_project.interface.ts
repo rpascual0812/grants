@@ -24,6 +24,9 @@ export interface Project {
     type_pk?: number;
     financial_management_training?: boolean;
     date_created?: Date;
+    overall_grant_status: string;
+    closing_status: string;
+    pending_document: string;
     project_proposal?: ProjectProposal;
     project_beneficiary?: ProjectBeneficiary;
     project_location?: ProjectLocation[];

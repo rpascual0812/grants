@@ -10,6 +10,8 @@ import { GrantsForModule } from './grants-for/grants-for.module';
 import { ThematicAreasModule } from './thematic-areas/thematic-areas.module';
 import { ThematicAreasDonorsModule } from './thematic-areas-donors/thematic-areas-donors.module';
 import { StatusCountModule } from './status-count/status-count.module';
+import { GrantProgressModule } from './grant-progress/grant-progress.module';
+import { GrantClosingModule } from './grant-closing/grant-closing.module';
 @NgModule({
     declarations: [DashboardComponent],
     imports: [
@@ -23,6 +25,8 @@ import { StatusCountModule } from './status-count/status-count.module';
         ThematicAreasModule,
         ThematicAreasDonorsModule,
         StatusCountModule,
+        GrantProgressModule,
+        GrantClosingModule
     ],
 })
-export class DashboardModule {}
+export class DashboardModule { }

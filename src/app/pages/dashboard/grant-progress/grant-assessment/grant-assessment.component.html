@@ -1,0 +1,35 @@
+<div class="my-3">
+    <div class="card my-3" style="border-radius: 0px;">
+        <div class="card-header bg-dark-blue" style="padding: 5px 0px 0px 10px; border-radius: 0px;">
+            <div class="d-flex flex-wrap flex-row justify-content-between">
+                <h6 class="text-white">Assessment</h6>
+            </div>
+        </div>
+        <div class="card-body py-2" style="border-radius: 0px;">
+            <div class="row p-2 font-weight-bolder">
+                <div class="col-md-2">
+                    Date
+                </div>
+                <div class="col-md-2">
+                    Donor Project
+                </div>
+                <div class="col-md-2">
+                    Thematic Area
+                </div>
+                <div class="col-md-4">
+                    Contribution / Results
+                </div>
+                <div class="col-md-2">
+                    Reviewing Officer
+                </div>
+            </div>
+            <div class="row" *ngFor="let assessment of project?.partner?.assessments">
+                <div class="col-md-2">{{assessment.date_created | date}}</div>
+                <div class="col-md-2"></div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4">{{assessment.message}}</div>
+                <div class="col-md-2">{{assessment.user.first_name}} {{assessment.user.last_name}}</div>
+            </div>
+        </div>
+    </div>
+</div>
