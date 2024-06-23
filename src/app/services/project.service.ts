@@ -11,6 +11,7 @@ import {
     ProjectSite,
 } from '../interfaces/_project.interface';
 import { Project, ProjectBeneficiary } from '../interfaces/_application.interface';
+import { AvailableProjectStatus } from '../utilities/constants';
 
 @Injectable({
     providedIn: 'root',
@@ -243,5 +244,11 @@ export class ProjectService {
             objective: body?.objective,
             duration: body?.duration,
         });
+    }
+
+    fetchProjectStatusCount(query?: { status?: AvailableProjectStatus; includeTranche?: boolean }) {
+        let attachedQuery = query?.status ? `?status=${query?.status}` : '';
+        attachedQuery = query?.includeTranche ? `${attachedQuery}&include_tranche=true` : `${attachedQuery}`;
+        return this.http.get(`${_.BASE_URL}/projects/status_count${attachedQuery}`);
     }
 }

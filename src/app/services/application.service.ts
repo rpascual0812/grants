@@ -12,6 +12,7 @@ import {
     PartnerOrganizationOtherInformation,
 } from '../interfaces/_application.interface';
 import { ApplicationNonprofitEquivalencyDeterminationRead } from '../interfaces/application.interface';
+import { AvailableApplicationStatus } from '../utilities/constants';
 @Injectable({
     providedIn: 'root',
 })
@@ -156,5 +157,10 @@ export class ApplicationService {
 
     resendSuccessEmail(data: any) {
         return this.http.post(`${_.BASE_URL}/application/${data.application_pk}/email`, data);
+    }
+
+    fetchApplicationStatusCount(query?: { status?: AvailableApplicationStatus }) {
+        const attachedQuery = query?.status ? `?status=${query?.status}` : '';
+        return this.http.get(`${_.BASE_URL}/application/status_count${attachedQuery}`);
     }
 }

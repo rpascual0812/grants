@@ -9,6 +9,7 @@ import { TotalPerDonorModule } from './total-per-donor/total-per-donor.module';
 import { GrantsForModule } from './grants-for/grants-for.module';
 import { ThematicAreasModule } from './thematic-areas/thematic-areas.module';
 import { ThematicAreasDonorsModule } from './thematic-areas-donors/thematic-areas-donors.module';
+import { StatusCountModule } from './status-count/status-count.module';
 @NgModule({
     declarations: [DashboardComponent],
     imports: [
@@ -20,7 +21,8 @@ import { ThematicAreasDonorsModule } from './thematic-areas-donors/thematic-area
         TotalPerDonorModule,
         GrantsForModule,
         ThematicAreasModule,
-        ThematicAreasDonorsModule
+        ThematicAreasDonorsModule,
+        StatusCountModule,
     ],
 })
-export class DashboardModule { }
+export class DashboardModule {}
