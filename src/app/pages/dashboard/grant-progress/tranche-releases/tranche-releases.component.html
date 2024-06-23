@@ -1,0 +1,93 @@
+<div class="my-3">
+    <div class="card my-3" style="border-radius: 0px;">
+        <div class="card-header bg-dark-blue" style="padding: 5px 0px 0px 10px; border-radius: 0px;">
+            <div class="d-flex flex-wrap flex-row justify-content-between">
+                <h6 class="text-white">Tranche Releases</h6>
+            </div>
+        </div>
+        <div class="card-body py-2" style="border-radius: 0px;">
+            <div class="row p-2">
+                <h6>
+                    Total Grant Amount: {{amount_usd | currency}}
+                    <span *ngFor="let other of amount_other">| {{other.currency}} {{other.amount | currency}}</span>
+                </h6>
+            </div>
+
+            <div class="row p-2">
+                <div class="col-md-1">
+                    <div style="width: 50px; height: 60px; background-color: #cfdfee;">
+                        <div class="font-weight-bolder" style="font-size: 40px; padding-left: 2px;">
+                            <sup>{{approved_tranches_count}}</sup>/<sub>{{project.project_funding.length}}</sub>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-4">{{project?.partner?.name}} | {{project?.partner?.partner_id}}</div>
+                        <div class="col-md-6">{{total_tranches | currency}} USD | <span
+                                *ngFor="let other of total_tranches_other">{{other.currency}} {{other.amount |
+                                number}}</span></div>
+                        <div class="col-md-2">
+                            {{project?.date_created | date}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4" style="padding-left: 0px; padding-right: 0px;">
+                            <div class="form-check" style="padding-left: 0px;">
+                                <input class="form-check-input" type="checkbox" [(ngModel)]="grantee_acknowledgement"
+                                    id="acknowledgement">
+                                <label class="form-check-label" for="acknowledgement">
+                                    Acknowledgement
+                                </label>
+                            </div>
+                            <div class="form-check" style="padding-left: 0px;">
+                                <input class="form-check-input" type="checkbox" [(ngModel)]="official_receipt"
+                                    id="official_receipt">
+                                <label class="form-check-label" for="official_receipt">
+                                    Official Receipt
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="padding-left: 0px; padding-right: 0px;">
+                            <div class="form-check" style="padding-left: 0px;">
+                                <input class="form-check-input" type="checkbox" [(ngModel)]="interim_narrative"
+                                    id="interim_narrative">
+                                <label class="form-check-label" for="interim_narrative">
+                                    Interim Narrative
+                                </label>
+                            </div>
+                            <div class="form-check" style="padding-left: 0px;">
+                                <input class="form-check-input" type="checkbox" [(ngModel)]="interim_financial"
+                                    id="interrim_financial">
+                                <label class="form-check-label" for="interrim_financial">
+                                    Interrim Financial
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="padding-left: 0px; padding-right: 0px;">
+                            <div class="form-check" style="padding-left: 0px;">
+                                <input class="form-check-input" type="checkbox" [(ngModel)]="final_narrative"
+                                    id="final_narrative">
+                                <label class="form-check-label" for="final_narrative">
+                                    Final Narrative
+                                </label>
+                            </div>
+                            <div class="form-check" style="padding-left: 0px;">
+                                <input class="form-check-input" type="checkbox" [(ngModel)]="final_financial"
+                                    id="final_financial">
+                                <label class="form-check-label" for="final_financial">
+                                    Final Financial
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <a href="/grant/{{project.pk}}/review">Review</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

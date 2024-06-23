@@ -17,7 +17,7 @@ import { AvailableProjectStatus } from '../utilities/constants';
     providedIn: 'root',
 })
 export class ProjectService {
-    constructor(public http: HttpClient) {}
+    constructor(public http: HttpClient) { }
 
     fetch(filters: any) {
         return this.http.get(`${_.BASE_URL}/projects`, { params: filters });
@@ -250,5 +250,17 @@ export class ProjectService {
         let attachedQuery = query?.status ? `?status=${query?.status}` : '';
         attachedQuery = query?.includeTranche ? `${attachedQuery}&include_tranche=true` : `${attachedQuery}`;
         return this.http.get(`${_.BASE_URL}/projects/status_count${attachedQuery}`);
+    }
+
+    setGrantOverallStatus(data: any) {
+        return this.http.post(`${_.BASE_URL}/projects/${data.pk}/overall_grant_status`, data);
+    }
+
+    setClosingStatus(data: any) {
+        return this.http.post(`${_.BASE_URL}/projects/${data.pk}/closing_status`, data);
+    }
+
+    savePendingDocument(data: any) {
+        return this.http.post(`${_.BASE_URL}/projects/${data.pk}/pending_document`, data);
     }
 }

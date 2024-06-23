@@ -1,0 +1,67 @@
+<div class="my-3">
+    <div class="card my-3" style="border-radius: 0px;">
+        <div class="card-header bg-dark-blue" style="padding: 5px 0px 0px 10px; border-radius: 0px;">
+            <div class="d-flex flex-wrap flex-row justify-content-between">
+                <h6 class="text-white">Basic Grant Information</h6>
+            </div>
+        </div>
+        <div class="card-body py-2" style="border-radius: 0px;">
+            <div class="row p-2">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-6 font-weight-bolder">Partner Grantee</div>
+                        <div class="col-md-6">{{project?.partner.name}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 font-weight-bolder">Grant ID</div>
+                        <div class="col-md-6">{{project?.partner.partner_id}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 font-weight-bolder">Start Date (Date Approved)</div>
+                        <div class="col-md-6">{{project?.date_created | date}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 font-weight-bolder">Grantee Project</div>
+                        <div class="col-md-6">{{project?.title}}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-6 font-weight-bolder">Grant Function</div>
+                        <div class="col-md-6">{{project?.type?.name}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 font-weight-bolder">Thematic Area</div>
+                        <div class="col-md-6"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 font-weight-bolder">Country</div>
+                        <div class="col-md-6">{{countries.join(',')}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 font-weight-bolder">Duration</div>
+                        <div class="col-md-6">{{project?.duration}}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-6 font-weight-bolder">Donor</div>
+                        <div class="col-md-6">{{donors.join(',')}}</div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-md-6 font-weight-bolder">Donor Project</div>
+                        <div class="col-md-6"></div>
+                    </div> -->
+                    <div class="row">
+                        <div class="col-md-6 font-weight-bolder">Local Currency</div>
+                        <div class="col-md-6">{{project?.project_proposal?.budget_request_other_currency}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 font-weight-bolder">Amount Requested (USD)</div>
+                        <div class="col-md-6">{{project?.project_proposal?.budget_request_usd | currency}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
