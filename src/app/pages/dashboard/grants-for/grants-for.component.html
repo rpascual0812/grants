@@ -7,13 +7,16 @@
         </div>
         <div class="card-body py-2">
             <div class="row p-2">
+
                 <div class="col-12 col-md-4 position-relative" *ngFor="let grant of grants; let i = index">
                     <div class="img-container" style="--border-color: #1a73e8;">
-                        <img height="100%" src="{{grant.image}}" class="rounded-circle" data-toggle="popover"
-                            title="Popover title"
-                            data-content="And here's some amazing content. It's very engaging. Right?" />
+                        <img height="100%" src="{{grant.image}}" class="rounded-circle" placement="end"
+                            popoverClass="my-custom-class" ngbPopover="{{grant.description}}"
+                            triggers="mouseenter:mouseleave" popoverTitle="{{grant.type}}"
+                            [style]="'border-color: ' + grant.color + ' !important'" />
                     </div>
-                    <div class="card bg-info" style="margin-left: 30px; height: 50px;">
+                    <div class="card " style="margin-left: 30px; height: 50px;"
+                        [style]="'background-color:' + grant.color">
                         <div class="card-body p-2 m-0" style="padding-left: 20px !important;">
                             <p class="text-white p-0 p-1 m-0 mx-1 font-weight-bold; padding-left: 20px;">{{grant.type}}
                             </p>
