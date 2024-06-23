@@ -163,4 +163,8 @@ export class ApplicationService {
         const attachedQuery = query?.status ? `?status=${query?.status}` : '';
         return this.http.get(`${_.BASE_URL}/application/status_count${attachedQuery}`);
     }
+
+    saveDateSubmitted(applicationPk?: number) {
+        return this.http.post(`${_.BASE_URL}/application/${applicationPk}/save_date_submitted`, {});
+    }
 }

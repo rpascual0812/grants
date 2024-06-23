@@ -1,4 +1,4 @@
-import { ProjectFunding } from "./_project.interface";
+import { ProjectFunding } from './_project.interface';
 
 // TODO: please use this for the new application save
 export interface Application {
@@ -8,6 +8,7 @@ export interface Application {
     partner_pk?: number;
     created_by?: number;
     date_created?: Date;
+    date_submitted?: Date;
     status?: string;
     archived?: boolean;
     needs_resolution?: boolean;

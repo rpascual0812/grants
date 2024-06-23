@@ -7,7 +7,6 @@ import { ApplicationSignalService } from 'src/app/services/application.signal.se
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { REFERENCES_FACTORY } from 'src/app/utilities/constants';
 
-
 @Component({
     selector: 'app-contact-info-references',
     templateUrl: './contact-info-references.component.html',
@@ -24,7 +23,7 @@ export class ContactInfoReferencesComponent {
         private formBuilder: FormBuilder,
         private applicationService: ApplicationService,
         private toastr: ToastrService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.setForm();
@@ -111,6 +110,7 @@ export class ContactInfoReferencesComponent {
                     const status = res?.status;
                     if (status) {
                         this.saveCurrentAppForm(data);
+                        this.saveDateSubmitted()
                         this.toastr.success('Contact Reference has been successfully saved', 'SUCCESS!');
                         this.applicationSignalService.submitSave.set(true);
                     } else {
@@ -130,6 +130,29 @@ export class ContactInfoReferencesComponent {
                     this.processing = false;
                 },
             });
+    }
+
+    saveDateSubmitted() {
+        const currentApplication = this.applicationSignalService.appForm();
+        const applicationPk = currentApplication?.pk;
+        this.applicationService.saveDateSubmitted(applicationPk).subscribe({
+            next: (res: any) => {
+                const status = res?.status;
+                if (!status) {
+                    this.toastr.error(
+                        `An error occurred while saving Application Date Submitted. Please try again.`,
+                        'ERROR!'
+                    );
+                }
+            },
+            error: (err) => {
+                const { statusCode, errorMessage } = extractErrorMessage(err);
+                this.toastr.error(
+                    `An error occurred while saving Application Date Submitted. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+            },
+        });
     }
 
     handleSave() {

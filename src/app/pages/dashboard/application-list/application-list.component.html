@@ -1,0 +1,53 @@
+<div class="my-3">
+    <div class="card">
+        <div class="card-header bg-dark-blue">
+            <div class="d-flex flex-wrap flex-row justify-content-between">
+                <h6 class="text-white">Application</h6>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row p-2">
+                <div class="d-flex flex-row flex-wrap gap-3">
+                    <div *ngFor="let item of applications; let i = index" class="w-md-30 w-100">
+                        <div class="card-header" [style.background]="item.headerBg">
+                            <h4 class="text-white text-md">{{ item.title }}</h4>
+                        </div>
+                        <div class="card-body p-0 m-0">
+                            <div class="row bg-warning mx-0 my-2 p-0">
+                                <div class="col-9">
+                                    <p class="text-dark text-sm py-1">Project Title</p>
+                                </div>
+                                <div class="col-3" style="background-color: #f1b7b7">
+                                    <p class="text-danger text-bold text-center text-sm py-1">Days Since Received</p>
+                                </div>
+                            </div>
+
+                            <ng-container *ngFor="let data of item?.dataLimited">
+                                <div class="row mx-0 mx-0 my-2 p-0" style="background-color: #efc15e">
+                                    <div class="col-9">
+                                        <p class="text-dark text-sm py-1">{{ data?.project?.title }}</p>
+                                    </div>
+                                    <div *ngIf="data?.date_submitted" class="col-3" style="background-color: #f1b7b7">
+                                        <p class="text-danger text-bold text-center text-md my-2">
+                                            {{ getDaysSinceReceived(data?.date_submitted) }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <div
+                                *ngIf="item?.dataLimited?.length && item?.maxCount !== item?.dataLimited?.length"
+                                class="btn-container d-flex justify-content-end"
+                            >
+                                <button class="btn btn-dark text-capitalize" (click)="handleOnSeeMore(i)">
+                                    See More
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
