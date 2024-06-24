@@ -5,6 +5,8 @@ import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { AvailableApplicationStatus, AvailableProjectStatus } from 'src/app/utilities/constants';
 
+type AvailableStatusName = AvailableApplicationStatus | AvailableProjectStatus | 'all';
+
 type ItemStatus = {
     name: string;
     labelText: string;
@@ -12,7 +14,7 @@ type ItemStatus = {
     headerBgColor: string;
     bodyBgColor: string;
     bodyTextColor: string;
-    statusName?: AvailableApplicationStatus | AvailableProjectStatus;
+    statusName?: AvailableStatusName;
     includeTranche?: boolean;
     count: number;
 };
@@ -31,6 +33,7 @@ export class StatusCountComponent implements OnInit {
             headerBgColor: '#9c4715',
             bodyBgColor: '#f44335',
             bodyTextColor: 'white',
+            statusName: 'all',
             count: 0,
         },
         {
@@ -103,6 +106,7 @@ export class StatusCountComponent implements OnInit {
             headerBgColor: '#7b97e2',
             bodyBgColor: '#245b9d',
             bodyTextColor: 'white',
+            statusName: 'all',
             count: 0,
         },
         {
@@ -196,7 +200,7 @@ export class StatusCountComponent implements OnInit {
                     const data = res?.data;
                     if (status) {
                         this.applicationStatus = this.applicationStatus.map((item) => {
-                            if (item?.name === name) {
+                            if (data?.status_option === item.statusName) {
                                 item.count = data?.count ?? 0;
                             }
                             return item;
@@ -230,7 +234,7 @@ export class StatusCountComponent implements OnInit {
                     const data = res?.data;
                     if (status) {
                         this.contractFinalizationStatus = this.contractFinalizationStatus.map((item) => {
-                            if (item?.name === name) {
+                            if (data?.status_option === item.statusName) {
                                 item.count = data?.count ?? 0;
                             }
                             return item;
