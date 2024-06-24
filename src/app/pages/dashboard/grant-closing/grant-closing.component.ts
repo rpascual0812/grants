@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from 'src/app/interfaces/_project.interface';
+import { DashboardSignalService } from 'src/app/services/dashboard.signal.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
@@ -27,11 +28,18 @@ export class GrantClosingComponent {
 
     currentExpanded = new Set();
 
+    dashboardSignalService = inject(DashboardSignalService);
+
     constructor(
         private projectService: ProjectService,
         private toastr: ToastrService,
         private cdr: ChangeDetectorRef,
-    ) { }
+    ) {
+        effect(() => {
+            this.dashboardSignalService.overallStatusSaved();
+            this.fetch();
+        });
+    }
 
     ngOnInit() {
         this.fetch();
@@ -46,7 +54,8 @@ export class GrantClosingComponent {
                 const status = res?.status;
                 const data = (res?.data ?? []) as Project[];
                 this.grants = data;
-                console.log(data);
+
+                this.dashboardSignalService.overallStatusSaved.set(false);
             },
             error: (err) => {
                 const { statusCode, errorMessage } = extractErrorMessage(err)
@@ -84,7 +93,6 @@ export class GrantClosingComponent {
     }
 
     savePendingDocument(index: number) {
-        console.log(this.grants[index]);
         const data = {
             pk: this.grants[index].pk,
             pending_document: this.grants[index].pending_document
