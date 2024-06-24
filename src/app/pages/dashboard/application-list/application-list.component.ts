@@ -117,9 +117,11 @@ export class ApplicationListComponent implements OnInit {
                 if (status) {
                     this.applications = this.applications.map((item) => {
                         if (item.title === title) {
-                            const cleansedData = ((data as Application[]) ?? []).filter(
-                                (itemData) => itemData?.project?.title && itemData?.project?.title?.trim() !== ''
-                            );
+                            const cleansedData = ((data as Application[]) ?? [])
+                                .filter(
+                                    (itemData) => itemData?.project?.title && itemData?.project?.title?.trim() !== ''
+                                )
+                                .filter((itemData) => itemData?.date_submitted);
                             item.dataFull = cleansedData;
                             item.dataLimited = [...cleansedData].splice(0, item?.offSet);
                             item.maxCount = item?.dataFull?.length;
