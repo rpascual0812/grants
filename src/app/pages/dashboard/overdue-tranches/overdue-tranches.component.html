@@ -1,0 +1,82 @@
+<div class="my-3">
+    <div class="card my-3">
+        <div class="card-header bg-dark-blue">
+            <div class="d-flex flex-wrap flex-row justify-content-between">
+                <h6 class="text-white">Overdue Tranches</h6>
+            </div>
+        </div>
+        <div class="card-body py-2">
+            <div class="overflow-auto p-0 m-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="p-2 text-dark">Grant Number</th>
+                            <th class="p-2 text-dark">Project</th>
+                            <th class="p-2 text-dark">Tranche</th>
+                            <th class="p-2 text-dark">Next Report Due</th>
+                            <th class="p-2 text-dark">Last Tranche Date</th>
+                            <th class="p-2 text-dark">Amount Released</th>
+                            <th class="p-2 text-dark"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            *ngFor="
+                                let item of overdueTranches
+                                    | paginate
+                                        : {
+                                              itemsPerPage: pagination.tableSize,
+                                              currentPage: pagination.page,
+                                              totalItems: pagination.count
+                                          }
+                            "
+                        >
+                            <th class="text-dark font-weight-bold" scope="row">
+                                {{ item?.project?.application?.number }}
+                            </th>
+                            <td class="text-dark font-weight-light">
+                                {{ item?.project?.title }}
+                            </td>
+                            <td class="text-dark font-weight-light">{{ item.title }}</td>
+                            <td class="text-dark font-weight-light">
+                                {{ item?.report_due_date | date : 'dd-MMM-YYYY' }}
+                            </td>
+                            <td class="text-dark font-weight-light">
+                                {{ item?.date_created | date : 'dd-MMM-YYYY' }}
+                            </td>
+                            <td class="text-dark font-weight-light">{{ item?.released_amount_usd }} USD</td>
+                            <td class="text-dark font-weight-light">
+                                <a [routerLink]="['/grant/' + item.project.pk + '/review']"
+                                    ><button class="btn btn-default text-info">Review</button></a
+                                >
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div *ngIf="overdueTranches.length <= 0" class="text-center">
+                    <p class="text-danger w-100 font-weight-bold">No available Overdue Tranches</p>
+                </div>
+
+                <div class="my-3 d-flex justify-content-end">
+                    <div>
+                        <select
+                            (change)="onTableSizeChange($event)"
+                            class="form-control form-control-sm pagination-select"
+                        >
+                            <option *ngFor="let size of tableSizes" [value]="size">
+                                {{ size }}
+                            </option>
+                        </select>
+                    </div>
+                    <pagination-controls
+                        [responsive]="true"
+                        previousLabel="Prev"
+                        nextLabel="Next"
+                        (pageChange)="onTableDataChange($event)"
+                    ></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
