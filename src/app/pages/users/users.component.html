@@ -66,6 +66,7 @@
                                         <span class="text-xs">{{user.email_address}}</span>
                                     </td>
                                     <td class="w-15 align-middle text-center text-sm">
+                                        {{user.roles | json}}
                                         <app-select url="roles" [multiple]="true" [itemsShowLimit]="3"
                                             (onSelectEvent)="roleUpdate($event, i)"
                                             (onDeSelectEvent)="roleUpdate($event, i)"

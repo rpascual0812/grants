@@ -6,7 +6,13 @@ import { PartnerService } from 'src/app/services/partner.service';
 import { OnHiddenData } from '../../../grant-view.component';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { Project } from 'src/app/interfaces/_project.interface';
-import { PartnerAssessment } from 'src/app/interfaces/_application.interface';
+import { PartnerAssessment, ProjectAssessment } from 'src/app/interfaces/_application.interface';
+import { ProjectService } from 'src/app/services/project.service';
+
+type SelectItem = {
+    pk: number;
+    name: string;
+};
 
 @Component({
     selector: 'app-assessment-view',
@@ -15,7 +21,7 @@ import { PartnerAssessment } from 'src/app/interfaces/_application.interface';
 })
 export class AssessmentViewComponent implements OnInit {
     @Input() project: Project | null = null;
-    @Input() partnerAssessment: PartnerAssessment | null = null;
+    @Input() projectAssessment: ProjectAssessment | null = null;
     processing = false;
     submitted = false;
     form: FormGroup;
@@ -23,12 +29,11 @@ export class AssessmentViewComponent implements OnInit {
     constructor(
         public bsModalRef: BsModalRef,
         private formBuilder: FormBuilder,
-        private partnerService: PartnerService,
+        private projectService: ProjectService,
         private toastr: ToastrService
     ) { }
 
     ngOnInit() {
-        console.log(5, this.project, this.partnerAssessment);
         this.setForm();
     }
 
@@ -37,8 +42,9 @@ export class AssessmentViewComponent implements OnInit {
     }
 
     setForm() {
-        const assessment = this.partnerAssessment;
+        const assessment = this.projectAssessment;
         this.form = this.formBuilder.group({
+            // donor_pk: [assessment?.donor_pk ?? '', Validators?.required],
             message: [assessment?.message ?? '', Validators?.required],
         });
     }
@@ -47,10 +53,10 @@ export class AssessmentViewComponent implements OnInit {
         this.processing = true;
         const { value } = this.form;
 
-        this.partnerService
-            .savePartnerAssessment({
-                partner_pk: this.partnerAssessment?.partner_pk,
-                pk: this.partnerAssessment?.pk,
+        this.projectService
+            .saveProjectAssessment({
+                project_pk: this.projectAssessment?.project_pk,
+                pk: this.projectAssessment?.pk,
                 ...value,
             })
             .subscribe({
@@ -62,7 +68,7 @@ export class AssessmentViewComponent implements OnInit {
                             isSaved: true,
                             data: {
                                 project: this.project,
-                                partnerAssessment: {
+                                projectAssessment: {
                                     ...data,
                                 },
                             },
@@ -96,4 +102,10 @@ export class AssessmentViewComponent implements OnInit {
     handleClose() {
         this.bsModalRef.hide();
     }
+
+    // onChangeSelectedItem(item: SelectItem[] | string[], key: string) {
+    //     const extractedItem = item?.at(0);
+    //     const pk = (extractedItem as SelectItem)?.pk ?? '';
+    //     this.form.get('donor_pk')?.patchValue(pk);
+    // }
 }

@@ -3,6 +3,7 @@ import {
     Partner,
     ProjectBeneficiary,
     ProjectLocation,
+    ProjectAssessment,
     ProjectProposal,
     Recommendation,
     Review,
@@ -30,6 +31,8 @@ export interface Project {
     project_proposal?: ProjectProposal;
     project_beneficiary?: ProjectBeneficiary;
     project_location?: ProjectLocation[];
+    project_assessment?: ProjectAssessment[];
+    project_funding?: ProjectFunding[];
     recommendations?: Recommendation[];
     partner_pk?: number;
     partner?: Partner;

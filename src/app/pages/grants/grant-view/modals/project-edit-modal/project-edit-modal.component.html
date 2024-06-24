@@ -11,12 +11,8 @@
     </ng-container>
 
     <ng-container *ngIf="section === 'projectInformation'">
-        <app-proj-info-view
-            [project]="project"
-            [provinces]="provinces"
-            [countries]="countries"
-            [projectSite]="projectSite"
-        ></app-proj-info-view>
+        <app-proj-info-view [project]="project" [provinces]="provinces" [countries]="countries"
+            [projectSite]="projectSite"></app-proj-info-view>
     </ng-container>
 
     <ng-container *ngIf="section === 'activitiesAndTimeline'">
@@ -24,6 +20,6 @@
     </ng-container>
 
     <ng-container *ngIf="section === 'assessment'">
-        <app-assessment-view [project]="project" [partnerAssessment]="partnerAssessment"></app-assessment-view>
+        <app-assessment-view [project]="project" [projectAssessment]="projectAssessment"></app-assessment-view>
     </ng-container>
 </div>

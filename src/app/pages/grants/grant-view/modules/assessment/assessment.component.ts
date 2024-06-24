@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import { PartnerAssessment, User } from 'src/app/interfaces/_application.interface';
+import { ProjectAssessment, User } from 'src/app/interfaces/_application.interface';
 import { PartnerService } from 'src/app/services/partner.service';
 import { PartnerForm, PartnerSignalService } from 'src/app/services/partner.signal.service';
 import { OnHiddenData } from '../../grant-view.component';
@@ -23,11 +23,10 @@ export class AssessmentComponent {
     bsModalRef?: BsModalRef;
     loading = false;
     partner: any = null;
-    partnerAssessments: PartnerAssessment[];
-    partnerAssessment: PartnerAssessment | null = {
-        message: '',
-    };
+    projectAssessments: ProjectAssessment[] | [];
+    projectAssessment: ProjectAssessment | {} = {};
     user: User | null = null;
+    donors: any = [];
 
     partnerSignalService = inject(PartnerSignalService);
 
@@ -52,51 +51,61 @@ export class AssessmentComponent {
             this.permission.contract_finalization = this.restrictions[user_role.role.restrictions.contract_finalization] > this.restrictions[this.permission.contract_finalization] ? user_role.role.restrictions.contract_finalization : this.permission.contract_finalization;
         });
 
-        this.fetch();
-    }
+        this.projectAssessments = this.project?.project_assessment ?? [];
+        // this.projectAssessments = this.project?.project_assessment;
+        // this.fetch();
 
-    fetch() {
-        this.loading = true;
-        this.partnerService.fetchPartnerAssessments(this.partner?.pk).subscribe({
-            next: (res: any) => {
-                const status = res?.status;
-                const data = res?.data;
-                if (status) {
-                    this.partnerAssessments = data;
-                } else {
-                    this.toastr.error(`An error occurred while fetching Assessments. Please try again.`, 'ERROR!');
-                }
-                this.loading = false;
-            },
-            error: (err) => {
-                const { statusCode, errorMessage } = extractErrorMessage(err);
-                this.toastr.error(
-                    `An error occurred while fetching Assessments. ${statusCode} ${errorMessage} Please try again.`,
-                    'ERROR!'
-                );
-                this.loading = false;
-            },
+        this.project?.project_funding!.forEach((funding: any) => {
+            if (!this.donors.includes(funding.donor.name)) {
+                this.donors.push(funding.donor.name);
+            }
         });
+
+        console.log(this.donors);
     }
 
-    modifyList(data: PartnerAssessment) {
-        const partnerAssessment = data;
-        const existingAssessment = this.partnerAssessments?.find((item) => item.pk === partnerAssessment?.pk);
+    // fetch() {
+    //     this.loading = true;
+    //     this.partnerService.fetchProjectAssessments(this.partner?.pk).subscribe({
+    //         next: (res: any) => {
+    //             const status = res?.status;
+    //             const data = res?.data;
+    //             if (status) {
+    //                 this.projectAssessments = data;
+    //             } else {
+    //                 this.toastr.error(`An error occurred while fetching Assessments. Please try again.`, 'ERROR!');
+    //             }
+    //             this.loading = false;
+    //         },
+    //         error: (err) => {
+    //             const { statusCode, errorMessage } = extractErrorMessage(err);
+    //             this.toastr.error(
+    //                 `An error occurred while fetching Assessments. ${statusCode} ${errorMessage} Please try again.`,
+    //                 'ERROR!'
+    //             );
+    //             this.loading = false;
+    //         },
+    //     });
+    // }
+
+    modifyList(data: ProjectAssessment) {
+        const projectAssessment = data;
+        const existingAssessment = this.projectAssessments?.find((item) => item.pk === projectAssessment?.pk);
         if (!existingAssessment) {
-            this.partnerAssessments = [
+            this.projectAssessments = [
                 {
-                    ...partnerAssessment,
+                    ...projectAssessment,
                     user: {
                         ...this.user,
                     },
                 },
-                ...this.partnerAssessments,
+                ...this.projectAssessments,
             ];
         } else {
-            this.partnerAssessments = this?.partnerAssessments?.map((item) => {
-                if (item.pk === partnerAssessment?.pk) {
+            this.projectAssessments = this?.projectAssessments?.map((item) => {
+                if (item.pk === projectAssessment?.pk) {
                     item = {
-                        ...partnerAssessment,
+                        ...projectAssessment,
                         user: {
                             ...this.user,
                         },
@@ -115,13 +124,13 @@ export class AssessmentComponent {
             class: 'modal-lg',
             initialState: {
                 project: this.project,
-                partnerAssessment: this.partnerAssessment,
+                projectAssessment: this.projectAssessment,
                 section,
             },
         });
         this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: OnHiddenData) => {
-            if (data?.partnerAssessment && isSaved) {
-                this.modifyList(data?.partnerAssessment);
+            if (data?.project_assessment && isSaved) {
+                this.modifyList(data?.projectAssessment ?? {});
                 this.changeDetection.detectChanges();
             }
         });
@@ -129,15 +138,15 @@ export class AssessmentComponent {
     }
 
     handleAdd() {
-        this.partnerAssessment = {
-            partner_pk: this.partner?.pk,
+        this.projectAssessment = {
+            project_pk: this.project?.pk,
             message: '',
         };
         this.handleOpenModal();
     }
 
     handleEdit(pk?: number) {
-        this.partnerAssessment = this.partnerAssessments.find((item) => item?.pk === pk) ?? null;
+        this.projectAssessment = this.projectAssessments.find((item) => item?.pk === pk) ?? {};
         this.handleOpenModal();
     }
 }

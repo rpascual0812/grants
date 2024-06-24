@@ -1,4 +1,4 @@
-import { ProjectFunding } from './_project.interface';
+import { Donor, ProjectFunding } from './_project.interface';
 
 // TODO: please use this for the new application save
 export interface Application {
@@ -235,6 +235,8 @@ export interface ProjectLocation {
     date_created?: Date;
 }
 
+
+
 export interface OperatedFor {
     cultural?: boolean;
     literacy?: boolean;
@@ -315,6 +317,20 @@ export interface PartnerAssessment {
     date_updated?: Date;
     archived?: boolean;
     user?: User;
+}
+
+export interface ProjectAssessment {
+    pk?: number;
+    project_pk?: number;
+    donor_pk?: number;
+    thematic_area_pk?: number;
+    message?: string,
+    created_by?: number,
+    date_created?: Date;
+    date_updated?: Date;
+    archived?: boolean;
+    user?: User;
+    donor?: Donor;
 }
 
 export interface User {

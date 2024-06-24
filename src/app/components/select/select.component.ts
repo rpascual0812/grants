@@ -138,8 +138,7 @@ export class SelectComponent {
         } else {
             if (this.defaultSelectedItemKey) {
                 this.selectedItems = this.dropdownList?.filter(
-                    (item: any) => item[this.listItemKey] === this.defaultSelectedItemKey
-                );
+                    (item: any) => item[this.listItemKey] == this.defaultSelectedItemKey);
             }
         }
 

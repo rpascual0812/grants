@@ -1,60 +1,61 @@
 <div>
     <div class="assessment-container my-3 overflow-x-auto">
-        <div style="min-width: 1000px">
+        <div>
             <div class="row mx-0">
-                <div class="col-2">
+                <div class="col-1" style="padding: 0px;">
                     <p class="text-dark font-weight-bold text-sm p-0 m-0">Date</p>
                 </div>
 
-                <div class="col-1">
+                <div class="col-3" style="padding: 0px;">
                     <p class="text-dark font-weight-bold text-sm p-0 m-0">Donor Project</p>
                 </div>
 
-                <div class="col-1">
+                <div class="col-2" style="padding: 0px;">
                     <p class="text-dark font-weight-bold text-sm p-0 m-0">Thematic Area</p>
                 </div>
 
-                <div class="col-4">
+                <div class="col-3" style="padding: 0px;">
                     <p class="text-dark font-weight-bold text-sm p-0 m-0">Contribution/Results</p>
                 </div>
 
-                <div class="col-2">
+                <div class="col-2" style="padding: 0px;">
                     <p class="text-dark font-weight-bold text-sm p-0 m-0">Reviewing Officer</p>
                 </div>
 
-                <div class="col-2">
-                    <!-- spacer -->
-                </div>
+                <div class="col-1" style="padding: 0px;"></div>
             </div>
 
-            <div *ngFor="let item of partnerAssessments; index as i" class="row align-items-center mx-0 my-3"
+            <div *ngFor="let item of projectAssessments; index as i" class="row align-items-center mx-0 my-3"
                 [ngClass]="{ 'border-top border-secondary': i !== 0 }">
-                <div class="col-2">
+                <div class="col-1" style="padding: 0px;">
                     <p class="text-secondary text-sm my-1 p-0">
                         {{ item.date_created | date : 'dd-MMMM-YYYY' }}
                     </p>
                 </div>
 
-                <div class="col-1">
+                <div class="col-3" style="padding: 0px;">
+                    <p class="text-secondary text-sm my-1 p-0">
+                        <!-- {{item.donor?.name}} -->
+                        {{donors.join(',')}}
+                    </p>
+                </div>
+
+                <div class="col-2" style="padding: 0px;">
                     <p class="text-secondary text-sm my-1 p-0"></p>
                 </div>
 
-                <div class="col-1">
-                    <p class="text-secondary text-sm my-1 p-0"></p>
-                </div>
-
-                <div class="col-4">
+                <div class="col-3" style="padding: 0px;">
                     <p class="text-secondary text-sm my-1 p-0">{{ item.message }}</p>
                 </div>
 
-                <div class="col-2">
+                <div class="col-2" style="padding: 0px;">
                     <p class="text-secondary text-sm my-1 p-0">
                         {{ item.user?.first_name }} {{ item?.user?.last_name }}
                     </p>
                 </div>
 
-                <div class="col-2">
-                    <button class="btn btn-icon-only my-1"
+                <div class="col-1" style="padding: 0px;">
+                    <button class="btn btn-icon-only my-1 float-right"
                         *ngIf="item?.created_by === user?.pk && ['comments', 'recommendation'].includes(permission.contract_finalization)"
                         (click)="handleEdit(item?.pk)">
                         <i class="material-icons">edit</i>
