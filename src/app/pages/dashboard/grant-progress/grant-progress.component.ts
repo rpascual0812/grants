@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from 'src/app/interfaces/_project.interface';
+import { DashboardSignalService } from 'src/app/services/dashboard.signal.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
@@ -27,7 +28,11 @@ export class GrantProgressComponent {
 
     currentExpanded = new Set();
 
-    constructor(private projectService: ProjectService, private toastr: ToastrService) { }
+    constructor(
+        private projectService: ProjectService,
+        private toastr: ToastrService,
+        private dashboardSignalService: DashboardSignalService
+    ) { }
 
     ngOnInit() {
         this.fetch();
@@ -71,6 +76,9 @@ export class GrantProgressComponent {
         }
         this.projectService.setGrantOverallStatus(data).subscribe({
             next: (res: any) => {
+
+                this.dashboardSignalService.overallStatusSaved.set(true);
+
                 this.toastr.success(
                     `Overall Grant Status successfully saved`,
                     'SUCCESS!'

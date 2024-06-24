@@ -14,16 +14,16 @@
             </div>
 
             <div class="row p-2">
-                <div class="col-md-1">
-                    <div style="width: 50px; height: 60px; background-color: #cfdfee;">
-                        <div class="font-weight-bolder" style="font-size: 40px; padding-left: 2px;">
-                            <sup>{{approved_tranches_count}}</sup>/<sub>{{project.project_funding.length}}</sub>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <div class="row">
-                        <div class="col-md-4">{{project?.partner?.name}} | {{project?.partner?.partner_id}}</div>
+                        <div class="col-md-1"
+                            style="width: 50px; height: 60px; background-color: #cfdfee; padding: 0px !important;">
+                            <div class="font-weight-bolder" style="padding-left: 3px;"
+                                [style]="'font-size: ' + (approved_tranches_count > 9 && project.project_funding.length > 9 ? '24px' : (approved_tranches_count > 9 || project.project_funding.length > 9 ? '28px' : '35px'))">
+                                <sup>{{approved_tranches_count}}</sup>/<sub>{{project.project_funding.length}}</sub>
+                            </div>
+                        </div>
+                        <div class="col-md-3">{{project?.partner?.name}} | {{project?.partner?.partner_id}}</div>
                         <div class="col-md-6">{{total_tranches | currency}} USD | <span
                                 *ngFor="let other of total_tranches_other">{{other.currency}} {{other.amount |
                                 number}}</span></div>
