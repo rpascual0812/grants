@@ -13,6 +13,8 @@ import { StatusCountModule } from './status-count/status-count.module';
 import { GrantProgressModule } from './grant-progress/grant-progress.module';
 import { GrantClosingModule } from './grant-closing/grant-closing.module';
 import { ApplicationListModule } from './application-list/application-list.module';
+import { OverdueTranchesModule } from './overdue-tranches/overdue-tranches.module';
+import { OverdueReportsModule } from './overdue-reports/overdue-reports.module';
 @NgModule({
     declarations: [DashboardComponent],
     imports: [
@@ -29,6 +31,8 @@ import { ApplicationListModule } from './application-list/application-list.modul
         ApplicationListModule,
         GrantProgressModule,
         GrantClosingModule,
+        OverdueTranchesModule,
+        OverdueReportsModule,
     ],
 })
 export class DashboardModule { }
