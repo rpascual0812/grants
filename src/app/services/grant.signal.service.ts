@@ -1,10 +1,10 @@
 import { Injectable, signal } from '@angular/core';
-import { PartnerAssessment } from '../interfaces/_application.interface';
+import { ProjectAssessment } from '../interfaces/_application.interface';
 import { Project, ProjectSite } from '../interfaces/_project.interface';
 
 export interface ProjectForm extends Project {
     project?: Project;
-    partnerAssessment?: PartnerAssessment;
+    projectAssessment?: ProjectAssessment;
     projectSite?: ProjectSite[];
 }
 

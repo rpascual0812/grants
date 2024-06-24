@@ -6,7 +6,7 @@ import { PartnerAssessment } from '../interfaces/_application.interface';
     providedIn: 'root',
 })
 export class PartnerService {
-    constructor(public http: HttpClient) {}
+    constructor(public http: HttpClient) { }
 
     fetch(filters?: any) {
         return this.http.get(`${_.BASE_URL}/partner`, { params: filters });

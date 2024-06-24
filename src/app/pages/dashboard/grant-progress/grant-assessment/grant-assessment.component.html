@@ -10,24 +10,25 @@
                 <div class="col-md-2">
                     Date
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     Donor Project
                 </div>
                 <div class="col-md-2">
                     Thematic Area
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     Contribution / Results
                 </div>
                 <div class="col-md-2">
                     Reviewing Officer
                 </div>
             </div>
-            <div class="row" *ngFor="let assessment of project?.partner?.assessments">
+            <div class="row" *ngFor="let assessment of project?.project_assessment">
                 <div class="col-md-2">{{assessment.date_created | date}}</div>
+                <!-- <div class="col-md-3">{{assessment.donor?.name}}</div> -->
+                <div class="col-md-3">{{donors.join(',')}}</div>
                 <div class="col-md-2"></div>
-                <div class="col-md-2"></div>
-                <div class="col-md-4">{{assessment.message}}</div>
+                <div class="col-md-3">{{assessment.message}}</div>
                 <div class="col-md-2">{{assessment.user.first_name}} {{assessment.user.last_name}}</div>
             </div>
         </div>

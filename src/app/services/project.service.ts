@@ -10,7 +10,7 @@ import {
     ProjectLesson,
     ProjectSite,
 } from '../interfaces/_project.interface';
-import { Project, ProjectBeneficiary } from '../interfaces/_application.interface';
+import { Project, ProjectAssessment, ProjectBeneficiary } from '../interfaces/_application.interface';
 import { AvailableProjectStatus } from '../utilities/constants';
 
 @Injectable({
@@ -270,5 +270,9 @@ export class ProjectService {
 
     fetchOverdueReports() {
         return this.http.get(`${_.BASE_URL}/projects/overdue_reports`);
+    }
+
+    saveProjectAssessment(data: ProjectAssessment) {
+        return this.http.post(`${_.BASE_URL}/projects/${data.project_pk}/assessment`, data);
     }
 }

@@ -27,11 +27,8 @@
                 </div>
             </div>
 
-            <div
-                *ngFor="let item of partnerAssessments; index as i"
-                class="row align-items-center mx-0 my-3"
-                [ngClass]="{ 'border-top border-secondary': i !== 0 }"
-            >
+            <div *ngFor="let item of partnerAssessments; index as i" class="row align-items-center mx-0 my-3"
+                [ngClass]="{ 'border-top border-secondary': i !== 0 }">
                 <div class="col-2">
                     <p class="text-secondary text-sm my-1 p-0">
                         {{ item.date_created | date : 'dd-MMMM-YYYY' }}
@@ -57,14 +54,12 @@
                 </div>
 
                 <div class="col-2">
-                    <button
-                        class="btn btn-icon-only my-1"
-                        *ngIf="item?.created_by === user?.pk"
-                        (click)="handleEdit(item?.pk)"
-                    >
+                    <button class="btn btn-icon-only my-1" *ngIf="item?.created_by === user?.pk"
+                        (click)="handleEdit(item?.pk)">
                         <i class="material-icons">edit</i>
                     </button>
-                    <button (click)="handleDelete(item?.pk)" class="btn btn-icon-only my-1" *ngIf="item?.created_by === user?.pk">
+                    <button (click)="handleDelete(item?.pk)" class="btn btn-icon-only my-1"
+                        *ngIf="item?.created_by === user?.pk">
                         <i class="material-icons">delete</i>
                     </button>
                 </div>
