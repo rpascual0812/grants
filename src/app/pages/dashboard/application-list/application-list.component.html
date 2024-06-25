@@ -20,6 +20,17 @@
                                 </div>
                             </div>
 
+                            <div *ngIf="item?.dataLimited?.length !== 0" class="row mx-0 my-2 p-0 bg-warning">
+                                <div class="col-9">
+                                    <p class="text-dark text-xs py-2">Project Title</p>
+                                </div>
+                                <div class="col-3" style="background-color: #f1b7b7">
+                                    <p class="text-danger text-bold text-center text-xs p-0 m-0 my-2">
+                                        Days Since Received
+                                    </p>
+                                </div>
+                            </div>
+
                             <ng-container *ngFor="let data of item?.dataLimited">
                                 <div class="row mx-0 mx-0 my-2 p-0" style="background-color: #efc15e">
                                     <div class="col-9">
@@ -27,7 +38,7 @@
                                     </div>
                                     <div *ngIf="data?.date_submitted" class="col-3" style="background-color: #f1b7b7">
                                         <p class="text-danger text-bold text-center text-md my-2">
-                                            {{ getDaysSinceReceived(data?.date_submitted) }}
+                                            {{ getDaysSinceReceived(data?.date_submitted) }} days
                                         </p>
                                     </div>
                                 </div>
