@@ -35,8 +35,8 @@ const getDueDate = (duration: string, dateCreated?: Date) => {
 export class AgingProjectsTranchesComponent implements OnInit {
     loading = {
         agingProjects: false,
-        tranches: false
-    }
+        tranches: false,
+    };
 
     filterOption = {
         selected: '',
@@ -65,16 +65,16 @@ export class AgingProjectsTranchesComponent implements OnInit {
     }
 
     getOtherCurrency(otherCurrency: string) {
-        return getOtherCurrencyKey(otherCurrency)
+        return getOtherCurrencyKey(otherCurrency);
     }
 
     fetchProjects() {
-        this.loading.agingProjects = true
+        this.loading.agingProjects = true;
         this.projectService.fetch().subscribe({
             next: (res: any) => {
                 const status = res?.status;
                 const data = (res?.data ?? []) as AgingProject[];
-                
+
                 if (status) {
                     this.agingProjects = data
                         ?.filter((item) => {
@@ -103,7 +103,7 @@ export class AgingProjectsTranchesComponent implements OnInit {
                 } else {
                     this.toastr.error(`An error occurred while fetching Projects. Please try again.`, 'ERROR!');
                 }
-                this.loading.agingProjects = false
+                this.loading.agingProjects = false;
             },
             error: (err) => {
                 const { statusCode, errorMessage } = extractErrorMessage(err);
@@ -111,7 +111,7 @@ export class AgingProjectsTranchesComponent implements OnInit {
                     `An error occurred while fetching Projects. ${statusCode} ${errorMessage} Please try again.`,
                     'ERROR!'
                 );
-                this.loading.agingProjects = false
+                this.loading.agingProjects = false;
             },
         });
     }
@@ -122,7 +122,6 @@ export class AgingProjectsTranchesComponent implements OnInit {
             next: (res: any) => {
                 const status = res?.status;
                 const data = (res?.data ?? []) as Tranche[];
-                console.log("🚀 ~ AgingProjectsTranchesComponent ~ this.projectService.fetchOverdueTranches ~ data:", data);
                 if (status) {
                     this.tranches = data
                         ?.filter((item) => {
@@ -145,7 +144,7 @@ export class AgingProjectsTranchesComponent implements OnInit {
                 } else {
                     this.toastr.error(`An error occurred while fetching Projects. Please try again.`, 'ERROR!');
                 }
-             
+
                 this.loading.tranches = false;
             },
             error: (err) => {
