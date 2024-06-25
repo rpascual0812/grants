@@ -1,0 +1,204 @@
+<div class="my-3">
+    <div class="card">
+        <div class="card-header bg-dark-blue">
+            <div class="d-flex flex-wrap flex-row justify-content-between">
+                <h6 class="text-white">Aging Projects and Tranches</h6>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="d-flex flex-wrap flex-row align-content-center align-items-center gap-2 my-2">
+                <p class="text-dark text-bold m-0 p-0">Filter</p>
+                <select
+                    class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold w-10"
+                    (change)="handleOnChangeFilterValue($event)"
+                    [value]="filterValue.selected"
+                >
+                    <option selected value=""></option>
+                    <option *ngFor="let value of filterValue.options" [value]="value">{{ value }}</option>
+                </select>
+                <select
+                    class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold w-10"
+                    (change)="handleOnChangeFilterOption($event)"
+                    [value]="filterOption.selected"
+                >
+                    <option selected value=""></option>
+                    <option *ngFor="let value of filterOption.options" [value]="value">{{ value }}</option>
+                </select>
+            </div>
+            <div class="overflow-auto p-0 m-0">
+                <div class="card-header py-2" style="background-color: #f44335">
+                    <h5 class="text-white text-center">Projects</h5>
+                </div>
+                <table class="table py-1">
+                    <thead>
+                        <tr>
+                            <th class="p-2 text-dark">Partner ID</th>
+                            <th class="p-2 text-dark">Partner</th>
+                            <th class="p-2 text-dark">Project</th>
+                            <th class="p-2 text-dark">Due Date</th>
+                            <th class="p-2 text-danger">Lapsed since Due</th>
+                            <th class="p-2 text-dark"></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="!loading.agingProjects">
+                        <tr
+                            *ngFor="
+                                let item of agingProjects
+                                    | paginate
+                                        : {
+                                              itemsPerPage: agingPagination.tableSize,
+                                              currentPage: agingPagination.page,
+                                              totalItems: agingPagination.count,
+                                              id: 'agingProjects'
+                                          }
+                            "
+                        >
+                            <th class="text-dark font-weight-bold" scope="row">
+                                {{ item?.partner?.partner_id }}
+                            </th>
+                            <td class="text-dark font-weight-light">
+                                {{ item?.partner?.name }}
+                            </td>
+                            <td class="text-dark font-weight-light">{{ item?.title }}</td>
+                            <td class="text-dark font-weight-light">
+                                {{ item?.due_date | date : 'dd-MMM-YYYY' }}
+                            </td>
+                            <td class="text-danger font-weight-light">
+                                {{ item?.lapsed_since_due }}
+                            </td>
+                            <td class="text-dark font-weight-light">
+                                <a [routerLink]="['/grant/' + item.pk + '/review']"
+                                    ><button class="btn btn-default text-info">Review</button></a
+                                >
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="container text-center" *ngIf="loading.agingProjects">
+                    <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+
+                <div *ngIf="!loading.agingProjects && agingProjects.length <= 0" class="text-center">
+                    <p class="text-danger w-100 font-weight-bold">No available Aging Projects</p>
+                </div>
+
+                <div class="my-3 d-flex justify-content-end">
+                    <div>
+                        <select
+                            (change)="onTableSizeChange($event, 'agingProjects')"
+                            class="form-control form-control-sm pagination-select"
+                        >
+                            <option *ngFor="let size of agingTableSizes" [value]="size">
+                                {{ size }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <pagination-controls
+                        [responsive]="true"
+                        previousLabel="Prev"
+                        nextLabel="Next"
+                        (pageChange)="onTableDataChange($event, 'agingProjects')"
+                        id="agingProjects"
+                    ></pagination-controls>
+                </div>
+
+
+
+
+
+                <div class="card-header py-2" style="background-color: #f44335">
+                    <h5 class="text-white text-center">Tranches</h5>
+                </div>
+                <table class="table py-1">
+                    <thead>
+                        <tr>
+                            <th class="p-2 text-dark">Partner | ID</th>
+                            <th class="p-2 text-dark">Project</th>
+                            <th class="p-2 text-dark">Due Date</th>
+                            <th class="p-2 text-dark">Tranche</th>
+                            <th class="p-2 text-dark">Last Tranche Date</th>
+                            <th class="p-2 text-dark">Amount to be Released</th>
+                            <th class="p-2 text-danger">Lapsed since Due</th>
+                            <th class="p-2 text-dark"></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="!loading.tranches">
+                        <tr
+                            *ngFor="
+                                let item of tranches
+                                    | paginate
+                                        : {
+                                              itemsPerPage: tranchesPagination.tableSize,
+                                              currentPage: tranchesPagination.page,
+                                              totalItems: tranchesPagination.count,
+                                              id: 'tranches'
+                                          }
+                            "
+                        >
+                            <th class="text-dark font-weight-bold" scope="row">
+                                {{ item?.project?.application?.partner?.name }} | {{item?.project?.application?.partner?.partner_id }}
+                            </th>
+                            <td class="text-dark font-weight-light">
+                                {{ item?.project?.title }}
+                            </td>
+                            <td class="text-dark font-weight-light">{{ item?.report_due_date | date : 'dd-MMM-YYYY' }}</td>
+                            <td class="text-dark font-weight-light">
+                                {{ item?.title }}
+                            </td>
+                            <td class="text-dark font-weight-light">
+                                {{ item?.date_created | date : 'dd-MMM-YYYY' }}
+                            </td>
+                            <td class="text-dark font-weight-light">
+                                {{ item?.released_amount_usd }} USD
+                            </td>
+                            <td class="text-dark font-weight-light">
+                                {{ item?.lapsed_since_due }}
+                            </td>
+                            <td class="text-dark font-weight-light">
+                                <a [routerLink]="['/grant/' + item.project.pk + '/review']"
+                                    ><button class="btn btn-default text-info">Review</button></a
+                                >
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="container text-center" *ngIf="loading.tranches">
+                    <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+
+                <div *ngIf="!loading.tranches && tranches.length <= 0" class="text-center">
+                    <p class="text-danger w-100 font-weight-bold">No available Tranches</p>
+                </div>
+
+                <div class="my-3 d-flex justify-content-end">
+                    <div>
+                        <select
+                            (change)="onTableSizeChange($event, 'tranches')"
+                            class="form-control form-control-sm pagination-select"
+                        >
+                            <option *ngFor="let size of tranchesTableSizes" [value]="size">
+                                {{ size }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <pagination-controls
+                        [responsive]="true"
+                        previousLabel="Prev"
+                        nextLabel="Next"
+                        (pageChange)="onTableDataChange($event, 'tranches')"
+                        id="tranches"
+                    ></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

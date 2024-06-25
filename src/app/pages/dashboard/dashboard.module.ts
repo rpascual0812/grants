@@ -15,6 +15,7 @@ import { GrantClosingModule } from './grant-closing/grant-closing.module';
 import { ApplicationListModule } from './application-list/application-list.module';
 import { OverdueTranchesModule } from './overdue-tranches/overdue-tranches.module';
 import { OverdueReportsModule } from './overdue-reports/overdue-reports.module';
+import { AgingProjectsTranchesModule } from './aging-projects-tranches/aging-projects-tranches.module';
 @NgModule({
     declarations: [DashboardComponent],
     imports: [
@@ -33,6 +34,7 @@ import { OverdueReportsModule } from './overdue-reports/overdue-reports.module';
         GrantClosingModule,
         OverdueTranchesModule,
         OverdueReportsModule,
+        AgingProjectsTranchesModule
     ],
 })
 export class DashboardModule { }
