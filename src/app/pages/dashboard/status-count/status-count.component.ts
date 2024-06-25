@@ -7,7 +7,6 @@ import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import {
     AVAILABLE_APPLICATION_STATUS,
-    AVAILABLE_PROJECT_STATUS,
     AvailableApplicationStatus,
     AvailableProjectStatus,
 } from 'src/app/utilities/constants';
@@ -228,7 +227,6 @@ export class StatusCountComponent implements OnInit {
         });
     }
 
-    // name: string, statusName?: AvailableProjectStatus, includeTranche?: boolean
     fetchProjectStatusCount() {
         this.projectService?.fetch().subscribe({
             next: (res: any) => {
