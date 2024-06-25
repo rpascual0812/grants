@@ -5,6 +5,7 @@ import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import * as _ from '../../../utilities/globals';
 import { DateTime } from 'luxon';
+import { getOtherCurrencyKey } from 'src/app/utilities/constants';
 
 interface AgingProject extends Project {
     due_date?: Date;
@@ -33,8 +34,8 @@ const getDueDate = (duration: string, dateCreated?: Date) => {
 })
 export class AgingProjectsTranchesComponent implements OnInit {
     loading = {
-        agingProjects: true,
-        tranches: true
+        agingProjects: false,
+        tranches: false
     }
 
     filterOption = {
@@ -63,12 +64,17 @@ export class AgingProjectsTranchesComponent implements OnInit {
         this.fetchTranches();
     }
 
+    getOtherCurrency(otherCurrency: string) {
+        return getOtherCurrencyKey(otherCurrency)
+    }
+
     fetchProjects() {
         this.loading.agingProjects = true
         this.projectService.fetch().subscribe({
             next: (res: any) => {
                 const status = res?.status;
                 const data = (res?.data ?? []) as AgingProject[];
+                
                 if (status) {
                     this.agingProjects = data
                         ?.filter((item) => {
@@ -116,6 +122,7 @@ export class AgingProjectsTranchesComponent implements OnInit {
             next: (res: any) => {
                 const status = res?.status;
                 const data = (res?.data ?? []) as Tranche[];
+                console.log("🚀 ~ AgingProjectsTranchesComponent ~ this.projectService.fetchOverdueTranches ~ data:", data);
                 if (status) {
                     this.tranches = data
                         ?.filter((item) => {
@@ -138,6 +145,7 @@ export class AgingProjectsTranchesComponent implements OnInit {
                 } else {
                     this.toastr.error(`An error occurred while fetching Projects. Please try again.`, 'ERROR!');
                 }
+             
                 this.loading.tranches = false;
             },
             error: (err) => {
@@ -158,7 +166,7 @@ export class AgingProjectsTranchesComponent implements OnInit {
             this.agingProjects = this.agingProjects.filter((item) => {
                 const filterDateOption = DateTime.fromJSDate(new Date()).minus({ [key]: value });
                 const dueDate = DateTime.fromJSDate(new Date(item.due_date as Date));
-                return filterDateOption <= dueDate;
+                return filterDateOption >= dueDate;
             });
         }
     }
@@ -170,7 +178,7 @@ export class AgingProjectsTranchesComponent implements OnInit {
             this.tranches = this.tranches.filter((item) => {
                 const filterDateOption = DateTime.fromJSDate(new Date()).minus({ [key]: value });
                 const dueDate = DateTime.fromJSDate(new Date(item.report_due_date as Date));
-                return filterDateOption <= dueDate;
+                return filterDateOption >= dueDate;
             });
         }
     }
