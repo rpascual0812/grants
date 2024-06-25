@@ -19,7 +19,7 @@ import { AvailableProjectStatus } from '../utilities/constants';
 export class ProjectService {
     constructor(public http: HttpClient) { }
 
-    fetch(filters: any) {
+    fetch(filters?: any) {
         return this.http.get(`${_.BASE_URL}/projects`, { params: filters });
     }
 
