@@ -107,10 +107,6 @@
                     ></pagination-controls>
                 </div>
 
-
-
-
-
                 <div class="card-header py-2" style="background-color: #f44335">
                     <h5 class="text-white text-center">Tranches</h5>
                 </div>
@@ -141,12 +137,15 @@
                             "
                         >
                             <th class="text-dark font-weight-bold" scope="row">
-                                {{ item?.project?.application?.partner?.name }} | {{item?.project?.application?.partner?.partner_id }}
+                                {{ item?.project?.application?.partner?.name }} |
+                                {{ item?.project?.application?.partner?.partner_id }}
                             </th>
                             <td class="text-dark font-weight-light">
                                 {{ item?.project?.title }}
                             </td>
-                            <td class="text-dark font-weight-light">{{ item?.report_due_date | date : 'dd-MMM-YYYY' }}</td>
+                            <td class="text-dark font-weight-light">
+                                {{ item?.report_due_date | date : 'dd-MMM-YYYY' }}
+                            </td>
                             <td class="text-dark font-weight-light">
                                 {{ item?.title }}
                             </td>
@@ -154,7 +153,9 @@
                                 {{ item?.date_created | date : 'dd-MMM-YYYY' }}
                             </td>
                             <td class="text-dark font-weight-light">
-                                {{ item?.released_amount_usd }} USD
+                                {{ item?.released_amount_usd | number }} USD
+                                {{ item?.released_amount_other | number }}
+                                {{ getOtherCurrency(item?.released_amount_other_currency ?? '') }}
                             </td>
                             <td class="text-dark font-weight-light">
                                 {{ item?.lapsed_since_due }}
