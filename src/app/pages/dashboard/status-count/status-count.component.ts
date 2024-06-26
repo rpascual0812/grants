@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Application } from 'src/app/interfaces/_application.interface';
+import { Project } from 'src/app/interfaces/_project.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
-import { AvailableApplicationStatus, AvailableProjectStatus } from 'src/app/utilities/constants';
+import {
+    AVAILABLE_APPLICATION_STATUS,
+    AvailableApplicationStatus,
+    AvailableProjectStatus,
+} from 'src/app/utilities/constants';
 
 type AvailableStatusName = AvailableApplicationStatus | AvailableProjectStatus | 'all';
 
@@ -33,7 +39,6 @@ export class StatusCountComponent implements OnInit {
             headerBgColor: '#9c4715',
             bodyBgColor: '#f44335',
             bodyTextColor: 'white',
-            statusName: 'all',
             count: 0,
         },
         {
@@ -106,7 +111,6 @@ export class StatusCountComponent implements OnInit {
             headerBgColor: '#7b97e2',
             bodyBgColor: '#245b9d',
             bodyTextColor: 'white',
-            statusName: 'all',
             count: 0,
         },
         {
@@ -172,13 +176,9 @@ export class StatusCountComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.applicationStatus.forEach((item) => {
-            this.fetchApplicationStatusCount(item.name, item?.statusName as AvailableApplicationStatus);
-        });
+        this.fetchApplicationStatusCount();
 
-        this.contractFinalizationStatus.forEach((item) => {
-            this.fetchProjectStatusCount(item.name, item?.statusName as AvailableProjectStatus);
-        });
+        this.fetchProjectStatusCount();
 
         this.fundReleaseStatus.forEach((item) => {
             this.fetchProjectFundReleaseStatusCount(
@@ -189,71 +189,81 @@ export class StatusCountComponent implements OnInit {
         });
     }
 
-    fetchApplicationStatusCount(name: string, statusName?: AvailableApplicationStatus) {
-        this.applicationService
-            ?.fetchApplicationStatusCount({
-                status: statusName,
-            })
-            .subscribe({
-                next: (res: any) => {
-                    const status = res?.status;
-                    const data = res?.data;
-                    if (status) {
-                        this.applicationStatus = this.applicationStatus.map((item) => {
-                            if (data?.status_option === item.statusName) {
-                                item.count = data?.count ?? 0;
-                            }
-                            return item;
-                        });
-                    } else {
-                        this.toastr.error(
-                            `An error occurred while fetching application status count for ${statusName}. Please try again.`,
-                            'ERROR!'
-                        );
-                    }
-                },
-                error: (err) => {
-                    const { errorMessage, statusCode } = extractErrorMessage(err);
+    fetchApplicationStatusCount() {
+        this.applicationService?.fetch().subscribe({
+            next: (res: any) => {
+                const status = res?.status;
+                const data = res?.data as Application[];
+                if (status) {
+                    const count =
+                        data?.filter((application) =>
+                            AVAILABLE_APPLICATION_STATUS.includes(application?.status as AvailableApplicationStatus)
+                        )?.length ?? 0;
+
+                    this.applicationStatus = this.applicationStatus.map((item) => {
+                        const countByStatus =
+                            data?.filter((application) => application.status === item.statusName)?.length ?? 0;
+                        if (item.name === 'Grant Application') {
+                            item.count = count;
+                        } else {
+                            item.count = countByStatus;
+                        }
+                        return item;
+                    });
+                } else {
                     this.toastr.error(
-                        `An error occurred while fetching application status count for ${statusName}. ${statusCode} ${errorMessage} Please try again.`,
+                        `An error occurred while fetching application status count for Application. Please try again.`,
                         'ERROR!'
                     );
-                },
-            });
+                }
+            },
+            error: (err) => {
+                const { errorMessage, statusCode } = extractErrorMessage(err);
+                this.toastr.error(
+                    `An error occurred while fetching application status count for Application. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+            },
+        });
     }
 
-    fetchProjectStatusCount(name: string, statusName?: AvailableProjectStatus, includeTranche?: boolean) {
-        this.projectService
-            ?.fetchProjectStatusCount({
-                status: statusName,
-                includeTranche,
-            })
-            .subscribe({
-                next: (res: any) => {
-                    const status = res?.status;
-                    const data = res?.data;
-                    if (status) {
-                        this.contractFinalizationStatus = this.contractFinalizationStatus.map((item) => {
-                            if (data?.status_option === item.statusName) {
-                                item.count = data?.count ?? 0;
-                            }
-                            return item;
-                        });
-                    } else {
-                        this.toastr.error(
-                            `An error occurred while fetching application status count for ${statusName}. Please try again.`,
-                            'ERROR!'
-                        );
-                    }
-                },
-                error: (err) => {
-                    const { errorMessage, statusCode } = extractErrorMessage(err);
+    fetchProjectStatusCount() {
+        this.projectService?.fetch().subscribe({
+            next: (res: any) => {
+                const status = res?.status;
+                const data = res?.data as Project[];
+                if (status) {
+                    const count =
+                        data?.filter((project) =>
+                            ['Contract Preparation', 'Final Approval', 'Partner Signing'].includes(
+                                project?.status as AvailableProjectStatus
+                            )
+                        )?.length ?? 0;
+                    this.contractFinalizationStatus = this.contractFinalizationStatus.map((item) => {
+                        const countByStatus =
+                            data?.filter((project) => project.status === item.statusName)?.length ?? 0;
+                        if (item.name === 'Contract Finalization') {
+                            item.count = count;
+                        } else {
+                            item.count = countByStatus;
+                        }
+                        return item;
+                    });
+                } else {
                     this.toastr.error(
-                        `An error occurred while fetching application status count for ${statusName}. ${statusCode} ${errorMessage} Please try again.`,
+                        `An error occurred while fetching application status count for Projects. Please try again.`,
                         'ERROR!'
                     );
-                },
-            });
+                }
+            },
+            error: (err) => {
+                const { errorMessage, statusCode } = extractErrorMessage(err);
+                this.toastr.error(
+                    `An error occurred while fetching application status count for Projects. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+            },
+        });
     }
 
     fetchProjectFundReleaseStatusCount(name: string, statusName?: AvailableProjectStatus, includeTranche?: boolean) {
