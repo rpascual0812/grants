@@ -13,22 +13,21 @@
                 </h6>
             </div>
 
-            <div class="row p-2">
+            <div class="row p-2" *ngFor="let funding of project.project_funding; let i = index;">
                 <div class="col-md-7">
                     <div class="row">
                         <div class="col-md-1"
                             style="width: 50px; height: 60px; background-color: #cfdfee; padding: 0px !important;">
-                            <div class="font-weight-bolder" style="padding-left: 3px;"
-                                [style]="'font-size: ' + (approved_tranches_count > 9 && project.project_funding.length > 9 ? '24px' : (approved_tranches_count > 9 || project.project_funding.length > 9 ? '28px' : '35px'))">
-                                <sup>{{approved_tranches_count}}</sup>/<sub>{{project.project_funding.length}}</sub>
+                            <div class="font-weight-bolder" style="padding-left: 3px;" [style]="'font-size: 34px'">
+                                <sup>{{i + 1}}</sup>/<sub>{{project.project_funding.length}}</sub>
                             </div>
                         </div>
                         <div class="col-md-3">{{project?.partner?.name}} | {{project?.partner?.partner_id}}</div>
-                        <div class="col-md-6">{{total_tranches | currency}} USD | <span
-                                *ngFor="let other of total_tranches_other">{{other.currency}} {{other.amount |
-                                number}}</span></div>
+                        <div class="col-md-6">{{funding.released_amount_usd | currency}} USD |
+                            {{funding.released_amount_other | currency }} {{funding.released_amount_other_currency}}
+                        </div>
                         <div class="col-md-2">
-                            {{project?.date_created | date}}
+                            {{funding?.date_created | date}}
                         </div>
                     </div>
                 </div>
@@ -36,15 +35,15 @@
                     <div class="row">
                         <div class="col-md-4" style="padding-left: 0px; padding-right: 0px;">
                             <div class="form-check" style="padding-left: 0px;">
-                                <input class="form-check-input" type="checkbox" [(ngModel)]="grantee_acknowledgement"
-                                    id="acknowledgement">
+                                <input class="form-check-input" type="checkbox"
+                                    [checked]="funding.grantee_acknowledgement" id="acknowledgement">
                                 <label class="form-check-label" for="acknowledgement">
                                     Acknowledgement
                                 </label>
                             </div>
                             <div class="form-check" style="padding-left: 0px;">
-                                <input class="form-check-input" type="checkbox" [(ngModel)]="official_receipt"
-                                    id="official_receipt">
+                                <input class="form-check-input" type="checkbox"
+                                    [checked]="funding.bank_receipt_pk ? true : false" id="official_receipt">
                                 <label class="form-check-label" for="official_receipt">
                                     Official Receipt
                                 </label>
@@ -52,14 +51,14 @@
                         </div>
                         <div class="col-md-4" style="padding-left: 0px; padding-right: 0px;">
                             <div class="form-check" style="padding-left: 0px;">
-                                <input class="form-check-input" type="checkbox" [(ngModel)]="interim_narrative"
+                                <input class="form-check-input" type="checkbox" [checked]="getInterimNarrative(funding)"
                                     id="interim_narrative">
                                 <label class="form-check-label" for="interim_narrative">
                                     Interim Narrative
                                 </label>
                             </div>
                             <div class="form-check" style="padding-left: 0px;">
-                                <input class="form-check-input" type="checkbox" [(ngModel)]="interim_financial"
+                                <input class="form-check-input" type="checkbox" [checked]="getInterimFinancial(funding)"
                                     id="interrim_financial">
                                 <label class="form-check-label" for="interrim_financial">
                                     Interrim Financial
@@ -68,14 +67,14 @@
                         </div>
                         <div class="col-md-4" style="padding-left: 0px; padding-right: 0px;">
                             <div class="form-check" style="padding-left: 0px;">
-                                <input class="form-check-input" type="checkbox" [(ngModel)]="final_narrative"
+                                <input class="form-check-input" type="checkbox" [checked]="getFinalNarrative(funding)"
                                     id="final_narrative">
                                 <label class="form-check-label" for="final_narrative">
                                     Final Narrative
                                 </label>
                             </div>
                             <div class="form-check" style="padding-left: 0px;">
-                                <input class="form-check-input" type="checkbox" [(ngModel)]="final_financial"
+                                <input class="form-check-input" type="checkbox" [checked]="getFinalFinancial(funding)"
                                     id="final_financial">
                                 <label class="form-check-label" for="final_financial">
                                     Final Financial
