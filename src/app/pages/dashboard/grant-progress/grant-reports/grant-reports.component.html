@@ -26,8 +26,8 @@
 
                 </div>
             </div>
-            <div class="row">
-                <div class="card panel mt-2 py-3" style="border-radius: 0px;">
+            <div class="row" *ngFor="let funding of project.project_funding; let i = index;">
+                <div class="card panel mt-2 py-3" style="border-radius: 0px;" *ngIf="showInterimNarrative(funding)">
                     <div class="row" style="height: 50px; margin-right: 0px !important;">
                         <div class="col-md-3"
                             style="background-color: #224581; padding-top: 13px; text-align: center; color: white;">
@@ -40,18 +40,18 @@
                             {{project?.title}}
                         </div>
                         <div class="col-md-1" style="padding-top: 13px;">
-                            {{interim_narrative_number}}
+                            {{i+1}}
                         </div>
                         <div class="col-md-3" style="padding-top: 13px;">
-                            <a href="{{url}}/{{interim_narrative_download}}" target="_blank"
-                                *ngIf="interim_narrative_download">Download</a>
+                            <a href="{{getLink(funding, 'interim narrative report')}}" target="_blank"
+                                *ngIf="getLink(funding, 'interim narrative report')">Download</a>
                         </div>
                         <div class="col-md" style="padding-top: 13px;">
                             <a href="/grant/{{project.pk}}/review">Review</a>
                         </div>
                     </div>
                 </div>
-                <div class="card panel mt-2 py-3" style="border-radius: 0px;">
+                <div class="card panel mt-2 py-3" style="border-radius: 0px;" *ngIf="showInterimFinancial(funding)">
                     <div class="row" style="height: 50px; margin-right: 0px !important;">
                         <div class="col-md-3"
                             style="background-color: #224581; padding-top: 13px; text-align: center; color: white;">
@@ -63,18 +63,18 @@
                             {{project?.title}}
                         </div>
                         <div class="col-md-1" style="padding-top: 13px;">
-                            {{interim_financial_number}}
+                            {{i+1}}
                         </div>
                         <div class="col-md-3" style="padding-top: 13px;">
-                            <a href="{{url}}/{{interim_financial_download}}"
-                                *ngIf="interim_financial_download">Download</a>
+                            <a href="{{getLink(funding, 'interim financial report')}}" target="_blank"
+                                *ngIf="getLink(funding, 'interim financial report')">Download</a>
                         </div>
                         <div class="col-md" style="padding-top: 13px;">
                             <a href="/grant/{{project.pk}}/review">Review</a>
                         </div>
                     </div>
                 </div>
-                <div class="card panel mt-2 py-3" style="border-radius: 0px;">
+                <div class="card panel mt-2 py-3" style="border-radius: 0px;" *ngIf="showFinalNarrative(funding)">
                     <div class="row" style="height: 50px; margin-right: 0px !important;">
                         <div class="col-md-3"
                             style="background-color: #224581; padding-top: 13px; text-align: center; color: white;">
@@ -86,17 +86,18 @@
                             {{project?.title}}
                         </div>
                         <div class="col-md-1" style="padding-top: 13px;">
-                            {{final_narrative_number}}
+                            {{i+1}}
                         </div>
                         <div class="col-md-3" style="padding-top: 13px;">
-                            <a href="{{url}}/{{final_narrative_download}}" *ngIf="final_narrative_download">Download</a>
+                            <a href="{{getLink(funding, 'final narrative report')}}" target="_blank"
+                                *ngIf="getLink(funding, 'final narrative report')">Download</a>
                         </div>
                         <div class="col-md" style="padding-top: 13px;">
                             <a href="/grant/{{project.pk}}/review">Review</a>
                         </div>
                     </div>
                 </div>
-                <div class="card panel mt-2 py-3" style="border-radius: 0px;">
+                <div class="card panel mt-2 py-3" style="border-radius: 0px;" *ngIf="showFinalFinancial(funding)">
                     <div class="row" style="height: 50px; margin-right: 0px !important;">
                         <div class="col-md-3"
                             style="background-color: #224581; padding-top: 13px; text-align: center; color: white;">
@@ -108,10 +109,11 @@
                             {{project?.title}}
                         </div>
                         <div class="col-md-1" style="padding-top: 13px;">
-                            {{final_financial_number}}
+                            {{i+1}}
                         </div>
                         <div class="col-md-3" style="padding-top: 13px;">
-                            <a href="{{url}}/{{final_financial_download}}" *ngIf="final_financial_download">Download</a>
+                            <a href="{{getLink(funding, 'final financial report')}}" target="_blank"
+                                *ngIf="getLink(funding, 'final financial report')">Download</a>
                         </div>
                         <div class="col-md" style="padding-top: 13px;">
                             <a href="/grant/{{project.pk}}/review">Review</a>

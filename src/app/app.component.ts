@@ -1,38 +1,14 @@
-import { Component, inject } from '@angular/core';
-import { UserService } from './services/user.service';
-import { UserSignalService } from './services/user.signal.service';
-
+import { Component } from '@angular/core';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    user: any;
 
-    userSignalService = inject(UserSignalService);
-
-    constructor(
-        private userService: UserService
-    ) { }
+    constructor() { }
 
     ngOnInit(): void {
-        this.fetch();
-    }
 
-    fetch() {
-        this.userService
-            .fetch()
-            .subscribe({
-                next: (data: any) => {
-                    this.userSignalService.user.set(data);
-                },
-                error: (error: any) => {
-                    console.log(error);
-                },
-                complete: () => {
-                    console.log('Complete');
-                }
-            });
     }
 }

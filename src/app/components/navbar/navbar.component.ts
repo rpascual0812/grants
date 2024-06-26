@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
@@ -24,10 +24,29 @@ export class NavbarComponent implements OnInit {
         private toastr: ToastrService,
         private authService: AuthService,
         private userService: UserService
-    ) { }
+    ) {
+
+    }
 
     ngOnInit(): void {
-        this.user = this.userSignalService.user();
+        this.fetch();
+    }
+
+    fetch() {
+        this.userService
+            .fetch()
+            .subscribe({
+                next: (data: any) => {
+                    this.user = data;
+                    this.userSignalService.user.set(data);
+                },
+                error: (error: any) => {
+                    console.log(error);
+                },
+                complete: () => {
+                    console.log('Complete');
+                }
+            });
     }
 
     toggle() {
