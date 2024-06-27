@@ -16,56 +16,38 @@
                                 </div>
                             </div>
 
-                            <div
-                                formArrayName="application_proposal_activity"
-                                *ngFor="let item of formActivities.controls; index as i"
-                                [attr.data-index]="i"
-                                class="row my-2 align-items-center"
-                            >
+                            <div formArrayName="application_proposal_activity"
+                                *ngFor="let item of formActivities.controls; index as i" [attr.data-index]="i"
+                                class="row my-2 align-items-center">
                                 <ng-container [formGroupName]="i">
                                     <div class="col-2">
                                         <p class="font-weight-bold text-dark p-0 m-0 text-md">{{ i + 1 }}</p>
                                     </div>
                                     <div class="col-4">
-                                        <input
-                                            formControlName="name"
-                                            type="text"
-                                            class="form-control border rounded-1 p-1"
-                                        />
+                                        <input formControlName="name" type="text"
+                                            class="form-control border rounded-1 p-1" />
                                         <div *ngIf="submitted && formActivities.controls.at(i)?.get('name')?.errors">
-                                            <div
-                                                *ngIf="
+                                            <div *ngIf="
                                                 formActivities.controls?.at(i) &&
                                                 formActivities.controls?.at(i)?.get('name')?.errors?.['required']
-                                            "
-                                                class="text-sm text-danger"
-                                            >
+                                            " class="text-sm text-danger">
                                                 Activity name is required
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-4">
-                                        <app-select
-                                            class="shadow-none"
-                                            [key]="SELECT_DURATION_KEY_PREFIX + i.toString()"
-                                            [arr]="durationOpts"
+                                        <app-select class="shadow-none"
+                                            [key]="SELECT_DURATION_KEY_PREFIX + i.toString()" [arr]="durationOpts"
                                             (onSelectEvent)="handleOnSelect($event, i)"
-                                            (onDeSelectEvent)="handleOnSelect($event, i)"
-                                            [defaultSelectedInArr]="
+                                            (onDeSelectEvent)="handleOnSelect($event, i)" [defaultSelectedInArr]="
                                                 formActivities.controls.at(i)?.get('duration')?.value ?? ''
-                                            "
-                                            [changeFieldEventEmitter]="selectChangeFieldEventEmitter"
-                                        ></app-select>
+                                            " [changeFieldEventEmitter]="selectChangeFieldEventEmitter"></app-select>
                                         <div
-                                            *ngIf="submitted && formActivities.controls.at(i)?.get('duration')?.errors"
-                                        >
-                                            <div
-                                                *ngIf="
+                                            *ngIf="submitted && formActivities.controls.at(i)?.get('duration')?.errors">
+                                            <div *ngIf="
                                             formActivities.controls.at(i) &&
                                             formActivities.controls.at(i)?.get('duration')?.errors?.['required']
-                                        "
-                                                class="text-sm text-danger"
-                                            >
+                                        " class="text-sm text-danger">
                                                 Duration is required
                                             </div>
                                         </div>
@@ -83,25 +65,17 @@
                             </button>
 
                             <div *ngIf="submitted && f['application_proposal_activity'].errors" class="my-2">
-                                <div
-                                    *ngIf="f['application_proposal_activity'].errors['required']"
-                                    class="text-sm text-danger"
-                                >
+                                <div *ngIf="f['application_proposal_activity'].errors['required']"
+                                    class="text-sm text-danger">
                                     Activities are required
                                 </div>
                             </div>
                         </div>
                         <div class="form-group my-3">
                             <label class="font-weight-bold text-dark">How will you monitor the project?*</label>
-                            <textarea
-                                type="text"
-                                rows="5"
-                                class="form-control border rounded-1 p-2"
-                                style="resize: none"
-                                formControlName="monitor"
-                                required
-                                [ngClass]="{ 'is-invalid': submitted && f['monitor'].errors }"
-                            ></textarea>
+                            <textarea type="text" rows="5" class="form-control border rounded-1 p-2"
+                                style="resize: none" formControlName="monitor" required
+                                [ngClass]="{ 'is-invalid': submitted && f['monitor'].errors }"></textarea>
                             <div *ngIf="submitted && f['monitor'].errors" class="invalid-feedback">
                                 <div *ngIf="f['monitor'].errors['required']">Field is required</div>
                             </div>
@@ -111,35 +85,27 @@
                             <label class="font-weight-bold text-dark">Budget Request</label>
                             <div class="row">
                                 <div class="col-6">
-                                    <app-input-dropdown
-                                        [data]="usdCurrencies"
+                                    <app-input-dropdown [data]="usdCurrencies"
                                         [defaultSelected]="usdCurrencies.at(0)?.key"
                                         [inputValue]="f['budget_request_usd'].value ?? ''"
                                         (inputValueChange)="onInputValueChange($event, 'budget_request_usd')"
-                                        [disabledDropdown]="true"
-                                    ></app-input-dropdown>
+                                        [disabledDropdown]="true"></app-input-dropdown>
                                     <div *ngIf="submitted && f['budget_request_usd'].errors">
-                                        <div
-                                            class="text-danger text-sm my-1"
-                                            *ngIf="f['budget_request_usd'].errors['required']"
-                                        >
+                                        <div class="text-danger text-sm my-1"
+                                            *ngIf="f['budget_request_usd'].errors['required']">
                                             Field is required
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <app-input-dropdown
-                                        [data]="availableCurrencies"
+                                    <app-input-dropdown [data]="availableCurrencies"
                                         [defaultSelected]="otherCurrenciesDefaultSelected"
                                         [inputValue]="f['budget_request_other'].value ?? ''"
                                         (onSelectItem)="onSelectItemDropdown($event, 'budget_request_other')"
-                                        (inputValueChange)="onInputValueChange($event, 'budget_request_other')"
-                                    ></app-input-dropdown>
+                                        (inputValueChange)="onInputValueChange($event, 'budget_request_other')"></app-input-dropdown>
                                     <div *ngIf="submitted && f['budget_request_other'].errors">
-                                        <div
-                                            class="text-danger text-sm my-1"
-                                            *ngIf="f['budget_request_other'].errors['required']"
-                                        >
+                                        <div class="text-danger text-sm my-1"
+                                            *ngIf="f['budget_request_other'].errors['required']">
                                             Field is required
                                         </div>
                                     </div>
@@ -151,30 +117,20 @@
             </div>
 
             <div class="col-12 col-lg-6">
-                <app-attach-documents
-                    [inputAttachments]="attachments"
+                <app-attach-documents [page]="'Proposed activities and timeline'" [inputAttachments]="attachments"
                     (onFileAttached)="saveAttachment($event)"
-                    (onRemoveFileAttached)="onRemoveAttachment($event)"
-                ></app-attach-documents>
+                    (onRemoveFileAttached)="onRemoveAttachment($event)"></app-attach-documents>
 
-                <button
-                    class="btn bg-info text-white w-100 text-capitalize my-3"
-                    type="button"
-                    [disabled]="processing"
-                    (click)="handleReset()"
-                >
+                <button class="btn bg-info text-white w-100 text-capitalize my-3" type="button" [disabled]="processing"
+                    (click)="handleReset()">
                     Reset Form
                 </button>
             </div>
         </div>
 
         <div class="d-flex justify-content-center my-2">
-            <button
-                class="btn btn-white text-capitalize m-1"
-                (click)="handleBack()"
-                type="button"
-                [disabled]="processing"
-            >
+            <button class="btn btn-white text-capitalize m-1" (click)="handleBack()" type="button"
+                [disabled]="processing">
                 Back
             </button>
             <button class="btn btn-dark-blue text-capitalize m-1" [disabled]="processing">Next</button>

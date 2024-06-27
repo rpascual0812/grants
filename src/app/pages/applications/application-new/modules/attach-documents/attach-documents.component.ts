@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 export class AttachDocumentsComponent implements OnInit {
     @Output() onFileAttached: EventEmitter<any> = new EventEmitter();
     @Output() onRemoveFileAttached: EventEmitter<Partial<Document>> = new EventEmitter();
+    @Input() page: string = '';
     @Input() inputAttachments: any = [];
     attachments: any = [];
     SERVER: string = _.BASE_URL;
