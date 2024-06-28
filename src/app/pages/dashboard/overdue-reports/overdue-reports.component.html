@@ -32,23 +32,23 @@
                             "
                         >
                             <th class="text-dark font-weight-bold" scope="row">
-                                {{ item?.application?.number }}
+                                {{ item?.project?.application?.partner?.partner_id }}
                             </th>
                             <td class="text-dark font-weight-light">
-                                {{ item?.title }}
+                                {{ item?.project?.title }}
                             </td>
-                            <td class="text-dark font-weight-light">{{ item.project_funding.at(0)?.title }}</td>
+                            <td class="text-dark font-weight-light">{{ item?.title }}</td>
                             <td class="text-dark font-weight-light">
-                                {{ item.project_funding.at(0)?.report_due_date | date : 'dd-MMM-YYYY' }}
-                            </td>
-                            <td class="text-dark font-weight-light">
-                                {{ item.project_funding.at(0)?.date_created | date : 'dd-MMM-YYYY' }}
+                                {{ item?.report_due_date| date : 'dd-MMM-YYYY' }}
                             </td>
                             <td class="text-dark font-weight-light">
-                                {{ item.project_funding.at(0)?.released_amount_usd }} USD
+                                {{ item?.date_created | date : 'dd-MMM-YYYY' }}
                             </td>
                             <td class="text-dark font-weight-light">
-                                <a [routerLink]="['/grant/' + item.pk + '/review']"
+                                {{ item?.released_amount_usd }} USD
+                            </td>
+                            <td class="text-dark font-weight-light">
+                                <a [routerLink]="['/grant/' + item.project.pk + '/review']"
                                     ><button class="btn btn-default text-info">Review</button></a
                                 >
                             </td>

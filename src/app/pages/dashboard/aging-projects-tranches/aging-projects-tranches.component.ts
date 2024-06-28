@@ -64,10 +64,6 @@ export class AgingProjectsTranchesComponent implements OnInit {
         this.fetchTranches();
     }
 
-    getOtherCurrency(otherCurrency: string) {
-        return getOtherCurrencyKey(otherCurrency);
-    }
-
     fetchProjects() {
         this.loading.agingProjects = true;
         this.projectService.fetch().subscribe({
