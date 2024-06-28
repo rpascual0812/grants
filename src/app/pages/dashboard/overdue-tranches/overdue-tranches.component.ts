@@ -4,6 +4,7 @@ import { Project, ProjectFunding } from 'src/app/interfaces/_project.interface';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import * as _ from '../../../utilities/globals';
+import { DateTime } from 'luxon';
 
 interface OverdueTranche extends ProjectFunding {
     project: Project;
@@ -24,17 +25,28 @@ export class OverdueTranchesComponent implements OnInit {
     constructor(private projectService: ProjectService, private toastr: ToastrService) {}
 
     ngOnInit() {
-        this.fetch()
+        this.fetch();
     }
 
     fetch() {
         this.loading = true;
         this.projectService.fetchOverdueTranches().subscribe({
             next: (res: any) => {
-                const data = res?.data;
+                const data = res?.data as OverdueTranche[];
                 const status = res?.status;
                 if (status) {
-                    this.overdueTranches = data ?? [];
+                    this.overdueTranches = (data ?? [])
+                        ?.filter((item) => {
+                            const currentDate = DateTime.fromJSDate(new Date());
+                            const releasedDate = DateTime.fromJSDate(new Date(item?.released_date ?? ''));
+                            return !item?.bank_receipt_pk || currentDate >= releasedDate;
+                        })
+                        ?.sort((itemA, itemB) => {
+                            return (
+                                new Date(itemA?.released_date ?? '').getTime() -
+                                new Date(itemB?.released_date ?? '').getTime()
+                            );
+                        });
                 } else {
                     this.toastr.error(`An error occurred while fetching Overdue Tranches. Please try again.`, 'ERROR!');
                 }

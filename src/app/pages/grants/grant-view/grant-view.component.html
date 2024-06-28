@@ -97,7 +97,7 @@
                                     <select
                                         class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
                                         style="border: solid 1px grey !important; height: 35px; font-size: 13px !important; padding-top: 6px;"
-                                        [(ngModel)]="project!.overall_grant_status"
+                                        [value]="project?.overall_grant_status ?? ''"
                                         (change)="setOverallStatus($event, project); $event.stopPropagation()">
                                         <option value="">--</option>
                                         <option value="Under Review">Under Review</option>

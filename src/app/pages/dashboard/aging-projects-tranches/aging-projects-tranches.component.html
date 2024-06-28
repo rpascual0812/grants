@@ -154,8 +154,6 @@
                             </td>
                             <td class="text-dark font-weight-light">
                                 {{ item?.released_amount_usd | number }} USD
-                                {{ item?.released_amount_other | number }}
-                                {{ getOtherCurrency(item?.released_amount_other_currency ?? '') }}
                             </td>
                             <td class="text-dark font-weight-light">
                                 {{ item?.lapsed_since_due }}
