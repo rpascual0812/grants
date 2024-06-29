@@ -102,46 +102,48 @@ export class ApplicationListComponent implements OnInit {
     constructor(private applicationService: ApplicationService, private toastr: ToastrService) {}
 
     ngOnInit() {
-        this.applications.forEach((item) => {
-            this.fetch(item.title, {
-                ...(item?.status && { status: item?.status }),
-            });
-        });
+        this.fetch();
     }
-
-    fetch(title: string, filters?: { status?: AvailableApplicationStatus; limit?: number }) {
-        this.applicationService.fetch(filters).subscribe({
+    fetch() {
+        this.applicationService.fetch().subscribe({
             next: (res: any) => {
                 const status = res?.status;
-                const data = res?.data;
+                const data = res?.data as Application[];
                 if (status) {
-                    this.applications = this.applications.map((item) => {
-                        if (item.title === title) {
-                            const cleansedData = ((data as Application[]) ?? [])
-                                .filter(
-                                    (itemData) => itemData?.project?.title && itemData?.project?.title?.trim() !== ''
-                                )
-                                .filter((itemData) => itemData?.date_submitted);
-                            item.dataFull = cleansedData;
-                            item.dataLimited = [...cleansedData].splice(0, item?.offSet);
-                            item.maxCount = item?.dataFull?.length;
+                    this.applications = this.applications.map((application) => {
+                        application.isLoading = false;
+                        // Submissions
+                        if (!application?.status) {
+                            const cleansedData = data
+                                ?.filter((item) => !item.status)
+                                ?.filter((item) => item.date_submitted)
+                                ?.filter((item) => item?.project?.title);
+                            application.dataFull = cleansedData;
+                            application.dataLimited = [...cleansedData].splice(0, application?.offSet);
+                            application.maxCount = application?.dataFull?.length;
+                            return application;
                         }
-                        item.isLoading = false;
-                        return item;
+
+                        // Stages with Status
+                        const cleansedData = data
+                            ?.filter((item) => item.status === application.status)
+                            ?.filter((item) => item.date_submitted)
+                            ?.filter((item) => item?.project?.title);
+                        if (application?.status === cleansedData?.at(0)?.status) {
+                            application.dataFull = cleansedData;
+                            application.dataLimited = [...cleansedData].splice(0, application?.offSet);
+                            application.maxCount = application?.dataFull?.length;
+                        }
+                        return application;
                     });
                 } else {
-                    this.toastr.error(
-                        `An error occurred while fetching application for ${filters?.status ?? ''}. Please try again.`,
-                        'ERROR!'
-                    );
+                    this.toastr.error(`An error occurred while fetching Applications. Please try again.`, 'ERROR!');
                 }
             },
             error: (err) => {
                 const { statusCode, errorMessage } = extractErrorMessage(err);
                 this.toastr.error(
-                    `An error occurred while fetching application for ${
-                        filters?.status ?? ''
-                    }. ${statusCode} ${errorMessage} Please try again.`,
+                    `An error occurred while fetching Applications. ${statusCode} ${errorMessage} Please try again.`,
                     'ERROR!'
                 );
             },
