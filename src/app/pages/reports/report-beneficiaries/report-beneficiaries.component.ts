@@ -107,7 +107,6 @@ export class ReportBeneficiariesComponent implements OnInit {
         const params = {
             date_from: this.dates.from.year + "-" + DateTime.fromFormat(this.dates.from.month, 'MMMM').toFormat('MM'),
             date_to: this.dates.to.year + "-" + DateTime.fromFormat(this.dates.to.month, 'MMMM').toFormat('MM'),
-            filters: this.filters,
             project_pk: this.project_pk
         };
         this.projectService
