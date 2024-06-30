@@ -32,7 +32,7 @@ export class ReportBeneficiariesComponent implements OnInit {
         'Male': 0,
         'Female': 0,
         'Men Youth': 0,
-        'Momen Youth': 0,
+        'Women Youth': 0,
         'Indigenous People': 0,
         'Non-IP': 0,
         'Diffables': 0
@@ -134,7 +134,7 @@ export class ReportBeneficiariesComponent implements OnInit {
                                                 filter.dates[date_created] += beneficiary.young_men_count;
                                                 this.totals[filter.name] += beneficiary.young_men_count;
                                                 break;
-                                            case 'Momen Youth':
+                                            case 'Women Youth':
                                                 filter.dates[date_created] += beneficiary.young_women_count;
                                                 this.totals[filter.name] += beneficiary.young_women_count;
                                                 break;
@@ -174,7 +174,7 @@ export class ReportBeneficiariesComponent implements OnInit {
             'Male': 0,
             'Female': 0,
             'Men Youth': 0,
-            'Momen Youth': 0,
+            'Women Youth': 0,
             'Indigenous People': 0,
             'Non-IP': 0,
             'Diffables': 0
