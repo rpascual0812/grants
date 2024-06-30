@@ -175,3 +175,15 @@ export const AVAILABLE_PROJECT_STATUS: AvailableProjectStatus[] = [
     'Fund Release',
     'Completed',
 ];
+
+export type GrantClosingStatus = 'Completed' | 'For Follow Up' | 'Closing Letter Sent';
+export type GrantClosingStatusKey = 'completed' | 'forFollowUp' | 'closingLetterSent'
+export const GRANT_CLOSING_STATUS: Record<GrantClosingStatusKey, GrantClosingStatus> = {
+    completed: 'Completed',
+    forFollowUp: 'For Follow Up',
+    closingLetterSent: 'Closing Letter Sent',
+};
+
+
+export const INTERIM_NARRATIVE_REPORT = 'interim narrative report';
+export const INTERIM_FINANCIAL_REPORT = 'interim financial report';

@@ -1,4 +1,6 @@
+import { INTERIM_FINANCIAL_REPORT, INTERIM_NARRATIVE_REPORT } from './../../../utilities/constants';
 import { Component, OnInit } from '@angular/core';
+import { DateTime } from 'luxon';
 import { ToastrService } from 'ngx-toastr';
 import { Application } from 'src/app/interfaces/_application.interface';
 import { Project } from 'src/app/interfaces/_project.interface';
@@ -9,7 +11,10 @@ import {
     AVAILABLE_APPLICATION_STATUS,
     AvailableApplicationStatus,
     AvailableProjectStatus,
+    GRANT_CLOSING_STATUS,
 } from 'src/app/utilities/constants';
+
+const APPROVED_STATUS = 'approved';
 
 type AvailableStatusName = AvailableApplicationStatus | AvailableProjectStatus | 'all';
 
@@ -167,6 +172,17 @@ export class StatusCountComponent implements OnInit {
             includeTranche: true,
             count: 0,
         },
+        {
+            name: 'Closing Of Grants',
+            labelText: '3.2',
+            labelBgColor: '#0b2cb5',
+            headerBgColor: '#0b2cb5',
+            bodyBgColor: 'white',
+            bodyTextColor: '#0b2cb5',
+            statusName: 'Fund Release',
+            includeTranche: true,
+            count: 0,
+        },
     ];
 
     constructor(
@@ -180,13 +196,11 @@ export class StatusCountComponent implements OnInit {
 
         this.fetchProjectStatusCount();
 
-        this.fundReleaseStatus.forEach((item) => {
-            this.fetchProjectFundReleaseStatusCount(
-                item.name,
-                item?.statusName as AvailableProjectStatus,
-                item?.includeTranche
-            );
-        });
+        this.fetchProjectFundReleaseStatusCount();
+
+        this.fetchReleaseTranches();
+
+        this.fetchClosingGrants();
     }
 
     fetchApplicationStatusCount() {
@@ -266,11 +280,102 @@ export class StatusCountComponent implements OnInit {
         });
     }
 
-    fetchProjectFundReleaseStatusCount(name: string, statusName?: AvailableProjectStatus, includeTranche?: boolean) {
+    fetchReleaseTranches() {
+        this.projectService.fetch().subscribe({
+            next: (res: any) => {
+                const status = res?.status;
+                const data = (res?.data ?? []) as Project[];
+                if (status) {
+                    const releaseTranches = data
+                        ?.map((grant) => {
+                            const projFundings = (grant?.project_funding ?? []).filter((tranche) => {
+                                const currentDate = DateTime.fromJSDate(new Date());
+                                const releaseDate = DateTime.fromJSDate(new Date(tranche.released_date as Date));
+                                return !tranche?.bank_receipt_pk || releaseDate > currentDate;
+                            });
+                            if (projFundings.length > 0) {
+                                return grant;
+                            }
+                            return null;
+                        })
+                        ?.filter((grant) => grant);
+                    const releaseTrancheCount = releaseTranches?.length;
+                    this.fundReleaseStatus = this.fundReleaseStatus?.map((item) => {
+                        if (item.name === 'Release Tranches') {
+                            item.count = releaseTrancheCount;
+                        }
+                        return item;
+                    });
+                } else {
+                    this.toastr.error(`An error occurred while fetching Release Tranches. Please try again.`, 'ERROR!');
+                }
+            },
+            error: (err: any) => {
+                const { errorMessage, statusCode } = extractErrorMessage(err);
+                this.toastr.error(
+                    `An error occurred while fetching Release Tranches. Please try again. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+            },
+        });
+    }
+
+    fetchClosingGrants() {
+        this.projectService
+            .fetch({
+                overall_grant_status: 'Approved',
+            })
+            .subscribe({
+                next: (res: any) => {
+                    const status = res?.status;
+                    const data = (res?.data ?? []) as Project[];
+                    if (status) {
+                        const closingOfGrants = data
+                            ?.filter((grant) => grant.closing_status === GRANT_CLOSING_STATUS.completed)
+                            ?.filter((grant) => {
+                                const projFundings = (grant?.project_funding ?? [])
+                                    ?.map((funding) => funding?.project_funding_report)
+                                    .flat();
+                                const nonApprovedNarrativeReport = projFundings.filter(
+                                    (report) =>
+                                        report?.title === INTERIM_NARRATIVE_REPORT && report?.status !== APPROVED_STATUS
+                                );
+                                const nonApprovedFinancialReport = projFundings?.filter(
+                                    (report) =>
+                                        report?.title === INTERIM_FINANCIAL_REPORT && report?.status !== APPROVED_STATUS
+                                );
+                                return (
+                                    nonApprovedNarrativeReport?.length === 0 && nonApprovedFinancialReport?.length === 0
+                                );
+                            });
+                        const closingGrantsCount = closingOfGrants?.length;
+                        this.fundReleaseStatus = this.fundReleaseStatus?.map((item) => {
+                            if (item.name === 'Closing Of Grants') {
+                                item.count = closingGrantsCount;
+                            }
+                            return item;
+                        });
+                    } else {
+                        this.toastr.error(
+                            `An error occurred while fetching Closing of Grants. Please try again.`,
+                            'ERROR!'
+                        );
+                    }
+                },
+                error: (err) => {
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
+                    this.toastr.error(
+                        `An error occurred while fetching Closing of Grants. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
+                },
+            });
+    }
+
+    fetchProjectFundReleaseStatusCount() {
         this.projectService
             ?.fetchProjectStatusCount({
-                status: statusName,
-                includeTranche,
+                status: 'Fund Release',
             })
             .subscribe({
                 next: (res: any) => {
@@ -278,14 +383,14 @@ export class StatusCountComponent implements OnInit {
                     const data = res?.data;
                     if (status) {
                         this.fundReleaseStatus = this.fundReleaseStatus.map((item) => {
-                            if (item?.name === name) {
+                            if (item?.name === 'Fund Release') {
                                 item.count = data?.count ?? 0;
                             }
                             return item;
                         });
                     } else {
                         this.toastr.error(
-                            `An error occurred while fetching application status count for ${statusName}. Please try again.`,
+                            `An error occurred while fetching application status count for Fund Release. Please try again.`,
                             'ERROR!'
                         );
                     }
@@ -293,7 +398,7 @@ export class StatusCountComponent implements OnInit {
                 error: (err) => {
                     const { errorMessage, statusCode } = extractErrorMessage(err);
                     this.toastr.error(
-                        `An error occurred while fetching application status count for ${statusName}. ${statusCode} ${errorMessage} Please try again.`,
+                        `An error occurred while fetching application status count for Fund Release. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
                 },

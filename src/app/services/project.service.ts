@@ -264,12 +264,8 @@ export class ProjectService {
         return this.http.post(`${_.BASE_URL}/projects/${data.pk}/pending_document`, data);
     }
 
-    fetchOverdueTranches() {
-        return this.http.get(`${_.BASE_URL}/projects/overdue_tranches`);
-    }
-
-    fetchOverdueReports() {
-        return this.http.get(`${_.BASE_URL}/projects/overdue_reports`);
+    fetchTranches() {
+        return this.http.get(`${_.BASE_URL}/projects/tranches`);
     }
 
     saveProjectAssessment(data: ProjectAssessment) {
