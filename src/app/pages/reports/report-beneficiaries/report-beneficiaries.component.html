@@ -1,0 +1,135 @@
+<div class="row p-2">
+    <div class="col-md-3">
+        <div class="mb-2 mt-2">
+            <div class="row">
+                <div class="col-md-2" style="padding: 10px 0 0 15px;">Start</div>
+                <div class="col-md-6">
+                    <select class="form-select px-3 border border-2 ronded-1 text-secondary text-md font-weight-bold"
+                        [(ngModel)]="dates.from.month" (change)="updateDates()">
+                        <option *ngFor="let month of months; let i = index;" [value]="month">{{month}}</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select px-3 border border-2 ronded-1 text-secondary text-md font-weight-bold"
+                        [(ngModel)]="dates.from.year" (change)="updateDates()">
+                        <option *ngFor=" let year of years; let i=index;" [value]="year">{{year}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-md-2" style="padding: 10px 0 0 15px;">End</div>
+                <div class="col-md-6">
+                    <select class="form-select px-3 border border-2 ronded-1 text-secondary text-md font-weight-bold"
+                        [(ngModel)]="dates.to.month" (change)="updateDates()">
+                        <option *ngFor="let month of months; let i = index;" [value]="month">{{month}}</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select px-3 border border-2 ronded-1 text-secondary text-md font-weight-bold"
+                        [(ngModel)]="dates.to.year" (change)="updateDates()">
+                        <option *ngFor="let year of years; let i = index;" [value]="year">{{year}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <p style="margin-bottom: 0px;">Filters</p>
+        <div class="row dates">
+            <div class="col-md-3">
+                <div class="form-check" style="padding-left: 0px">
+                    <input class="form-check-input" type="checkbox" name="male" id="male"
+                        (change)="updateFilters('Male')" />
+                    <label class="form-check-label" for="male"> Male </label>
+                </div>
+                <div class="form-check" style="padding-left: 0px">
+                    <input class="form-check-input" type="checkbox" name="female" id="female"
+                        (change)="updateFilters('Female')" />
+                    <label class="form-check-label" for="female"> Female </label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-check" style="padding-left: 0px">
+                    <input class="form-check-input" type="checkbox" name="men_youth" id="men_youth"
+                        (change)="updateFilters('Men Youth')" />
+                    <label class="form-check-label" for="men_youth"> Men Youth </label>
+                </div>
+                <div class="form-check" style="padding-left: 0px">
+                    <input class="form-check-input" type="checkbox" name="women_youth" id="women_youth"
+                        (change)="updateFilters('Women Youth')" />
+                    <label class="form-check-label" for="women_youth"> Women Youth </label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-check" style="padding-left: 0px">
+                    <input class="form-check-input" type="checkbox" name="indigenous_people" id="indigenous_people"
+                        (change)="updateFilters('Indigenous People')" />
+                    <label class="form-check-label" for="indigenous_people"> Indigenous People </label>
+                </div>
+                <div class="form-check" style="padding-left: 0px">
+                    <input class="form-check-input" type="checkbox" name="nonip" id="nonip"
+                        (change)="updateFilters('Non-IP')" />
+                    <label class="form-check-label" for="nonip"> Non-IP </label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-check" style="padding-left: 0px">
+                    <input class="form-check-input" type="checkbox" name="diffables" id="diffables"
+                        (change)="updateFilters('Diffables')" />
+                    <label class="form-check-label" for="diffables"> Diffables</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1 mt-4">
+        <button class="btn btn-sm bg-grant-primary text-sm text-white w-100" (click)="search()">
+            Apply
+        </button>
+    </div>
+</div>
+<div class="row mb-5">
+    <div class="col-md-12" style="padding: 10px 0 0 20px;">
+        <div style="float:left; padding: 10px 0 0 5px;">Select one grant only</div>
+        <div style="float:left; width: 55%; padding-left: 30px;">
+            <app-select [url]="'projects/title'" [listItemValue]="'title'"
+                (onSelectEvent)="onChangeSelectedItem($event)"
+                (onDeSelectEvent)="onChangeSelectedItem($event)"></app-select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-hover">
+            <thead class="text-center">
+                <th style="width: 9%;"></th>
+                <th style="width: 5%;"></th>
+                <th *ngFor=" let date of dateRange; let i=index">{{date}}</th>
+                <th>Total</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let filter of filters; let i = index">
+                    <td>
+                        <div class="text-center"
+                            style="width: 120px; background-color: #adb1b9; padding: 15px; color: white; border-radius: 12px; white-space: wrap;">
+                            {{filter.name}}
+                        </div>
+                    </td>
+                    <td style="white-space: wrap;">
+                        <div>
+                            Cumulative per Year
+                        </div>
+                    </td>
+                    <td class="text-center" *ngFor=" let date of filter.dates | keyvalue; let i=index">
+                        {{date.value}}
+                    </td>
+                    <td class="text-center">
+                        {{totals[filter.name] | number}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

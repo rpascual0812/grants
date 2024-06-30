@@ -18,6 +18,7 @@ import { GrantViewModule } from 'src/app/pages/grants/grant-view/grant-view.modu
 import { DonorModule } from 'src/app/pages/donor/donor.module';
 import { DashboardModule } from 'src/app/pages/dashboard/dashboard.module';
 import { EmailTemplatesModule } from 'src/app/pages/email-templates/email-templates.module';
+import { ReportsModule } from 'src/app/pages/reports/reports.module';
 
 @NgModule({
     imports: [
@@ -38,7 +39,8 @@ import { EmailTemplatesModule } from 'src/app/pages/email-templates/email-templa
         DonorModule,
         RolesModule,
         LinksModule,
-        EmailTemplatesModule
+        EmailTemplatesModule,
+        ReportsModule
     ],
     declarations: [
 
