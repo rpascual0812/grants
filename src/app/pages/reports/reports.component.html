@@ -1,1 +1,49 @@
-<p>reports works!</p>
+<div class="container-fluid mb-3">
+    <nav aria-label="breadcrumb">
+        <h4 class="font-weight-bolder mb-0 mb-5">Reports</h4>
+    </nav>
+    <div class="row mb-4">
+        <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <button class="nav-link active" id="ggf-tab" data-bs-toggle="tab" data-bs-target="#ggf"
+                        type="button" role="tab" aria-controls="ggf" aria-selected="true">GGF</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="fgg-tab" data-bs-toggle="tab" data-bs-target="#fgg" type="button"
+                        role="tab" aria-controls="fgg" aria-selected="false">FGG</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="beneficiaries-tab" data-bs-toggle="tab" data-bs-target="#beneficiaries"
+                        type="button" role="tab" aria-controls="beneficiaries" aria-selected="false">Summary of
+                        Beneficiaries</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="application-tab" data-bs-toggle="tab" data-bs-target="#application"
+                        type="button" role="tab" aria-controls="application" aria-selected="false">Application</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="location-tab" data-bs-toggle="tab" data-bs-target="#location"
+                        type="button" role="tab" aria-controls="location" aria-selected="false">Location</button>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="ggf" role="tabpanel" aria-labelledby="ggf-tab">
+                    <app-report-ggf></app-report-ggf>
+                </div>
+                <div class="tab-pane fade" id="fgg" role="tabpanel" aria-labelledby="fgg-tab">
+                    <app-report-fgg></app-report-fgg>
+                </div>
+                <div class="tab-pane fade " id="beneficiaries" role="tabpanel" aria-labelledby="beneficiaries-tab">
+                    <app-report-beneficiaries></app-report-beneficiaries>
+                </div>
+                <div class="tab-pane fade" id="application" role="tabpanel" aria-labelledby="application-tab">
+                    <app-report-application></app-report-application>
+                </div>
+                <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="location-tab">
+                    <app-report-location></app-report-location>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

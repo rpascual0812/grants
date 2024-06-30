@@ -44,7 +44,7 @@ export class NavbarComponent implements OnInit {
                     console.log(error);
                 },
                 complete: () => {
-                    console.log('Complete');
+                    // console.log('Complete');
                 }
             });
     }

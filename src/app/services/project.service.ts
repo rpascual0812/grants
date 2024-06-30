@@ -275,4 +275,8 @@ export class ProjectService {
     saveProjectAssessment(data: ProjectAssessment) {
         return this.http.post(`${_.BASE_URL}/projects/${data.project_pk}/assessment`, data);
     }
+
+    fetchReportBeneficiaries(filters: any) {
+        return this.http.get(`${_.BASE_URL}/projects/reports`, { params: filters });
+    }
 }

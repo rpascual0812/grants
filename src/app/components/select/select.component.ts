@@ -56,7 +56,7 @@ export class SelectComponent {
         this.dropdownSettings = {
             singleSelection: !this.multiple,
             idField: this.listItemKey,
-            textField: 'name',
+            textField: this.listItemValue,
             selectAllText: 'Select All',
             unSelectAllText: 'UnSelect All',
             itemsShowLimit: this.itemsShowLimit,
