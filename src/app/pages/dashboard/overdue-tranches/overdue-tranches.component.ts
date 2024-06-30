@@ -39,7 +39,7 @@ export class OverdueTranchesComponent implements OnInit {
                         ?.filter((item) => {
                             const currentDate = DateTime.fromJSDate(new Date());
                             const releasedDate = DateTime.fromJSDate(new Date(item?.released_date ?? ''));
-                            return !item?.bank_receipt_pk || currentDate >= releasedDate;
+                            return !item?.bank_receipt_pk && currentDate >= releasedDate;
                         })
                         ?.sort((itemA, itemB) => {
                             return (
