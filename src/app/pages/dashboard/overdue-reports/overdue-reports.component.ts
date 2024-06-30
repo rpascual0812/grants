@@ -5,9 +5,8 @@ import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import * as _ from '../../../utilities/globals';
 import { DateTime } from 'luxon';
+import { INTERIM_FINANCIAL_REPORT, INTERIM_NARRATIVE_REPORT } from 'src/app/utilities/constants';
 
-const INTERIM_NARRATIVE_REPORT = 'interim narrative report';
-const INTERIM_FINANCIAL_REPORT = 'interim financial report';
 const APPROVED_STATUS = 'approved';
 
 interface OverdueTranche extends ProjectFunding {
@@ -35,7 +34,7 @@ export class OverdueReportsComponent implements OnInit {
 
     fetch() {
         this.loading = true;
-        this.projectService.fetchOverdueTranches().subscribe({
+        this.projectService.fetchTranches().subscribe({
             next: (res: any) => {
                 const data = res?.data as OverdueTranche[];
                 const status = res?.status;

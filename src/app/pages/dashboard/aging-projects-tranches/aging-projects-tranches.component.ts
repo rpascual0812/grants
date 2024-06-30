@@ -5,7 +5,6 @@ import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import * as _ from '../../../utilities/globals';
 import { DateTime } from 'luxon';
-import { getOtherCurrencyKey } from 'src/app/utilities/constants';
 
 interface AgingProject extends Project {
     due_date?: Date;
@@ -114,7 +113,7 @@ export class AgingProjectsTranchesComponent implements OnInit {
 
     fetchTranches() {
         this.loading.tranches = true;
-        this.projectService.fetchOverdueTranches().subscribe({
+        this.projectService.fetchTranches().subscribe({
             next: (res: any) => {
                 const status = res?.status;
                 const data = (res?.data ?? []) as Tranche[];

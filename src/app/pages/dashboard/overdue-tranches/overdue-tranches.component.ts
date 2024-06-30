@@ -30,7 +30,7 @@ export class OverdueTranchesComponent implements OnInit {
 
     fetch() {
         this.loading = true;
-        this.projectService.fetchOverdueTranches().subscribe({
+        this.projectService.fetchTranches().subscribe({
             next: (res: any) => {
                 const data = res?.data as OverdueTranche[];
                 const status = res?.status;
