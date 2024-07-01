@@ -1,1 +1,105 @@
-<p>report-ggf works!</p>
+<div>
+    <div class="d-flex flex-wrap flex-row justify-content-between my-3">
+        <div class="w-30">
+            <div class="row my-2 align-items-center">
+                <label class="col-md-2 col-12">Start</label>
+                <input
+                    class="col-md-6 col-12 border rounded-1 p-1"
+                    type="text"
+                    bsDatepicker
+                />
+            </div>
+            <div class="row my-2 align-items-center">
+                <label class="col-md-2 col-12">End</label>
+                <input
+                    class="col-md-6 col-12 border rounded-1 p-1"
+                    type="text"
+                    bsDatepicker
+                />
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-dark-blue">Apply</button>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-body pie-chart-card-report">
+                    <div class="text-center">
+                        <h6 class="text-dark m-0 p-0">Number of Grants</h6>
+                    </div>
+                    <div class="pie-chart-report-container">
+                        <div chartType="pie" class="pie-chart-report">
+                            <canvas
+                                baseChart
+                                [plugins]="pieChartNumberOfGrantsPlugins"
+                                [data]="pieChartNumberOfGrantsData"
+                                [type]="pieChartNumberOfGrantsType"
+                                [options]="pieChartNumberOfGrantOptions"
+                            >
+                            </canvas>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap flex-column">
+                        <div class="focus-container my-2 d-flex flex-wrap flex-row gap-3 align-items-center">
+                            <p class="text-dark m-0 p-0">Total <span class="text-gray">(Focus)</span></p>
+                            <div class="text-center focus-value">
+                                <p class="text-black p-0 m-0">125</p>
+                            </div>
+                        </div>
+
+                        <ul class="custom-legend">
+                            <li class="my-2" *ngFor="let item of numberOfGrant">
+                                <div class="d-flex flex-row gap-2 align-items-center">
+                                    <span class="bullet" [style.background]="item.color"></span>
+                                    <p class="text-dark m-0 p-0">{{ item.label }} {{ item.data }}%</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-body pie-chart-card-report">
+                    <div class="text-center">
+                        <h6 class="text-dark m-0 p-0">Total of Funds</h6>
+                    </div>
+                    <div class="pie-chart-report-container">
+                        <div chartType="pie" class="pie-chart-report">
+                            <canvas
+                                baseChart
+                                [plugins]="pieChartTotalFundsPlugins"
+                                [data]="pieChartTotalFundsData"
+                                [type]="pieChartTotalFundsType"
+                                [options]="pieChartTotalFundsOptions"
+                            >
+                            </canvas>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap flex-column">
+                        <div class="focus-container my-2 d-flex flex-wrap flex-row gap-3 align-items-center">
+                            <p class="text-dark m-0 p-0">Total <span class="text-gray">(USD)</span></p>
+                            <div class="text-center focus-value">
+                                <p class="text-black p-0 m-0">{{ 123456 | number }}</p>
+                            </div>
+                        </div>
+
+                        <ul class="custom-legend">
+                            <li class="my-2" *ngFor="let item of totalOfFunds">
+                                <div class="d-flex flex-row gap-2 align-items-center">
+                                    <span class="bullet" [style.background]="item.color"></span>
+                                    <p class="text-dark m-0 p-0">{{ item.label }} {{ item.data }}%</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
