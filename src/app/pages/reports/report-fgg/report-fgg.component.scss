@@ -1,0 +1,43 @@
+.pie-chart-card-report {
+    position: relative;
+    width: 100%;
+
+    .pie-chart-report-container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        .pie-chart-report {
+            width: 100%;
+            padding: 1rem;
+        }
+    }
+
+    .focus-container {
+        p {
+            span {
+                color: #c3b9b9;
+            }
+        }
+        .focus-value {
+            height: 30px;
+            width: 70px;
+            padding: 3px;
+            background-color: #e8dfdf;
+        }
+    }
+
+    .custom-legend {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        li {
+            .bullet {
+                width: 30px;
+                height: 30px;
+                display: inline-block;
+                border-radius: 50%;
+            }
+        }
+    }
+}
