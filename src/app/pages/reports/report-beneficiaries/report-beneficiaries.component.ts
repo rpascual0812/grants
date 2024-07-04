@@ -110,7 +110,7 @@ export class ReportBeneficiariesComponent implements OnInit {
             project_pk: this.project_pk
         };
         this.projectService
-            .fetchReportBeneficiaries(params)
+            .fetchReportProjects(params)
             .subscribe({
                 next: (data: any) => {
                     this.resetTotals();

@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-dark-blue" style="padding: 5px 0px 0px 10px;">
+                <div class="d-flex flex-wrap flex-row justify-content-between">
+                    <h6 class="text-white">Budget</h6>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <table class="table table-hover" *ngIf="filters.length > 0">
+                        <thead class="text-center">
+                            <th style="width: 9%;"></th>
+                            <th *ngFor=" let date of dateRange; let i=index">{{date}}</th>
+                            <th>Total</th>
+                        </thead>
+                        <tbody *ngFor="let filter of filters; let i = index">
+                            <tr>
+                                <td style="white-space: wrap;">
+                                    <div style="width: 250px; padding: 5px; border-radius: 12px; white-space: wrap;">
+                                        {{filter.name}}
+                                    </div>
+                                </td>
+                                <td class="text-center" *ngFor="let date of filter.dates | keyvalue; let i=index">
+                                    {{date.value}}
+                                </td>
+                                <td class="text-center">
+                                    {{statusesTotals[filter.name] ?? 0 | number}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div chartType="bar" class="status-chart">
+            <canvas baseChart [data]="barChartData" [options]="barChartOptions" [plugins]="barChartPlugins"
+                [legend]="barChartLegend" [type]="'bar'">
+            </canvas>
+        </div>
+    </div>
+</div>
