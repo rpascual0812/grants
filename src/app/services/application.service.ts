@@ -20,7 +20,7 @@ export class ApplicationService {
     public navigate_next = signal(false);
     public navigate_back = signal(false);
 
-    constructor(public http: HttpClient) {}
+    constructor(public http: HttpClient) { }
 
     fetch(filters?: any) {
         return this.http.get(`${_.BASE_URL}/application`, { params: filters });
@@ -166,5 +166,9 @@ export class ApplicationService {
 
     saveDateSubmitted(applicationPk?: number) {
         return this.http.post(`${_.BASE_URL}/application/${applicationPk}/save_date_submitted`, {});
+    }
+
+    fetchReportApplications(filters: any) {
+        return this.http.get(`${_.BASE_URL}/application/reports`, { params: filters });
     }
 }

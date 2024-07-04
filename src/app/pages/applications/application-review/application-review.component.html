@@ -40,12 +40,13 @@
                                 </div>
                                 <div class="col-12 col-md-4">
                                     <p class="text-sm font-weight-bold text-secondary">
-                                        {{ currentApplication?.project?.type?.name }}
+                                        {{ currentApplication?.project?.type?.name ?? 'N/A' }}
+                                        <!-- <app-select url="types"
+                                            [defaultSelectedItemKey]="currentApplication?.project?.type_pk"
+                                            (onSelectEvent)="onChangeGrantType($event, 'grant_type_pk')"
+                                            (onDeSelectEvent)="onChangeGrantType($event, 'grant_type_pk')"></app-select> -->
                                     </p>
-                                    <!-- <app-select url="types"
-                                        [defaultSelectedItemKey]="currentApplication?.project?.type_pk"
-                                        (onSelectEvent)="onChangeGrantType($event, 'grant_type_pk')"
-                                        (onDeSelectEvent)="onChangeGrantType($event, 'grant_type_pk')"></app-select> -->
+
                                 </div>
                             </div>
                         </div>
@@ -68,11 +69,11 @@
                                     </p>
                                     <p class="text-sm font-weight-bold text-secondary m-0">
                                         {{
-                                            getProposedBudget(
-                                                currentApplication?.project?.project_proposal
-                                                    ?.budget_request_other_currency,
-                                                currentApplication?.project?.project_proposal?.budget_request_other
-                                            )
+                                        getProposedBudget(
+                                        currentApplication?.project?.project_proposal
+                                        ?.budget_request_other_currency,
+                                        currentApplication?.project?.project_proposal?.budget_request_other
+                                        )
                                         }}
                                     </p>
                                 </div>
@@ -148,9 +149,7 @@
                 </div>
             </div>
             <app-medium-grants [currentApplication]="currentApplication"></app-medium-grants>
-            <app-grants-team-review
-                (recommendationSaved)="fetch()"
-                *ngIf="
+            <app-grants-team-review (recommendationSaved)="fetch()" *ngIf="
                     [
                         'Received Proposals',
                         'Grants Team Review',
@@ -160,12 +159,8 @@
                         'Due Diligence Final Review',
                         'Approved'
                     ].includes(currentApplication?.status ?? '')
-                "
-                [currentApplication]="currentApplication"
-            ></app-grants-team-review>
-            <app-advisers-review
-                (recommendationSaved)="fetch()"
-                *ngIf="
+                " [currentApplication]="currentApplication"></app-grants-team-review>
+            <app-advisers-review (recommendationSaved)="fetch()" *ngIf="
                     [
                         'Advisers Review',
                         'Budget Review and Finalization',
@@ -173,36 +168,23 @@
                         'Due Diligence Final Review',
                         'Approved'
                     ].includes(currentApplication?.status ?? '')
-                "
-                [currentApplication]="currentApplication"
-            ></app-advisers-review>
-            <app-budget-review-finalization
-                (recommendationSaved)="fetch()"
-                *ngIf="
+                " [currentApplication]="currentApplication"></app-advisers-review>
+            <app-budget-review-finalization (recommendationSaved)="fetch()" *ngIf="
                     [
                         'Budget Review and Finalization',
                         'Financial Management Capacity',
                         'Due Diligence Final Review',
                         'Approved'
                     ].includes(currentApplication?.status ?? '')
-                "
-                [currentApplication]="currentApplication"
-            ></app-budget-review-finalization>
-            <app-financial-management-capacity
-                (recommendationSaved)="fetch()"
-                *ngIf="
+                " [currentApplication]="currentApplication"></app-budget-review-finalization>
+            <app-financial-management-capacity (recommendationSaved)="fetch()" *ngIf="
                     ['Financial Management Capacity', 'Due Diligence Final Review', 'Approved'].includes(
                         currentApplication?.status ?? ''
                     )
-                "
-                [currentApplication]="currentApplication"
-            ></app-financial-management-capacity>
-            <app-due-diligence-final-review
-                (recommendationSaved)="fetch()"
+                " [currentApplication]="currentApplication"></app-financial-management-capacity>
+            <app-due-diligence-final-review (recommendationSaved)="fetch()"
                 *ngIf="['Due Diligence Final Review', 'Approved'].includes(currentApplication?.status ?? '')"
-                [currentApplication]="currentApplication"
-                [module]="'application'"
-            ></app-due-diligence-final-review>
+                [currentApplication]="currentApplication" [module]="'application'"></app-due-diligence-final-review>
         </ng-container>
     </div>
 </main>

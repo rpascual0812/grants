@@ -1,1 +1,60 @@
-<p>report-application works!</p>
+<div class="row p-2">
+    <div class="col-md-3">
+        <div class="mb-2 mt-2">
+            <div class="row">
+                <div class="col-md-2" style="padding: 10px 0 0 15px;">Start</div>
+                <div class="col-md-6">
+                    <select class="form-select px-3 border border-2 ronded-1 text-secondary text-md font-weight-bold"
+                        [(ngModel)]="dates.from.month" (change)="updateDates()">
+                        <option *ngFor="let month of months; let i = index;" [value]="month">{{month}}</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select px-3 border border-2 ronded-1 text-secondary text-md font-weight-bold"
+                        [(ngModel)]="dates.from.year" (change)="updateDates()">
+                        <option *ngFor=" let year of years; let i=index;" [value]="year">{{year}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-md-2" style="padding: 10px 0 0 15px;">End</div>
+                <div class="col-md-6">
+                    <select class="form-select px-3 border border-2 ronded-1 text-secondary text-md font-weight-bold"
+                        [(ngModel)]="dates.to.month" (change)="updateDates()">
+                        <option *ngFor="let month of months; let i = index;" [value]="month">{{month}}</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select px-3 border border-2 ronded-1 text-secondary text-md font-weight-bold"
+                        [(ngModel)]="dates.to.year" (change)="updateDates()">
+                        <option *ngFor="let year of years; let i = index;" [value]="year">{{year}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div style="float:left; padding: 10px 0 0 5px;">Status</div>
+        <div style="float:left; width: 55%; padding-left: 30px;">
+            <app-select [arr]="statuses" (onSelectEvent)="onChangeSelectedItem($event)"
+                (onDeSelectEvent)="onChangeSelectedItem($event)"></app-select>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-sm bg-grant-primary text-sm text-white w-30" style="float: right;" (click)="search()">
+            Apply
+        </button>
+    </div>
+</div>
+
+<div class="mb-5">
+    <app-total-application></app-total-application>
+</div>
+<div class="mb-5">
+    <app-application-statuses></app-application-statuses>
+</div>
+<div class="mb-5">
+    <app-application-budget></app-application-budget>
+</div>
