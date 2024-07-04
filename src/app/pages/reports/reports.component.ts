@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
     styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent {
+    content: string = 'ggf';
 
+    setContent(content: string) {
+        this.content = content;
+    }
 }
