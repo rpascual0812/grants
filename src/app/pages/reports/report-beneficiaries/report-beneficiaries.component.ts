@@ -25,7 +25,16 @@ export class ReportBeneficiariesComponent implements OnInit {
         }
     }
 
-    filters: any = [];
+    filters: any = [
+        {
+            name: 'Male',
+            dates: {}
+        },
+        {
+            name: 'Female',
+            dates: {}
+        }
+    ];
 
     dateRange: number[] = [];
     totals: any = {
@@ -79,13 +88,20 @@ export class ReportBeneficiariesComponent implements OnInit {
 
     onChangeSelectedItem(ev: any) {
         this.project_pk = ev.length > 0 ? ev[0].pk : null;
+        this.fetch();
     }
 
     updateFilters(filter: string) {
-        this.filters.push({
-            name: filter,
-            dates: {}
-        });
+        const exists = this.filters.filter((_filter: any) => _filter.name == filter);
+        if (exists.length > 0) {
+            this.filters = this.filters.filter((_filter: any) => _filter.name !== filter);
+        }
+        else {
+            this.filters.push({
+                name: filter,
+                dates: {}
+            });
+        }
 
         this.resetFilters();
         this.fetch();
@@ -109,6 +125,7 @@ export class ReportBeneficiariesComponent implements OnInit {
             date_to: this.dates.to.year + "-" + DateTime.fromFormat(this.dates.to.month, 'MMMM').toFormat('MM'),
             project_pk: this.project_pk
         };
+
         this.projectService
             .fetchReportProjects(params)
             .subscribe({
