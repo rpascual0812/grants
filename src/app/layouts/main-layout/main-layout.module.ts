@@ -19,6 +19,7 @@ import { DonorModule } from 'src/app/pages/donor/donor.module';
 import { DashboardModule } from 'src/app/pages/dashboard/dashboard.module';
 import { EmailTemplatesModule } from 'src/app/pages/email-templates/email-templates.module';
 import { ReportsModule } from 'src/app/pages/reports/reports.module';
+import { DataCollectionModule } from 'src/app/pages/data-collection/data-collection.module';
 
 @NgModule({
     imports: [
@@ -40,7 +41,8 @@ import { ReportsModule } from 'src/app/pages/reports/reports.module';
         RolesModule,
         LinksModule,
         EmailTemplatesModule,
-        ReportsModule
+        ReportsModule,
+        DataCollectionModule
     ],
     declarations: [
 

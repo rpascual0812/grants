@@ -50,6 +50,14 @@ export class SidebarComponent {
             }
         },
         {
+            name: 'data-collection',
+            label: 'Data Collection',
+            icon: {
+                type: 'material',
+                name: 'playlist_add'
+            }
+        },
+        {
             name: 'settings',
             label: 'Settings',
             icon: {
