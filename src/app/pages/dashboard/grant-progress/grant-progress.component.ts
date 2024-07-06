@@ -54,8 +54,6 @@ export class GrantProgressComponent {
                         grant.date_end = DateTime.fromISO(grant.date_created).plus({ months: duration[0] }).toISO();
                     }
                 });
-
-                console.log(data);
             },
             error: (err) => {
                 const { statusCode, errorMessage } = extractErrorMessage(err)
