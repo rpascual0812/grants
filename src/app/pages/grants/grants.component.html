@@ -22,7 +22,7 @@
             <button class="btn btn-dark-blue">Apply</button>
         </div>
 
-        <div class="active-donor-container">
+        <div class="active-donor-container" *ngIf="selectedFilterIds === 'fundRelease'">
             <accordion [isAnimated]="true">
                 <accordion-group (isOpenChange)="handleExpandAccordion($event, 'activeDonor')" [panelClass]="
                             currentExpandedAccordion.has('activeDonor')

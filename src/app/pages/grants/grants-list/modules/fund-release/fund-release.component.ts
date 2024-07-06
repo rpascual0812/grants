@@ -52,10 +52,12 @@ export class FundReleaseComponent implements OnInit {
     }
 
     fetch() {
+        const filters = {
+            donors: this.donors
+        };
         this.loading = true;
-        this.projectService.fetch({}).subscribe({
+        this.projectService.fetch(filters).subscribe({
             next: (res: any) => {
-                console.log(res);
                 const status = res?.status;
                 const data = (res?.data ?? []) as Project[];
                 if (status) {
