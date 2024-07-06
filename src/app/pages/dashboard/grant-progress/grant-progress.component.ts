@@ -4,6 +4,7 @@ import { Project } from 'src/app/interfaces/_project.interface';
 import { DashboardSignalService } from 'src/app/services/dashboard.signal.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
+import { DateTime } from 'luxon';
 
 interface Grant {
     pk: number;
@@ -45,6 +46,14 @@ export class GrantProgressComponent {
                 const status = res?.status;
                 const data = (res?.data ?? []) as Project[];
                 this.grants = data;
+
+                //get end date
+                data.forEach((grant: any) => {
+                    let duration = grant.duration.split(' ');
+                    if (duration[1].toLowerCase().includes('month', 'months')) {
+                        grant.date_end = DateTime.fromISO(grant.date_created).plus({ months: duration[0] }).toISO();
+                    }
+                });
             },
             error: (err) => {
                 const { statusCode, errorMessage } = extractErrorMessage(err)
