@@ -22,7 +22,7 @@ export class ReportApplicationComponent implements OnInit {
     ]
     years: number[] = [];
     statuses: string[] = [
-        'Received Proposals', 'Grants Team Review', 'Advisers Review', 'Budget Review and Finalization', 'Financial Management Capacity', 'Due Diligence (Medium Grants)', 'Approved'
+        'Received Proposals', 'Grants Team Review', 'Advisers Review', 'Budget Review and Finalization', 'Financial Management Capacity', 'Due Diligence (Medium Grants)', 'Approved', 'Rejected', 'Cancelled'
     ];
 
     applications: any = [];
