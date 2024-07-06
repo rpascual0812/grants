@@ -233,3 +233,11 @@ a:hover {
 .bg-gradient-primary {
     background-image: linear-gradient(195deg, #0d6efd, #08459e);
 }
+
+.custom-accordion-collapsed .panel-heading {
+    padding: 5px !important;
+}
+
+.custom-accordion-expanded .panel-heading {
+    padding: 5px !important;
+}
