@@ -1,123 +1,127 @@
 <div class="container">
     <div class="card my-3">
-        <div class="card-body">
-            <ng-container>
-                <div class="row">
-                    <div class="col-12 col-lg-6">
-                        <div class="form-group row my-1">
-                            <label class="col-7 font-weight-bold text-dark text-capitalize">Women:</label>
-                            <div class="col-3">
-                                <p class="text-dark p-0 m-0">{{ projectBeneficiaryTotalCount?.women_count }}</p>
+        <div class="card-body" style="min-height: 100px;">
+            <div>
+                <ng-container>
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group row my-1">
+                                <label class="col-7 font-weight-bold text-dark text-capitalize">Women:</label>
+                                <div class="col-3">
+                                    <p class="text-dark p-0 m-0">{{ projectBeneficiaryTotalCount?.women_count }}</p>
+                                </div>
+                            </div>
+                            <div class="form-group row my-1">
+                                <label class="col-7 font-weight-bold text-dark text-capitalize">Diffable Women:</label>
+                                <div class="col-3">
+                                    <p class="text-dark p-0 m-0">
+                                        {{ projectBeneficiaryTotalCount?.women_diffable_count }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row my-1">
+                                <label class="col-7 font-weight-bold text-dark text-capitalize">Other Vulnerable
+                                    Sector:</label>
+                                <div class="col-3">
+                                    <p class="text-dark p-0 m-0">
+                                        {{ projectBeneficiaryTotalCount?.women_other_vulnerable_sector_count }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group row my-1">
-                            <label class="col-7 font-weight-bold text-dark text-capitalize">Diffable Women:</label>
-                            <div class="col-3">
-                                <p class="text-dark p-0 m-0">
-                                    {{ projectBeneficiaryTotalCount?.women_diffable_count }}
-                                </p>
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group row my-1">
+                                <label class="col-7 font-weight-bold text-dark text-capitalize">Men:</label>
+                                <div class="col-3">
+                                    <p class="text-dark p-0 m-0">{{ projectBeneficiaryTotalCount?.men_count }}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row my-1">
-                            <label class="col-7 font-weight-bold text-dark text-capitalize">Other Vulnerable
-                                Sector:</label>
-                            <div class="col-3">
-                                <p class="text-dark p-0 m-0">
-                                    {{ projectBeneficiaryTotalCount?.women_other_vulnerable_sector_count }}
-                                </p>
+                            <div class="form-group row my-1">
+                                <label class="col-7 font-weight-bold text-dark text-capitalize">Diffable Men:</label>
+                                <div class="col-3">
+                                    <p class="text-dark p-0 m-0">
+                                        {{ projectBeneficiaryTotalCount?.men_diffable_count }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row my-1">
+                                <label class="col-7 font-weight-bold text-dark text-capitalize">Other Vulnerable
+                                    Sector:</label>
+                                <div class="col-3">
+                                    <p class="text-dark p-0 m-0">
+                                        {{ projectBeneficiaryTotalCount?.men_other_vulnerable_sector_count }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-6">
-                        <div class="form-group row my-1">
-                            <label class="col-7 font-weight-bold text-dark text-capitalize">Men:</label>
-                            <div class="col-3">
-                                <p class="text-dark p-0 m-0">{{ projectBeneficiaryTotalCount?.men_count }}</p>
-                            </div>
-                        </div>
-                        <div class="form-group row my-1">
-                            <label class="col-7 font-weight-bold text-dark text-capitalize">Diffable Men:</label>
-                            <div class="col-3">
-                                <p class="text-dark p-0 m-0">
-                                    {{ projectBeneficiaryTotalCount?.men_diffable_count }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="form-group row my-1">
-                            <label class="col-7 font-weight-bold text-dark text-capitalize">Other Vulnerable
-                                Sector:</label>
-                            <div class="col-3">
-                                <p class="text-dark p-0 m-0">
-                                    {{ projectBeneficiaryTotalCount?.men_other_vulnerable_sector_count }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </ng-container>
+                </ng-container>
 
-            <div class="border-top border-2"></div>
-            <ng-container>
-                <div class="row">
-                    <div class="col-12 col-lg-6">
-                        <div class="form-group row my-1">
-                            <label class="col-7 font-weight-bold text-dark text-capitalize">Young Women:</label>
-                            <div class="col-3">
-                                <p class="text-dark p-0 m-0">
-                                    {{ projectBeneficiaryTotalCount?.young_women_count }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="form-group row my-1">
-                            <label class="col-7 font-weight-bold text-dark text-capitalize">Diffable Women:</label>
-                            <div class="col-3">
-                                <p class="text-dark p-0 m-0">
-                                    {{ projectBeneficiaryTotalCount?.young_women_diffable_count }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="form-group row my-1">
-                            <label class="col-7 font-weight-bold text-dark text-capitalize">Other Vulnerable
-                                Sector:</label>
-                            <div class="col-3">
-                                <p class="text-dark p-0 m-0">
-                                    {{ projectBeneficiaryTotalCount?.young_women_other_vulnerable_sector_count }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="border-top border-2"></div>
 
-                    <div class="col-12 col-lg-6">
-                        <div class="form-group row my-1">
-                            <label class="col-7 font-weight-bold text-dark text-capitalize">Young Men:</label>
-                            <div class="col-3">
-                                <p class="text-dark p-0 m-0">{{ projectBeneficiaryTotalCount?.young_men_count }}</p>
+                <ng-container>
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group row my-1">
+                                <label class="col-7 font-weight-bold text-dark text-capitalize">Young Women:</label>
+                                <div class="col-3">
+                                    <p class="text-dark p-0 m-0">
+                                        {{ projectBeneficiaryTotalCount?.young_women_count }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row my-1">
+                                <label class="col-7 font-weight-bold text-dark text-capitalize">Diffable Women:</label>
+                                <div class="col-3">
+                                    <p class="text-dark p-0 m-0">
+                                        {{ projectBeneficiaryTotalCount?.young_women_diffable_count }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row my-1">
+                                <label class="col-7 font-weight-bold text-dark text-capitalize">Other Vulnerable
+                                    Sector:</label>
+                                <div class="col-3">
+                                    <p class="text-dark p-0 m-0">
+                                        {{ projectBeneficiaryTotalCount?.young_women_other_vulnerable_sector_count }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group row my-1">
-                            <label class="col-7 font-weight-bold text-dark text-capitalize">Diffable Men:</label>
-                            <div class="col-3">
-                                <p class="text-dark p-0 m-0">
-                                    {{ projectBeneficiaryTotalCount?.young_men_diffable_count }}
-                                </p>
+
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group row my-1">
+                                <label class="col-7 font-weight-bold text-dark text-capitalize">Young Men:</label>
+                                <div class="col-3">
+                                    <p class="text-dark p-0 m-0">{{ projectBeneficiaryTotalCount?.young_men_count }}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row my-1">
-                            <label class="col-7 font-weight-bold text-dark text-capitalize">Other Vulnerable
-                                Sector:</label>
-                            <div class="col-3">
-                                <p class="text-dark p-0 m-0">
-                                    {{ projectBeneficiaryTotalCount?.young_men_other_vulnerable_sector_count }}
-                                </p>
+                            <div class="form-group row my-1">
+                                <label class="col-7 font-weight-bold text-dark text-capitalize">Diffable Men:</label>
+                                <div class="col-3">
+                                    <p class="text-dark p-0 m-0">
+                                        {{ projectBeneficiaryTotalCount?.young_men_diffable_count }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row my-1">
+                                <label class="col-7 font-weight-bold text-dark text-capitalize">Other Vulnerable
+                                    Sector:</label>
+                                <div class="col-3">
+                                    <p class="text-dark p-0 m-0">
+                                        {{ projectBeneficiaryTotalCount?.young_men_other_vulnerable_sector_count }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </ng-container>
+                </ng-container>
+            </div>
+
         </div>
     </div>
 
-    <div class="btn-container" *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+    <div class="btn-container" *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
         <button class="btn btn-dark-blue text-capitalize" type="button" (click)="handleAddBeneficiary()">
             Add Beneficiary
         </button>

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, effect, inject } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from 'src/app/interfaces/_project.interface';
 import { GlobalService } from 'src/app/services/global.service';
@@ -8,6 +8,7 @@ import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import * as _ from '../../../../../../utilities/globals';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserSignalService } from 'src/app/services/user.signal.service';
+import { User } from 'src/app/interfaces/_application.interface';
 
 @Component({
     selector: 'app-outputs',
@@ -51,7 +52,7 @@ export class OutputsComponent implements OnInit {
 
     grantSignalService = inject(GrantSignalService);
 
-    user: any = {};
+    user: User | null = {};
     userSignalService = inject(UserSignalService);
 
     restrictions: any = _.RESTRICTIONS;
@@ -63,7 +64,15 @@ export class OutputsComponent implements OnInit {
         private toastr: ToastrService,
         private cdr: ChangeDetectorRef,
         private formBuilder: FormBuilder
-    ) { }
+    ) {
+        effect(() => {
+            this.user = this.userSignalService.user();
+
+            this.user?.user_role?.forEach((user_role: any) => {
+                this.permission.contract_finalization = this.restrictions[user_role.role.restrictions.contract_finalization] > this.restrictions[this.permission.contract_finalization] ? user_role.role.restrictions.contract_finalization : this.permission.contract_finalization;
+            });
+        });
+    }
 
     ngOnInit() {
         this.project = this.grantSignalService.project();
@@ -85,12 +94,6 @@ export class OutputsComponent implements OnInit {
             // C
             disability_rights: [this.project_output.disability_rights ? this.project_output.disability_rights : 'yes', [Validators.required]],
             intervention_type: [this.project_output.intervention_type ? this.project_output.intervention_type : '', [Validators.required]]
-        });
-
-        this.user = this.userSignalService.user();
-
-        this.user?.user_role?.forEach((user_role: any) => {
-            this.permission.grant_application = this.restrictions[user_role.role.restrictions.grant_application] > this.restrictions[this.permission.grant_application] ? user_role.role.restrictions.grant_application : this.permission.grant_application;
         });
     }
 
@@ -127,7 +130,7 @@ export class OutputsComponent implements OnInit {
                 this.form.get('household_income')?.patchValue(res?.household_income);
                 this.form.get('individual')?.patchValue(res?.individual);
                 this.form.get('household')?.patchValue(res?.household);
-                this.form.get('disability_rights')?.patchValue(res?.disability_rights);
+                this.form.get('disability_rights')?.patchValue(res?.disability_rights ? 'yes' : 'no');
                 this.form.get('intervention_type')?.patchValue(res?.intervention_type);
             },
             error: (err: any) => {
@@ -258,6 +261,7 @@ export class OutputsComponent implements OnInit {
 
     onSubmit() {
         this.submitted = true;
+        console.log(this.form.value, this.form, this.form.invalid);
         if (!this.form.invalid) {
             this.projectService.saveProjectOutput({ pk: this.project?.pk, data: this.form.value }).subscribe({
                 next: (res: any) => {

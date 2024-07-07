@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation, effect, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from 'src/app/services/user.service';
 import { DateTime } from 'luxon';
@@ -49,19 +49,18 @@ export class GrantsTeamReviewComponent implements OnInit {
         private toastr: ToastrService,
         private cdr: ChangeDetectorRef,
         private sanitizer: DomSanitizer
-    ) { }
-
-    ngOnInit() {
-        this.setForm();
-
-        setTimeout(() => {
+    ) {
+        effect(() => {
             this.user = this.userSignalService.user();
 
             this.user?.user_role?.forEach((user_role: any) => {
                 this.permission.grant_application = this.restrictions[user_role.role.restrictions.grant_application] > this.restrictions[this.permission.grant_application] ? user_role.role.restrictions.grant_application : this.permission.grant_application;
             });
-            this.cdr.detectChanges();
-        }, 1000);
+        });
+    }
+
+    ngOnInit() {
+        this.setForm();
 
         this.SERVER = _.BASE_URL;
         if (this.currentApplication?.reviews) {

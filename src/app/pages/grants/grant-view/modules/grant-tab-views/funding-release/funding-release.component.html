@@ -2,7 +2,7 @@
     <div class="row my-3">
         <div class="col-12 col-md-4">
             <h5 *ngIf="getNextReportDueDate()" class="text-dark">
-                Next Report Due
+                Next Report Due {{permission.fund_release}}
                 <span class="badge text-xs text-bg-danger text-white mx-2">
                     {{ getNextReportDueDate() | date : 'dd-MMM-yyyy' }}
                 </span>
@@ -55,7 +55,7 @@
                         {{ funding?.released_amount_usd | number }} USD
                     </p>
                     <button class="btn btn-icon-only" (click)="handleEditTranche(funding?.pk)"
-                        *ngIf="['comments', 'recommendation'].includes(permission.fund_release)">
+                        *ngIf="['edit'].includes(permission.fund_release)">
                         <i class="material-icons">edit</i>
                     </button>
                 </div>
@@ -66,8 +66,7 @@
             <div class="col-12 col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-flex flex-wrap flex-row"
-                            *ngIf="['comments', 'recommendation'].includes(permission.fund_release)">
+                        <div class="d-flex flex-wrap flex-row" *ngIf="['edit'].includes(permission.fund_release)">
                             <button class="btn btn-dark-blue m-1" (click)="openEditDeadlineModal(funding?.pk)">
                                 edit deadline
                             </button>
@@ -159,7 +158,7 @@
             class="card bg-gray-400 my-3">
             <div class="d-flex flex-wrap flex-row">
                 <button class="btn btn-icon-only" (click)="handleEditLiquidation(liquidation)"
-                    *ngIf="['comments', 'recommendation'].includes(permission.fund_release)">
+                    *ngIf="['edit'].includes(permission.fund_release)">
                     <i class="material-icons">edit</i>
                 </button>
             </div>
@@ -198,13 +197,13 @@
                                     attachment.original_name
                                     }}</a>
                                 <a (click)="deleteAttachment(i, j, k)"
-                                    *ngIf="['comments', 'recommendation'].includes(permission.fund_release)"><i
+                                    *ngIf="['edit'].includes(permission.fund_release)"><i
                                         class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                             </div>
                         </div>
 
                         <button class="btn btn-default" (click)="uploadFiles(i, j)"
-                            *ngIf="['comments', 'recommendation'].includes(permission.fund_release)">
+                            *ngIf="['edit'].includes(permission.fund_release)">
                             <div class="d-flex flex-column text-start">
                                 <p class="p-0 m-0 text-sm text-info font-weight-bold">
                                     <span class="icon icon-sm">
@@ -237,8 +236,7 @@
             </div>
         </div>
     </div>
-    <div class="d-flex flex-wrap flex-row gap-2 my-3"
-        *ngIf="['comments', 'recommendation'].includes(permission.fund_release)">
+    <div class="d-flex flex-wrap flex-row gap-2 my-3" *ngIf="['edit'].includes(permission.fund_release)">
         <button class="btn btn-dark-blue text-capitalize" (click)="handleAddTranche()">Add New Tranche</button>
         <button class="btn btn-secondary text-capitalize" (click)="handleAddLiquidation()">Add New Liquidation</button>
     </div>

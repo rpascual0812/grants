@@ -17,7 +17,8 @@ export const RESTRICTIONS: any = {
     restricted: 0,
     'read-only': 1,
     comments: 2,
-    recommendation: 3
+    recommendation: 3,
+    edit: 4
 }
 
 export const PERMISSIONS: any = {

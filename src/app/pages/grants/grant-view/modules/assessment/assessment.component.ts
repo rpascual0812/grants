@@ -60,8 +60,6 @@ export class AssessmentComponent {
                 this.donors.push(funding.donor.name);
             }
         });
-
-        console.log(this.donors);
     }
 
     // fetch() {

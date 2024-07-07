@@ -23,7 +23,9 @@ export class RolesComponent implements OnInit {
     pagination: any = _.PAGINATION;
     tableSizes: any = _.TABLE_SIZES;
 
-    selections: any = ['restricted', 'read-only', 'comments', 'recommendation'];
+    grant_application_selections: any = ['restricted', 'read-only', 'comments', 'recommendation'];
+    contract_finalization_selections: any = ['restricted', 'read-only', 'comments', 'recommendation'];
+    fund_release_selections: any = ['restricted', 'read-only', 'edit'];
 
     restrictions: any = {
         grant_application: '',

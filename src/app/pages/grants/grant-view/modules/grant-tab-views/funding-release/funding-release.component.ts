@@ -1,5 +1,5 @@
 import { onHiddenDataFundingLiquidation } from './../../../modals/funding-release-liquidation-modal/funding-release-liquidation-modal.component';
-import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, effect, inject } from '@angular/core';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import {
     FundingReleaseTrancheModalComponent,
@@ -52,17 +52,19 @@ export class FundingReleaseComponent implements OnInit {
         private projectService: ProjectService,
         private toastr: ToastrService,
         public documentUploaderRef: BsModalRef
-    ) { }
+    ) {
+        effect(() => {
+            this.user = this.userSignalService.user();
+
+            this.user?.user_role?.forEach((user_role: any) => {
+                this.permission.fund_release = this.restrictions[user_role.role.restrictions.fund_release] > this.restrictions[this.permission.fund_release] ? user_role.role.restrictions.fund_release : this.permission.fund_release;
+            });
+        });
+    }
 
     ngOnInit() {
         this.project = this.grantSignalService.project();
         this.fetchProjectFunding();
-
-        this.user = this.userSignalService.user();
-
-        this.user?.user_role?.forEach((user_role: any) => {
-            this.permission.fund_release = this.restrictions[user_role.role.restrictions.fund_release] > this.restrictions[this.permission.fund_release] ? user_role.role.restrictions.fund_release : this.permission.fund_release;
-        });
     }
 
     fetchProjectFunding() {
