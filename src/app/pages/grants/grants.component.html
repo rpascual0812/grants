@@ -4,31 +4,38 @@
         <div class="col-12 col-md-4 px-2">
             <div class="form-group">
                 <label class="font-weight-bold text-dark">Filters</label>
-                <div class="d-flex flex-wrap flex-row gap-2 border rounded-2 bg-gray-300 align-items-center"
-                    style="min-height: 40px">
+                <div
+                    class="d-flex flex-wrap flex-row gap-2 border rounded-2 bg-gray-300 align-items-center"
+                    style="min-height: 40px"
+                >
                     <div *ngFor="let filter of filterSelections" class="form-check">
-                        <input #checkbox id="{{ filter.label }}" class="form-check-input" type="checkbox"
+                        <input
+                            #checkbox
+                            id="{{ filter.label }}"
+                            class="form-check-input"
+                            type="checkbox"
                             (click)="handleCheckedFilterSelect(filter.id)"
-                            [checked]="selectedFilterIds === filter.id" />
+                            [checked]="selectedFilterIds === filter.id"
+                        />
                         <label for="{{ filter.label }}" class="form-check-label font-weight-bold mb-0">{{
                             filter.label
-                            }}</label>
+                        }}</label>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-md-2">
-            <button class="btn btn-dark-blue">Apply</button>
-        </div>
-
         <div class="active-donor-container" *ngIf="selectedFilterIds === 'fundRelease'">
             <accordion [isAnimated]="true">
-                <accordion-group (isOpenChange)="handleExpandAccordion($event, 'activeDonor')" [panelClass]="
-                            currentExpandedAccordion.has('activeDonor')
-                                ? 'custom-accordion-expanded w-100'
-                                : 'custom-accordion-collapsed w-100'
-                        " class="my-3">
+                <accordion-group
+                    (isOpenChange)="handleExpandAccordion($event, 'activeDonor')"
+                    [panelClass]="
+                        currentExpandedAccordion.has('activeDonor')
+                            ? 'custom-accordion-expanded w-100'
+                            : 'custom-accordion-collapsed w-100'
+                    "
+                    class="my-3"
+                >
                     <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                         <div class="pull-left float-left">
                             <p class="text-dark text-sm font-weight-bold m-0 p-0">Choose which donor</p>
@@ -37,16 +44,25 @@
                         <div class="pull-right float-right">
                             <div class="d-flex flex flex-row align-items-center">
                                 <div class="form-check form-switch">
-                                    <input #showInactiveDonors id="showInactiveDonors" class="form-check-input"
-                                        type="checkbox" role="switch"
-                                        (click)="handleToggleShowInactiveDonors($event, showInactiveDonors.checked)" />
-                                    <label for="showInactiveDonors" class="form-check-label p-0 m-0"
-                                        (click)="$event.stopPropagation()">Show Former Donors</label>
+                                    <input
+                                        #showInactiveDonors
+                                        id="showInactiveDonors"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        role="switch"
+                                        (click)="handleToggleShowInactiveDonors($event, showInactiveDonors.checked)"
+                                    />
+                                    <label
+                                        for="showInactiveDonors"
+                                        class="form-check-label p-0 m-0"
+                                        (click)="$event.stopPropagation()"
+                                        >Show Former Donors</label
+                                    >
                                 </div>
                                 <button class="btn btn-icon-only">
                                     <i class="material-icons">{{
                                         currentExpandedAccordion.has('activeDonor') ? 'expand_less' : 'expand_more'
-                                        }}</i>
+                                    }}</i>
                                 </button>
                             </div>
                         </div>
@@ -54,18 +70,23 @@
                     <div>
                         <h6 class="text-dark">Current Donors</h6>
                         <div class="d-flex flex-wrap flex-row gap-1">
-                            <button *ngFor="let donor of donors" class="card" style="width: 200px; height: 100px;"
+                            <button
+                                *ngFor="let donor of donors"
+                                class="card"
+                                style="width: 200px; height: 100px"
                                 [ngClass]="{'selected': selectedActiveDonorIds.includes(donor?.['pk'])}"
-                                (click)="handleSelectActiveDonor(donor?.['pk'] ?? '');">
-                                <div class="card-body p-0" style="width: 200px;">
-                                    <div class="row" style="padding: 10px 0px;">
+                                (click)="handleSelectActiveDonor(donor?.['pk'] ?? '');"
+                            >
+                                <div class="card-body p-0" style="width: 200px">
+                                    <div class="row" style="padding: 10px 0px">
                                         <div class="col-md-6">
                                             <span
                                                 class="d-inline-block rounded-circle {{ donor?.['active'] ? 'bg-success' : 'bg-danger' }} position-relative"
-                                                style="height: 20px; width: 20px; bottom: -3px"></span>
+                                                style="height: 20px; width: 20px; bottom: -3px"
+                                            ></span>
                                             <p class="text-dark d-inline font-weight-bold p-0 m-0 text-sm">Active</p>
                                         </div>
-                                        <div class="col-md-6" style="padding: 5px 0px 0px 0px;">
+                                        <div class="col-md-6" style="padding: 5px 0px 0px 0px">
                                             <p class="text-dark font-weight-bold p-0 m-0 text-sm align-right">
                                                 {{donor?.['code']}}
                                             </p>
@@ -73,8 +94,10 @@
                                     </div>
 
                                     <div>
-                                        <p class="text-dark text-sm word text-wrap m-0 p-2 text-start"
-                                            title="{{donor?.['name'] ?? ''}}">
+                                        <p
+                                            class="text-dark text-sm word text-wrap m-0 p-2 text-start"
+                                            title="{{donor?.['name'] ?? ''}}"
+                                        >
                                             {{donor?.['name'] && (donor?.['name'] ?? '').length > 47 ?
                                             donor?.['name']?.substring(0, 44) + "..."
                                             :
@@ -91,27 +114,51 @@
 
         <ng-container *ngIf="selectedFilterIds === 'fundRelease'">
             <div class="row">
-                <div class="col-10">
-                    <input class="form-control border border-1 rounded p-2 my-3" placeholder="Partner Name"
-                        type="text" />
+                <div class="col-12">
+                    <input
+                        class="form-control border border-1 rounded p-2 my-3"
+                        placeholder="Partner Name"
+                        type="text"
+                        [(ngModel)]="searchQuery.partnerName"
+                    />
                 </div>
             </div>
 
             <div class="row align-items-center">
                 <div class="col-2">
-                    <input class="form-control border border-1 rounded p-2 my-1" placeholder="Country" />
+                    <app-select
+                        [url]="'country'"
+                        [placeholder]="'Country'"
+                        (onSelectEvent)="onChangeSelectedItem($event, 'countryPk')"
+                        (onDeSelectEvent)="onChangeSelectedItem($event, 'countryPk')"
+                    ></app-select>
                 </div>
                 <div class="col-2">
-                    <input class="form-control border border-1 rounded p-2 my-1" placeholder="Province" />
+                    <app-select
+                        [url]="'province'"
+                        [placeholder]="'Province'"
+                        [listItemKey]="'province_code'"
+                        (onSelectEvent)="onChangeSelectedItem($event, 'provinceCode')"
+                        (onDeSelectEvent)="onChangeSelectedItem($event, 'provinceCode')"
+                    ></app-select>
                 </div>
                 <div class="col-2">
-                    <input class="form-control border border-1 rounded p-2 my-1" placeholder="Donor/Project" />
+                    <input
+                        [(ngModel)]="searchQuery.projectTitle"
+                        class="form-control border border-1 rounded p-2 my-1"
+                        placeholder="Project"
+                    />
                 </div>
                 <div class="col-2">
-                    <input class="form-control border border-1 rounded p-2 my-1" placeholder="Grant Type/Function" />
+                    <app-select
+                        [url]="'types'"
+                        [placeholder]="'Grant Types'"
+                        (onSelectEvent)="onChangeSelectedItem($event, 'typePk')"
+                        (onDeSelectEvent)="onChangeSelectedItem($event, 'typePk')"
+                    ></app-select>
                 </div>
                 <div class="col-4">
-                    <button class="btn btn-dark-blue w-50 my-1">Search</button>
+                    <button class="btn btn-dark-blue w-50 my-1" (click)="handleOnSearch()">Search</button>
                 </div>
             </div>
         </ng-container>
@@ -121,14 +168,17 @@
 
     <!-- Extras -->
 
-
     <div class="active-donor-container">
         <accordion [isAnimated]="true">
-            <accordion-group (isOpenChange)="handleExpandAccordion($event, 'summary')" [panelClass]="
+            <accordion-group
+                (isOpenChange)="handleExpandAccordion($event, 'summary')"
+                [panelClass]="
                     currentExpandedAccordion.has('summary')
                         ? 'custom-accordion-expanded w-100'
                         : 'custom-accordion-collapsed w-100'
-                " class="my-3">
+                "
+                class="my-3"
+            >
                 <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                     <div class="pull-left float-left">
                         <p class="text-dark text-sm font-weight-bold m-0 p-0">Summary</p>
@@ -139,166 +189,13 @@
                             <button class="btn btn-icon-only">
                                 <i class="material-icons">{{
                                     currentExpandedAccordion.has('summary') ? 'expand_less' : 'expand_more'
-                                    }}</i>
+                                }}</i>
                             </button>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <div class="row row-cols-1 row-cols-md-3 g-2 my-3">
-                        <div class="col">
-                            <div class="card">
-                                <div class="row g-0">
-                                    <div class="col-md-4 bg-dark-blue" style="
-                                            border-top-left-radius: 8px;
-                                            border-bottom-left-radius: 8px;
-                                            min-height: 130px;
-                                        ">
-                                        <h5 class="text-white p-2 font-weight-light">Total Grant Budget</h5>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h3 class="card-text text-dark-blue text-wrap">
-                                                {{ 1000000 | number }} USD
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="card">
-                                <div class="row g-0">
-                                    <div class="col-md-4" style="
-                                            border-top-left-radius: 8px;
-                                            border-bottom-left-radius: 8px;
-                                            min-height: 130px;
-                                            background-color: var(--bs-purple);
-                                        ">
-                                        <h5 class="text-white p-2 font-weight-light">Total Grants Approved</h5>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h3 class="card-text text-primary text-wrap">{{ 1000000 | number }} USD</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="card">
-                                <div class="row g-0">
-                                    <div class="col-md-4 bg-info" style="
-                                            border-top-left-radius: 8px;
-                                            border-bottom-left-radius: 8px;
-                                            min-height: 130px;
-                                        ">
-                                        <h5 class="text-white p-2 font-weight-light">Total of First Time Grantee</h5>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h3 class="card-text text-info text-wrap">{{ 500 | number }} Grantee</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row row-cols-1 row-cols-md-2 g-4">
-                        <div class="col">
-                            <div class="card pie-chart-card">
-                                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Status Breakdown</h4>
-                                <div class="pie-chart-container">
-                                    <div chartType="pie" class="pie-chart">
-                                        <canvas baseChart [plugins]="pieChartPlugins" [data]="pieChartData"
-                                            [type]="pieChartType" [options]="pieChartOptions">
-                                        </canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="card pie-chart-card">
-                                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Force Breakdown</h4>
-                                <div class="pie-chart-container">
-                                    <div chartType="pie" class="pie-chart">
-                                        <canvas baseChart [plugins]="pieChartPlugins" [data]="pieChartData"
-                                            [type]="pieChartType" [options]="pieChartOptions">
-                                        </canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="card pie-chart-card">
-                                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Grants Applied per country</h4>
-                                <div class="pie-chart-container">
-                                    <div chartType="pie" class="pie-chart">
-                                        <canvas baseChart [plugins]="pieChartPlugins" [data]="pieChartData"
-                                            [type]="pieChartType" [options]="pieChartOptions">
-                                        </canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="card pie-chart-card">
-                                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Grants Approved per Country</h4>
-                                <div class="pie-chart-container">
-                                    <div chartType="pie" class="pie-chart">
-                                        <canvas baseChart [plugins]="pieChartPlugins" [data]="pieChartData"
-                                            [type]="pieChartType" [options]="pieChartOptions">
-                                        </canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="card pie-chart-card">
-                                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Grants per Type</h4>
-                                <div class="pie-chart-container">
-                                    <div chartType="pie" class="pie-chart">
-                                        <canvas baseChart [plugins]="pieChartPlugins" [data]="pieChartData"
-                                            [type]="pieChartType" [options]="pieChartOptions">
-                                        </canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="card">
-                                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Grants per country</h4>
-                                <div chartType="bar" class="bar-chart">
-                                    <canvas baseChart [data]="horizontalBarChartData"
-                                        [options]="horizontalBarChartOptions" [type]="barChartType"
-                                        [plugins]="horizontalBarChartPlugins">
-                                    </canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row row-cols-1 my-3">
-                        <div class="col">
-                            <div class="card">
-                                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Amount of Grants going per
-                                    Theme/Focus</h4>
-                                <div chartType="bar" class="bar-chart">
-                                    <canvas baseChart [data]="barChartData" [options]="barChartChartOptions"
-                                        [type]="barChartType" [plugins]="barChartPlugins">
-                                    </canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <app-summary></app-summary>
                 </div>
             </accordion-group>
         </accordion>

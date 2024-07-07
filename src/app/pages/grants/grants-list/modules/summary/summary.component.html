@@ -1,0 +1,200 @@
+<div>
+    <div class="row row-cols-1 row-cols-md-3 g-2 my-3">
+        <div class="col">
+            <div class="card">
+                <div class="row g-0">
+                    <div
+                        class="col-md-4 bg-dark-blue"
+                        style="border-top-left-radius: 8px; border-bottom-left-radius: 8px; min-height: 130px"
+                    >
+                        <h5 class="text-white p-2 font-weight-light">Total Grant Budget</h5>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h3 class="card-text text-dark-blue text-wrap">{{ 1000000 | number }} USD</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <div class="row g-0">
+                    <div
+                        class="col-md-4"
+                        style="
+                            border-top-left-radius: 8px;
+                            border-bottom-left-radius: 8px;
+                            min-height: 130px;
+                            background-color: var(--bs-purple);
+                        "
+                    >
+                        <h5 class="text-white p-2 font-weight-light">Total Grants Approved</h5>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h3 class="card-text text-primary text-wrap">{{ 1000000 | number }} USD</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <div class="row g-0">
+                    <div
+                        class="col-md-4 bg-info"
+                        style="border-top-left-radius: 8px; border-bottom-left-radius: 8px; min-height: 130px"
+                    >
+                        <h5 class="text-white p-2 font-weight-light">Total of First Time Grantee</h5>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h3 class="card-text text-info text-wrap">
+                                {{ totalFirstTimeGranteeCount | number }} Grantee
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col">
+            <div class="card">
+                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Status Breakdown</h4>
+                <div class="card-body">
+                    <div>
+                        <canvas
+                            baseChart
+                            [plugins]="pieChartPlugins"
+                            [data]="pieChartData"
+                            [type]="pieChartType"
+                            [options]="pieChartOptions"
+                        >
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Force Breakdown</h4>
+                <div class="card-body">
+                    <div>
+                        <canvas
+                            baseChart
+                            [plugins]="pieChartPlugins"
+                            [data]="pieChartData"
+                            [type]="pieChartType"
+                            [options]="pieChartOptions"
+                        >
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Grants Applied per country</h4>
+                <div class="card-body">
+                    <div class="container text-center" *ngIf="loading.appliedGrantsPerCountry">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!loading.appliedGrantsPerCountry">
+                        <canvas
+                            baseChart
+                            [plugins]="grantsAppliedPerCountryChartPlugins"
+                            [data]="grantsAppliedPerCountryChartData"
+                            [type]="grantsAppliedPerCountryChartType"
+                            [options]="grantsAppliedPerCountryChartOptions"
+                        >
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Grants Approved per Country</h4>
+                <div class="card-body">
+                    <div class="container text-center" *ngIf="loading.approvedGrantsPerCountry">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!loading.approvedGrantsPerCountry">
+                        <canvas
+                            baseChart
+                            [plugins]="grantsApprovedPerCountryChartPlugins"
+                            [data]="grantsApprovedPerCountryChartData"
+                            [type]="grantsApprovedPerCountryChartType"
+                            [options]="grantsApprovedPerCountryChartOptions"
+                        >
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Grants per Type</h4>
+                <div class="card-body">
+                    <div class="container text-center" *ngIf="loading.grantsPerType">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!loading.grantsPerType">
+                        <canvas
+                            baseChart
+                            [plugins]="grantsPerTypeChartPlugins"
+                            [data]="grantsPerTypeChartData"
+                            [type]="grantsPerTypeChartType"
+                            [options]="grantsPerTypeChartOptions"
+                        >
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Grants per country</h4>
+                <div class="card-body">
+                    <app-common-grants-per-country-chart></app-common-grants-per-country-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 my-3">
+        <div class="col">
+            <div class="card">
+                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Amount of Grants going per Theme/Focus</h4>
+                <div class="card-body">
+                    <div>
+                        <canvas
+                            baseChart
+                            [data]="barChartData"
+                            [options]="barChartChartOptions"
+                            [type]="barChartType"
+                            [plugins]="barChartPlugins"
+                        >
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -22,6 +22,16 @@ interface Grant {
     status: string;
 }
 
+export type SearchQuery = {
+    partnerName?: string;
+    countryPk?: number;
+    provinceCode?: number;
+    projectTitle?: string;
+    typePk?: number;
+};
+
+export type KeySearchQuery = keyof SearchQuery;
+
 type ColumnObj = string | number | Date;
 
 const compare = (v1: ColumnObj, v2: ColumnObj) => {
@@ -42,18 +52,32 @@ export class FundReleaseComponent implements OnInit {
     fundRelease: Grant[] = [];
     closingGrant: Grant[] = [];
     page: number = 1;
+
     @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective<Grant>>;
     donors: any = [];
+    searchQuery: SearchQuery = {
+        partnerName: undefined,
+        countryPk: undefined,
+        provinceCode: undefined,
+        projectTitle: undefined,
+        typePk: undefined,
+    };
 
-    constructor(private projectService: ProjectService, private toastr: ToastrService) { }
+    constructor(private projectService: ProjectService, private toastr: ToastrService) {}
 
     ngOnInit() {
-        this.fetch()
+        this.fetch();
     }
 
     fetch() {
+        const { partnerName, countryPk, provinceCode, projectTitle, typePk } = this.searchQuery;
         const filters = {
-            donors: this.donors
+            donors: this.donors,
+            partner_name: partnerName?.trim() === '' || !partnerName ? [] : partnerName,
+            country_pk: countryPk ?? [],
+            province_code: provinceCode ?? [],
+            title: projectTitle?.trim() === '' || !projectTitle ? [] : projectTitle,
+            type_pk: typePk ?? [],
         };
         this.loading = true;
         this.projectService.fetch(filters).subscribe({
@@ -70,14 +94,13 @@ export class FundReleaseComponent implements OnInit {
                         proposedBudget: parseInt(item?.project_proposal?.budget_request_usd ?? ''),
                         proposedBudgetOther: parseInt(item?.project_proposal?.budget_request_other ?? ''),
                         proposedBudgetOtherCurrency:
-                            getOtherCurrencyKey(item?.project_proposal?.budget_request_other_currency ?? '') ??
-                            '',
+                            getOtherCurrencyKey(item?.project_proposal?.budget_request_other_currency ?? '') ?? '',
                         donorProject: '',
                         expanded: false,
-                        status: item.status ?? ''
+                        status: item.status ?? '',
                     }));
-                    this.fundRelease = projects.filter(proj => proj.status == 'Fund Release');
-                    this.closingGrant = projects.filter(proj => proj.status == 'Completed');
+                    this.fundRelease = projects.filter((proj) => proj.status == 'Fund Release');
+                    this.closingGrant = projects.filter((proj) => proj.status == 'Completed');
                 }
                 this.loading = false;
             },
@@ -133,7 +156,11 @@ export class FundReleaseComponent implements OnInit {
 
     setDonors(donors: any) {
         this.donors = donors;
+        this.fetch();
+    }
 
+    setSearchQuery(searchQuery: SearchQuery) {
+        this.searchQuery = searchQuery;
         this.fetch();
     }
 }
