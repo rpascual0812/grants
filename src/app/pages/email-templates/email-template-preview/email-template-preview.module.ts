@@ -1,22 +1,23 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { EmailTemplatesComponent } from './email-templates.component';
+import { EmailTemplatePreviewComponent } from './email-template-preview.component';
 import { TextEditorModule } from 'src/app/components/text-editor/text-editor.module';
-import { EmailTemplatePreviewModule } from './email-template-preview/email-template-preview.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectModule } from 'src/app/components/select/select.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
     declarations: [
-        EmailTemplatesComponent,
+        EmailTemplatePreviewComponent
     ],
     imports: [
         FormsModule,
         ReactiveFormsModule,
         CommonModule,
         TextEditorModule,
-        EmailTemplatePreviewModule,
-        SelectModule
-    ]
+        SelectModule,
+        NgSelectModule
+    ],
+    exports: [EmailTemplatePreviewComponent]
 })
-export class EmailTemplatesModule { }
+export class EmailTemplatePreviewModule { }
