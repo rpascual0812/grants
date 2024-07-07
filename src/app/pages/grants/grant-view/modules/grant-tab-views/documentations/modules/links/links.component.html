@@ -19,7 +19,7 @@
                                 </div>
                                 <div class="col-12 col-md-3">
                                     <div class="d-flex flex-row gap-1"
-                                        *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+                                        *ngIf="['comments', 'recommendation'].includes(permission.contact_finalization)">
                                         <button class="btn btn-sm btn-danger btn-icon-only btn-round"
                                             style="padding: .1rem !important;" (click)="delete(i)">
                                             <i class="material-icons" style="font-size: 0.8rem !important;">delete</i>
@@ -28,7 +28,7 @@
                                 </div>
                             </div>
                             <div class="row my-2"
-                                *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+                                *ngIf="['comments', 'recommendation'].includes(permission.contact_finalization)">
                                 <div class="col-12 col-md-6">
                                     <input class="form-control border border-1 p-2" placeholder="Link"
                                         [(ngModel)]="link" />

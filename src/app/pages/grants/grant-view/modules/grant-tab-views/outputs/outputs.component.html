@@ -3,43 +3,45 @@
         <div class="card-header bg-dark-blue">
             <h5 class="card-title text-white">Project Objectives</h5>
         </div>
-        <div class="card-body">
-            <div class="row" *ngFor="let objective of objectives; let i = index">
-                <div class="col-12 col-md-1">
-                    <p class="text-dark p-0 m-0">{{i + 1}}</p>
-                </div>
-                <div class="col-12 col-md-5">
-                    <p *ngIf="!objective.editable" class="text-dark p-0 m-0">
-                        {{objective.content}}
-                    </p>
-                    <input *ngIf="objective.editable" class="form-control border border-1 p-2" placeholder="Content"
-                        [(ngModel)]="editable.objective.content" />
-                </div>
-                <div class="col-12 col-md-3">
-                    <p *ngIf="!objective.editable" class="text-dark p-0 m-0">{{objective.commentor}}</p>
-                    <input *ngIf="objective.editable" class="form-control border border-1 p-2" placeholder="Content"
-                        [(ngModel)]="editable.objective.commentor" />
-                </div>
-                <div class="col-12 col-md-3"
-                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
-                    <div class="d-flex flex-row gap-1">
-                        <button *ngIf="objective.editable" class="btn btn-sm btn-success btn-icon-only btn-round"
-                            style="padding: .1rem !important;" (click)="update(i, 'objective')">
-                            <i class="material-icons" style="font-size: 0.8rem !important;">save</i>
-                        </button>
-                        <button *ngIf="!objective.editable" class="btn btn-sm btn-info btn-icon-only btn-round"
-                            style="padding: .1rem !important;" (click)="edit(i, 'objective')">
-                            <i class="material-icons" style="font-size: 0.8rem !important;">edit</i>
-                        </button>
-                        <button class="btn btn-sm btn-danger btn-icon-only btn-round" style="padding: .1rem !important;"
-                            (click)="delete(i, 'objective')">
-                            <i class="material-icons" style="font-size: 0.8rem !important;">delete</i>
-                        </button>
+        <div class="card-body" style="min-height: 100px;">
+            <ng-container>
+                <div class="row" *ngFor="let objective of objectives; let i = index">
+                    <div class="col-12 col-md-1">
+                        <p class="text-dark p-0 m-0">{{i + 1}}</p>
+                    </div>
+                    <div class="col-12 col-md-5">
+                        <p *ngIf="!objective.editable" class="text-dark p-0 m-0">
+                            {{objective.content}}
+                        </p>
+                        <input *ngIf="objective.editable" class="form-control border border-1 p-2" placeholder="Content"
+                            [(ngModel)]="editable.objective.content" />
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <p *ngIf="!objective.editable" class="text-dark p-0 m-0">{{objective.commentor}}</p>
+                        <input *ngIf="objective.editable" class="form-control border border-1 p-2" placeholder="Content"
+                            [(ngModel)]="editable.objective.commentor" />
+                    </div>
+                    <div class="col-12 col-md-3"
+                        *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
+                        <div class="d-flex flex-row gap-1">
+                            <button *ngIf="objective.editable" class="btn btn-sm btn-success btn-icon-only btn-round"
+                                style="padding: .1rem !important;" (click)="update(i, 'objective')">
+                                <i class="material-icons" style="font-size: 0.8rem !important;">save</i>
+                            </button>
+                            <button *ngIf="!objective.editable" class="btn btn-sm btn-info btn-icon-only btn-round"
+                                style="padding: .1rem !important;" (click)="edit(i, 'objective')">
+                                <i class="material-icons" style="font-size: 0.8rem !important;">edit</i>
+                            </button>
+                            <button class="btn btn-sm btn-danger btn-icon-only btn-round"
+                                style="padding: .1rem !important;" (click)="delete(i, 'objective')">
+                                <i class="material-icons" style="font-size: 0.8rem !important;">delete</i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
 
-            <div class="row my-2" *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+            <div class="row my-2" *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
                 <div class="col-12 col-md-1">
                     <p class="text-dark p-0 m-0">{{ objectives.length + 1}}</p>
                 </div>
@@ -62,45 +64,47 @@
         <div class="card-header bg-dark-blue">
             <h5 class="card-title text-white">Actual Output/Results</h5>
         </div>
-        <div class="card-body">
-            <div class="row" *ngFor="let result of results; let i = index">
-                <div class="col-12 col-md-1">
-                    <p class="text-dark p-0 m-0">{{i+1}}</p>
-                </div>
+        <div class="card-body" style="min-height: 100px;">
+            <ng-container>
+                <div class="row" *ngFor="let result of results; let i = index">
+                    <div class="col-12 col-md-1">
+                        <p class="text-dark p-0 m-0">{{i+1}}</p>
+                    </div>
 
-                <div class="col-12 col-md-5">
-                    <p *ngIf="!result.editable" class="text-dark p-0 m-0">
-                        {{result.content}}
-                    </p>
-                    <input *ngIf="result.editable" class="form-control border border-1 p-2" placeholder="Content"
-                        [(ngModel)]="editable.result.content" />
-                </div>
-                <div class="col-12 col-md-3">
-                    <p *ngIf="!result.editable" class="text-dark p-0 m-0">{{result.commentor}}</p>
-                    <input *ngIf="result.editable" class="form-control border border-1 p-2" placeholder="Content"
-                        [(ngModel)]="editable.result.commentor" />
-                </div>
+                    <div class="col-12 col-md-5">
+                        <p *ngIf="!result.editable" class="text-dark p-0 m-0">
+                            {{result.content}}
+                        </p>
+                        <input *ngIf="result.editable" class="form-control border border-1 p-2" placeholder="Content"
+                            [(ngModel)]="editable.result.content" />
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <p *ngIf="!result.editable" class="text-dark p-0 m-0">{{result.commentor}}</p>
+                        <input *ngIf="result.editable" class="form-control border border-1 p-2" placeholder="Content"
+                            [(ngModel)]="editable.result.commentor" />
+                    </div>
 
-                <div class="col-12 col-md-3"
-                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
-                    <div class="d-flex flex-row gap-1">
-                        <button *ngIf="result.editable" class="btn btn-sm btn-success btn-icon-only btn-round"
-                            style="padding: .1rem !important;" (click)="update(i, 'result')">
-                            <i class="material-icons" style="font-size: 0.8rem !important;">save</i>
-                        </button>
-                        <button *ngIf="!result.editable" class="btn btn-sm btn-info btn-icon-only btn-round"
-                            style="padding: .1rem !important;" (click)="edit(i, 'result')">
-                            <i class="material-icons" style="font-size: 0.8rem !important;">edit</i>
-                        </button>
-                        <button class="btn btn-sm btn-danger btn-icon-only btn-round" style="padding: .1rem !important;"
-                            (click)="delete(i, 'result')">
-                            <i class="material-icons" style="font-size: 0.8rem !important;">delete</i>
-                        </button>
+                    <div class="col-12 col-md-3"
+                        *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
+                        <div class="d-flex flex-row gap-1">
+                            <button *ngIf="result.editable" class="btn btn-sm btn-success btn-icon-only btn-round"
+                                style="padding: .1rem !important;" (click)="update(i, 'result')">
+                                <i class="material-icons" style="font-size: 0.8rem !important;">save</i>
+                            </button>
+                            <button *ngIf="!result.editable" class="btn btn-sm btn-info btn-icon-only btn-round"
+                                style="padding: .1rem !important;" (click)="edit(i, 'result')">
+                                <i class="material-icons" style="font-size: 0.8rem !important;">edit</i>
+                            </button>
+                            <button class="btn btn-sm btn-danger btn-icon-only btn-round"
+                                style="padding: .1rem !important;" (click)="delete(i, 'result')">
+                                <i class="material-icons" style="font-size: 0.8rem !important;">delete</i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
 
-            <div class="row my-2" *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+            <div class="row my-2" *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
                 <div class="col-12 col-md-1">
                     <p class="text-dark p-0 m-0">{{ results.length + 1}}</p>
                 </div>
@@ -120,28 +124,29 @@
     </div>
 
     <div class="card">
-        <div class="card-body">
-            <form role="form" class="text-start" [formGroup]="form" (ngSubmit)="onSubmit()">
-                <div class="row">
-                    <div class="col-12 col-md-6">
-                        <div class="form-control d-flex flex-wrap flex-row justify-content-between">
-                            <label class="max-width-600">
-                                A. Does this project involve tenure security (If NO proceed to Question B)
-                            </label>
-                            <select formControlName="tenure_security"
-                                class="form-control border p-1 rounded border-1 ronded-1 text-secondary text-md font-weight-bold max-width-100"
-                                style="width: 50px; height: 50px" (change)="tenure_security_toggle($event)">
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
-                            </select>
-                        </div>
-                        <fieldset [disabled]="disable_tenure_security">
-                            <div class="form-control">
-                                <label class="form-label">What is form of tenure security?</label>
-                                <select class="form-control" formControlName="tenure_security_form"
-                                    style="border: solid 1px #ccc; padding: .625rem .75rem;">
-                                    <option value="">Please select</option>
-                                    <option [value]="option" *ngFor="let option of [
+        <div class="card-body" style="min-height: 100px;">
+            <ng-container>
+                <form role="form" class="text-start" [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="form-control d-flex flex-wrap flex-row justify-content-between">
+                                <label class="max-width-600">
+                                    A. Does this project involve tenure security (If NO proceed to Question B)
+                                </label>
+                                <select formControlName="tenure_security"
+                                    class="form-control border p-1 rounded border-1 ronded-1 text-secondary text-md font-weight-bold max-width-100"
+                                    style="width: 50px; height: 50px" (change)="tenure_security_toggle($event)">
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <fieldset [disabled]="disable_tenure_security">
+                                <div class="form-control">
+                                    <label class="form-label">What is form of tenure security?</label>
+                                    <select class="form-control" formControlName="tenure_security_form"
+                                        style="border: solid 1px #ccc; padding: .625rem .75rem;">
+                                        <option value="">Please select</option>
+                                        <option [value]="option" *ngFor="let option of [
                                                     'Formal recognition advanced',
                                                     'Formal recognition beginning phase (filing)',
                                                     'Community  mapping (only)',
@@ -149,15 +154,15 @@
                                                     'Community development planning',
                                                     'Protection/Conservation/Restoration'
                                                 ]; let i = index;">{{option}}</option>
-                                </select>
-                                <!-- <app-select formControlName="tenure_security" [arr]=""></app-select> -->
-                            </div>
-                            <div class="form-control">
-                                <label class="form-label">Type of area/territory</label>
-                                <select class="form-control" formControlName="territory"
-                                    style="border: solid 1px #ccc; padding: .625rem .75rem;">
-                                    <option value="">Please select</option>
-                                    <option [value]="option" *ngFor="let option of [
+                                    </select>
+                                    <!-- <app-select formControlName="tenure_security" [arr]=""></app-select> -->
+                                </div>
+                                <div class="form-control">
+                                    <label class="form-label">Type of area/territory</label>
+                                    <select class="form-control" formControlName="territory"
+                                        style="border: solid 1px #ccc; padding: .625rem .75rem;">
+                                        <option value="">Please select</option>
+                                        <option [value]="option" *ngFor="let option of [
                                                     'Forest',
                                                     'Ancestral domain/indigenous (combination/various)',
                                                     'Agricultural/agrarian',
@@ -165,8 +170,8 @@
                                                     'Peatland',
                                                     'Other (please specify)'
                                                 ]; let i = index;">{{option}}</option>
-                                </select>
-                                <!-- <app-select [arr]="[
+                                    </select>
+                                    <!-- <app-select [arr]="[
                                                     'Forest',
                                                     'Ancestral domain/indigenous (combination/various)',
                                                     'Agricultural/agrarian',
@@ -174,105 +179,109 @@
                                                     'Peatland',
                                                     'Other (please specify)'
                                                 ]"></app-select> -->
-                            </div>
+                                </div>
+                                <div class="form-control">
+                                    <label class="form-label">How many hectares are secured</label>
+                                    <input class="border border-1 padding form-control p-2" type="number" min="0"
+                                        formControlName="hectares" />
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-12 col-md-6">
                             <div class="form-control">
-                                <label class="form-label">How many hectares are secured</label>
-                                <input class="border border-1 padding form-control p-2" type="number" min="0"
-                                    formControlName="hectares" />
-                            </div>
-                        </fieldset>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="form-control">
-                            <label class="form-label">B. What is the community product/source of livelihood</label>
-                            <input formControlName="livelihood" class="border border-1 padding p-2 form-control"
-                                type="text" [class]="{ 'is-invalid': submitted && f['livelihood'].errors }" />
+                                <label class="form-label">B. What is the community product/source of livelihood</label>
+                                <input formControlName="livelihood" class="border border-1 padding p-2 form-control"
+                                    type="text" [class]="{ 'is-invalid': submitted && f['livelihood'].errors }" />
 
-                            <div *ngIf="submitted && f['livelihood'].errors" class="invalid-feedback">
-                                <div *ngIf="submitted && f['livelihood'].errors['required']">What is the community
-                                    product/source of
-                                    livelihood is required</div>
+                                <div *ngIf="submitted && f['livelihood'].errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && f['livelihood'].errors['required']">What is the community
+                                        product/source of
+                                        livelihood is required</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <label class="form-label">Income Baseline</label>
-                                <input formControlName="individual_income"
-                                    class="border border-1 padding p-2 form-control" type="number" min="0"
-                                    [class]="{ 'is-invalid': submitted && f['individual_income'].errors }" />
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label">Income Baseline</label>
+                                    <input formControlName="individual_income"
+                                        class="border border-1 padding p-2 form-control" type="number" min="0"
+                                        [class]="{ 'is-invalid': submitted && f['individual_income'].errors }" />
 
-                                <div *ngIf="submitted && f['individual_income'].errors" class="invalid-feedback">
-                                    <div *ngIf="submitted && f['individual_income'].errors['required']">Income Baseline
-                                        is required
+                                    <div *ngIf="submitted && f['individual_income'].errors" class="invalid-feedback">
+                                        <div *ngIf="submitted && f['individual_income'].errors['required']">Income
+                                            Baseline
+                                            is required
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label">Income Increase</label>
+                                    <input formControlName="household_income"
+                                        class="border border-1 padding p-2 form-control" type="number" min="0"
+                                        [class]="{ 'is-invalid': submitted && f['household_income'].errors }" />
+
+                                    <div *ngIf="submitted && f['household_income'].errors" class="invalid-feedback">
+                                        <div *ngIf="submitted && f['household_income'].errors['required']">Income
+                                            Baseline
+                                            is required
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6">
-                                <label class="form-label">Income Increase</label>
-                                <input formControlName="household_income"
-                                    class="border border-1 padding p-2 form-control" type="number" min="0"
-                                    [class]="{ 'is-invalid': submitted && f['household_income'].errors }" />
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label"># of individuals with increased income</label>
+                                    <input formControlName="individual" class="border border-1 padding p-2 form-control"
+                                        type="number" [class]="{ 'is-invalid': submitted && f['individual'].errors }" />
 
-                                <div *ngIf="submitted && f['household_income'].errors" class="invalid-feedback">
-                                    <div *ngIf="submitted && f['household_income'].errors['required']">Income Baseline
-                                        is required
+                                    <div *ngIf="submitted && f['individual'].errors" class="invalid-feedback">
+                                        <div *ngIf="submitted && f['individual'].errors['required']"># of individuals
+                                            with
+                                            increased
+                                            income is required
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <label class="form-label"># of individuals with increased income</label>
-                                <input formControlName="individual" class="border border-1 padding p-2 form-control"
-                                    type="number" [class]="{ 'is-invalid': submitted && f['individual'].errors }" />
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label"># of households with increased income</label>
+                                    <input formControlName="household" class="border border-1 padding p-2 form-control"
+                                        type="number" [class]="{ 'is-invalid': submitted && f['household'].errors }" />
 
-                                <div *ngIf="submitted && f['individual'].errors" class="invalid-feedback">
-                                    <div *ngIf="submitted && f['individual'].errors['required']"># of individuals with
-                                        increased
-                                        income is required
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <label class="form-label"># of households with increased income</label>
-                                <input formControlName="household" class="border border-1 padding p-2 form-control"
-                                    type="number" [class]="{ 'is-invalid': submitted && f['household'].errors }" />
-
-                                <div *ngIf="submitted && f['household'].errors" class="invalid-feedback">
-                                    <div *ngIf="submitted && f['household'].errors['required']"># of households with
-                                        increased income
-                                        is required
+                                    <div *ngIf="submitted && f['household'].errors" class="invalid-feedback">
+                                        <div *ngIf="submitted && f['household'].errors['required']"># of households with
+                                            increased income
+                                            is required
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-control d-flex flex-wrap flex-row justify-content-between">
-                            <label class="max-width-500">
-                                C. Does this project Promote disability rights and diffable participation
-                            </label>
-                            <select
-                                class="form-control border p-1 rounded border-1 ronded-1 text-secondary text-md font-weight-bold max-width-100"
-                                style="width: 50px; height: 50px">
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
-                            </select>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-control d-flex flex-wrap flex-row justify-content-between">
+                                <label class="max-width-500">
+                                    C. Does this project Promote disability rights and diffable participation
+                                </label>
+                                <select formControlName="disability_rights"
+                                    class="form-control border p-1 rounded border-1 ronded-1 text-secondary text-md font-weight-bold max-width-100"
+                                    [class]="{ 'is-invalid': submitted && f['disability_rights'].errors }"
+                                    style="width: 50px; height: 50px">
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-md-4">
-                        <label class="form-label"> What type of intervention </label>
-                    </div>
-                    <div class="col-12 col-md-8">
-                        <select class="form-control" formControlName="intervention_type"
-                            [class]="{ 'is-invalid': submitted && f['intervention_type'].errors }"
-                            style="border: solid 1px #ccc; padding: .625rem .75rem;">
-                            <option value="">Please select</option>
-                            <option [value]="option" *ngFor="let option of [
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label"> What type of intervention </label>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <select class="form-control" formControlName="intervention_type"
+                                [class]="{ 'is-invalid': submitted && f['intervention_type'].errors }"
+                                style="border: solid 1px #ccc; padding: .625rem .75rem;">
+                                <option value="">Please select</option>
+                                <option [value]="option" *ngFor="let option of [
                             'Rights orientation and other basic orientation',
                             'increase community participation',
                             'increase income/economic opportunities',
@@ -281,20 +290,21 @@
                             'Participating in any social-environmental justice activities',
                             'Others please specify'
                         ]; let i = index;">{{option}}</option>
-                        </select>
+                            </select>
 
-                        <div *ngIf="submitted && f['intervention_type'].errors" class="invalid-feedback">
-                            <div *ngIf="submitted && f['intervention_type'].errors['required']">What type of
-                                intervention is required
+                            <div *ngIf="submitted && f['intervention_type'].errors" class="invalid-feedback">
+                                <div *ngIf="submitted && f['intervention_type'].errors['required']">What type of
+                                    intervention is required
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-md-12 d-flex flex-wrap flex-row justify-content-end mt-2"
-                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
-                    <button class="btn btn-dark-blue">save</button>
-                </div>
-            </form>
+                    <div class="col-12 col-md-12 d-flex flex-wrap flex-row justify-content-end mt-2"
+                        *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
+                        <button class="btn btn-dark-blue">save</button>
+                    </div>
+                </form>
+            </ng-container>
         </div>
     </div>
 </div>

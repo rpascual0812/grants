@@ -1,96 +1,99 @@
 <div class="container">
-    <div>
-        <div class="row">
-            <div class="col-12 col-md-12">
-                <div class="d-flex justify-content-end"
-                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
-                    <!-- <input type="text" class="form-control"
+    <div class="card my-3">
+        <div class="card-body" style="min-height: 100px;">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <div class="d-flex justify-content-end"
+                        *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
+                        <!-- <input type="text" class="form-control"
                         style="border: solid 1px #ccc; max-width: 250px; margin-right: 5px; padding: 5px; background-color: white;"
                         [(ngModel)]="event_name"> -->
-                    <button class="btn btn-sm btn-info" (click)="$event.stopPropagation(); openEventModal(null)">Add
-                        Event</button>
+                        <button class="btn btn-sm btn-info" (click)="$event.stopPropagation(); openEventModal(null)">Add
+                            Event</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <accordion [isAnimated]="true">
-            <accordion-group *ngFor="let event of events; index as i" (isOpenChange)="handleIsOpenChange($event, i)"
-                [panelClass]="
+            <accordion [isAnimated]="true">
+                <accordion-group *ngFor="let event of events; index as i" (isOpenChange)="handleIsOpenChange($event, i)"
+                    [panelClass]="
                     currentExpandedIdx === i ? 'custom-accordion-expanded w-100' : 'custom-accordion-collapsed w-100'
                 " class="my-3">
-                <div class="flex d-flex justify-content-between align-items-center py-2" accordion-heading>
-                    <div class="pull-left float-left">
-                        <p class="text-dark text-sm font-weight-bold m-0 p-0">{{ event.name }}</p>
-                    </div>
+                    <div class="flex d-flex justify-content-between align-items-center py-2" accordion-heading>
+                        <div class="pull-left float-left">
+                            <p class="text-dark text-sm font-weight-bold m-0 p-0">{{ event.name }}</p>
+                        </div>
 
-                    <div>
-                        <button type="button" class="btn btn-sm btn-info btn-icon-only btn-round" title="Add"
-                            (click)="$event.stopPropagation(); openEventModal(i)"
-                            style="padding: .2rem !important; margin: 0px 2px;"
-                            *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
-                            <i class="fa fa-pencil" style="font-size: 0.8rem !important;"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-danger btn-icon-only btn-round" title="Add"
-                            (click)="$event.stopPropagation(); deleteEvent(i)"
-                            style="padding: .2rem !important; margin: 0px 2px;"
-                            *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
-                            <i class="fa fa-trash" style="font-size: 0.8rem !important;"></i>
-                        </button>
-                        <!-- <button type="button" class="btn btn-sm btn-info btn-icon-only btn-round" title="Add"
+                        <div>
+                            <button type="button" class="btn btn-sm btn-info btn-icon-only btn-round" title="Add"
+                                (click)="$event.stopPropagation(); openEventModal(i)"
+                                style="padding: .2rem !important; margin: 0px 2px;"
+                                *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
+                                <i class="fa fa-pencil" style="font-size: 0.8rem !important;"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger btn-icon-only btn-round" title="Add"
+                                (click)="$event.stopPropagation(); deleteEvent(i)"
+                                style="padding: .2rem !important; margin: 0px 2px;"
+                                *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
+                                <i class="fa fa-trash" style="font-size: 0.8rem !important;"></i>
+                            </button>
+                            <!-- <button type="button" class="btn btn-sm btn-info btn-icon-only btn-round" title="Add"
                             (click)="$event.stopPropagation(); openModal(i, {})"
                             style="padding: .2rem !important; margin: 0px 2px;"
-                            *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+                            *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
                             <i class="fa fa-plus" style="font-size: 0.8rem !important;"></i>
                         </button> -->
+                        </div>
                     </div>
-                </div>
-                <div class="table-container">
-                    <div class="d-flex justify-content-end mb-2">
-                        <button type="button" class="btn btn-sm btn-info" title="Add"
-                            (click)="$event.stopPropagation(); openModal(i, {})"
-                            *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
-                            <!-- <i class="fa fa-plus" style="font-size: 0.8rem !important;"></i> -->
-                            Add Attendee
-                        </button>
-                    </div>
+                    <div class="table-container">
+                        <div class="d-flex justify-content-end mb-2">
+                            <button type="button" class="btn btn-sm btn-info" title="Add"
+                                (click)="$event.stopPropagation(); openModal(i, {})"
+                                *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
+                                <!-- <i class="fa fa-plus" style="font-size: 0.8rem !important;"></i> -->
+                                Add Attendee
+                            </button>
+                        </div>
 
-                    <div class="row border-dark border-top p-1" *ngFor="let attendee of event.attendees; index as j">
-                        <div class="col-12 col-md-2">
-                            <p class="text-dark font-weight-bold text-sm">
-                                Name: <span class="font-weight-light">{{attendee.name}}</span>
-                            </p>
-                        </div>
-                        <div class="col-12 col-md-2">
-                            <p class="text-dark font-weight-bold text-sm">
-                                Date of Birth: <span class="font-weight-light">{{attendee.birthday | date}}</span>
-                            </p>
-                        </div>
-                        <div class="col-12 col-md-5">
-                            <p class="text-dark font-weight-bold text-sm">
-                                Address: <span class="font-weight-light">{{attendee.address}}</span>
-                            </p>
-                        </div>
-                        <div class="col-12 col-md-2">
-                            <p class="text-dark font-weight-bold text-sm">
-                                Mobile No: <span class="font-weight-light">{{attendee.mobile_number}}</span>
-                            </p>
-                        </div>
-                        <div class="col-12 col-md-1">
-                            <div class="d-flex flex-row gap-1"
-                                *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
-                                <button class="btn btn-sm btn-info btn-icon-only btn-round" title="Edit"
-                                    style="padding: .2rem !important;" (click)="openModal(i, attendee)">
-                                    <i class="fa fa-pencil" style="font-size: 0.8rem !important;"></i>
-                                </button>
-                                <button class="btn btn-sm btn-danger btn-icon-only btn-round" title="Delete"
-                                    style="padding: .2rem !important;" (click)="deleteAttendee(attendee)">
-                                    <i class="fa fa-trash" style="font-size: 0.8rem !important;"></i>
-                                </button>
+                        <div class="row border-dark border-top p-1"
+                            *ngFor="let attendee of event.attendees; index as j">
+                            <div class="col-12 col-md-2">
+                                <p class="text-dark font-weight-bold text-sm">
+                                    Name: <span class="font-weight-light">{{attendee.name}}</span>
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <p class="text-dark font-weight-bold text-sm">
+                                    Date of Birth: <span class="font-weight-light">{{attendee.birthday | date}}</span>
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-5">
+                                <p class="text-dark font-weight-bold text-sm">
+                                    Address: <span class="font-weight-light">{{attendee.address}}</span>
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <p class="text-dark font-weight-bold text-sm">
+                                    Mobile No: <span class="font-weight-light">{{attendee.mobile_number}}</span>
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-1">
+                                <div class="d-flex flex-row gap-1"
+                                    *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
+                                    <button class="btn btn-sm btn-info btn-icon-only btn-round" title="Edit"
+                                        style="padding: .2rem !important;" (click)="openModal(i, attendee)">
+                                        <i class="fa fa-pencil" style="font-size: 0.8rem !important;"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger btn-icon-only btn-round" title="Delete"
+                                        style="padding: .2rem !important;" (click)="deleteAttendee(attendee)">
+                                        <i class="fa fa-trash" style="font-size: 0.8rem !important;"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </accordion-group>
-        </accordion>
+                </accordion-group>
+            </accordion>
+        </div>
     </div>
 </div>

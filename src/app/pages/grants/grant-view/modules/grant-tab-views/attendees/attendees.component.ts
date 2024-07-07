@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, effect, inject } from '@angular/core';
 import { Project } from 'src/app/interfaces/_project.interface';
 import { GrantSignalService } from 'src/app/services/grant.signal.service';
 import { ProjectService } from 'src/app/services/project.service';
@@ -8,6 +8,7 @@ import * as _ from '../../../../../../utilities/globals';
 import { ToastrService } from 'ngx-toastr';
 import { UserSignalService } from 'src/app/services/user.signal.service';
 import { EventModalComponent } from './event-modal/event-modal.component';
+import { User } from 'src/app/interfaces/_application.interface';
 
 @Component({
     selector: 'app-attendees',
@@ -30,7 +31,7 @@ export class AttendeesComponent implements OnInit {
     currentExpandedIdx = -1
     mockRandomEvent: number[] = []
 
-    user: any = {};
+    user: User | null = {};
     userSignalService = inject(UserSignalService);
 
     restrictions: any = _.RESTRICTIONS;
@@ -44,17 +45,21 @@ export class AttendeesComponent implements OnInit {
         for (let i = 0; i < 10; i++) {
             this.mockRandomEvent.push(i)
         }
+
+        effect(() => {
+            this.user = this.userSignalService.user();
+
+            this.user?.user_role?.forEach((user_role: any) => {
+                this.permission.contract_finalization = this.restrictions[user_role.role.restrictions.contract_finalization] > this.restrictions[this.permission.contract_finalization] ? user_role.role.restrictions.contract_finalization : this.permission.contract_finalization;
+            });
+        });
     }
 
     ngOnInit(): void {
         this.project = this.grantSignalService.project();
         this.fetch();
 
-        this.user = this.userSignalService.user();
 
-        this.user?.user_role?.forEach((user_role: any) => {
-            this.permission.grant_application = this.restrictions[user_role.role.restrictions.grant_application] > this.restrictions[this.permission.grant_application] ? user_role.role.restrictions.grant_application : this.permission.grant_application;
-        });
     }
 
     handleIsOpenChange($event: boolean, idx: number) {

@@ -27,7 +27,7 @@
                         [innerText]="item?.description ?? ''"></p>
                 </div>
                 <div class="col-12 col-md-2"
-                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+                    *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
                     <button (click)="handleSaveRow('challenges', item.pk)" *ngIf="editableRow.challengeRow === item.pk"
                         class="btn btn-sm btn-info btn-icon-only btn-round mx-1" style="padding: 0.1rem !important">
                         <i class="material-icons" style="font-size: 0.8rem !important">save</i>
@@ -46,7 +46,7 @@
             </div>
 
             <div class="row my-3 border-top p-2"
-                *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+                *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
                 <div class="col-1">{{ projectChallenges.length + 1 }}</div>
                 <div class="col-12 col-md-5">
                     <input [(ngModel)]="challengeForm.type_content" class="form-control border p-2" required
@@ -95,7 +95,7 @@
                         [innerText]="item?.description ?? ''"></p>
                 </div>
                 <div class="col-12 col-md-2"
-                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+                    *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
                     <button (click)="handleSaveRow('lessons', item.pk)" *ngIf="editableRow.lessonRow === item.pk"
                         class="btn btn-sm btn-info btn-icon-only btn-round mx-1" style="padding: 0.1rem !important">
                         <i class="material-icons" style="font-size: 0.8rem !important">save</i>
@@ -114,7 +114,7 @@
             </div>
 
             <div class="row my-3 border-top p-2"
-                *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+                *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
                 <div class="col-1">{{ projectLessons.length + 1 }}</div>
                 <div class="col-12 col-md-5">
                     <input [(ngModel)]="lessonForm.type_content" class="form-control border p-2" required type="text" />

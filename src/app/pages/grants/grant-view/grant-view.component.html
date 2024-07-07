@@ -80,7 +80,7 @@
                                             value="Financial Management Training/Coaching"
                                             [checked]="project?.financial_management_training"
                                             (change)="toggleFinancialManagementTraining()"
-                                            [disabled]="permission.contract_finalization == 'restricted'" />
+                                            [disabled]="permission.contract_finalization == 'restricted' || permission.contract_finalization == 'read-only'" />
                                         <label class="form-check-label text-dark font-weight-bold"
                                             for="financial_management_training">Financial Management
                                             Training/Coaching</label>
@@ -94,7 +94,12 @@
                                     <p class="text-sm font-weight-bold text-dark">Overall Grant Status</p>
                                 </div>
                                 <div class="col-md-6">
+                                    <span
+                                        *ngIf="['restricted', 'read-only'].includes(permission.contract_finalization)">
+                                        {{project?.overall_grant_status ?? ''}}
+                                    </span>
                                     <select
+                                        *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)"
                                         class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
                                         style="border: solid 1px grey !important; height: 35px; font-size: 13px !important; padding-top: 6px;"
                                         [value]="project?.overall_grant_status ?? ''"

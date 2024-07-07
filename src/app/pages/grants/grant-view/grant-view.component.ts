@@ -51,6 +51,14 @@ export class GrantViewComponent implements OnInit {
         private toastr: ToastrService
     ) {
         this.pk = this.route.snapshot.paramMap.get('pk') ?? '';
+
+        effect(() => {
+            this.user = this.userSignalService.user();
+
+            this.user?.user_role?.forEach((user_role: any) => {
+                this.permission.contract_finalization = this.restrictions[user_role.role.restrictions.contract_finalization] > this.restrictions[this.permission.contract_finalization] ? user_role.role.restrictions.contract_finalization : this.permission.contract_finalization;
+            });
+        });
     }
 
 
