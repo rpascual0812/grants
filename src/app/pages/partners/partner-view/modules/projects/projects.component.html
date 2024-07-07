@@ -1,7 +1,8 @@
 <div>
     <div class="d-flex flex flex-row align-items-center gap-1">
         <h4 class="text-dark m-0 p-0">Existing Projects</h4>
-        <span class="badge rounded-pill bg-info">{{ partner?.application?.length }} </span>
+        <span class="badge rounded-pill bg-info">{{ getProjects() }}
+        </span>
     </div>
 
     <div class="existing-projects-container my-3 overflow-x-auto">
@@ -22,37 +23,34 @@
                 <div class="col-3"></div>
             </div>
 
-            <div
-                *ngFor="let item of partner?.application ?? []; index as i"
-                class="row my-3 mx-0 bg-gray-100 py-3 rounded-2 align-items-center"
-            >
-                <div class="col-2">
-                    <a
-                        class="text-gray text-sm p-0 m-0 font-weight-bold"
-                        [routerLink]="['/grant', item?.project?.pk, 'review']"
-                    >
-                        {{ item?.project?.title }}
-                    </a>
-                </div>
-                <div class="col-2">
-                    <p class="text-gray text-sm p-0 m-0 font-weight-bold">
-                        {{ item?.project?.project_proposal?.budget_request_usd | number }} USD
-                    </p>
-                </div>
-                <div class="col-2">
-                    <p class="text-gray text-sm p-0 m-0 font-weight-bold">
-                        {{ item?.project?.date_created | date : 'shortDate' }}
-                    </p>
-                </div>
-                <div class="col-1">
-                    <p class="text-gray text-sm p-0 m-0 font-weight-bold">
-                        {{
+            <ng-container *ngFor="let item of partner?.application ?? []; index as i">
+                <div *ngIf="item?.project" class="row my-3 mx-0 bg-gray-100 py-3 rounded-2 align-items-center">
+                    <div class="col-2">
+                        <a class="text-gray text-sm p-0 m-0 font-weight-bold"
+                            [routerLink]="['/grant', item?.project?.pk, 'review']">
+                            {{ item?.project?.title }}
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <p class="text-gray text-sm p-0 m-0 font-weight-bold">
+                            {{ item?.project?.project_proposal?.budget_request_usd | number }} USD
+                        </p>
+                    </div>
+                    <div class="col-2">
+                        <p class="text-gray text-sm p-0 m-0 font-weight-bold">
+                            {{ item?.project?.date_created | date : 'shortDate' }}
+                        </p>
+                    </div>
+                    <div class="col-1">
+                        <p class="text-gray text-sm p-0 m-0 font-weight-bold">
+                            {{
                             getDateEnd(item?.project?.duration ?? '', item?.project?.date_created) | date : 'shortDate'
-                        }}
-                    </p>
+                            }}
+                        </p>
+                    </div>
+                    <div class="col-3"></div>
                 </div>
-                <div class="col-3"></div>
-            </div>
+            </ng-container>
         </div>
     </div>
 </div>

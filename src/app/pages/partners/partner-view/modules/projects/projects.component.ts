@@ -18,8 +18,12 @@ export class ProjectsComponent implements OnInit {
     getDateEnd(duration: string, dateCreated?: Date) {
         const numberOfMonth = duration?.split(' ')?.at(0);
         if (dateCreated && numberOfMonth) {
-            return DateTime.fromJSDate(new Date(dateCreated)).plus({ month: Number(numberOfMonth)}).toJSDate()
+            return DateTime.fromJSDate(new Date(dateCreated)).plus({ month: Number(numberOfMonth) }).toJSDate()
         }
         return ''
+    }
+
+    getProjects() {
+        return this.partner?.application?.filter((app: any) => app.project !== null && app.project.status !== null).length;
     }
 }
