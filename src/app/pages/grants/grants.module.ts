@@ -6,6 +6,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GrantsListModule } from './grants-list/grants-list.module';
 import { BaseChartDirective } from 'ng2-charts';
+import { SummaryModule } from './grants-list/modules/summary/summary.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { BaseChartDirective } from 'ng2-charts';
     FormsModule,
     ReactiveFormsModule,
     GrantsListModule,
-    BaseChartDirective
+    BaseChartDirective,
+    SummaryModule,
   ]
 })
 export class GrantsModule { }

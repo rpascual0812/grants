@@ -17,7 +17,7 @@ import { AvailableProjectStatus } from '../utilities/constants';
     providedIn: 'root',
 })
 export class ProjectService {
-    constructor(public http: HttpClient) { }
+    constructor(public http: HttpClient) {}
 
     fetch(filters?: any) {
         return this.http.get(`${_.BASE_URL}/projects`, { params: filters });
@@ -230,8 +230,10 @@ export class ProjectService {
         });
     }
 
-    fetchGroupProjectCountry() {
-        return this.http.get(`${_.BASE_URL}/projects/group_project_country`);
+    fetchGroupProjectCountry(query?: { closing_status?: string; is_applied?: boolean }) {
+        return this.http.get(`${_.BASE_URL}/projects/group_project_country`, {
+            params: query,
+        });
     }
 
     fetchTotalPerDonor() {

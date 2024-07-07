@@ -1,0 +1,28 @@
+// Charts
+.pie-chart-card {
+    position: relative;
+    height: 56vh;
+    width: 100%;
+
+    .pie-chart-container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        .pie-chart {
+            width: 100%;
+            padding: 1rem;
+        }
+    }
+}
+
+.bar-chart {
+    position: relative;
+    height: 50vh;
+    width: 100%;
+}
+
+.selected {
+    border: solid 1px #ff0000;
+}

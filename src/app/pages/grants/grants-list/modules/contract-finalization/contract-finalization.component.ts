@@ -38,12 +38,13 @@ export class ContractFinalizationComponent implements OnInit {
     contractPreparation: Grant[] = [];
     finalApproval: Grant[] = [];
     partnerSigning: Grant[] = [];
-    donors: any = [];
+    donors: number[] = [];
+    partnerName: string = '';
 
     page: number = 1;
     @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective<Grant>>;
 
-    constructor(private projectService: ProjectService, private toastr: ToastrService) { }
+    constructor(private projectService: ProjectService, private toastr: ToastrService) {}
 
     ngOnInit() {
         this.fetch();
@@ -52,8 +53,8 @@ export class ContractFinalizationComponent implements OnInit {
     fetch() {
         this.loading = true;
         const filters = {
-            donors: this.donors
-        }
+            donors: this.donors,
+        };
         this.projectService.fetch(filters).subscribe({
             next: (res: any) => {
                 const status = res?.status;
@@ -68,20 +69,19 @@ export class ContractFinalizationComponent implements OnInit {
                         applicationDate: item?.date_created as Date,
                         proposedBudget: parseInt(item?.project_proposal?.budget_request_usd ?? ''),
                         proposedBudgetOther: parseInt(item?.project_proposal?.budget_request_other ?? ''),
-                        proposedBudgetOtherCurrency: getOtherCurrencyKey(
-                            item?.project_proposal?.budget_request_other_currency ?? ''
-                        ) ?? '',
+                        proposedBudgetOtherCurrency:
+                            getOtherCurrencyKey(item?.project_proposal?.budget_request_other_currency ?? '') ?? '',
                         donorProject: '',
-                        status: item?.status ?? ''
+                        status: item?.status ?? '',
                     }));
-                    this.contractPreparation = projects.filter(proj => proj.status == 'Contract Preparation');
-                    this.finalApproval = projects.filter(proj => proj.status == 'Final Approval');
-                    this.partnerSigning = projects.filter(proj => proj.status == 'Partner Signing');
+                    this.contractPreparation = projects.filter((proj) => proj.status == 'Contract Preparation');
+                    this.finalApproval = projects.filter((proj) => proj.status == 'Final Approval');
+                    this.partnerSigning = projects.filter((proj) => proj.status == 'Partner Signing');
                 }
                 this.loading = false;
             },
             error: (err) => {
-                const { statusCode, errorMessage } = extractErrorMessage(err)
+                const { statusCode, errorMessage } = extractErrorMessage(err);
                 this.toastr.error(
                     `An error occurred while fetching Application. ${statusCode} ${errorMessage} Please try again.`,
                     'ERROR!'
@@ -114,9 +114,8 @@ export class ContractFinalizationComponent implements OnInit {
         this.page = $event;
     }
 
-    setDonors(donors: any) {
+    setDonors(donors: number[]) {
         this.donors = donors;
-
         this.fetch();
     }
 }
