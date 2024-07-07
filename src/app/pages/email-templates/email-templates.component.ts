@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { TextEditorComponent } from 'src/app/components/text-editor/text-editor.component';
 import { TemplateService } from 'src/app/services/template.service';
+import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { EmailTemplatePreviewComponent } from './email-template-preview/email-template-preview.component';
 
 declare var tinymce: any;
 
@@ -84,17 +86,22 @@ export class EmailTemplatesComponent implements OnInit {
         ]
     };
 
+    modalModalRef?: BsModalRef;
+
     constructor(
         private formBuilder: FormBuilder,
         private templateService: TemplateService,
         private toastr: ToastrService,
         private cdr: ChangeDetectorRef,
+        private modalService: BsModalService,
     ) { }
 
     ngOnInit(): void {
         tinymce.init(
             {
                 selector: "#message",
+                plugins: 'preview',
+                toolbar: 'preview'
             }
         );
 
@@ -203,6 +210,53 @@ export class EmailTemplatesComponent implements OnInit {
                     setTimeout(() => { this.loading = false; }, 500);
                 }
             });
+    }
+
+    openSendPreviewModal(ev: any) {
+        let template = '',
+            subject = '',
+            variables: any = [];
+        switch (ev) {
+            case 'new_account':
+                subject = this.form.value.newAccountCreatedSubject;
+                const newAccountCreated = this.newAccountCreatedEditor.returnMessage();
+                template = '' + newAccountCreated + '';
+                variables = this.variables.newAccountCreatedVariables;
+                break;
+            case 'password_reset':
+                subject = this.form.value.passwordResetSubject;
+                const passwordReset = this.passwordResetEditor.returnMessage();
+                template = '' + passwordReset + '';
+                variables = this.variables.passwordResetVariables
+                break;
+            case 'application':
+                subject = this.form.value.applicationSubject;
+                const application = this.applicationEditor.returnMessage();
+                template = '' + application + '';
+                variables = this.variables.applicationVariables;
+                break;
+            case 'application_submitted':
+                subject = this.form.value.applicationSubmittedSubject;
+                const applicationSubmitted = this.applicationSubmittedEditor.returnMessage();
+                template = '' + applicationSubmitted + '';
+                variables = this.variables.applicationSubmittedVariables;
+                break;
+
+            default:
+                break;
+        }
+
+        const initialState: ModalOptions = {
+            class: 'modal-xl',
+            initialState: {
+                name: ev,
+                subject: subject,
+                template: template,
+                variables: variables
+            }
+        };
+
+        this.modalModalRef = this.modalService.show(EmailTemplatePreviewComponent, initialState);
     }
 
 }

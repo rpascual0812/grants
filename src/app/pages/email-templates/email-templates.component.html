@@ -27,9 +27,13 @@
                                 </div>
                             </div>
                             <br>
-                            <app-text-editor #newAccountCreated [variables]="variables.newAccountCreatedVariables"
-                                [conditions]="{ showUploader: true }" [content]="template.newAccountCreated"
-                                [height]="700"></app-text-editor>
+                            <!-- Weird but if you remove line 30, the modal won't be able to show the dropdown as well -->
+                            <app-select [hidden]="true" [url]="'projects/title'" [listItemValue]="'title'"></app-select>
+                            <app-text-editor #newAccountCreated [id]="'new_account'"
+                                [variables]="variables.newAccountCreatedVariables"
+                                [conditions]="{ showUploader: true, showSendPreview: true }"
+                                [content]="template.newAccountCreated" [height]="700"
+                                (openSendPreview)="openSendPreviewModal($event)"></app-text-editor>
                             <div *ngIf=" f['newAccountCreated'].errors" class="invalid-feedback">
                                 <div *ngIf="f['newAccountCreated'].errors['required']">Password Reset is required</div>
                             </div>
@@ -47,8 +51,9 @@
                             </div>
                             <br>
                             <app-text-editor #passwordReset [variables]="variables.passwordResetVariables"
-                                [conditions]="{ showUploader: true }" [content]="template.passwordReset"
-                                [height]="700"></app-text-editor>
+                                [id]="'password_reset'" [conditions]="{ showUploader: true, showSendPreview: true }"
+                                [content]="template.passwordReset" [height]="700"
+                                (openSendPreview)="openSendPreviewModal($event)"></app-text-editor>
                             <div *ngIf=" f['passwordReset'].errors" class="invalid-feedback">
                                 <div *ngIf="f['passwordReset'].errors['required']">Password Reset is required</div>
                             </div>
@@ -66,8 +71,9 @@
                             </div>
                             <br>
                             <app-text-editor #application [variables]="variables.applicationVariables"
-                                [conditions]="{ showUploader: true }" [content]="template.application"
-                                [height]="700"></app-text-editor>
+                                [id]="'application'" [conditions]="{ showUploader: true, showSendPreview: true }"
+                                [content]="template.application" [height]="700"
+                                (openSendPreview)="openSendPreviewModal($event)"></app-text-editor>
                             <div *ngIf=" f['application'].errors" class="invalid-feedback">
                                 <div *ngIf="f['application'].errors['required']">Application is required</div>
                             </div>
@@ -86,8 +92,10 @@
                             </div>
                             <br>
                             <app-text-editor #applicationSubmitted [variables]="variables.applicationSubmittedVariables"
-                                [conditions]="{ showUploader: true }" [content]="template.applicationSubmitted"
-                                [height]="700"></app-text-editor>
+                                [id]="'application_submitted'"
+                                [conditions]="{ showUploader: true, showSendPreview: true }"
+                                [content]="template.applicationSubmitted" [height]="700"
+                                (openSendPreview)="openSendPreviewModal($event)"></app-text-editor>
                             <div *ngIf=" f['applicationSubmitted'].errors" class="invalid-feedback">
                                 <div *ngIf="f['applicationSubmitted'].errors['required']">Application Submitted is
                                     required</div>

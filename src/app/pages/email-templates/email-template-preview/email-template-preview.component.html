@@ -1,0 +1,49 @@
+<div>
+    <div class="modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Send Email Preview</h4>
+                <button type="button" style="font-size: 20px !important; line-height: normal !important;"
+                    class="btn-close close btn-close-white" aria-label="Close" (click)="bsModalRef.hide()">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group my-3" *ngIf="['application', 'application_submitted'].includes(name)">
+                            <label class="font-weight-bold text-dark">Select an Application</label>
+                            <ng-select style="--border-color: #f98f38; margin-left: 5px;" class="custom-project-select"
+                                [items]="applicationList" [placeholder]="'Select an Application'"
+                                (change)="setApplication($event)">
+                            </ng-select>
+                        </div>
+                        <div class="form-group my-3" *ngIf="['new_account', 'password_reset'].includes(name)">
+                            <label class="font-weight-bold text-dark">Select a User</label>
+                            <ng-select style="--border-color: #f98f38; margin-left: 5px;" class="custom-project-select"
+                                [items]="userList" [placeholder]="'Select a User'" (change)="setUser($event)">
+                            </ng-select>
+                        </div>
+                        <div class="form-group my-3">
+                            <label class="font-weight-bold text-dark">Recipient</label>
+                            <input type="text" class="form-control border rounded-1 p-1"
+                                [(ngModel)]="form.recipients" />
+                        </div>
+                        <div class="form-group my-3">
+                            <label class="font-weight-bold text-dark">Subject</label>
+                            <input type="text" class="form-control border rounded-1 p-1" [(ngModel)]="form.subject" />
+                        </div>
+
+                        <app-text-editor #texteditor [id]="'new_account'" [variables]="variables"
+                            [conditions]="{ showUploader: true}" [content]="template" [height]="400"></app-text-editor>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span class="text-danger" *ngIf="error">Please complete the form above</span>
+                <button type="button" class="btn btn-dark-blue" (click)="send()">Send</button>
+                <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
