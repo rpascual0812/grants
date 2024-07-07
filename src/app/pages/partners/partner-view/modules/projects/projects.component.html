@@ -24,7 +24,8 @@
             </div>
 
             <ng-container *ngFor="let item of partner?.application ?? []; index as i">
-                <div *ngIf="item?.project" class="row my-3 mx-0 bg-gray-100 py-3 rounded-2 align-items-center">
+                <div *ngIf="item?.project !== null && item?.project?.status !== null"
+                    class="row my-3 mx-0 bg-gray-100 py-3 rounded-2 align-items-center">
                     <div class="col-2">
                         <a class="text-gray text-sm p-0 m-0 font-weight-bold"
                             [routerLink]="['/grant', item?.project?.pk, 'review']">
