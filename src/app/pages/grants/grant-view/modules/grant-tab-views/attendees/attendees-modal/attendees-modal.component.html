@@ -39,12 +39,12 @@
 
                             <div class="form-group input-group input-group-outline my-3"
                                 [class]="{ 'is-filled' : form.value.address !== null }">
-                                <label for="example-email-input" class="form-label">Email Address</label>
-                                <input class="form-control shadow-none" type="email" formControlName="address"
+                                <label for="example-email-input" class="form-label">Address</label>
+                                <input class="form-control shadow-none" type="text" formControlName="address"
                                     on-focus="onFocus($event.target)" on-blur="onExit($event.target)"
                                     [ngClass]="{ 'is-invalid': submitted && f['address'].errors }">
                                 <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['address'].errors['required']">Email Address is required</div>
+                                    <div *ngIf="f['address'].errors['required']">Address is required</div>
                                 </div>
                             </div>
 

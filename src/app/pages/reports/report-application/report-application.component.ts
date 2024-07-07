@@ -5,6 +5,7 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { TotalApplicationComponent } from './total-application/total-application.component';
 import { ApplicationStatusesComponent } from './application-statuses/application-statuses.component';
 import { ApplicationBudgetComponent } from './application-budget/application-budget.component';
+import * as _ from '../../../utilities/globals';
 
 @Component({
     selector: 'app-report-application',
@@ -17,9 +18,7 @@ export class ReportApplicationComponent implements OnInit {
     @ViewChild(ApplicationStatusesComponent) applicationStatuses: ApplicationStatusesComponent;
     @ViewChild(ApplicationBudgetComponent) applicationBudget: ApplicationBudgetComponent;
 
-    months: string[] = [
-        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
-    ]
+    months: string[] = _.MONTHS;
     years: number[] = [];
     statuses: string[] = [
         'Received Proposals', 'Grants Team Review', 'Advisers Review', 'Budget Review and Finalization', 'Financial Management Capacity', 'Due Diligence (Medium Grants)', 'Approved', 'Rejected', 'Cancelled'

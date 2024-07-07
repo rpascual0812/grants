@@ -103,11 +103,12 @@ export class SelectComponent {
     fetch() {
         this.globalService.selectFetch(this.url).subscribe({
             next: (data: any) => {
-                this.dropdownList = data.data;
+                this.dropdownList = data.data ?? data;
                 if (Object.keys(this.indexZero).length > 0) {
                     this.dropdownList.unshift(this.indexZero);
                 }
                 this.setDefaultSelectedItemKey();
+                this.cdRef.detectChanges();
             },
             error: (error: any) => {
                 console.log(error);

@@ -13,6 +13,8 @@ export const PAGINATION: object = {
     tableSize: 10
 };
 
+export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 export const RESTRICTIONS: any = {
     restricted: 0,
     'read-only': 1,
