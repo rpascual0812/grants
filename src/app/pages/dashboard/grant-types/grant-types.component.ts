@@ -35,24 +35,22 @@ export class GrantTypesComponent {
                 font: {
                     size: 14,
                 },
+                anchor: 'end',
+                align: 'start',
+                formatter: (_value, ctx) => {
+                    const currentGrants = [`2,400 USD`, `13,600 USD`, `29,000 USD`];
+                    const cumulativeGrants = [`13,600 USD`, `13,600 USD`, `29,000 USD`];
+                    const datasetLabel = ctx?.dataset?.label;
+                    const idx = ctx?.dataIndex;
+                    if (datasetLabel === 'Cumulative Grants') {
+                        return cumulativeGrants[idx] ?? '';
+                    } else {
+                        return currentGrants[idx] ?? '';
+                    }
+                },
                 labels: {
-                    name: {
-                        clamp: true,
-                        align: 'start',
-                        anchor: 'end',
-                        formatter: (_value: string, ctx) => {
-                            const maskedValue = [`2,400`, `13,600`, `29,000`];
-                            return `${maskedValue.at(ctx.dataIndex)} USD`;
-                        },
-                        color: (ctx) => {
-                            const label = ctx?.dataset?.label;
-                            if (label === 'Cumulative Grants') {
-                                return 'black';
-                            }
-                            return 'white';
-                        },
-                    },
                     value: {
+                        anchor: 'center',
                         align: 'center',
                         formatter: (_value, ctx) => {
                             const description = [`$500 - $9,999`, `$10,000 - $30,000`, `$30,000 above`];
@@ -62,6 +60,15 @@ export class GrantTypesComponent {
                             else {
                                 return description[idx] ?? '';
                             }
+                        },
+                    },
+                    name: {
+                        color: (ctx) => {
+                            const chartLabel = ctx.dataset.label;
+                            if (chartLabel === 'Cumulative Grants') {
+                                return 'black';
+                            }
+                            return 'white';
                         },
                     },
                 },
@@ -99,7 +106,7 @@ export class GrantTypesComponent {
             },
             {
                 label: `Cumulative Grants`,
-                data: [3500, 4000, 4000],
+                data: [1000, 1000, 1200],
                 barThickness: 70,
                 borderSkipped: false,
             },
