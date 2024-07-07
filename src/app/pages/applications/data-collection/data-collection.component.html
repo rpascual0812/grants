@@ -1,0 +1,229 @@
+<div class="content pt-5 bg-gray-200 min-vh-100">
+    <div class="container">
+        <h4 class="title text-dark">Capacity Building Activity <span class="badge badge-grey ml-3">{{dateNow}}</span>
+        </h4>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="col-md-12">
+                    <form [formGroup]="form" (ngSubmit)="submit()">
+                        <div class="card my-3" style="border-radius: 12px;">
+                            <div class="card-header bg-dark-blue"
+                                style="padding: 5px 0px 0px 10px; border-radius: 12px 12px 0 0;">
+                                <div class="d-flex flex-wrap flex-row justify-content-between">
+                                    <h6 class="text-white">Personal Information</h6>
+                                </div>
+                            </div>
+                            <div class="card-body py-2" style="border-radius: 0px;">
+                                <div>
+
+                                    <div class="form-group my-3">
+                                        <label class="font-weight-bold text-dark">Name</label>
+                                        <input type="text" class="form-control border rounded-1 p-1" required
+                                            [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+                                            formControlName="name" />
+                                        <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['name'].errors['required']">
+                                                Name is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group my-3">
+                                        <label class="font-weight-bold text-dark">Date of Birth</label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <ng-select [items]="years" [placeholder]="'Year'" formControlName="year"
+                                                    (change)="yearOnChange($event)"
+                                                    [class]="submitted && !form.value.month ? 'is-invalid' : ''">
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && !form.value.year" class="invalid-feedback">
+                                                    <div *ngIf="!form.value.year">
+                                                        Year is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <ng-select [items]="months" [placeholder]="'Month'"
+                                                    formControlName="month" (change)="monthOnChange($event)"
+                                                    [class]="submitted && !form.value.month ? 'is-invalid' : ''">
+                                                </ng-select>
+                                                <div *ngIf="submitted && !form.value.month" class="invalid-feedback">
+                                                    <div *ngIf="!form.value.month">
+                                                        Month is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <ng-select [items]="days" [placeholder]="'Day'" formControlName="day"
+                                                    [class]="submitted && !form.value.day ? 'is-invalid' : ''">
+                                                </ng-select>
+                                                <div *ngIf="submitted && !form.value.day" class="invalid-feedback">
+                                                    <div *ngIf="!form.value.day">
+                                                        Day is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group my-3">
+                                        <label class="font-weight-bold text-dark">Address</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control border rounded-1 p-1" required
+                                                    [ngClass]="{ 'is-invalid': submitted && f['city'].errors }"
+                                                    formControlName="city" placeholder="City" />
+
+                                                <div *ngIf="submitted && f['city'].errors" class="invalid-feedback">
+                                                    <div *ngIf="f['city'].errors['required']">
+                                                        City is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control border rounded-1 p-1" required
+                                                    [ngClass]="{ 'is-invalid': submitted && f['province'].errors }"
+                                                    formControlName="province" placeholder="Province" />
+
+                                                <div *ngIf="submitted && f['province'].errors" class="invalid-feedback">
+                                                    <div *ngIf="f['province'].errors['required']">
+                                                        Province is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group my-3">
+                                        <label class="font-weight-bold text-dark">Mobile No</label>
+                                        <div class="form-group">
+                                            <div class="input-group mobile-prefix-group">
+                                                <!-- <div class="border border-start-1 p-1 text-sm">+63</div> -->
+                                                <button class="btn border rounded-1 p-0 px-1 font-weight-light"
+                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    {{mobilePrefix}}
+                                                    <i class="material-icons">arrow_drop_down</i>
+                                                </button>
+                                                <ul class="mobile-prefix dropdown-menu dropdown-menu-start rounded-1">
+                                                    <li *ngFor="let prefix of prefixes"
+                                                        class="dropdown-item btn rounded-1 border-bottom border-light font-weight-light">
+                                                        {{prefix}}
+                                                    </li>
+                                                </ul>
+                                                <input type="number" min="0"
+                                                    class="form-control border border-start-0 rounded-1 p-1" required
+                                                    formControlName="mobile_number" [ngClass]="{
+                                                                                        'is-invalid': submitted && f['mobile_number'].errors
+                                                                                    }" />
+
+                                                <div *ngIf="submitted && f['mobile_number'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="f['mobile_number'].errors['required']">
+                                                        Mobile Number is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div *ngIf="submitted && f['mobile_number'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['mobile_number'].errors['required']">
+                                                Mobile Number is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card my-3 mt-3" style="border-radius: 12px;">
+                            <div class="card-body py-4" style="border-radius: 0px;">
+                                <div class="row">
+                                    <div class="col-md-6" *ngFor="let filter of filters; let i = index">
+                                        <div class="form-check" style="padding-left: 0px">
+                                            <input class="form-check-input" type="checkbox" [name]="filter"
+                                                [id]="filter" [checked]="false" (change)="updateFilter(filter)" />
+                                            <label class="form-check-label" [for]="filter"> {{filter}} </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-2">
+                            <button class="btn btn-dark-blue">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card my-3" style="border-radius: 12px;">
+                    <div class="card-body py-2" style="border-radius: 0px;">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center">
+                            <div class="table-responsive" style="min-height: 650px; width: 100%;">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="col text-uppercase text-secondary font-weight-bolder opacity-7">
+                                                Activity Attendance</th>
+                                            <th
+                                                class="col text-uppercase text-secondary font-weight-bolder opacity-7 ps-2">
+                                                Total Attendees <span
+                                                    class="badge text-bg-info text-white mx-2">{{attendees.length ??
+                                                    0}}</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let attendee of attendees; let i = index">
+                                            <td scope="row">
+                                                <div class="d-flex" style="height: 30px !important;">
+                                                    <p><span class="mb-0 text-sm font-weight-bold">Name:</span>
+                                                        {{attendee.name}}
+                                                    </p>
+                                                </div>
+                                                <div class="d-flex" style="height: 30px !important;">
+                                                    <p><span class="mb-0 text-sm font-weight-bold">Date of Birth:</span>
+                                                        {{attendee.birthday | date}}
+                                                    </p>
+                                                </div>
+                                            </td>
+                                            <td scope="row">
+                                                <div class="d-flex" style="height: 30px !important;">
+                                                    <p><span class="mb-0 text-sm font-weight-bold">Address:</span>
+                                                        {{attendee.address}}
+                                                    </p>
+                                                </div>
+                                                <div class="d-flex" style="height: 30px !important;">
+                                                    <p><span class="mb-0 text-sm font-weight-bold">Mobile No:</span>
+                                                        {{attendee.mobile_number}}
+                                                    </p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <!-- <tfoot>
+                                    <tr>
+                                        <td colspan="100%">
+                                            <div class="d-flex flex-row-reverse mt-2" *ngIf="pagination.count>0">
+                                                <pagination-controls [responsive]="true" previousLabel="Prev" nextLabel="Next"
+                                                    (pageChange)="onTableDataChange($event)"></pagination-controls>
+                                                <div>
+                                                    <select (change)="onTableSizeChange($event)"
+                                                        class="form-control form-control-sm pagination-select">
+                                                        <option *ngFor="let size of tableSizes" [ngValue]="size">
+                                                            {{ size }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot> -->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

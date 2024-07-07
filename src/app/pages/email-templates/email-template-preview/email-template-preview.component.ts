@@ -106,7 +106,6 @@ export class EmailTemplatePreviewComponent implements OnInit {
 
     setApplication(ev: any) {
         const application = this.applications.filter((application: any) => application.number == ev)[0];
-        console.log(application);
         let body = this.template;
 
         body = body.replace(/{partner_name}/g, application.partner?.name ?? '');
@@ -130,7 +129,6 @@ export class EmailTemplatePreviewComponent implements OnInit {
 
     send() {
         this.form.body = this.newTextEditor.returnMessage();
-        console.log(this.form);
 
         if (this.form.recipients.replace(/\s/g, '') == '' ||
             this.form.subject.replace(/\s/g, '') == '' ||

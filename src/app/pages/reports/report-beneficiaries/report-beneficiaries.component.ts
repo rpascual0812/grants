@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DateTime } from 'luxon';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectService } from 'src/app/services/project.service';
+import * as _ from '../../../utilities/globals';
 
 @Component({
     selector: 'app-report-beneficiaries',
@@ -9,9 +10,7 @@ import { ProjectService } from 'src/app/services/project.service';
     styleUrls: ['./report-beneficiaries.component.scss']
 })
 export class ReportBeneficiariesComponent implements OnInit {
-    months: string[] = [
-        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
-    ]
+    months: string[] = _.MONTHS;
     years: number[] = [];
 
     dates: any = {
