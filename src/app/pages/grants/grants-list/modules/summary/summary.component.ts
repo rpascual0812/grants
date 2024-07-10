@@ -26,6 +26,10 @@ interface SummaryChart {
     data: number;
 }
 
+export const CLOSING_STATUS = {
+    COMPLETED: 'Completed'
+}
+
 @Component({
     selector: 'app-summary',
     templateUrl: './summary.component.html',
@@ -270,6 +274,7 @@ export class SummaryComponent implements OnInit {
     ) {}
 
     totalFirstTimeGranteeCount = 0;
+    totalGrantsApproved = 0
     summaryTotalGrantsPerCountry: SummaryTotalGrantsPerCountry = {
         grantsPerCountry: [],
         overallTotal: 0,
@@ -344,7 +349,7 @@ export class SummaryComponent implements OnInit {
         this.loading.approvedGrantsPerCountry = true
         this.projectService
             .fetchGroupProjectCountry({
-                closing_status: 'Completed',
+                closing_status: CLOSING_STATUS.COMPLETED,
             })
             .subscribe({
                 next: (res: any) => {
@@ -451,19 +456,11 @@ export class SummaryComponent implements OnInit {
                 const status = res?.status;
                 const data = res?.data as Project[];
                 if (status) {
-                    const fundRelease = data.filter((proj) => proj.status === 'Fund Release');
-                    const closingGrant = data.filter((proj) => proj.status === 'Completed');
-                    const contractPreparation = data.filter((proj) => proj.status === 'Contract Preparation');
-                    const finalApproval = data.filter((proj) => proj.status === 'Final Approval');
-                    const partnerSigning = data.filter((proj) => proj.status === 'Partner Signing');
-                    const combinedProjects =
-                        [
-                            ...fundRelease,
-                            ...closingGrant,
-                            ...contractPreparation,
-                            ...finalApproval,
-                            ...partnerSigning,
-                        ] ?? [];
+                    const approvedGrants = data?.filter((proj) => proj.closing_status === CLOSING_STATUS.COMPLETED)
+                    this.totalGrantsApproved = approvedGrants?.reduce((total, acc) => {
+                        return total += isNaN(Number(acc?.project_proposal?.budget_request_usd)) ? 0 : Number(acc?.project_proposal?.budget_request_usd)
+                    },0)
+                    const combinedProjects = data?.filter(proj => proj.status !== null) ?? []
                     const totalProjects = combinedProjects?.length;
                     const { microGrantsCount, smallGrantsCount, mediumGrantsCount } =
                         this.getGrantTypesCount(combinedProjects);
