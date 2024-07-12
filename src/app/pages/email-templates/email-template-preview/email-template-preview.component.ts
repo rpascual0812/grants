@@ -3,7 +3,6 @@ import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { TextEditorComponent } from 'src/app/components/text-editor/text-editor.component';
 import { ApplicationService } from 'src/app/services/application.service';
-import { ProjectService } from 'src/app/services/project.service';
 import { UserService } from 'src/app/services/user.service';
 import * as _ from '../../../utilities/globals';
 import { DateTime } from 'luxon';
@@ -145,10 +144,11 @@ export class EmailTemplatePreviewComponent implements OnInit {
                 .save(this.form)
                 .subscribe({
                     next: (data: any) => {
-                        this.toastr.success('The templates have been successfully updated', 'SUCCESS!');
+                        this.bsModalRef.hide();
+                        _.successMessage('The test email has been successfully sent');
                     },
                     error: (error: any) => {
-                        this.toastr.error('An error occurred while sending an email. Please try again', 'ERROR!');
+                        _.errorMessage('An error occurred while sending an email. Please try again');
                     },
                     complete: () => {
 
