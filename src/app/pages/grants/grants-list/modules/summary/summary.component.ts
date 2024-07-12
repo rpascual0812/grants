@@ -8,9 +8,8 @@ import { Application, Partner } from 'src/app/interfaces/_application.interface'
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { ProjectService } from 'src/app/services/project.service';
 import { Project } from 'src/app/interfaces/_project.interface';
-import {
-    GrantPerCountry,
-} from 'src/app/components/common-grants-per-country-chart/common-grants-per-country-chart.component';
+import { GrantPerCountry } from 'src/app/components/common-grants-per-country-chart/common-grants-per-country-chart.component';
+import { GRANT_CLOSING_STATUS } from 'src/app/utilities/constants';
 
 interface PartnerList extends Partner {
     applications?: Application[];
@@ -24,10 +23,6 @@ interface SummaryTotalGrantsPerCountry {
 interface SummaryChart {
     label: string;
     data: number;
-}
-
-export const CLOSING_STATUS = {
-    COMPLETED: 'Completed'
 }
 
 @Component({
@@ -274,7 +269,7 @@ export class SummaryComponent implements OnInit {
     ) {}
 
     totalFirstTimeGranteeCount = 0;
-    totalGrantsApproved = 0
+    totalGrantsApproved = 0;
     summaryTotalGrantsPerCountry: SummaryTotalGrantsPerCountry = {
         grantsPerCountry: [],
         overallTotal: 0,
@@ -284,7 +279,7 @@ export class SummaryComponent implements OnInit {
         approvedGrantsPerCountry: true,
         appliedGrantsPerCountry: true,
         grantsPerType: true,
-    }
+    };
     summaryTotalApprovedGrantsPerCountry: SummaryChart[] = [];
     summaryTotalAppliedGrantsPerCountry: SummaryChart[] = [];
     summaryTotalGrantsPerType: SummaryChart[] = [];
@@ -346,10 +341,10 @@ export class SummaryComponent implements OnInit {
     }
 
     fetchApprovedGrantsPerCountry() {
-        this.loading.approvedGrantsPerCountry = true
+        this.loading.approvedGrantsPerCountry = true;
         this.projectService
             .fetchGroupProjectCountry({
-                closing_status: CLOSING_STATUS.COMPLETED,
+                closing_status: GRANT_CLOSING_STATUS.completed,
             })
             .subscribe({
                 next: (res: any) => {
@@ -385,7 +380,7 @@ export class SummaryComponent implements OnInit {
                             'ERROR!'
                         );
                     }
-                    this.loading.approvedGrantsPerCountry = false
+                    this.loading.approvedGrantsPerCountry = false;
                 },
                 error: (err) => {
                     const { statusCode, errorMessage } = extractErrorMessage(err);
@@ -393,13 +388,13 @@ export class SummaryComponent implements OnInit {
                         `An error occurred while fetching Approved Projects Per Country. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
-                    this.loading.approvedGrantsPerCountry = false
+                    this.loading.approvedGrantsPerCountry = false;
                 },
             });
     }
 
     fetchAppliedGrantsPerCountry() {
-        this.loading.appliedGrantsPerCountry = true
+        this.loading.appliedGrantsPerCountry = true;
         this.projectService
             .fetchGroupProjectCountry({
                 is_applied: true,
@@ -436,7 +431,7 @@ export class SummaryComponent implements OnInit {
                             'ERROR!'
                         );
                     }
-                    this.loading.appliedGrantsPerCountry = false
+                    this.loading.appliedGrantsPerCountry = false;
                 },
                 error: (err) => {
                     const { statusCode, errorMessage } = extractErrorMessage(err);
@@ -444,23 +439,27 @@ export class SummaryComponent implements OnInit {
                         `An error occurred while fetching Applied Projects Per Country. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
-                    this.loading.appliedGrantsPerCountry = false
+                    this.loading.appliedGrantsPerCountry = false;
                 },
             });
     }
 
     fetchGrantsPerType() {
-        this.loading.grantsPerType = true
+        this.loading.grantsPerType = true;
         this.projectService.fetch().subscribe({
             next: (res: any) => {
                 const status = res?.status;
                 const data = res?.data as Project[];
                 if (status) {
-                    const approvedGrants = data?.filter((proj) => proj.closing_status === CLOSING_STATUS.COMPLETED)
+                    const approvedGrants = data?.filter(
+                        (proj) => proj.closing_status === GRANT_CLOSING_STATUS.completed
+                    );
                     this.totalGrantsApproved = approvedGrants?.reduce((total, acc) => {
-                        return total += isNaN(Number(acc?.project_proposal?.budget_request_usd)) ? 0 : Number(acc?.project_proposal?.budget_request_usd)
-                    },0)
-                    const combinedProjects = data?.filter(proj => proj.status !== null) ?? []
+                        return (total += isNaN(Number(acc?.project_proposal?.budget_request_usd))
+                            ? 0
+                            : Number(acc?.project_proposal?.budget_request_usd));
+                    }, 0);
+                    const combinedProjects = data?.filter((proj) => proj.status !== null) ?? [];
                     const totalProjects = combinedProjects?.length;
                     const { microGrantsCount, smallGrantsCount, mediumGrantsCount } =
                         this.getGrantTypesCount(combinedProjects);
@@ -500,7 +499,7 @@ export class SummaryComponent implements OnInit {
                 } else {
                     this.toastr.error(`An error occurred while fetching Projects. Please try again.`, 'ERROR!');
                 }
-                this.loading.grantsPerType = false
+                this.loading.grantsPerType = false;
             },
             error: (err) => {
                 const { statusCode, errorMessage } = extractErrorMessage(err);
@@ -508,7 +507,7 @@ export class SummaryComponent implements OnInit {
                     `An error occurred while fetching Projects. ${statusCode} ${errorMessage} Please try again.`,
                     'ERROR!'
                 );
-                this.loading.grantsPerType = false
+                this.loading.grantsPerType = false;
             },
         });
     }

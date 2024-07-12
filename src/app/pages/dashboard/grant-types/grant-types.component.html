@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div chartType="bar" class="bar-chart">
+            <div *ngIf="!loading" chartType="bar" class="bar-chart">
                 <canvas
                     baseChart
                     [data]="horizontalBarChartData"
