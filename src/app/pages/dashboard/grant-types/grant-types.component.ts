@@ -86,7 +86,7 @@ export class GrantTypesComponent implements OnInit {
                 beforeFit: (axis) => {
                     const hightestValue = this.cumulativeGrants?.sort((a, b) => b - a).at(0) ?? 100;
                     console.log("🚀 ~ GrantTypesComponent ~ hightestValue:", hightestValue);
-                    axis.max = hightestValue + 150;
+                    axis.max = hightestValue + 30;
                 },
                 ticks: {
                     font: {
@@ -96,11 +96,9 @@ export class GrantTypesComponent implements OnInit {
                         return `${tickValue} USD`;
                     },
                 },
-                stacked: true,
             },
             y: {
                 beginAtZero: true,
-                stacked: true,
             },
         },
     };
