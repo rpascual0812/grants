@@ -38,7 +38,7 @@ export class GrantTypesComponent implements OnInit {
             datalabels: {
                 color: 'white',
                 font: {
-                    size: 14,
+                    size: 12,
                 },
                 anchor: 'end',
                 align: 'start',
@@ -83,13 +83,10 @@ export class GrantTypesComponent implements OnInit {
         },
         scales: {
             x: {
-                beforeFit: (axis) => {
-                    const hightestValue = this.cumulativeGrants?.sort((a, b) => b - a).at(0) ?? 100;
-                    axis.max = hightestValue + 30;
-                },
+                beginAtZero: true,
                 ticks: {
                     font: {
-                        size: 14,
+                        size: 12,
                     },
                     callback: (tickValue, _index, _ticks) => {
                         return `${tickValue} USD`;
@@ -128,12 +125,11 @@ export class GrantTypesComponent implements OnInit {
             afterDraw: (chart: Chart<'bar'>) => {
                 const ctx = chart.ctx;
                 const yAxis = chart.scales['y'];
-
                 yAxis.ticks.forEach((_value: unknown, index: number) => {
                     const currentGrantValue = this.currentGrants[index];
                     const cumulativeGrantsValue = this.cumulativeGrants[index];
                     const y = yAxis.getPixelForTick(index);
-                    if (cumulativeGrantsValue !== 0 && currentGrantValue !== 0) {
+                    if (cumulativeGrantsValue && currentGrantValue) {
                         ctx.drawImage(this.grantTypeIcons[index], yAxis.right + 30, y - 25, 50, 50);
                     }
                 });
@@ -141,8 +137,8 @@ export class GrantTypesComponent implements OnInit {
         },
     ];
 
-    currentGrants: number[] = [];
-    cumulativeGrants: number[] = [];
+    currentGrants: (number| null)[] = [];
+    cumulativeGrants: (number| null)[] = [];
     loading = true;
     constructor(private projectService: ProjectService, private toastr: ToastrService) {}
 
@@ -160,39 +156,45 @@ export class GrantTypesComponent implements OnInit {
                     const activeProjects = data?.filter((proj) => proj.status !== null) ?? [];
                     const { microGrants, smallGrants, mediumGrants } = this.getGrantTypes(activeProjects);
 
+
                     const activeMicroGrants = this.getTotalGrantTypeTotalBudget(microGrants, 'active');
                     const closedMicroGrants = this.getTotalGrantTypeTotalBudget(microGrants, 'closed');
-                    const currentMicroGrants = activeMicroGrants.toFixed(2);
-                    const cumulativeMicroGrants = (activeMicroGrants + closedMicroGrants).toFixed(2);
+                    const currentMicroGrants = this.getParsedValue(activeMicroGrants.toFixed(2))
+                    const cumulativeMicroGrants = this.getParsedValue((activeMicroGrants + closedMicroGrants).toFixed(2))
 
                     const activeSmallGrants = this.getTotalGrantTypeTotalBudget(smallGrants, 'active');
                     const closedSmallGrants = this.getTotalGrantTypeTotalBudget(smallGrants, 'closed');
-                    const currentSmallGrants = activeSmallGrants.toFixed(2);
-                    const cumulativeSmallGrants = (activeSmallGrants + closedSmallGrants).toFixed(2);
+                    const currentSmallGrants = this.getParsedValue(activeSmallGrants.toFixed(2));
+                    const cumulativeSmallGrants = this.getParsedValue((activeSmallGrants + closedSmallGrants).toFixed(2));
 
                     const activeMediumGrants = this.getTotalGrantTypeTotalBudget(mediumGrants, 'active');
                     const closedMediumGrants = this.getTotalGrantTypeTotalBudget(mediumGrants, 'closed');
-                    const currentMediumGrants = activeMediumGrants.toFixed(2);
-                    const cumulativeMediumGrants = (activeMediumGrants + closedMediumGrants).toFixed(2);
+                    const currentMediumGrants = this.getParsedValue(activeMediumGrants.toFixed(2));
+                    const cumulativeMediumGrants = this.getParsedValue((activeMediumGrants + closedMediumGrants).toFixed(2));
 
-                    this.currentGrants = [+currentMicroGrants, +currentSmallGrants, +currentMediumGrants];
-                    this.cumulativeGrants = [+cumulativeMicroGrants, +cumulativeSmallGrants, +cumulativeMediumGrants];
+                    this.currentGrants = [currentMicroGrants, currentSmallGrants, currentMediumGrants];
+                    this.cumulativeGrants = [cumulativeMicroGrants, cumulativeSmallGrants, cumulativeMediumGrants];
 
-                    this.horizontalBarChartData.datasets = [
+                    const datasets = [
                         {
                             label: `Current Grants`,
                             backgroundColor: [`rgb(26 115 232)`, `rgb(76 175 80) `, `rgb(26 35 126)`],
                             data: this.currentGrants,
                             barThickness: 70,
                             borderSkipped: false,
+                            minBarLength: 210
                         },
                         {
                             label: `Cumulative Grants`,
                             data: this.cumulativeGrants,
                             barThickness: 70,
                             borderSkipped: false,
+                            minBarLength: 320
                         },
                     ];
+
+                    this.horizontalBarChartData.datasets = datasets
+
 
                     this.horizontalBarChart?.update();
                 } else {
@@ -247,7 +249,7 @@ export class GrantTypesComponent implements OnInit {
         let total = 0;
         if (type === 'active') {
             projects.forEach((proj) => {
-                if (proj.status && proj.closing_status !== GRANT_CLOSING_STATUS.completed) {
+                if (proj?.status && proj?.closing_status !== GRANT_CLOSING_STATUS.completed) {
                     total += isNaN(Number(proj.project_proposal?.budget_request_usd))
                         ? 0
                         : Number(proj.project_proposal?.budget_request_usd);
@@ -257,12 +259,16 @@ export class GrantTypesComponent implements OnInit {
         }
 
         projects.forEach((proj) => {
-            if (proj.status && proj.closing_status === GRANT_CLOSING_STATUS.completed) {
+            if (proj?.status && proj?.closing_status === GRANT_CLOSING_STATUS.completed) {
                 total += isNaN(Number(proj.project_proposal?.budget_request_usd))
                     ? 0
                     : Number(proj.project_proposal?.budget_request_usd);
             }
         });
         return total;
+    }
+
+    getParsedValue(value: string) {
+        return +value !== 0 ? +value : null
     }
 }
