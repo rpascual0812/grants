@@ -1,5 +1,11 @@
-<div>
-    <div class="row row-cols-1 row-cols-md-3 g-2 my-3">
+<div class="container text-center my-5" *ngIf="loading.section">
+    <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<div *ngIf="!loading.section">
+    <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
         <div class="col">
             <div class="card">
                 <div class="row g-0">
@@ -92,6 +98,7 @@
                     </div>
                     <div *ngIf="!loading.appliedGrantsPerCountry">
                         <canvas
+                            *ngIf="summaryTotalAppliedGrantsPerCountry.length > 0"
                             baseChart
                             [plugins]="grantsAppliedPerCountryChartPlugins"
                             [data]="grantsAppliedPerCountryChartData"
@@ -99,6 +106,9 @@
                             [options]="grantsAppliedPerCountryChartOptions"
                         >
                         </canvas>
+                        <div class="min-height-300" *ngIf="summaryTotalAppliedGrantsPerCountry.length === 0">
+                            <h5 class="text-center text-warning text-bold">No Data Available</h5>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -115,6 +125,7 @@
                     </div>
                     <div *ngIf="!loading.approvedGrantsPerCountry">
                         <canvas
+                            *ngIf="summaryTotalApprovedGrantsPerCountry.length > 0"
                             baseChart
                             [plugins]="grantsApprovedPerCountryChartPlugins"
                             [data]="grantsApprovedPerCountryChartData"
@@ -122,6 +133,9 @@
                             [options]="grantsApprovedPerCountryChartOptions"
                         >
                         </canvas>
+                        <div class="min-height-300" *ngIf="summaryTotalApprovedGrantsPerCountry.length === 0">
+                            <h5 class="text-center text-warning text-bold">No Data Available</h5>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,6 +152,7 @@
                     </div>
                     <div *ngIf="!loading.grantsPerType">
                         <canvas
+                            *ngIf="summaryTotalGrantsPerType.length > 0"
                             baseChart
                             [plugins]="grantsPerTypeChartPlugins"
                             [data]="grantsPerTypeChartData"
@@ -145,6 +160,9 @@
                             [options]="grantsPerTypeChartOptions"
                         >
                         </canvas>
+                        <div class="min-height-300" *ngIf="summaryTotalGrantsPerType.length === 0">
+                            <h5 class="text-center text-warning text-bold">No Data Available</h5>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -154,7 +172,25 @@
             <div class="card">
                 <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Grants per country</h4>
                 <div class="card-body">
-                    <app-common-grants-per-country-chart></app-common-grants-per-country-chart>
+                    <div class="container text-center" *ngIf="loading.grantsPerCountry">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!loading.grantsPerCountry">
+                        <canvas
+                            *ngIf="summaryTotalGrantsPerCountry.length > 0"
+                            baseChart
+                            [plugins]="grantsPerCountryChartPlugins"
+                            [data]="grantsPerCountryChartData"
+                            [type]="grantsPerCountryChartType"
+                            [options]="grantsPerCountryChartOptions"
+                        >
+                        </canvas>
+                        <div class="min-height-300" *ngIf="summaryTotalGrantsPerCountry.length === 0">
+                            <h5 class="text-center text-warning text-bold">No Data Available</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -165,7 +201,13 @@
             <div class="card">
                 <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Amount of Grants going per Theme/Focus</h4>
                 <div class="card-body">
-                    <div>
+                    <div class="container text-center" *ngIf="loading.section">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+
+                    <div *ngIf="!loading.section">
                         <canvas
                             baseChart
                             [data]="barChartData"
