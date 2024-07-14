@@ -168,22 +168,34 @@ export type AvailableProjectStatus =
     | 'Partner Signing'
     | 'Fund Release'
     | 'Completed';
+export type AvailableProjectStatusObjKey =
+    | 'contractPreparation'
+    | 'finalApproval'
+    | 'partnerSigning'
+    | 'fundRelease'
+    | 'completed';
+export const AVAILABLE_PROJECT_STATUS_OBJ: Record<AvailableProjectStatusObjKey, AvailableProjectStatus> = {
+    contractPreparation: 'Contract Preparation',
+    finalApproval: 'Final Approval',
+    partnerSigning: 'Partner Signing',
+    fundRelease: 'Fund Release',
+    completed: 'Completed',
+};
 export const AVAILABLE_PROJECT_STATUS: AvailableProjectStatus[] = [
-    'Contract Preparation',
-    'Final Approval',
-    'Partner Signing',
-    'Fund Release',
-    'Completed',
+    AVAILABLE_PROJECT_STATUS_OBJ.contractPreparation,
+    AVAILABLE_PROJECT_STATUS_OBJ.finalApproval,
+    AVAILABLE_PROJECT_STATUS_OBJ.partnerSigning,
+    AVAILABLE_PROJECT_STATUS_OBJ.fundRelease,
+    AVAILABLE_PROJECT_STATUS_OBJ.completed,
 ];
 
 export type GrantClosingStatus = 'Completed' | 'For Follow Up' | 'Closing Letter Sent';
-export type GrantClosingStatusKey = 'completed' | 'forFollowUp' | 'closingLetterSent'
+export type GrantClosingStatusKey = 'completed' | 'forFollowUp' | 'closingLetterSent';
 export const GRANT_CLOSING_STATUS: Record<GrantClosingStatusKey, GrantClosingStatus> = {
     completed: 'Completed',
     forFollowUp: 'For Follow Up',
     closingLetterSent: 'Closing Letter Sent',
 };
-
 
 export const INTERIM_NARRATIVE_REPORT = 'interim narrative report';
 export const INTERIM_FINANCIAL_REPORT = 'interim financial report';

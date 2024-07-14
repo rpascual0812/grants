@@ -1,12 +1,11 @@
-import { ApplicationService } from 'src/app/services/application.service';
 import { Component, OnInit, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { NgbdSortableHeaderDirective, SortEvent } from 'src/app/directives/ngbd-sortable-header.directive';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
-import { Application } from 'src/app/interfaces/_application.interface';
 import { ToastrService } from 'ngx-toastr';
-import { getOtherCurrencyKey } from 'src/app/utilities/constants';
+import { AVAILABLE_PROJECT_STATUS_OBJ, getOtherCurrencyKey } from 'src/app/utilities/constants';
 import { Project } from 'src/app/interfaces/_project.interface';
 import { ProjectService } from 'src/app/services/project.service';
+import { SummaryService } from '../summary/summary.service';
 
 interface Grant {
     pk: number;
@@ -63,7 +62,11 @@ export class FundReleaseComponent implements OnInit {
         typePk: undefined,
     };
 
-    constructor(private projectService: ProjectService, private toastr: ToastrService) {}
+    constructor(
+        private projectService: ProjectService,
+        private toastr: ToastrService,
+        private summaryService: SummaryService
+    ) {}
 
     ngOnInit() {
         this.fetch();
@@ -80,6 +83,10 @@ export class FundReleaseComponent implements OnInit {
             type_pk: typePk ?? [],
         };
         this.loading = true;
+        this.summaryService.currentProjectList.next({
+            projects: [],
+            loading: true,
+        });
         this.projectService.fetch(filters).subscribe({
             next: (res: any) => {
                 const status = res?.status;
@@ -99,8 +106,15 @@ export class FundReleaseComponent implements OnInit {
                         expanded: false,
                         status: item.status ?? '',
                     }));
-                    this.fundRelease = projects.filter((proj) => proj.status == 'Fund Release');
-                    this.closingGrant = projects.filter((proj) => proj.status == 'Completed');
+                    this.fundRelease = projects.filter(
+                        (proj) => proj.status === AVAILABLE_PROJECT_STATUS_OBJ.fundRelease
+                    );
+                    this.closingGrant = projects.filter(
+                        (proj) => proj.status === AVAILABLE_PROJECT_STATUS_OBJ.completed
+                    );
+                    this.setSummaryProjectList(data ?? []);
+                } else {
+                    this.setSummaryProjectListLoading(false);
                 }
                 this.loading = false;
             },
@@ -111,6 +125,7 @@ export class FundReleaseComponent implements OnInit {
                     'ERROR!'
                 );
                 this.loading = false;
+                this.setSummaryProjectListLoading(false);
             },
         });
     }
@@ -162,5 +177,21 @@ export class FundReleaseComponent implements OnInit {
     setSearchQuery(searchQuery: SearchQuery) {
         this.searchQuery = searchQuery;
         this.fetch();
+    }
+
+    setSummaryProjectList(data: Project[]) {
+        const fundRelease = data.filter((proj) => proj.status === AVAILABLE_PROJECT_STATUS_OBJ.fundRelease);
+        const closingGrant = data.filter((proj) => proj.status === AVAILABLE_PROJECT_STATUS_OBJ.completed);
+        const projList = [...fundRelease, ...closingGrant] ?? [];
+        this.summaryService.currentProjectList.next({
+            projects: projList,
+            loading: false,
+        });
+    }
+
+    setSummaryProjectListLoading(loading: boolean) {
+        this.summaryService.currentProjectList.next({
+            loading,
+        });
     }
 }

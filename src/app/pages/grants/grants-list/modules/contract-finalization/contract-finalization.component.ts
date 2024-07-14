@@ -1,12 +1,11 @@
-import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgbdSortableHeaderDirective, SortEvent } from 'src/app/directives/ngbd-sortable-header.directive';
-import { Application } from 'src/app/interfaces/_application.interface';
 import { Project } from 'src/app/interfaces/_project.interface';
-import { ApplicationService } from 'src/app/services/application.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
-import { getOtherCurrencyKey } from 'src/app/utilities/constants';
+import { AVAILABLE_PROJECT_STATUS_OBJ, getOtherCurrencyKey } from 'src/app/utilities/constants';
+import { SummaryService } from '../summary/summary.service';
 
 interface Grant {
     pk: number;
@@ -44,7 +43,11 @@ export class ContractFinalizationComponent implements OnInit {
     page: number = 1;
     @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective<Grant>>;
 
-    constructor(private projectService: ProjectService, private toastr: ToastrService) {}
+    constructor(
+        private projectService: ProjectService,
+        private toastr: ToastrService,
+        private summaryService: SummaryService
+    ) {}
 
     ngOnInit() {
         this.fetch();
@@ -52,6 +55,10 @@ export class ContractFinalizationComponent implements OnInit {
 
     fetch() {
         this.loading = true;
+        this.summaryService.currentProjectList.next({
+            projects: [],
+            loading: true,
+        });
         const filters = {
             donors: this.donors,
         };
@@ -59,7 +66,6 @@ export class ContractFinalizationComponent implements OnInit {
             next: (res: any) => {
                 const status = res?.status;
                 const data = (res?.data ?? []) as Project[];
-
                 if (status) {
                     const projects: Grant[] = data?.map((item) => ({
                         pk: item?.pk as number,
@@ -74,9 +80,18 @@ export class ContractFinalizationComponent implements OnInit {
                         donorProject: '',
                         status: item?.status ?? '',
                     }));
-                    this.contractPreparation = projects.filter((proj) => proj.status == 'Contract Preparation');
-                    this.finalApproval = projects.filter((proj) => proj.status == 'Final Approval');
-                    this.partnerSigning = projects.filter((proj) => proj.status == 'Partner Signing');
+                    this.contractPreparation = projects.filter(
+                        (proj) => proj.status === AVAILABLE_PROJECT_STATUS_OBJ.contractPreparation
+                    );
+                    this.finalApproval = projects.filter(
+                        (proj) => proj.status === AVAILABLE_PROJECT_STATUS_OBJ.finalApproval
+                    );
+                    this.partnerSigning = projects.filter(
+                        (proj) => proj.status === AVAILABLE_PROJECT_STATUS_OBJ.partnerSigning
+                    );
+                    this.setSummaryProjectList(data ?? []);
+                } else {
+                    this.setSummaryProjectListLoading(false);
                 }
                 this.loading = false;
             },
@@ -87,6 +102,7 @@ export class ContractFinalizationComponent implements OnInit {
                     'ERROR!'
                 );
                 this.loading = false;
+                this.setSummaryProjectListLoading(false);
             },
         });
     }
@@ -112,6 +128,27 @@ export class ContractFinalizationComponent implements OnInit {
 
     handlePageChange($event: number) {
         this.page = $event;
+    }
+
+    setSummaryProjectList(data: Project[]) {
+        const contractPreparation = [...data]?.filter(
+            (proj) => proj?.status === AVAILABLE_PROJECT_STATUS_OBJ.contractPreparation
+        );
+        const finalApproval = [...data]?.filter((proj) => proj?.status === AVAILABLE_PROJECT_STATUS_OBJ.finalApproval);
+        const partnerSigning = [...data]?.filter(
+            (proj) => proj?.status === AVAILABLE_PROJECT_STATUS_OBJ.partnerSigning
+        );
+        const contractFinalizationProjList = [...contractPreparation, ...finalApproval, ...partnerSigning] ?? [];
+        this.summaryService.currentProjectList.next({
+            projects: contractFinalizationProjList,
+            loading: false,
+        });
+    }
+
+    setSummaryProjectListLoading(loading: boolean) {
+        this.summaryService.currentProjectList.next({
+            loading,
+        });
     }
 
     setDonors(donors: number[]) {

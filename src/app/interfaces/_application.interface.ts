@@ -228,14 +228,13 @@ export interface ProjectBeneficiary {
 }
 
 export interface ProjectLocation {
+    country?: Country
     pk?: number;
     project_pk?: number;
     country_pk?: number;
     province_code?: number;
     date_created?: Date;
 }
-
-
 
 export interface OperatedFor {
     cultural?: boolean;
