@@ -14,6 +14,13 @@ interface PartnerList extends Partner {
     applications?: Application[];
 }
 
+type CountryMapperObj = {
+    pk: number;
+    code: string;
+    name: string;
+    count: number;
+};
+
 interface SummaryChart {
     label: string;
     data: number;
@@ -382,8 +389,6 @@ export class SummaryComponent implements OnInit {
         });
     }
 
-    fetchPartners() {}
-
     processGrantsApproved(projects: Project[]) {
         const approvedGrants = projects?.filter((proj) => proj.closing_status === GRANT_CLOSING_STATUS.completed);
         this.totalGrantsApproved = approvedGrants?.reduce((total, acc) => {
@@ -450,7 +455,7 @@ export class SummaryComponent implements OnInit {
     }
 
     getCountGrantsPerCountry(projects: Project[]) {
-        const countGrantsPerCountry: Record<string, any> = {};
+        const countGrantsPerCountry: Record<string, CountryMapperObj> = {};
         projects?.forEach((proj) => {
             const projectLoc = proj?.project_location ?? [];
             projectLoc?.forEach((loc) => {
@@ -459,8 +464,8 @@ export class SummaryComponent implements OnInit {
                     if (!countGrantsPerCountry[countryPk]) {
                         countGrantsPerCountry[countryPk] = {
                             pk: countryPk,
-                            code: loc?.country?.code,
-                            name: loc?.country?.name,
+                            code: loc?.country?.code ?? '',
+                            name: loc?.country?.name ?? '',
                             count: 1,
                         };
                     } else {
@@ -472,7 +477,7 @@ export class SummaryComponent implements OnInit {
         return countGrantsPerCountry;
     }
 
-    setGrantsPerCountryChart(countGrantsPerCountry: Record<string, any>) {
+    setGrantsPerCountryChart(countGrantsPerCountry: Record<string, CountryMapperObj>) {
         this.totalGrantsPerCountry = this.transformTotalGrantsPerCountry(countGrantsPerCountry);
         this.summaryTotalGrantsPerCountry = Object.entries(countGrantsPerCountry).map(([key, item]) => {
             const value = item.count;
@@ -494,7 +499,7 @@ export class SummaryComponent implements OnInit {
     }
 
     getCountApprovedGrantsPerCountry(projects: Project[]) {
-        const countGrantsPerCountry: Record<string, any> = {};
+        const countGrantsPerCountry: Record<string, CountryMapperObj> = {};
         projects?.forEach((proj) => {
             const status = proj?.closing_status;
             const projectLoc = proj?.project_location ?? [];
@@ -505,8 +510,8 @@ export class SummaryComponent implements OnInit {
                         if (!countGrantsPerCountry[countryPk]) {
                             countGrantsPerCountry[countryPk] = {
                                 pk: countryPk,
-                                code: loc?.country?.code,
-                                name: loc?.country?.name,
+                                code: loc?.country?.code ?? '',
+                                name: loc?.country?.name ?? '',
                                 count: 1,
                             };
                         } else {
