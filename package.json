@@ -24,6 +24,7 @@
         "@popperjs/core": "^2.11.6",
         "@tinymce/tinymce-angular": "^8.0.0",
         "accordion": "^3.0.2",
+        "angular-google-charts": "^2.2.3",
         "bootstrap": "^5.3.0",
         "chart.js": "^4.4.2",
         "chartjs-plugin-datalabels": "^2.2.0",
