@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartType, Row } from 'angular-google-charts';
+import { ChartType, GoogleChartComponent, Row } from 'angular-google-charts';
 import { DateTime } from 'luxon';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from 'src/app/interfaces/_project.interface';
@@ -31,6 +31,7 @@ export class ReportLocationComponent implements OnInit {
     columns = ['Country', 'Grants'];
     options = {
         region: 'world',
+        legend: 'none',
         colorAxis: { colors: ['#0070C0', '#FFFF00', '#A65628'] },
         backgroundColor: 'white',
         datalessRegionColor: '#f8bbd0',
