@@ -98,20 +98,20 @@
                         </li>
                     </ul>
                 </li> -->
-                <li class="nav-item dropdown pe-2 d-flex align-items-center" *ngIf="user && user.documents.length > 0">
+                <li class="nav-item dropdown pe-2 d-flex align-items-center" *ngIf="user">
                     <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuProfile"
                         data-bs-toggle="dropdown" aria-expanded="false">
-
-                        <img src="{{url + '/' + user.documents.at(0).path}}" class="rounded-circle" height="30"
-                            alt="{{user?.first_name}}" loading="lazy" />
+                        <img src="{{url + '/' + (user && user.documents.length > 0 ? user.documents.at(0).path : 'assets/images/default-profile.png')}}"
+                            class="rounded-circle" height="30" alt="{{user?.first_name}}" loading="lazy" />
                         <!-- <span class="d-sm-inline d-none">{{ user.name }}</span> -->
                     </a>
                     <div class="card dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
                         style="width: 18rem; top: 0 !important;" aria-labelledby="dropdownMenuProfile">
 
                         <div class="card-body">
-                            <img src="{{url + '/' + user.documents.at(0).path}}" class="rounded-circle card-img-top"
-                                height="222" alt="{{user.first_name}}" loading="lazy" />
+                            <img src="{{url + '/' + (user && user.documents.length > 0 ? user.documents.at(0).path : 'assets/images/default-profile.png')}}"
+                                class="rounded-circle card-img-top" height="222" alt="{{user.first_name}}"
+                                loading="lazy" />
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
