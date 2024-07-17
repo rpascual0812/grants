@@ -14,7 +14,8 @@ import * as _ from '../../utilities/globals';
 })
 export class NavbarComponent implements OnInit {
     user: any;
-    url: String = _.BASE_URL;
+    api: String = _.BASE_URL;
+    url: string = '';
 
     sidebarService = inject(SidebarService);
     userSignalService = inject(UserSignalService);
@@ -30,6 +31,7 @@ export class NavbarComponent implements OnInit {
 
     ngOnInit(): void {
         this.fetch();
+        this.url = window.location.origin;
     }
 
     fetch() {
