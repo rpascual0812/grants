@@ -15,7 +15,7 @@
                             <th>Total</th>
                         </thead>
                         <tbody *ngFor="let filter of filters; let i = index">
-                            <tr>
+                            <tr *ngIf="statusesTotals[filter.name] ?? 0 > 0">
                                 <td style="white-space: wrap;">
                                     <div style="width: 250px; padding: 5px; border-radius: 12px; white-space: wrap;">
                                         {{filter.name}}
