@@ -46,7 +46,14 @@
                         </div>
                     </div>
                     <div class="table-container">
-                        <div class="d-flex justify-content-end mb-2">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span name="" id="" class="form-control"
+                                style="border: solid 1px #ccc; padding: 0 5px 0 5px; width: auto; height: 27px;">
+                                {{url + '/public/project/' + project?.pk + '/event/' + event.pk }}
+                                <a href="{{url + '/public/project/' + project?.pk + '/event/' + event.pk }}"
+                                    target="_blank"><i class="fa fa-external-link-alt"
+                                        style="margin-left: 10px; cursor: pointer;"></i></a>
+                            </span>
                             <button type="button" class="btn btn-sm btn-info" title="Add"
                                 (click)="$event.stopPropagation(); openModal(i, {})"
                                 *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">

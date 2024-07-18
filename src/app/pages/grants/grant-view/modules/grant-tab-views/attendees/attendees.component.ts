@@ -37,6 +37,8 @@ export class AttendeesComponent implements OnInit {
     restrictions: any = _.RESTRICTIONS;
     permission = _.PERMISSIONS;
 
+    url: string = '';
+
     constructor(
         private projectService: ProjectService,
         private modalService: BsModalService,
@@ -59,7 +61,7 @@ export class AttendeesComponent implements OnInit {
         this.project = this.grantSignalService.project();
         this.fetch();
 
-
+        this.url = window.location.origin;
     }
 
     handleIsOpenChange($event: boolean, idx: number) {
