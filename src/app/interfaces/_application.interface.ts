@@ -384,11 +384,13 @@ export interface Restriction {
 export interface Province {
     psgc_code?: string;
     region_code?: number;
+    region_name?: string;
     province_code?: number;
     name?: string;
     country_pk?: number;
     active?: boolean;
     user_pk?: number;
+    iso_code?: string;
     archived?: boolean;
 }
 

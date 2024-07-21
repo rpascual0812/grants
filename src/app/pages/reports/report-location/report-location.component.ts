@@ -1,10 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartType, GoogleChartComponent, Row } from 'angular-google-charts';
+import { ChartType, Row } from 'angular-google-charts';
 import { DateTime } from 'luxon';
 import { ToastrService } from 'ngx-toastr';
+import { Province } from 'src/app/interfaces/_application.interface';
 import { Project } from 'src/app/interfaces/_project.interface';
+import { GlobalService } from 'src/app/services/global.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
+
+type ProvinceObj = {
+    [key: string]: Province & {
+        count: number;
+    };
+};
+
+type GroupByRegion = {
+    [key: string]: {
+        regionName: string;
+        provinces: string[];
+        count: number;
+    };
+};
 
 type SelectItem = {
     pk?: number;
@@ -28,7 +44,7 @@ export class ReportLocationComponent implements OnInit {
     type = 'GeoChart' as ChartType;
     data: Row[] = [];
 
-    columns = ['Country', 'Grants'];
+    columns = ['Location', 'Grants'];
     options = {
         region: 'world',
         legend: 'none',
@@ -43,33 +59,44 @@ export class ReportLocationComponent implements OnInit {
     formattedDateFrom: string | string[];
     formattedDateTo: string | string[];
     countryPk: number | number[];
+    countryCode: string;
+    provinceObj: ProvinceObj = {};
 
     loading = true;
-    constructor(private projectService: ProjectService, private toastr: ToastrService) {}
+
+    constructor(
+        private globalService: GlobalService,
+        private projectService: ProjectService,
+        private toastr: ToastrService
+    ) {}
 
     ngOnInit() {
         this.fetch();
     }
 
     fetch() {
+        this.loading = true;
         const filters = {
             country_pk: this.countryPk ?? [],
             date_from: this.formattedDateFrom ?? [],
             date_to: this.formattedDateTo ?? [],
         };
-
-        this.loading = true;
         this.projectService.fetch(filters).subscribe({
             next: (res: any) => {
                 const status = res?.status;
                 const data = (res?.data ?? []) as Project[];
                 if (status) {
-                    this.setChartData(data);
-                    this.setChartOption(data);
+                    if (typeof this.countryPk === 'number') {
+                        this.countryCode = data?.at(0)?.project_location?.at(0)?.country?.code ?? '';
+                        this.fetchProvince(String(this.countryPk), data);
+                    } else {
+                        this.setWorldChart(data);
+                        this.loading = false;
+                    }
                 } else {
                     this.toastr.error(`An error occurred while fetching Projects. Please try again.`, 'ERROR!');
+                    this.loading = false;
                 }
-                this.loading = false;
             },
             error: (err) => {
                 const { statusCode, errorMessage } = extractErrorMessage(err);
@@ -80,6 +107,39 @@ export class ReportLocationComponent implements OnInit {
                 this.loading = false;
             },
         });
+    }
+
+    fetchProvince(countryPk: string, projects: Project[]) {
+        this.globalService.selectFetch(`province?country_pk=${countryPk}`).subscribe({
+            next: (res: any) => {
+                const status = res?.status;
+                const data = res?.data as Province[];
+                if (status) {
+                    if (data?.length > 0) {
+                        this.getProvinceObj(data);
+                        this.getCountGrantsPerProvinces(projects);
+                        this.setProvinceChart();
+                    } else {
+                        this.setWorldChart(projects);
+                    }
+                } else {
+                    this.toastr.error(`An error occurred while fetching Provinces. Please try again.`, 'ERROR!');
+                }
+                this.loading = false;
+            },
+            error: (err: any) => {
+                const { statusCode, errorMessage } = extractErrorMessage(err);
+                this.toastr.error(
+                    `An error occurred while fetching Provinces. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+                this.loading = false;
+            },
+        });
+    }
+
+    setChartColumn() {
+        this.columns = ['Location', 'Grants'];
     }
 
     setChartData(project: Project[]) {
@@ -97,7 +157,74 @@ export class ReportLocationComponent implements OnInit {
             this.options.region = code ?? 'world';
         } else {
             this.options.region = 'world';
+            (this.options as any).resolution = null;
         }
+    }
+
+    setWorldChart(Project: Project[]) {
+        this.setChartColumn();
+        this.setChartData(Project);
+        this.setChartOption(Project);
+    }
+
+    setChartOptionProvinces() {
+        this.options.region = this.countryCode;
+        (this.options as any).resolution = 'provinces';
+    }
+
+    setChartColumnProvinces() {
+        this.columns = ['ID', 'Region Name', 'Grants'];
+    }
+
+    setChartDataProvinces() {
+        let tempData: Row[] = [];
+        const groupByRegion: GroupByRegion = this.getGroupByRegion();
+        Object.entries(groupByRegion).forEach(([key, item]) => {
+            const count = item?.count;
+            const regionName = item?.regionName;
+            tempData.push([key, regionName, count]);
+        });
+        this.data = tempData;
+    }
+
+    getGroupByRegion() {
+        const groupByRegion: GroupByRegion = {};
+        Object.entries(this.provinceObj).forEach(([key, item]) => {
+            const isoRegion = (item as any)?.iso_code;
+            const count = (item as any)?.count;
+            const regionName = (item as any)?.region_name;
+            const province = (item as any)?.name;
+            if (!groupByRegion[isoRegion]) {
+                groupByRegion[isoRegion] = {
+                    regionName,
+                    provinces: [province],
+                    count,
+                };
+            } else {
+                groupByRegion[isoRegion].provinces = [...(groupByRegion[isoRegion]?.provinces ?? []), province];
+                groupByRegion[isoRegion].count += count;
+            }
+        });
+        return groupByRegion;
+    }
+
+    setProvinceChart() {
+        this.setChartColumnProvinces();
+        this.setChartOptionProvinces();
+        this.setChartDataProvinces();
+    }
+
+    getProvinceObj(provinces: Province[]) {
+        this.provinceObj = {};
+        provinces?.forEach((province) => {
+            const provinceCodeKey = province?.province_code ?? 'unknown-province';
+            if (!this.provinceObj[provinceCodeKey]) {
+                this.provinceObj[provinceCodeKey] = {
+                    ...province,
+                    count: 0,
+                };
+            }
+        });
     }
 
     getCountGrantsPerCountry(projects: Project[]) {
@@ -121,6 +248,18 @@ export class ReportLocationComponent implements OnInit {
             });
         });
         return countGrantsPerCountry;
+    }
+
+    getCountGrantsPerProvinces(projects: Project[]) {
+        projects?.forEach((proj) => {
+            const projectLoc = proj?.project_location ?? [];
+            projectLoc?.forEach((loc) => {
+                const provinceCodeKey = loc?.province_code ?? '';
+                if (this.provinceObj[provinceCodeKey]) {
+                    this.provinceObj[provinceCodeKey].count += 1;
+                }
+            });
+        });
     }
 
     handleOnApply() {
