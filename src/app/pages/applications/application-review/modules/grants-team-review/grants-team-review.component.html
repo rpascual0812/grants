@@ -34,9 +34,11 @@
                                 <span *ngIf="review.needs_resolution">Needs Resolution</span>
                                 <span class="mx-2" *ngIf="review.needs_resolution && review.grantee">|</span>
                                 <span *ngIf="review.grantee">Grantee</span>
-                                <span class="badge text-bg-danger text-white mx-2" *ngIf="review.needs_resolution && !review.resolved">Not Yet
+                                <span class="badge text-bg-danger text-white mx-2"
+                                    *ngIf="review.needs_resolution && !review.resolved">Not Yet
                                     Started</span>
-                                <span class="badge text-bg-success text-white mx-2" *ngIf="review.needs_resolution && review.resolved">Marked as
+                                <span class="badge text-bg-success text-white mx-2"
+                                    *ngIf="review.needs_resolution && review.resolved">Marked as
                                     Resolved</span>
                             </p>
                             <button class="btn btn-icon-only btn-danger rounded-circle" (click)="delete(i)"
@@ -61,8 +63,7 @@
 
                         <div class="row mt-3 mb-3" *ngIf="permission.grant_application != 'restricted'">
                             <div class="md-12" *ngFor="let attachment of review.documents; let j = index">
-                                <a href="{{SERVER + '/' + attachment.path}}"
-                                    target="_blank">{{attachment.original_name}}</a> <a
+                                <a href="{{ attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
                                     (click)="deleteAttachment(i, j, 'grants_team_review')"
                                     *ngIf="['comments', 'recommendation'].includes(permission.grant_application)"><i
                                         class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
@@ -112,8 +113,7 @@
 
                         <div class="row mt-3 mb-3">
                             <div class="md-12" *ngFor="let attachment of attachments; let i = index">
-                                <a href="{{SERVER + '/' + attachment.path}}"
-                                    target="_blank">{{attachment.original_name}}</a> <a
+                                <a href="{{ attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
                                     (click)="attachments.splice(i, 1)"><i
                                         class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                             </div>

@@ -85,8 +85,7 @@
                                     <i class="material-icons">attach_file</i>
                                 </span>
 
-                                <a href="{{SERVER + '/' + attachment.path}}"
-                                    target="_blank">{{attachment.original_name}}</a> <a
+                                <a href="{{ attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
                                     (click)="deleteAttachment(i, 'non_profit_equivalency_legal_registration')"><i
                                         class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                             </p>

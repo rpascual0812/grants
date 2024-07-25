@@ -69,8 +69,8 @@
                                         <app-select url="roles" [multiple]="true" [itemsShowLimit]="3"
                                             (onSelectEvent)="roleUpdate($event, i)"
                                             (onDeSelectEvent)="roleUpdate($event, i)"
-                                            [defaultSelectedItemKeyArr]="user.roles"
-                                            placeholder="Please select"></app-select>
+                                            [defaultSelectedItemKeyArr]="user.roles" placeholder="Please select"
+                                            [disabled]="true"></app-select>
                                     </td>
                                     <td class="w-20 opacity-7">
                                         <div class="ms-auto text-end">

@@ -13,8 +13,7 @@
                         <div>
                             <label class="image-checkbox" [class]="document.selected ? 'image-checkbox-checked' : ''"
                                 *ngFor="let document of documents| paginate : { id: 'photos', itemsPerPage: paginationPhotos.tableSize, currentPage: paginationPhotos.page, totalItems: paginationPhotos.count }; let i = index">
-                                <img src="{{url}}/{{document.path}}" (click)="toggleDocument(i)"
-                                    (error)="onImgError($event)" />
+                                <img src="{{document.path}}" (click)="toggleDocument(i)" (error)="onImgError($event)" />
                                 <i class="fa fa-times" (click)="toggleDocument(i)" style="margin-right: 3px;"></i>
                                 <i class="fa fa-eye" (click)="view(i)" style="margin-top: 20px;"></i>
                                 <i class="fa fa-trash" (click)="delete(i)"

@@ -44,7 +44,7 @@
 
                 <div class="row mt-3 mb-3">
                     <div class="md-12" *ngFor="let attachment of review.documents; let j = index">
-                        <a href="{{SERVER + '/' + attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
+                        <a href="{{ attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
                             (click)="deleteAttachment(i, j, 'advisers_review')"
                             *ngIf="['comments', 'recommendation'].includes(permission.fund_release)"><i
                                 class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
@@ -54,7 +54,7 @@
         </div>
     </div>
 
-    <div class="card" *ngIf="['comments', 'recommendation'].includes(permission.fund_release)">
+    <div class="card" *ngIf="['edit', 'comments', 'recommendation'].includes(permission.fund_release)">
         <div class="card-body bg-gray-300">
             <div class="card my-3">
                 <div class="card-header p-3" style="background-color: #034241">
@@ -75,8 +75,7 @@
 
                         <div class="row mt-3 mb-3">
                             <div class="md-12" *ngFor="let attachment of attachments; let i = index">
-                                <a href="{{SERVER + '/' + attachment.path}}"
-                                    target="_blank">{{attachment.original_name}}</a> <a
+                                <a href="{{ attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
                                     (click)="attachments.splice(i, 1)"><i
                                         class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                             </div>
@@ -106,7 +105,7 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-end" *ngIf="['recommendation'].includes(permission.fund_release)">
+    <div class="d-flex justify-content-end" *ngIf="['edit', 'recommendation'].includes(permission.fund_release)">
         <div>
             <h4 class="text-dark">Recommendation</h4>
             <ng-select style="--border-color: #f98f38" class="custom-recommendation-select"
