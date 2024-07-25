@@ -94,7 +94,7 @@
                             <p class="m-0 p-0" style="text-decoration: underline; font-weight: 800;">attached bank
                                 receipt</p>
                             <p class="text-secondary m-0 p-0">
-                                <a href="{{SERVER + '/' + funding?.bank_receipt_document?.path}}"
+                                <a href="{{ funding?.bank_receipt_document?.path}}"
                                     target="_blank">{{funding?.bank_receipt_document?.original_name}}</a>
                             </p>
                         </div>
@@ -132,7 +132,7 @@
                     </div>
                     <div class="row p-3 align-items-center" *ngFor="let subItem of item.value">
                         <div class="col-12 col-md-3">
-                            <a style="text-decoration: underline" href="{{SERVER + '/' + subItem?.document?.path}}">
+                            <a style="text-decoration: underline" href="{{ subItem?.document?.path}}">
                                 {{subItem?.document?.original_name}}
                             </a>
                         </div>
@@ -193,7 +193,7 @@
                                     let attachment of liquidation?.documents;
                                     let k = index
                                 ">
-                                <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
+                                <a href="{{  attachment.path }}" target="_blank">{{
                                     attachment.original_name
                                     }}</a>
                                 <a (click)="deleteAttachment(i, j, k)"

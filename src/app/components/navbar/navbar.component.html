@@ -101,7 +101,7 @@
                 <li class="nav-item dropdown pe-2 d-flex align-items-center" *ngIf="user">
                     <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuProfile"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{(user && user.documents.length > 0 ? api + '/' +user.documents.at(0).path : url + '/' + 'assets/images/default-profile.png')}}"
+                        <img src="{{(user && user.documents.length > 0 ? user.documents.at(0).path : url + '/' + 'assets/images/default-profile.png')}}"
                             class="rounded-circle" height="30" alt="{{user?.first_name}}" loading="lazy" />
                         <!-- <span class="d-sm-inline d-none">{{ user.name }}</span> -->
                     </a>
@@ -109,7 +109,7 @@
                         style="width: 18rem; top: 0 !important;" aria-labelledby="dropdownMenuProfile">
 
                         <div class="card-body">
-                            <img src="{{(user && user.documents.length > 0 ? api + '/' +user.documents.at(0).path : url + '/' + 'assets/images/default-profile.png')}}"
+                            <img src="{{(user && user.documents.length > 0 ? user.documents.at(0).path : url + '/' + 'assets/images/default-profile.png')}}"
                                 class="rounded-circle card-img-top" height="222" alt="{{user.first_name}}"
                                 loading="lazy" />
                         </div>

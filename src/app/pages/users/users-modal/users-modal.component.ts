@@ -34,7 +34,6 @@ export class UsersModalComponent {
     provinces: any = [];
     cities: any = [];
     areas: any = [];
-    url: String = _.BASE_URL;
     filters: any = {};
     profilePicture: String = _.BASE_URL + '/assets/images/user.png';
 
@@ -71,8 +70,7 @@ export class UsersModalComponent {
     }
 
     setForm() {
-        this.profilePicture = this.user && this.user.documents.length > 0 ? this.url + '/' + this.user.documents[0].path : './assets/images/default-profile.png';
-
+        this.profilePicture = this.user && this.user.documents.length > 0 ? this.user.documents[0].path : './assets/images/default-profile.png';
         this.user = this.user ? this.user : {
             user_role: []
         };
@@ -172,7 +170,7 @@ export class UsersModalComponent {
 
         this.documentUploaderRef.content.document.subscribe((res: any) => {
             this.user.user_document = res.file;
-            this.profilePicture = this.url + '/' + this.user.user_document.path;
+            this.profilePicture = this.user.user_document.path;
 
             this.cdr.detectChanges();
         });

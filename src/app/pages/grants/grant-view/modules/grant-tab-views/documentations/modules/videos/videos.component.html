@@ -16,7 +16,7 @@
                                 [class]="document.selected ? 'image-checkbox-checked' : ''"
                                 *ngFor="let document of documents| paginate : { id: 'videos', itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.count }; let i = index">
                                 <video width="200" height="148" controls (click)="toggleDocument(i)">
-                                    <source src="{{url}}/{{document.path}}" type="video/mp4">
+                                    <source src="{{document.path}}" type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
 
