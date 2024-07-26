@@ -8,7 +8,7 @@ import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage, getDurationOpts } from 'src/app/utilities/application.utils';
 import { OnHiddenData } from '../../../grant-view.component';
 import { OTHER_CURRENCY_LIST, USD_CURRENCY } from 'src/app/utilities/constants';
-import { InputDropdownValue } from 'src/app/pages/applications/application-new/modules/input-dropdown/input-dropdown.component';
+import { InputDropdownValue } from 'src/app/components/input-dropdown/input-dropdown.component';
 import * as _ from '../../../../../../utilities/globals';
 import { Application, Document, Partner } from 'src/app/interfaces/_application.interface';
 import { FileUploaderComponent } from 'src/app/components/file-uploader/file-uploader.component';

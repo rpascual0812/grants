@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OTHER_CURRENCY_LIST } from '../../../../../utilities/constants';
-import { InputDropdownValue } from '../input-dropdown/input-dropdown.component';
+import { InputDropdownValue } from '../../../../../components/input-dropdown/input-dropdown.component';
 import { ToastrService } from 'ngx-toastr';
 import { ApplicationService } from 'src/app/services/application.service';
 

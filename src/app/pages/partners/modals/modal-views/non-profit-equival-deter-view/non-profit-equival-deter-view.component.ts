@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import { InputDropdownValue } from 'src/app/pages/applications/application-new/modules/input-dropdown/input-dropdown.component';
+import { InputDropdownValue } from 'src/app/components/input-dropdown/input-dropdown.component';
 import { ApplicationService } from 'src/app/services/application.service';
 import { PartnerForm } from 'src/app/services/partner.signal.service';
 import { OTHER_CURRENCY_LIST } from 'src/app/utilities/constants';

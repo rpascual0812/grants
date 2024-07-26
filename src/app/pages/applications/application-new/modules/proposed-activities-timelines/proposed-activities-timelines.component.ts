@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { InputDropdownValue } from '../input-dropdown/input-dropdown.component';
+import { InputDropdownValue } from '../../../../../components/input-dropdown/input-dropdown.component';
 import { OTHER_CURRENCY_LIST, USD_CURRENCY } from '../../../../../utilities/constants';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ToastrService } from 'ngx-toastr';

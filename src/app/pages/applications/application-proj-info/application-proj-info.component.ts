@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { getDurationOpts } from 'src/app/utilities/application.utils';
 import { OTHER_CURRENCY_LIST, PROVINCE_URL_FETCH_STATUS, USD_CURRENCY } from '../../../utilities/constants';
-import { InputDropdownValue } from '../application-new/modules/input-dropdown/input-dropdown.component';
+import { InputDropdownValue } from '../../../components/input-dropdown/input-dropdown.component';
 import { ApplicationRead } from 'src/app/interfaces/application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ActivatedRoute } from '@angular/router';
