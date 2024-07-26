@@ -9,7 +9,7 @@ import { OrgProfileViewComponent } from './modals/modal-views/org-profile-view/o
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectModule } from 'src/app/components/select/select.module';
 import { NonProfitEquivalDeterViewComponent } from './modals/modal-views/non-profit-equival-deter-view/non-profit-equival-deter-view.component';
-import { InputDropdownModule } from '../applications/application-new/modules/input-dropdown/input-dropdown.module';
+import { InputDropdownModule } from '../../components/input-dropdown/input-dropdown.module';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AssessmentComponent } from './modals/modal-views/assessment/assessment.component';
 import { OrgBankAccountComponent } from './modals/modal-views/org-bank-account-view/org-bank-account.component';

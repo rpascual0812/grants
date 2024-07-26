@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectFunding, ProjectFundingLiquidation } from 'src/app/interfaces/_project.interface';
-import { InputDropdownValue } from 'src/app/pages/applications/application-new/modules/input-dropdown/input-dropdown.component';
+import { InputDropdownValue } from 'src/app/components/input-dropdown/input-dropdown.component';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { OTHER_CURRENCY_LIST, getOtherCurrencyKey } from 'src/app/utilities/constants';

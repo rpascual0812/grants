@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from 'src/app/interfaces/_project.interface';
-import { InputDropdownValue } from 'src/app/pages/applications/application-new/modules/input-dropdown/input-dropdown.component';
+import { InputDropdownValue } from 'src/app/components/input-dropdown/input-dropdown.component';
 import { ApplicationService } from 'src/app/services/application.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { OTHER_CURRENCY_LIST, USD_CURRENCY } from 'src/app/utilities/constants';
