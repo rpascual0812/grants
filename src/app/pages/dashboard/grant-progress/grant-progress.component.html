@@ -1,93 +1,84 @@
-<div class="my-3">
-    <div class="card my-3">
-        <div class="card-header bg-dark-blue">
+<div class="my-1">
+    <div class="card">
+        <div class="card-header bg-dark-blue p-2">
             <div class="d-flex flex-wrap flex-row justify-content-between">
-                <h6 class="text-white">Grant Progress</h6>
+                <h6 class="text-white px-2">Grant Progress</h6>
             </div>
         </div>
-        <div class="card-body py-2">
-            <div class="row p-2">
+        <div class="card-body">
+            <div class="row p-1">
                 <div class="row">
-                    <div class="row mt-5" style="border-left: 36px solid #fff;">
-                        <div class="col-md">
-                            Partner ID
-                        </div>
-                        <div class="col-md">
-                            Grantee
-                        </div>
-                        <div class="col-md">
-                            Grant Amount
-                        </div>
-                        <div class="col-md">
-                            Start Date
-                        </div>
-                        <div class="col-md">
-                            End Date
-                        </div>
-                        <div class="col-md">
-                            Contract Issued
-                        </div>
-                        <div class="col-md">
-                            Project Extension
-                        </div>
-                        <div class="col-md">
-                            Date Received
-                        </div>
-                        <div class="col-md-2">
-                            Status
-                        </div>
+                    <div class="row mx-1">
+                        <div class="col-md">Partner ID</div>
+                        <div class="col-md">Grantee</div>
+                        <div class="col-md">Grant Amount</div>
+                        <div class="col-md">Start Date</div>
+                        <div class="col-md">End Date</div>
+                        <div class="col-md">Contract Issued</div>
+                        <div class="col-md">Project Extension</div>
+                        <div class="col-md">Date Received</div>
+                        <div class="col-md-2">Status</div>
                     </div>
                     <accordion [isAnimated]="true">
-                        <accordion-group (isOpenChange)="handleIsOpenChange($event, grant.pk)" [class]="
-                                                    currentExpanded.has(grant.pk)
-                                                        ? 'custom-accordion-expanded w-100'
-                                                        : 'custom-accordion-collapsed w-100'
-                                                " class="my-3" *ngFor="let grant of grants; let i = index">
+                        <accordion-group
+                            (isOpenChange)="handleIsOpenChange($event, grant.pk)"
+                            [class]="
+                                currentExpanded.has(grant.pk)
+                                    ? 'custom-accordion-expanded w-100'
+                                    : 'custom-accordion-collapsed w-100'
+                            "
+                            class="my-3"
+                            *ngFor="let grant of grants; let i = index"
+                        >
                             <div class="row" accordion-heading>
                                 <div class="col-md">
                                     <p class="text-dark text-sm font-weight-bold m-0 p-0">
-                                        {{grant?.partner.partner_id}}</p>
-                                </div>
-                                <div class="col-md">
-                                    <p class="text-dark text-sm font-weight-bold m-0 p-0">
-                                        {{grant?.partner.name}}</p>
-                                </div>
-                                <div class="col-md">
-                                    <p class="text-dark text-sm font-weight-bold m-0 p-0">
-                                        {{grant?.project_proposal?.budget_request_usd | currency}}</p>
-                                </div>
-                                <div class="col-md">
-                                    <p class="text-dark text-sm font-weight-bold m-0 p-0">
-                                        {{grant?.date_created | date}}</p>
-                                </div>
-                                <div class="col-md">
-                                    <p class="text-dark text-sm font-weight-bold m-0 p-0">
-                                        {{grant?.date_end | date}}</p>
-                                </div>
-                                <div class="col-md">
-                                    <p class="text-dark text-sm font-weight-bold m-0 p-0">
+                                        {{ grant?.partner.partner_id }}
                                     </p>
                                 </div>
                                 <div class="col-md">
                                     <p class="text-dark text-sm font-weight-bold m-0 p-0">
+                                        {{ grant?.partner.name }}
                                     </p>
                                 </div>
                                 <div class="col-md">
                                     <p class="text-dark text-sm font-weight-bold m-0 p-0">
-                                        {{grant?.application?.date_submitted | date}}</p>
+                                        {{ grant?.project_proposal?.budget_request_usd | currency }}
+                                    </p>
+                                </div>
+                                <div class="col-md">
+                                    <p class="text-dark text-sm font-weight-bold m-0 p-0">
+                                        {{ grant?.date_created | date }}
+                                    </p>
+                                </div>
+                                <div class="col-md">
+                                    <p class="text-dark text-sm font-weight-bold m-0 p-0">
+                                        {{ grant?.date_end | date }}
+                                    </p>
+                                </div>
+                                <div class="col-md">
+                                    <p class="text-dark text-sm font-weight-bold m-0 p-0"></p>
+                                </div>
+                                <div class="col-md">
+                                    <p class="text-dark text-sm font-weight-bold m-0 p-0"></p>
+                                </div>
+                                <div class="col-md">
+                                    <p class="text-dark text-sm font-weight-bold m-0 p-0">
+                                        {{ grant?.application?.date_submitted | date }}
+                                    </p>
                                 </div>
                                 <div class="col-md-2">
                                     <select
                                         class="form-select px-3 border border-2 ronded-1 text-secondary text-md font-weight-bold"
                                         [(ngModel)]="grant.overall_grant_status"
-                                        (change)="setOverallStatus($event, grant); $event.stopPropagation()">
+                                        (change)="setOverallStatus($event, grant); $event.stopPropagation()"
+                                    >
                                         <option value="">--</option>
                                         <option value="Under Review">Under Review</option>
                                         <option value="Approved">Approved</option>
                                         <option value="For Follow Up">For Follow Up</option>
                                     </select>
                                 </div>
-
                             </div>
 
                             <app-grant-information [project]="grant"></app-grant-information>
@@ -96,7 +87,6 @@
                             <app-grant-assessment [project]="grant"></app-grant-assessment>
                         </accordion-group>
                     </accordion>
-
                 </div>
             </div>
         </div>

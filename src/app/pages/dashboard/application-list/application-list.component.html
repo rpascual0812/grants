@@ -1,8 +1,8 @@
-<div class="my-3">
+<div class="my-1">
     <div class="card">
-        <div class="card-header bg-dark-blue">
+        <div class="card-header bg-dark-blue p-2">
             <div class="d-flex flex-wrap flex-row justify-content-between">
-                <h6 class="text-white">Application</h6>
+                <h6 class="text-white px-2">Application</h6>
             </div>
         </div>
 
@@ -10,8 +10,8 @@
             <div class="row p-2">
                 <div class="d-flex flex-row flex-wrap gap-3">
                     <div *ngFor="let item of applications; let i = index" class="w-md-30 w-100">
-                        <div class="card-header" [style.background]="item.headerBg">
-                            <h4 class="text-white text-md">{{ item.title }}</h4>
+                        <div class="card-header p-2" [style.background]="item.headerBg">
+                            <h6 class="text-white text-md px-2">{{ item.title }}</h6>
                         </div>
                         <div class="card-body p-0 m-0">
                             <div *ngIf="item?.dataLimited?.length === 0" class="row mx-0 my-2 p-0 bg-warning">
