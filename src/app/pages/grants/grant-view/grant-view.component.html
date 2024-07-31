@@ -11,7 +11,7 @@
         </div>
 
         <ng-container *ngIf="!loading">
-            <div class="my-5">
+            <div class="my-1">
                 <div class="d-flex justify-content-between flex-wrap">
                     <div>
                         <h5 class="text-secondary">Project</h5>
@@ -162,7 +162,7 @@
                 </div>
             </div>
 
-            <div class="my-5">
+            <div class="my-1">
                 <accordion [isAnimated]="true">
                     <accordion-group (isOpenChange)="handleIsOpenChange($event, 'assessment')" [panelClass]="
                             currentExpanded.has('assessment')
