@@ -10,7 +10,7 @@ $padding: 0.5rem;
     margin-top: $marginTop;
     .panel-heading {
         background-color: #fff;
-        padding: $padding;
+        padding: $padding !important;
     }
 }
 
@@ -21,6 +21,6 @@ $padding: 0.5rem;
     margin-top: $marginTop;
     .panel-heading {
         background-color: #dedede;
-        padding: $padding;
+        padding: $padding !important;
     }
 }

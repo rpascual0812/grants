@@ -16,7 +16,7 @@
             </div>
             <h4 class="text-dark">Information</h4>
 
-            <div class="my-5">
+            <div class="my-1">
                 <accordion [isAnimated]="true">
                     <accordion-group
                         [isOpen]="currentExpanded.has('partnerInformation')"
@@ -26,7 +26,7 @@
                                 ? 'custom-accordion-expanded w-100'
                                 : 'custom-accordion-collapsed w-100'
                         "
-                        class="my-3"
+                        class="my-1"
                     >
                         <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                             <div class="pull-left float-left">
@@ -128,9 +128,6 @@
 
                             <div class="pull-right float-right">
                                 <div class="d-flex flex flex-row">
-                                    <!-- <button class="btn btn-icon-only" (click)="handleOnEdit($event, 'assessment')">
-                                        <i class="material-icons">edit</i>
-                                    </button> -->
                                     <button class="btn btn-icon-only">
                                         <i class="material-icons">{{
                                             currentExpanded.has('assessment') ? 'expand_less' : 'expand_more'
