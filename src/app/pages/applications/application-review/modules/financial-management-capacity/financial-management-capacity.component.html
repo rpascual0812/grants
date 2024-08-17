@@ -1,10 +1,14 @@
-<div class="my-5">
+<div class="my-3">
     <div class="title d-flex flex-row gap-2 align-items-center">
         <h5 class="text-dark">Financial Management Capacity</h5>
         <div class="vr"></div>
         <h5 class="text-dark text-light">Comments</h5>
-        <button class="btn btn-info p-1 text-capitalize" style="background-color: #034241" (click)="export()"
-            *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+        <button
+            class="btn btn-info p-1 text-capitalize"
+            style="background-color: #034241"
+            (click)="export()"
+            *ngIf="['comments', 'recommendation'].includes(permission.grant_application)"
+        >
             <i class="material-icons">download</i>
             Download comments
         </button>
@@ -21,24 +25,34 @@
     </div>
 
     <div class="card my-3" *ngFor="let review of reviews; let i = index">
-        <div class="card-header p-3" style="background-color: #034241">
+        <div class="card-header p-2" style="background-color: #034241">
             <div class="d-flex flex-column flex-md-row text-white justify-content-between align-items-md-center">
-                <p class="m-0">{{ review.date_created | date : 'dd-MMM-YYYY' }} - {{ review.user.first_name }}
-                    {{ review.user.last_name
-                    }}</p>
+                <p class="m-0">
+                    {{ review.date_created | date : 'dd-MMM-YYYY' }} - {{ review.user.first_name }}
+                    {{ review.user.last_name }}
+                </p>
                 <div class="d-flex flex-column flex-md-row gap-1 align-items-md-center">
                     <p class="m-0">
                         <span *ngIf="review.needs_resolution || review.grantee">Flag: </span>
                         <span *ngIf="review.needs_resolution">Needs Resolution</span>
                         <span class="mx-2" *ngIf="review.needs_resolution && review.grantee">|</span>
                         <span *ngIf="review.grantee">Grantee</span>
-                        <span class="badge text-bg-danger text-white mx-2" *ngIf="review.needs_resolution && !review.resolved">Not Yet
-                            Started</span>
-                        <span class="badge text-bg-success text-white mx-2" *ngIf="review.needs_resolution && review.resolved">Marked as
-                            Resolved</span>
+                        <span
+                            class="badge text-bg-danger text-white mx-2"
+                            *ngIf="review.needs_resolution && !review.resolved"
+                            >Not Yet Started</span
+                        >
+                        <span
+                            class="badge text-bg-success text-white mx-2"
+                            *ngIf="review.needs_resolution && review.resolved"
+                            >Marked as Resolved</span
+                        >
                     </p>
-                    <button class="btn btn-icon-only btn-danger rounded-circle" (click)="delete(i)"
-                        *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
+                    <button
+                        class="btn btn-icon-only btn-danger rounded-circle"
+                        (click)="delete(i)"
+                        *ngIf="['comments', 'recommendation'].includes(permission.grant_application)"
+                    >
                         <span class="position-relative bottom-10 end-10">
                             <i class="material-icons">delete</i>
                         </span>
@@ -50,7 +64,7 @@
             <div class="content">
                 <div [class]="permission.grant_application == 'restricted' ? 'blur' : ''">
                     <p>
-                        {{review.message}}
+                        {{ review.message }}
                     </p>
                 </div>
                 <div class="restricted" *ngIf="permission.grant_application == 'restricted'">
@@ -59,17 +73,25 @@
 
                 <div class="row mt-3 mb-3" *ngIf="permission.grant_application != 'restricted'">
                     <div class="md-12" *ngFor="let attachment of review.documents; let j = index">
-                        <a href="{{SERVER + '/' + attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
+                        <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
+                            attachment.original_name
+                        }}</a>
+                        <a
                             (click)="deleteAttachment(i, j, 'financial_management_capacity_review')"
-                            *ngIf="['comments', 'recommendation'].includes(permission.grant_application)"><i
-                                class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
+                            *ngIf="['comments', 'recommendation'].includes(permission.grant_application)"
+                            ><i class="fa fa-times text-danger mx-2 cursor-pointer"></i
+                        ></a>
                     </div>
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <button (click)="resolve(i)" class="btn btn-white p-1"
-                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">Mark as
-                    Resolved</button>
+                <button
+                    (click)="resolve(i)"
+                    class="btn btn-white p-1"
+                    *ngIf="['comments', 'recommendation'].includes(permission.grant_application)"
+                >
+                    Mark as Resolved
+                </button>
             </div>
         </div>
     </div>
@@ -77,17 +99,24 @@
     <div class="card">
         <div class="card-body bg-gray-300">
             <div class="card my-3" *ngIf="['comments', 'recommendation'].includes(permission.grant_application)">
-                <div class="card-header p-3" style="background-color: #034241">
+                <div class="card-header p-2" style="background-color: #034241">
                     <div class="d-flex flex-column flex-md-row text-white gap-1">
-                        <p class="m-0">{{dateNow | date : 'dd-MMM-YYYY'}} - {{user.first_name}} {{user.last_name}}</p>
+                        <p class="m-0">
+                            {{ dateNow | date : 'dd-MMM-YYYY' }} - {{ user.first_name }} {{ user.last_name }}
+                        </p>
                     </div>
                 </div>
                 <div class="card-body">
                     <form [formGroup]="form" class="text-start" (ngSubmit)="submit()">
                         <div class="content my-2">
-                            <textarea type="text" rows="4" class="form-control border rounded-1 p-2 bg-gray-300"
-                                formControlName="message" [ngClass]="{ 'is-invalid': submitted && f['message'].errors }"
-                                required></textarea>
+                            <textarea
+                                type="text"
+                                rows="4"
+                                class="form-control border rounded-1 p-2 bg-gray-300"
+                                formControlName="message"
+                                [ngClass]="{ 'is-invalid': submitted && f['message'].errors }"
+                                required
+                            ></textarea>
                             <div *ngIf="submitted && f['message'].errors" class="invalid-feedback">
                                 <div *ngIf="f['message'].errors['required']">Review is required</div>
                             </div>
@@ -95,10 +124,12 @@
 
                         <div class="row mt-3 mb-3">
                             <div class="md-12" *ngFor="let attachment of attachments; let i = index">
-                                <a href="{{SERVER + '/' + attachment.path}}"
-                                    target="_blank">{{attachment.original_name}}</a> <a
-                                    (click)="attachments.splice(i, 1)"><i
-                                        class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
+                                <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
+                                    attachment.original_name
+                                }}</a>
+                                <a (click)="attachments.splice(i, 1)"
+                                    ><i class="fa fa-times text-danger mx-2 cursor-pointer"></i
+                                ></a>
                             </div>
                         </div>
 
@@ -120,21 +151,42 @@
                                     <label class="form-check-label text-dark font-weight-bold">Flag:</label>
                                 </div>
                                 <div class="form-check m-0 p-1">
-                                    <input id="financial_management_capacity_review-needs-resolution"
-                                        class="form-check-input" type="checkbox" name="needs_resolution"
-                                        formControlName="needs_resolution" value="needs_resolution" />
-                                    <label class="form-check-label text-dark font-weight-bold"
-                                        for="financial_management_capacity_review-needs-resolution">Needs
-                                        Resolution</label>
+                                    <input
+                                        id="financial_management_capacity_review-needs-resolution"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="needs_resolution"
+                                        formControlName="needs_resolution"
+                                        value="needs_resolution"
+                                    />
+                                    <label
+                                        class="form-check-label text-dark font-weight-bold"
+                                        for="financial_management_capacity_review-needs-resolution"
+                                        >Needs Resolution</label
+                                    >
                                 </div>
                                 <div class="form-check m-0 p-1">
-                                    <input id="financial_management_capacity_review-grantee" class="form-check-input"
-                                        type="checkbox" name="grantee" formControlName="grantee" value="grantee" />
-                                    <label class="form-check-label text-dark font-weight-bold"
-                                        for="financial_management_capacity_review-grantee">Grantee</label>
+                                    <input
+                                        id="financial_management_capacity_review-grantee"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="grantee"
+                                        formControlName="grantee"
+                                        value="grantee"
+                                    />
+                                    <label
+                                        class="form-check-label text-dark font-weight-bold"
+                                        for="financial_management_capacity_review-grantee"
+                                        >Grantee</label
+                                    >
                                 </div>
-                                <button class="btn btn-dark p-1" style="min-width: 150px; max-height: 30px"
-                                    [disabled]="form.invalid">Save</button>
+                                <button
+                                    class="btn btn-dark p-1"
+                                    style="min-width: 100px; max-height: 30px"
+                                    [disabled]="form.invalid"
+                                >
+                                    Save
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -142,11 +194,15 @@
             </div>
             <div class="d-flex justify-content-end" *ngIf="['recommendation'].includes(permission.grant_application)">
                 <div>
-                    <h4 class="text-dark">Recommendation</h4>
-                    <ng-select style="--border-color: #034241" class="custom-recommendation-select"
+                    <h6 class="text-dark">Recommendation</h6>
+                    <ng-select
+                        style="--border-color: #034241"
+                        class="custom-recommendation-select"
                         [items]="['Approved for Next Stage', 'Rejected', 'Cancelled']"
-                        [placeholder]="'Choose your recommendation'" (change)="recommendationOnChange($event)"
-                        [(ngModel)]="recommendation">
+                        [placeholder]="'Choose your recommendation'"
+                        (change)="recommendationOnChange($event)"
+                        [(ngModel)]="recommendation"
+                    >
                     </ng-select>
                 </div>
             </div>
