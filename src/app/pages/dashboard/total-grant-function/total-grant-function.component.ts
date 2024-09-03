@@ -15,6 +15,14 @@ interface GroupProjectType {
     total: string;
 }
 
+interface TranslatedGroupedProjectType {
+    name: string;
+    total: number;
+    imagePath: string;
+    color: string;
+    description: string;
+}
+
 @Component({
     selector: 'app-total-grant-function',
     templateUrl: './total-grant-function.component.html',
@@ -26,7 +34,7 @@ export class TotalGrantFunctionComponent implements OnInit {
         groupProjectType: true,
     };
     types: Type[] = [];
-    groupProjectType: GroupProjectType[] = [];
+    translatedGroupedProjectType: TranslatedGroupedProjectType[] = [];
 
     constructor(
         private projectService: ProjectService,
@@ -39,7 +47,7 @@ export class TotalGrantFunctionComponent implements OnInit {
         this.fetchGroupProjectType();
     }
 
-    get groupedProjectType() {
+    getTranslatedGroupedProjectType(groupProjectType: GroupProjectType[]) {
         const groupedTypes = this.types.reduce((acc, obj) => {
             const key = obj?.pk ?? '';
             acc[key] = obj;
@@ -48,7 +56,7 @@ export class TotalGrantFunctionComponent implements OnInit {
 
         const mappedObject = Object.keys(groupedTypes).map((key) => {
             const name = groupedTypes[key].name;
-            const value = this.groupProjectType.find((item) => item.type_pk === groupedTypes[key].pk);
+            const value = groupProjectType.find((item) => item.type_pk === groupedTypes[key].pk);
             return {
                 pk: key,
                 name,
@@ -68,10 +76,10 @@ export class TotalGrantFunctionComponent implements OnInit {
                 name: key,
                 total: computedTotal,
                 imagePath: item.imagePath,
-                color: item.color
+                color: item.color,
+                description: item.description,
             };
         });
-
         return tempGroupedProjType;
     }
 
@@ -106,7 +114,7 @@ export class TotalGrantFunctionComponent implements OnInit {
                 const status = res?.status;
                 const data = res?.data;
                 if (status) {
-                    this.groupProjectType = data;
+                    this.translatedGroupedProjectType = this.getTranslatedGroupedProjectType(data);
                 } else {
                     this.toastr.error(
                         'An error occurred while fetching Group Project Types. Please try again',
