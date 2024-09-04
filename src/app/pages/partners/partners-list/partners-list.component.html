@@ -81,67 +81,9 @@
                 </button>
             </div>
         </div>
-        <div class="col-12 col-md-8">
-            <!-- <div class="form-control d-flex flex-wrap flex-row gap-1">
-                <div class="d-flex border rounded-2 p-1" style="height: 36px">
-                    <input
-                        type="text"
-                        style="width: 300px;"
-                        class="form-control text-dark p-1"
-                        placeholder="Partner name"
-                        [(ngModel)]="filter['keyword']"
-                        #ctrl="ngModel"
-                    />
-                    <button
-                        [disabled]="(filter.keyword?.length ?? 0) === 0"
-                        class="btn btn-icon-only"
-                        style="bottom: 25%"
-                        (click)="handleClearKeyword()"
-                    >
-                        <i class="material-icons mb-1" [hidden]="(filter.keyword?.length ?? 0) === 0">cancel</i>
-                    </button>
-                </div>
-
-                <button class="btn btn-dark-blue text-xs px-3 py-1 text-sm" (click)="handleSearchKeyword()">
-                    <i class="material-icons mb-0">search</i> Search
-                </button>
-            </div> -->
-            <!-- <div class="form-control">
-                <app-select [arr]="" placeholder="Functions"></app-select>
-            </div> -->
-        </div>
     </div>
-    <div class="row g-1 align-items-center">
-        <div class="col-12 col-md-1"></div>
-        <div class="col-12 col-md-5">
-            <!-- <div class="form-control d-flex flex-wrap flex-row gap-1">
-                <div class="d-flex border rounded-2 p-1" style="height: 36px">
-                    <input
-                        type="text"
-                        style="width: 280px"
-                        class="form-control text-dark p-1"
-                        placeholder="Search"
-                        [(ngModel)]="filter['keyword']"
-                        #ctrl="ngModel"
-                    />
-                    <button
-                        [disabled]="(filter.keyword?.length ?? 0) === 0"
-                        class="btn btn-icon-only"
-                        style="bottom: 25%"
-                        (click)="handleClearKeyword()"
-                    >
-                        <i class="material-icons mb-1" [hidden]="(filter.keyword?.length ?? 0) === 0">cancel</i>
-                    </button>
-                </div>
-
-                <button class="btn btn-dark-blue text-xs px-3 py-1 text-sm" (click)="handleSearchKeyword()">
-                    <i class="material-icons mb-0">search</i> Search
-                </button>
-            </div> -->
-        </div>
-    </div>
-    <div class="d-flex flex-wrap justify-content-between align-items-center">
-        <h6>List of Partners</h6>
+    <div class="d-flex flex-wrap justify-content-between align-items-end pt-2">
+        <h6 class="p-0 m-0">List of Partners</h6>
         <button type="button" class="btn btn-dark-blue text-xs" style="height: 36px" (click)="handleAddPartner()">
             Add Partners
         </button>
