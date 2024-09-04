@@ -6,6 +6,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { SelectModule } from 'src/app/components/select/select.module';
 import { RouterModule } from '@angular/router';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
     declarations: [PartnersListComponent],
@@ -17,6 +18,7 @@ import { RouterModule } from '@angular/router';
         AccordionModule.forRoot(), 
         SelectModule, 
         RouterModule,
+        BsDatepickerModule.forRoot()
     ],
 })
 export class PartnersListModule {}
