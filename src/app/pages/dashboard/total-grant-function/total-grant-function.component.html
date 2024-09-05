@@ -13,9 +13,12 @@
             </div>
             <ng-container *ngIf="!loading.groupProjectType && !loading.types">
                 <div class="row justify-content-center">
-                    <div class="col-12 col-md-2" *ngFor="let item of groupedProjectType">
-                        <div class="card rounded">
-                            <div class="image-container border-radius-top-end border-radius-top-start" [ngStyle]="{ 'background-color': item.color }">
+                    <div class="col-12 col-md-2" *ngFor="let item of translatedGroupedProjectType">
+                        <div class="card rounded cursor-pointer" [ngbTooltip]="item.description">
+                            <div
+                                class="image-container border-radius-top-end border-radius-top-start"
+                                [ngStyle]="{ 'background-color': item.color }"
+                            >
                                 <div class="d-flex flex-wrap flex-column p-2 text-center mt-3" style="height: 120px">
                                     <div class="inner-container" style="height: 40px">
                                         <img [src]="item.imagePath" style="width: 40px; height: 30px" />
@@ -24,7 +27,9 @@
                                 </div>
                             </div>
                             <div class="count-container text-center">
-                                <h4 class="p-0 m-0  font-weight-bold" [ngStyle]="{ 'color': item.color }">{{ item.total }}</h4>
+                                <h4 class="p-0 m-0 font-weight-bold" [ngStyle]="{ color: item.color }">
+                                    {{ item.total }}
+                                </h4>
                                 <p class="p-0 m-0 text-sm">contracts</p>
                             </div>
                         </div>
