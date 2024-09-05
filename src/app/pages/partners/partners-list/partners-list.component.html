@@ -36,15 +36,33 @@
         </div>
     </div>
     <div class="row g-1 align-items-center">
-        <div class="col-12 col-md-1"></div>
-        <div class="col-12 col-md-5">
-            <div class="form-control d-flex flex-wrap flex-row gap-1">
+        <div class="col-12 col-md-1">
+            <label class="text-dark text-sm font-weight-bold">Filter by</label>
+        </div>
+        <div class="col-12 col-md-2">
+            <input
+                class="form-control border rounded-1 p-1"
+                type="number"
+                min="1900"
+                max="2099"
+                step="1"
+                #datepickerFull="bsDatepicker"
+                bsDatepicker
+                placeholder="Year"
+                (bsValueChange)="handleFilterDateCreatedByYear($event)"
+                [bsConfig]="{ dateInputFormat: 'YYYY', minMode: 'year' }"
+            />
+        </div>
+        <div class="col-12 col-md-8">
+           
+            <div class="form-control d-flex flex-wrap flex-row gap-3 align-items-end">
+                <label class="text-dark text-sm font-weight-bold">Search</label>
                 <div class="d-flex border rounded-2 p-1" style="height: 36px">
                     <input
                         type="text"
-                        style="width: 280px"
+                        style="min-width: 260px;"
                         class="form-control text-dark p-1"
-                        placeholder="Search"
+                        placeholder="Partner name"
                         [(ngModel)]="filter['keyword']"
                         #ctrl="ngModel"
                     />
@@ -58,15 +76,15 @@
                     </button>
                 </div>
 
-                <button class="btn btn-dark-blue text-xs px-3 py-1 text-sm" (click)="handleSearchKeyword()">
+                <button class="btn btn-dark-blue text-xs" (click)="handleSearchKeyword()">
                     <i class="material-icons mb-0">search</i> Search
                 </button>
             </div>
         </div>
     </div>
-    <div class="d-flex flex-wrap justify-content-between align-items-center">
-        <h6>List of Partners</h6>
-        <button type="button" class="btn btn-dark-blue text-xs" style="height: 36px;" (click)="handleAddPartner()">
+    <div class="d-flex flex-wrap justify-content-between align-items-end pt-2">
+        <h6 class="p-0 m-0">List of Partners</h6>
+        <button type="button" class="btn btn-dark-blue text-xs" style="height: 36px" (click)="handleAddPartner()">
             Add Partners
         </button>
     </div>
@@ -85,7 +103,7 @@
                         let item of partnersList
                             | paginate : { itemsPerPage: tableSize, currentPage: page, id: 'partnerList' }
                     "
-                    style="min-width: 1000px !important;"
+                    style="min-width: 1000px !important"
                     [panelClass]="item?.['expanded'] ? 'custom-accordion-expanded' : 'custom-accordion-collapsed'"
                     (isOpenChange)="handleIsOpenChange($event, item?.pk)"
                 >

@@ -6,6 +6,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PartnerAddComponent } from '../modals/partner-add/partner-add.component';
 import { OnHiddenData } from '../partner-view/partner-view.component';
 import { Application, Partner } from 'src/app/interfaces/_application.interface';
+import { DateTime } from 'luxon';
 
 interface PartnerList extends Partner {
     applications?: Application[];
@@ -22,6 +23,7 @@ type Filter = {
     organization_pk: number | null;
     type_pk: number | null;
     keyword?: string | null;
+    partner_date_created_year?: string | null
 };
 
 @Component({
@@ -45,6 +47,7 @@ export class PartnersListComponent implements OnInit {
         organization_pk: null,
         type_pk: null,
         keyword: '',
+        partner_date_created_year: '',
     };
 
     bsModalRef?: BsModalRef;
@@ -97,6 +100,12 @@ export class PartnersListComponent implements OnInit {
 
     handleClearKeyword() {
         this.filter.keyword = ''
+        this.fetch(this.filter)
+    }
+
+    handleFilterDateCreatedByYear($event: any) {
+        const year = $event ? DateTime.fromJSDate($event).toFormat('yyyy') : ''
+        this.filter.partner_date_created_year = year
         this.fetch(this.filter)
     }
 
