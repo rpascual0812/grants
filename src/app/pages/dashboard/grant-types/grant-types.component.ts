@@ -8,19 +8,42 @@ import { ToastrService } from 'ngx-toastr';
 import { GRANT_CLOSING_STATUS } from 'src/app/utilities/constants';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
+const GRANT_TYPE_ICONS = [
+    '../../../assets/images/chart-image-coin-stacked.png',
+    '../../../assets/images/chart-image-bag-of-money.png',
+    '../../../assets/images/chart-image-packages.png',
+];
+
 @Component({
     selector: 'app-grant-types',
     templateUrl: './grant-types.component.html',
     styleUrls: ['./grant-types.component.scss'],
 })
 export class GrantTypesComponent implements OnInit {
+    GRANT_CATEGORY_INFO = [
+        {
+            label: `Micro grants`,
+            image: GRANT_TYPE_ICONS[0],
+            description: `Micro grants ($500-$9,999)`,
+            color: `#1a73e8`,
+        },
+        {
+            label: `Small grants`,
+            image: GRANT_TYPE_ICONS[1],
+            description: `Small grants ($10,000 - $30,000)`,
+            color: `#4caf50`,
+        },
+        {
+            label: `Medium grants`,
+            image: GRANT_TYPE_ICONS[2],
+            description: `Medium grants ($30,001 and above)`,
+            color: `#1a237e`,
+        },
+    ];
+
     // Bar Chart
     public barChartType = 'bar' as const;
-    grantTypeIcons = [
-        '../../../assets/images/chart-image-coin-stacked.png',
-        '../../../assets/images/chart-image-bag-of-money.png',
-        '../../../assets/images/chart-image-packages.png',
-    ].map((png) => {
+    grantTypeIcons = GRANT_TYPE_ICONS.map((png) => {
         const image = new Image();
         image.src = png;
         return image;
@@ -137,8 +160,8 @@ export class GrantTypesComponent implements OnInit {
         },
     ];
 
-    currentGrants: (number| null)[] = [];
-    cumulativeGrants: (number| null)[] = [];
+    currentGrants: (number | null)[] = [];
+    cumulativeGrants: (number | null)[] = [];
     loading = true;
     constructor(private projectService: ProjectService, private toastr: ToastrService) {}
 
@@ -156,21 +179,26 @@ export class GrantTypesComponent implements OnInit {
                     const activeProjects = data?.filter((proj) => proj.status !== null) ?? [];
                     const { microGrants, smallGrants, mediumGrants } = this.getGrantTypes(activeProjects);
 
-
                     const activeMicroGrants = this.getTotalGrantTypeTotalBudget(microGrants, 'active');
                     const closedMicroGrants = this.getTotalGrantTypeTotalBudget(microGrants, 'closed');
-                    const currentMicroGrants = this.getParsedValue(activeMicroGrants.toFixed(2))
-                    const cumulativeMicroGrants = this.getParsedValue((activeMicroGrants + closedMicroGrants).toFixed(2))
+                    const currentMicroGrants = this.getParsedValue(activeMicroGrants.toFixed(2));
+                    const cumulativeMicroGrants = this.getParsedValue(
+                        (activeMicroGrants + closedMicroGrants).toFixed(2)
+                    );
 
                     const activeSmallGrants = this.getTotalGrantTypeTotalBudget(smallGrants, 'active');
                     const closedSmallGrants = this.getTotalGrantTypeTotalBudget(smallGrants, 'closed');
                     const currentSmallGrants = this.getParsedValue(activeSmallGrants.toFixed(2));
-                    const cumulativeSmallGrants = this.getParsedValue((activeSmallGrants + closedSmallGrants).toFixed(2));
+                    const cumulativeSmallGrants = this.getParsedValue(
+                        (activeSmallGrants + closedSmallGrants).toFixed(2)
+                    );
 
                     const activeMediumGrants = this.getTotalGrantTypeTotalBudget(mediumGrants, 'active');
                     const closedMediumGrants = this.getTotalGrantTypeTotalBudget(mediumGrants, 'closed');
                     const currentMediumGrants = this.getParsedValue(activeMediumGrants.toFixed(2));
-                    const cumulativeMediumGrants = this.getParsedValue((activeMediumGrants + closedMediumGrants).toFixed(2));
+                    const cumulativeMediumGrants = this.getParsedValue(
+                        (activeMediumGrants + closedMediumGrants).toFixed(2)
+                    );
 
                     this.currentGrants = [currentMicroGrants, currentSmallGrants, currentMediumGrants];
                     this.cumulativeGrants = [cumulativeMicroGrants, cumulativeSmallGrants, cumulativeMediumGrants];
@@ -182,19 +210,18 @@ export class GrantTypesComponent implements OnInit {
                             data: this.currentGrants,
                             barThickness: 70,
                             borderSkipped: false,
-                            minBarLength: 210
+                            minBarLength: 210,
                         },
                         {
                             label: `Cumulative Grants`,
                             data: this.cumulativeGrants,
                             barThickness: 70,
                             borderSkipped: false,
-                            minBarLength: 320
+                            minBarLength: 320,
                         },
                     ];
 
-                    this.horizontalBarChartData.datasets = datasets
-
+                    this.horizontalBarChartData.datasets = datasets;
 
                     this.horizontalBarChart?.update();
                 } else {
@@ -269,6 +296,6 @@ export class GrantTypesComponent implements OnInit {
     }
 
     getParsedValue(value: string) {
-        return +value !== 0 ? +value : null
+        return +value !== 0 ? +value : null;
     }
 }
