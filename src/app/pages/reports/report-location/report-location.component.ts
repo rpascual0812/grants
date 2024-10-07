@@ -291,10 +291,12 @@ export class ReportLocationComponent implements OnInit {
                 name = value.at(1) ?? '';
                 count = value.at(2) ?? 0;
             }
-            this.customLegends.push({
-                label: `${name} - ${count}`,
-                color: this.getCustomLegendColor(count as number),
-            });
+            if (typeof name === 'string' && name.trim() !== '' && typeof count === 'number') {
+                this.customLegends.push({
+                    label: `${name} - ${count}`,
+                    color: this.getCustomLegendColor(count),
+                });
+            }
         });
     }
 
