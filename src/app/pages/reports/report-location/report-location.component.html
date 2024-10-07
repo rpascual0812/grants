@@ -61,6 +61,16 @@
                             style="width: 100%"
                         >
                         </google-chart>
+                        <div class="custom-legend" *ngIf="!loading">
+                            <ul>
+                                <li *ngFor="let item of customLegends" class="list-unstyled">
+                                    <p class="text-md p-0 m-0">
+                                        <span class="circle-legend" [style.background-color]="item.color"></span>
+                                        {{ item.label }}
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
