@@ -31,6 +31,10 @@ export class ProjectService {
         return this.http.get(`${_.BASE_URL}/projects/${params?.project_pk}/project_funding`);
     }
 
+    fetchProjectFundingAll() {
+        return this.http.get(`${_.BASE_URL}/projects/project_funding`);
+    }
+
     saveSignedContractAttachment(data: any) {
         return this.http.post(`${_.BASE_URL}/projects/attachment`, data);
     }
@@ -114,7 +118,6 @@ export class ProjectService {
     }
 
     saveAttendee(project_pk: number, data: any) {
-        console.log(data);
         return this.http.post(`${_.BASE_URL}/projects/${project_pk}/events/${data.project_event_pk}/attendee`, data);
     }
 
