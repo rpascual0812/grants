@@ -34,6 +34,11 @@ type CountryMapperObj = {
     count: number;
 };
 
+type CustomLegend = {
+    label: string;
+    color: string;
+};
+
 @Component({
     selector: 'app-report-location',
     templateUrl: './report-location.component.html',
@@ -43,12 +48,15 @@ export class ReportLocationComponent implements OnInit {
     title = 'Location';
     type = 'GeoChart' as ChartType;
     data: Row[] = [];
+    customLegends: CustomLegend[] = [];
 
     columns = ['Location', 'Grants'];
+    legendBgColors = ['#0070C0', '#FFFF00', '#A65628'];
+    maxAxisColor = 3;
     options = {
         region: 'world',
         legend: 'none',
-        colorAxis: { colors: ['#0070C0', '#FFFF00', '#A65628'] },
+        colorAxis: { colors: this.legendBgColors, minValue: 0, maxValue: this.maxAxisColor },
         backgroundColor: 'white',
         datalessRegionColor: '#f8bbd0',
         defaultColor: '#f5f5f5',
@@ -165,6 +173,7 @@ export class ReportLocationComponent implements OnInit {
         this.setChartColumn();
         this.setChartData(Project);
         this.setChartOption(Project);
+        this.setCustomLegends();
     }
 
     setChartOptionProvinces() {
@@ -212,6 +221,7 @@ export class ReportLocationComponent implements OnInit {
         this.setChartColumnProvinces();
         this.setChartOptionProvinces();
         this.setChartDataProvinces();
+        this.setCustomLegends();
     }
 
     getProvinceObj(provinces: Province[]) {
@@ -259,6 +269,34 @@ export class ReportLocationComponent implements OnInit {
                     this.provinceObj[provinceCodeKey].count += 1;
                 }
             });
+        });
+    }
+
+    getCustomLegendColor(count: number) {
+        if (count > this.maxAxisColor) {
+            return this.legendBgColors[2];
+        } else if (count < this.maxAxisColor && count > 0) {
+            return this.legendBgColors[1];
+        } else {
+            return this.legendBgColors[0];
+        }
+    }
+
+    setCustomLegends() {
+        this.customLegends = [];
+        this.data?.forEach((value) => {
+            let name = value.at(0) ?? '';
+            let count = value.at(1) ?? 0;
+            if (this.options.region !== 'world') {
+                name = value.at(1) ?? '';
+                count = value.at(2) ?? 0;
+            }
+            if (typeof name === 'string' && name.trim() !== '' && typeof count === 'number') {
+                this.customLegends.push({
+                    label: `${name} - ${count}`,
+                    color: this.getCustomLegendColor(count),
+                });
+            }
         });
     }
 
