@@ -114,7 +114,6 @@ export class ProjectService {
     }
 
     saveAttendee(project_pk: number, data: any) {
-        console.log(data);
         return this.http.post(`${_.BASE_URL}/projects/${project_pk}/events/${data.project_event_pk}/attendee`, data);
     }
 
@@ -277,5 +276,9 @@ export class ProjectService {
 
     fetchReportProjects(filters: any) {
         return this.http.get(`${_.BASE_URL}/projects/reports`, { params: filters });
+    }
+
+    setGrantType(data: { project_pk: number, pk: number }) {
+        return this.http.post(`${_.BASE_URL}/projects/${data.project_pk}/grant_type`, data);
     }
 }
