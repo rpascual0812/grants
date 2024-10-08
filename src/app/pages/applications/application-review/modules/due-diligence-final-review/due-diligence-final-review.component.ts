@@ -145,7 +145,7 @@ export class DueDiligenceFinalReviewComponent {
 
     onChangeGrantType(item: GrantTypeItem[] | string[], key: string) {
         const extractedItem = item?.at(0);
-        const pk = (extractedItem as GrantTypeItem)?.['pk' ?? ''] ?? '';
+        const pk = (extractedItem as GrantTypeItem)?.['pk'] ?? '';
         const data = {
             application_pk: this.currentApplication?.pk,
             project: {

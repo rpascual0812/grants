@@ -281,4 +281,8 @@ export class ProjectService {
     fetchReportProjects(filters: any) {
         return this.http.get(`${_.BASE_URL}/projects/reports`, { params: filters });
     }
+
+    setGrantType(data: { project_pk: number, pk: number }) {
+        return this.http.post(`${_.BASE_URL}/projects/${data.project_pk}/grant_type`, data);
+    }
 }
