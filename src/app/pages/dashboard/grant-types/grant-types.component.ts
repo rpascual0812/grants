@@ -210,7 +210,7 @@ export class GrantTypesComponent implements OnInit {
                             data: this.currentGrants,
                             barThickness: 70,
                             borderSkipped: false,
-                            minBarLength: 210,
+                            minBarLength: 320,
                         },
                         {
                             label: `Cumulative Grants`,
