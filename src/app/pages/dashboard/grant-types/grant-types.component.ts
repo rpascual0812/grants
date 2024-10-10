@@ -61,14 +61,14 @@ export class GrantTypesComponent implements OnInit {
             datalabels: {
                 color: 'white',
                 font: {
-                    size: 12,
+                    size: 8,
                 },
                 anchor: 'end',
                 align: 'start',
                 formatter: (_value, ctx) => {
                     const idx = ctx?.dataIndex;
                     const value = Number(ctx.dataset.data[idx]) ?? 0;
-                    if (value !== 0) {
+                    if (value !== 0 && value > 5000) {
                         return `${value} USD`;
                     }
                     return '';
@@ -85,8 +85,7 @@ export class GrantTypesComponent implements OnInit {
                             if (datasetLabel === 'Cumulative Grants') {
                                 return '';
                             }
-
-                            if (datasetLabel === 'Current Grants' && value !== 0) {
+                            if (datasetLabel === 'Current Grants' && value !== 0 && value > 499) {
                                 return description[idx] ?? '';
                             }
                             return '';
@@ -100,6 +99,9 @@ export class GrantTypesComponent implements OnInit {
                             }
                             return 'white';
                         },
+                        font: {
+                            size: 8,
+                        },
                     },
                 },
             },
@@ -109,8 +111,10 @@ export class GrantTypesComponent implements OnInit {
                 beginAtZero: true,
                 ticks: {
                     font: {
-                        size: 12,
+                        size: 10,
                     },
+                    maxTicksLimit: 100,
+                    autoSkipPadding: 1,
                     callback: (tickValue, _index, _ticks) => {
                         return `${tickValue} USD`;
                     },
@@ -210,14 +214,12 @@ export class GrantTypesComponent implements OnInit {
                             data: this.currentGrants,
                             barThickness: 70,
                             borderSkipped: false,
-                            minBarLength: 320,
                         },
                         {
                             label: `Cumulative Grants`,
                             data: this.cumulativeGrants,
                             barThickness: 70,
                             borderSkipped: false,
-                            minBarLength: 320,
                         },
                     ];
 
