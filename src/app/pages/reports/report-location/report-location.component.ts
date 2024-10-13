@@ -36,7 +36,8 @@ type CountryMapperObj = {
 
 type CustomLegend = {
     label: string;
-    color: string;
+    count: number
+    // color: string;
 };
 
 @Component({
@@ -49,15 +50,13 @@ export class ReportLocationComponent implements OnInit {
     type = 'GeoChart' as ChartType;
     data: Row[] = [];
     customLegends: CustomLegend[] = [];
-
-    columns = ['Location', 'Grants'];
     legendBgColors = ['#0070C0', '#FFFF00', '#A65628'];
-    maxAxisColor = 3;
+    columns = ['Location', 'Grants'];
+    // maxAxisColor = 3;
     options = {
         region: 'world',
-        legend: 'none',
-        colorAxis: { colors: this.legendBgColors, minValue: 0, maxValue: this.maxAxisColor },
         backgroundColor: 'white',
+        // colorAxis: { colors: this.legendBgColors, minValue: 0, },
         datalessRegionColor: '#f8bbd0',
         defaultColor: '#f5f5f5',
     };
@@ -272,15 +271,15 @@ export class ReportLocationComponent implements OnInit {
         });
     }
 
-    getCustomLegendColor(count: number) {
-        if (count > this.maxAxisColor) {
-            return this.legendBgColors[2];
-        } else if (count < this.maxAxisColor && count > 0) {
-            return this.legendBgColors[1];
-        } else {
-            return this.legendBgColors[0];
-        }
-    }
+    // getCustomLegendColor(count: number) {
+    //     if (count > this.maxAxisColor) {
+    //         return this.legendBgColors[2];
+    //     } else if (count < this.maxAxisColor && count > 0) {
+    //         return this.legendBgColors[1];
+    //     } else {
+    //         return this.legendBgColors[0];
+    //     }
+    // }
 
     setCustomLegends() {
         this.customLegends = [];
@@ -293,11 +292,13 @@ export class ReportLocationComponent implements OnInit {
             }
             if (typeof name === 'string' && name.trim() !== '' && typeof count === 'number') {
                 this.customLegends.push({
-                    label: `${name} - ${count}`,
-                    color: this.getCustomLegendColor(count),
+                    label: `${count} - ${name} `,
+                    count,
+                    // color: this.getCustomLegendColor(count),
                 });
             }
         });
+        this.customLegends.sort((a,b) => b.count - a.count)
     }
 
     handleOnApply() {
