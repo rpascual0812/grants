@@ -61,14 +61,17 @@ export class GrantTypesComponent implements OnInit {
             datalabels: {
                 color: 'white',
                 font: {
-                    size: 8,
+                    size: 12,
                 },
                 anchor: 'end',
                 align: 'start',
                 formatter: (_value, ctx) => {
                     const idx = ctx?.dataIndex;
                     const value = Number(ctx.dataset.data[idx]) ?? 0;
-                    if (value !== 0 && value > 5000) {
+                    const sortedMetaSets = ctx.chart.getDatasetMeta(0)
+                    const barElementWidth = sortedMetaSets?.data?.at(idx)?.x ?? 87
+
+                    if (value !== 0 && barElementWidth > 200 ) {
                         return `${value} USD`;
                     }
                     return '';
@@ -82,10 +85,12 @@ export class GrantTypesComponent implements OnInit {
                             const datasetLabel = ctx?.dataset?.label;
                             const idx = ctx?.dataIndex;
                             const value = Number(ctx.dataset.data[idx]) ?? 0;
+                            const sortedMetaSets = ctx.chart.getDatasetMeta(0)
+                            const barElementWidth = sortedMetaSets?.data?.at(idx)?.x ?? 87
                             if (datasetLabel === 'Cumulative Grants') {
                                 return '';
                             }
-                            if (datasetLabel === 'Current Grants' && value !== 0 && value > 499) {
+                            if (datasetLabel === 'Current Grants' && value !== 0 && barElementWidth > 200) {
                                 return description[idx] ?? '';
                             }
                             return '';
@@ -100,7 +105,7 @@ export class GrantTypesComponent implements OnInit {
                             return 'white';
                         },
                         font: {
-                            size: 8,
+                            size: 12,
                         },
                     },
                 },
@@ -111,7 +116,7 @@ export class GrantTypesComponent implements OnInit {
                 beginAtZero: true,
                 ticks: {
                     font: {
-                        size: 10,
+                        size: 12,
                     },
                     maxTicksLimit: 100,
                     autoSkipPadding: 1,
@@ -152,11 +157,14 @@ export class GrantTypesComponent implements OnInit {
             afterDraw: (chart: Chart<'bar'>) => {
                 const ctx = chart.ctx;
                 const yAxis = chart.scales['y'];
+                const sortedMetaSets = chart.getDatasetMeta(0)
                 yAxis.ticks.forEach((_value: unknown, index: number) => {
                     const currentGrantValue = this.currentGrants[index];
                     const cumulativeGrantsValue = this.cumulativeGrants[index];
                     const y = yAxis.getPixelForTick(index);
-                    if (cumulativeGrantsValue && currentGrantValue) {
+                    const barElementWidth = sortedMetaSets?.data?.at(index)?.x ?? 87
+
+                    if (cumulativeGrantsValue && currentGrantValue && barElementWidth > 130) {
                         ctx.drawImage(this.grantTypeIcons[index], yAxis.right + 30, y - 25, 50, 50);
                     }
                 });
@@ -253,7 +261,7 @@ export class GrantTypesComponent implements OnInit {
 
         const smallGrants = projects?.filter((proj) => {
             const parsedBudgetRequestUsd = Number(proj?.project_proposal?.budget_request_usd);
-            if (typeof proj?.project_proposal?.budget_request_usd === 'number' && !isNaN(parsedBudgetRequestUsd)) {
+            if (typeof parsedBudgetRequestUsd === 'number' && !isNaN(parsedBudgetRequestUsd)) {
                 return parsedBudgetRequestUsd >= 10000 && parsedBudgetRequestUsd <= 30000;
             }
             return false;
