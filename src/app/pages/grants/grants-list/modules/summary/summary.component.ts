@@ -329,7 +329,7 @@ export class SummaryComponent implements OnInit {
         private summaryService: SummaryService,
         private gloablService: GlobalService,
         private projectService: ProjectService
-    ) {}
+    ) { }
 
     totalFirstTimeGranteeCount = 0;
     totalGrantsApproved = 0;
@@ -447,22 +447,22 @@ export class SummaryComponent implements OnInit {
         const countGrantsPerCountry: Record<string, CountryMapperObj> = {};
         projects?.forEach((proj) => {
             const projectLoc = proj?.project_location ?? [];
-            projectLoc?.forEach((loc) => {
-                const countryPk = loc?.country_pk;
-                if (countryPk) {
-                    if (!countGrantsPerCountry[countryPk]) {
-                        countGrantsPerCountry[countryPk] = {
-                            pk: countryPk,
-                            code: loc?.country?.code ?? '',
-                            name: loc?.country?.name ?? '',
-                            count: 1,
-                        };
-                    } else {
-                        countGrantsPerCountry[countryPk].count += 1;
-                    }
+            const firstProjectLoc = projectLoc?.at(0);
+            const countryPk = firstProjectLoc?.country_pk;
+            if (countryPk) {
+                if (!countGrantsPerCountry[countryPk]) {
+                    countGrantsPerCountry[countryPk] = {
+                        pk: countryPk,
+                        code: firstProjectLoc?.country?.code ?? '',
+                        name: firstProjectLoc?.country?.name ?? '',
+                        count: 1,
+                    };
+                } else {
+                    countGrantsPerCountry[countryPk].count += 1;
                 }
-            });
+            }
         });
+
         return countGrantsPerCountry;
     }
 
