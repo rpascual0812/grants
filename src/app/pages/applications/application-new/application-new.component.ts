@@ -96,7 +96,5 @@ export class ApplicationNewComponent implements OnInit {
     handleSave() {
         const currentApplication = this.applicationSignalService.appForm();
         this.generatePartnerId(currentApplication);
-        // this.applicationSignalService.appForm.set(null);
-        // this.router.navigate(['public', 'application', currentApplication?.uuid, 'success']);
     }
 }
