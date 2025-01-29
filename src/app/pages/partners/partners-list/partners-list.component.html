@@ -54,13 +54,12 @@
             />
         </div>
         <div class="col-12 col-md-8">
-           
             <div class="form-control d-flex flex-wrap flex-row gap-3 align-items-end">
                 <label class="text-dark text-sm font-weight-bold">Search</label>
                 <div class="d-flex border rounded-2 p-1" style="height: 36px">
                     <input
                         type="text"
-                        style="min-width: 260px;"
+                        style="min-width: 260px"
                         class="form-control text-dark p-1"
                         placeholder="Partner name"
                         [(ngModel)]="filter['keyword']"
@@ -116,7 +115,7 @@
                             <div class="flex d-flex flex-row gap-1 align-items-center">
                                 <a
                                     class="text-xs text-dark font-weight-bold m-0 p-0"
-                                    [routerLink]="['/partner', item?.partner_id, 'information']"
+                                    [routerLink]="['/partner', item?.pk, 'information']"
                                     >{{ item?.name }}</a
                                 >
                                 <div class="d-flex" style="height: 30px">

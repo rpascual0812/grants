@@ -1,8 +1,10 @@
 import { Component, OnInit, effect, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Application } from 'src/app/interfaces/_application.interface';
 import { ApplicationService } from 'src/app/services/application.service';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
+import { PartnerService } from 'src/app/services/partner.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 
 export const MAX_STEP = 7;
@@ -15,12 +17,13 @@ export const INITIAL_STEP = 1;
 })
 export class ApplicationNewComponent implements OnInit {
     applicationSignalService = inject(ApplicationSignalService);
-    initialLoading = false
+    initialLoading = false;
     step = INITIAL_STEP;
     uuid = '';
 
     constructor(
         private applicationService: ApplicationService,
+        private partnerService: PartnerService,
         private toastr: ToastrService,
         private router: Router,
         private route: ActivatedRoute
@@ -30,15 +33,18 @@ export class ApplicationNewComponent implements OnInit {
         this.applicationSignalService.MAX_STEP = MAX_STEP;
     }
 
-    appSignalEffect = effect(() => {
-        this.initialLoading = this.applicationSignalService.loadingInitialAppForm()
-        this.step = this.applicationSignalService.currentNavStep();
-        if (this.applicationSignalService.submitSave()) {
-            this.handleSave();
+    appSignalEffect = effect(
+        () => {
+            this.initialLoading = this.applicationSignalService.loadingInitialAppForm();
+            this.step = this.applicationSignalService.currentNavStep();
+            if (this.applicationSignalService.submitSave()) {
+                this.handleSave();
+            }
+        },
+        {
+            allowSignalWrites: true,
         }
-    },{
-        allowSignalWrites: true
-    });
+    );
 
     ngOnInit() {
         this.fetch();
@@ -62,9 +68,35 @@ export class ApplicationNewComponent implements OnInit {
         });
     }
 
-    async handleSave() {
+    generatePartnerId(currentApplication: Application | null) {
+        this.partnerService
+            .generatePartnerId({
+                pk: currentApplication?.partner?.pk,
+            })
+            .subscribe({
+                next: (res: any) => {
+                    const status = res?.status;
+                    if (status) {
+                        this.applicationSignalService.appForm.set(null);
+                        this.router.navigate(['public', 'application', currentApplication?.uuid, 'success']);
+                    } else {
+                        this.toastr.error(`An error occurred while generating partner id. Please try again.`, 'ERROR!');
+                    }
+                },
+                error: (err) => {
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
+                    this.toastr.error(
+                        `An error occurred while generating partner id after saving application. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
+                },
+            });
+    }
+
+    handleSave() {
         const currentApplication = this.applicationSignalService.appForm();
-        this.applicationSignalService.appForm.set(null);
-        this.router.navigate(['public', 'application', currentApplication?.uuid, 'success']);
+        this.generatePartnerId(currentApplication);
+        // this.applicationSignalService.appForm.set(null);
+        // this.router.navigate(['public', 'application', currentApplication?.uuid, 'success']);
     }
 }

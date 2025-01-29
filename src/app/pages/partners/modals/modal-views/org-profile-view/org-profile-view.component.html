@@ -16,6 +16,7 @@
                 <div *ngIf="f['organization_pk'].errors['required']">Kind of Organization is required</div>
             </div>
         </div>
+
         <ng-container *ngIf="selectedOrganization === 'Community/informal'">
             <div class="form-group my-3">
                 <label class="font-weight-bold text-dark">If indigenous/ethnic, please indicate tribe</label>
@@ -189,6 +190,22 @@
                 </div>
             </div>
         </ng-container>
+
+        <div class="form-group my-3">
+            <label class="font-weight-bold text-dark">Partner Type*</label>
+            <app-select
+                *ngIf="!orgPartnerTypeListLoading"
+                [ngClass]="{ 'is-invalid': submitted && f['organization_partner_type_pk'].errors }"
+                (onSelectEvent)="onChangeSelectedItem($event, 'organization_partner_type_pk')"
+                (onDeSelectEvent)="onChangeSelectedItem($event, 'organization_partner_type_pk')"
+                [defaultSelectedItemKey]="form.controls['organization_partner_type_pk'].value"
+                [arr]="orgPartnerTypeList"
+                [changeFieldEventEmitter]="selectChangeFieldEventEmitter.organization_partner_type_pk"
+            ></app-select>
+            <div *ngIf="submitted && f['organization_partner_type_pk'].errors" class="invalid-feedback">
+                <div *ngIf="f['organization_partner_type_pk'].errors['required']">Partner Type is required</div>
+            </div>
+        </div>
 
         <div class="form-group my-3">
             <label class="font-weight-bold text-dark">Mission</label>

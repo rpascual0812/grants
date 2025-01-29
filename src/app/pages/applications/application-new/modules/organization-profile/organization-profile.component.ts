@@ -1,4 +1,4 @@
-import { Document } from './../../../../../interfaces/_application.interface';
+import { Document, OrganizationPartnerType } from './../../../../../interfaces/_application.interface';
 import { Component, EventEmitter, OnInit, inject } from '@angular/core';
 import { ApplicationSignalService } from 'src/app/services/application.signal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -29,13 +29,18 @@ export class OrganizationProfileComponent implements OnInit {
     form: FormGroup;
     orgListLoading = false;
     orgList: SelectItem[] = [];
+    orgPartnerTypeListLoading = false;
+    orgPartnerTypeList: SelectItem[] = [];
+
     selectedOrganization: string = '';
+    organizationPartnerTypeData: OrganizationPartnerType[] = [];
     submitted = false;
     applicationSignalService = inject(ApplicationSignalService);
     tribeIndicateList = TRIBE_LIST_OPTIONS;
     selectChangeFieldEventEmitter = {
         organization_pk: new EventEmitter<ChangeFieldEventEmitter>(),
         country_pk: new EventEmitter<ChangeFieldEventEmitter>(),
+        organization_partner_type_pk: new EventEmitter<ChangeFieldEventEmitter>(),
     };
     attachments: Document[] = [];
     SERVER: string = _.BASE_URL;
@@ -46,11 +51,12 @@ export class OrganizationProfileComponent implements OnInit {
         private applicationService: ApplicationService,
         private documentService: DocumentService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.setForm();
         this.fetchOrgList();
+        this.fetchOrgPartnerTypeList();
 
         this.attachments = [];
         const currentApplication = this.applicationSignalService.appForm();
@@ -69,6 +75,7 @@ export class OrganizationProfileComponent implements OnInit {
         const appOrg = currentApplication?.partner?.organization;
         this.form = this.formBuilder.group({
             organization_pk: [appOrg?.organization_pk ?? '', Validators.required],
+            organization_partner_type_pk: [appOrg?.organization_partner_type_pk ?? '', Validators.required],
             mission: [appOrg?.mission ?? ''],
             vision: [appOrg?.vision ?? ''],
             description: [appOrg?.description ?? '', Validators.required],
@@ -94,6 +101,24 @@ export class OrganizationProfileComponent implements OnInit {
         }
     }
 
+    filterOrgPartnerTypeList() {
+        const selectedOrgPk = this.form?.controls?.['organization_pk']?.value;
+
+        this.orgPartnerTypeList =
+            this.organizationPartnerTypeData
+                ?.filter((value) => value?.organization_pk === selectedOrgPk)
+                ?.filter((value) => value?.name && value?.pk)
+                ?.map((value) => ({
+                    name: value.name as string,
+                    pk: value.pk as number,
+                })) ?? [];
+
+        this.selectChangeFieldEventEmitter.organization_partner_type_pk.emit({
+            arr: this.orgPartnerTypeList ?? [],
+            selectedItems: [],
+        });
+    }
+
     fetchOrgList() {
         this.orgListLoading = true;
         this.globalService.selectFetch(`organization`).subscribe({
@@ -116,24 +141,66 @@ export class OrganizationProfileComponent implements OnInit {
         });
     }
 
+    fetchOrgPartnerTypeList() {
+        this.orgPartnerTypeListLoading = true;
+        this.globalService.selectFetch(`organization/partner_type`).subscribe({
+            next: (res: any) => {
+                if (res.status) {
+                    this.organizationPartnerTypeData = res?.data ?? [];
+                    this.filterOrgPartnerTypeList();
+                } else {
+                    this.toastr.error(
+                        `An error occurred while fetching organization partner type. Please try again.`,
+                        'ERROR!'
+                    );
+                }
+                this.orgPartnerTypeListLoading = false;
+            },
+            error: (err: any) => {
+                const { errorMessage, statusCode } = extractErrorMessage(err);
+                this.toastr.error(
+                    `An error occurred while fetching organization partner type. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+                this.orgPartnerTypeListLoading = false;
+            },
+        });
+    }
+
     // TODO: can this refactored to be simpler?
     onChangeSelectedItem(item: SelectItem[] | string[], key: string) {
         const extractedItem = item?.at(0);
         const pk = (extractedItem as SelectItem)?.pk ?? '';
 
-        if (!extractedItem && key === 'organization_pk') {
-            this.selectedOrganization = '';
+        if (key === 'organization_pk') {
+            this.onSelectOrganization(extractedItem, pk);
+        } else {
+            this.onSelectCommon(key, extractedItem, pk);
         }
+    }
 
+    onSelectCommon(key: string, extractedItem?: SelectItem | string, pk?: number) {
         if (pk) {
-            if (key === 'organization_pk') {
-                this.selectedOrganization = this.orgList?.find((org) => org.pk === pk)?.name ?? '';
-                this.setDefaultValues(this.selectedOrganization);
-            }
             this.form.controls[key].setValue(pk);
         } else {
             this.form.controls[key].setValue(extractedItem ?? '');
         }
+    }
+
+    onSelectOrganization(extractedItem?: SelectItem | string, pk?: number) {
+        if (!extractedItem) {
+            this.selectedOrganization = '';
+        }
+
+        if (pk) {
+            this.selectedOrganization = this.orgList?.find((org) => org.pk === pk)?.name ?? '';
+            this.setDefaultValues(this.selectedOrganization);
+            this.form.controls['organization_pk'].setValue(pk);
+        } else {
+            this.form.controls['organization_pk'].setValue(extractedItem ?? '');
+        }
+
+        this.filterOrgPartnerTypeList();
     }
 
     setDefaultValues(selectedOrgPk: string) {
@@ -178,6 +245,10 @@ export class OrganizationProfileComponent implements OnInit {
         }
     }
 
+    setOrganizationPartnerTypeList() {
+        console.log(this.form.controls['organization_pk']);
+    }
+
     addValidators(key: string) {
         this.form.controls[key]?.addValidators(Validators?.required);
         this.form.controls[key]?.updateValueAndValidity();
@@ -217,6 +288,7 @@ export class OrganizationProfileComponent implements OnInit {
         this.applicationService
             .saveApplicationPartnerOrg({
                 partner_id: currentApplication?.partner?.partner_id,
+                partner_pk: currentApplication?.partner?.pk,
                 ...value,
             })
             .subscribe({
@@ -267,6 +339,9 @@ export class OrganizationProfileComponent implements OnInit {
             selectedItems: [],
         });
         this.selectChangeFieldEventEmitter.country_pk.emit({
+            selectedItems: [],
+        });
+        this.selectChangeFieldEventEmitter.organization_partner_type_pk.emit({
             selectedItems: [],
         });
     }

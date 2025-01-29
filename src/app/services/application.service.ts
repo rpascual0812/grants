@@ -60,7 +60,7 @@ export class ApplicationService {
         return this.http.post(`${_.BASE_URL}/application/partner`, data);
     }
 
-    saveApplicationPartnerOrg(data: Organization & { partner_id?: string }) {
+    saveApplicationPartnerOrg(data: Organization & { partner_id?: string, partner_pk?: number }) {
         return this.http.post(`${_.BASE_URL}/application/partner_organization`, data);
     }
 

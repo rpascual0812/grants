@@ -56,7 +56,7 @@ export class PartnersListComponent implements OnInit {
         private partnerService: PartnerService,
         private modalService: BsModalService,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.fetch();

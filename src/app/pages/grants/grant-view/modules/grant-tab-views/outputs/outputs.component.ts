@@ -261,7 +261,6 @@ export class OutputsComponent implements OnInit {
 
     onSubmit() {
         this.submitted = true;
-        console.log(this.form.value, this.form, this.form.invalid);
         if (!this.form.invalid) {
             this.projectService.saveProjectOutput({ pk: this.project?.pk, data: this.form.value }).subscribe({
                 next: (res: any) => {
