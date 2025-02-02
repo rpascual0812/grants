@@ -59,6 +59,8 @@ export interface Organization {
     pk?: number;
     partner_pk?: number;
     organization_pk?: number;
+    organization_partner_type_pk?: number;
+    organization_partner_type?: OrganizationPartnerType;
     tribe?: string;
     womens_organization?: boolean;
     youth_organization?: boolean;
@@ -76,6 +78,15 @@ export interface Organization {
     country?: Country;
     project_website?: string;
     date_created?: Date;
+}
+
+export interface OrganizationPartnerType {
+    pk?: number;
+    organization_pk?: number;
+    type?: string;
+    name?: string;
+    description?: string;
+    archived?: boolean;
 }
 
 export interface Country {
@@ -228,7 +239,7 @@ export interface ProjectBeneficiary {
 }
 
 export interface ProjectLocation {
-    country?: Country
+    country?: Country;
     pk?: number;
     project_pk?: number;
     country_pk?: number;
@@ -323,8 +334,8 @@ export interface ProjectAssessment {
     project_pk?: number;
     donor_pk?: number;
     thematic_area_pk?: number;
-    message?: string,
-    created_by?: number,
+    message?: string;
+    created_by?: number;
     date_created?: Date;
     date_updated?: Date;
     archived?: boolean;
