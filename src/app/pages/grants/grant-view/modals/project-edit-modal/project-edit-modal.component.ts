@@ -1,16 +1,8 @@
 import { Component } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Application, Country, ProjectAssessment, Province } from 'src/app/interfaces/_application.interface';
+import { Country, ProjectAssessment, Province } from 'src/app/interfaces/_application.interface';
 import { Project, ProjectSite } from 'src/app/interfaces/_project.interface';
-
-export const PROJECT_EDIT_MODAL_TITLE_MAPPER = {
-    topInformation: `Edit`,
-    projectInformation: `Project Information`,
-    activitiesAndTimeline: `Activities and Timeline`,
-    assessment: `Assessment`,
-};
-
-export type ProjectEditModalTitleMapperKey = keyof typeof PROJECT_EDIT_MODAL_TITLE_MAPPER;
+import { PROJECT_EDIT_SECTION_MAPPER, ProjectEditSectionMapperKey } from '../../grant-view.component';
 
 @Component({
     selector: 'app-project-edit-modal',
@@ -19,7 +11,7 @@ export type ProjectEditModalTitleMapperKey = keyof typeof PROJECT_EDIT_MODAL_TIT
 })
 export class ProjectEditModalComponent {
     project: Project | null = null;
-    section: ProjectEditModalTitleMapperKey | null = null;
+    section: ProjectEditSectionMapperKey | null = null;
     projectAssessment: ProjectAssessment | null = null;
     provinces: Province[] = [];
     countries: Country[] = [];
@@ -33,6 +25,6 @@ export class ProjectEditModalComponent {
         this.provinces = (modalService?.config?.initialState as any)?.provinces;
         this.countries = (modalService?.config?.initialState as any)?.countries;
         this.projectSite = (modalService?.config?.initialState as any)?.projectSite;
-        this.modalTitle = PROJECT_EDIT_MODAL_TITLE_MAPPER?.[this.section as ProjectEditModalTitleMapperKey] ?? '';
+        this.modalTitle = PROJECT_EDIT_SECTION_MAPPER?.[this.section as ProjectEditSectionMapperKey] ?? '';
     }
 }

@@ -19,7 +19,18 @@
                     </div>
                     <div>
                         <h5 class="text-secondary">Grant Number/Code</h5>
-                        <h3 class="text-dark">{{ project?.application?.number }}</h3>
+                        <div *ngIf="projectCodes.length > 0">
+                            <select
+                                class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
+                            >
+                                <option
+                                    *ngFor="let projectCode of projectCodes; let i = index"
+                                    [value]="projectCode.pk"
+                                >
+                                    {{ projectCode.code }}
+                                </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>

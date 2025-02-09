@@ -5,6 +5,7 @@ import {
     ProjectCapDevKnowledge as ProjectCapDevKnowledge,
     ProjectCapDevObserve,
     ProjectCapDevSkill,
+    ProjectCode,
     ProjectFunding,
     ProjectFundingLiquidation,
     ProjectLesson,
@@ -17,7 +18,7 @@ import { AvailableProjectStatus } from '../utilities/constants';
     providedIn: 'root',
 })
 export class ProjectService {
-    constructor(public http: HttpClient) {}
+    constructor(public http: HttpClient) { }
 
     fetch(filters?: any) {
         return this.http.get(`${_.BASE_URL}/projects`, { params: filters });
@@ -282,7 +283,15 @@ export class ProjectService {
         return this.http.get(`${_.BASE_URL}/projects/reports`, { params: filters });
     }
 
-    setGrantType(data: { project_pk: number, pk: number }) {
+    setGrantType(data: { project_pk: number; pk: number }) {
         return this.http.post(`${_.BASE_URL}/projects/${data.project_pk}/grant_type`, data);
+    }
+
+    fetchProjectCodes(data: { project_pk: number }) {
+        return this.http.get(`${_.BASE_URL}/projects/${data.project_pk}/project_codes`);
+    }
+
+    saveProjectCode(data: ProjectCode) {
+        return this.http.post(`${_.BASE_URL}/projects/${data.project_pk}/generate/project_code`, data);
     }
 }

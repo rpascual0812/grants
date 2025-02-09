@@ -38,7 +38,7 @@ export interface Project {
     partner?: Partner;
     type?: Type;
     reviews: Review[];
-    documents?: Document[]
+    documents?: Document[];
 }
 
 export interface ProjectFunding {
@@ -146,4 +146,14 @@ export interface ProjectLesson {
     date_created?: Date;
     date_updated?: Date;
     archived?: boolean;
+}
+
+export interface ProjectCode {
+    pk?: number;
+    project_pk?: number;
+    project_funding_pk?: number;
+    donor_code?: string;
+    code?: string;
+    created_by?: number;
+    date_created?: Date;
 }

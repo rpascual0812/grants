@@ -3,11 +3,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Project } from 'src/app/interfaces/_project.interface';
 import { GrantSignalService } from 'src/app/services/grant.signal.service';
 import { getOtherCurrencyKey } from 'src/app/utilities/constants';
-import {
-    ProjectEditModalComponent,
-    ProjectEditModalTitleMapperKey,
-} from '../../modals/project-edit-modal/project-edit-modal.component';
-import { OnHiddenData } from '../../grant-view.component';
+import { ProjectEditModalComponent } from '../../modals/project-edit-modal/project-edit-modal.component';
+import { OnHiddenData, ProjectEditSectionMapperKey } from '../../grant-view.component';
 
 @Component({
     selector: 'app-activities-timeline',
@@ -17,14 +14,14 @@ import { OnHiddenData } from '../../grant-view.component';
 export class ActivitiesTimelineComponent implements OnInit {
     @Input() project: Project | null = null;
     bsModalRef?: BsModalRef;
-    section: ProjectEditModalTitleMapperKey | null = 'activitiesAndTimeline';
+    section: ProjectEditSectionMapperKey | null = 'activitiesAndTimeline';
     grantSignalService = inject(GrantSignalService);
 
     constructor(private modalService: BsModalService, private changeDetection: ChangeDetectorRef) { }
 
     grantSignalEffect = effect(
         () => {
-            const section = this.grantSignalService.editSectionKey() as ProjectEditModalTitleMapperKey;
+            const section = this.grantSignalService.editSectionKey() as ProjectEditSectionMapperKey;
             if (section === 'activitiesAndTimeline') {
                 this.handleModal();
             }
