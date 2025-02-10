@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation, effect, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Project } from 'src/app/interfaces/_project.interface';
+import { Project, ProjectCode } from 'src/app/interfaces/_project.interface';
 import { GrantSignalService, ProjectForm } from 'src/app/services/grant.signal.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
@@ -9,12 +9,19 @@ import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import * as _ from '../../../utilities/globals';
 import { Document, Type, User } from 'src/app/interfaces/_application.interface';
 import { UserSignalService } from 'src/app/services/user.signal.service';
-import {
-    ProjectEditModalComponent,
-    ProjectEditModalTitleMapperKey,
-} from './modals/project-edit-modal/project-edit-modal.component';
+import { ProjectEditModalComponent } from './modals/project-edit-modal/project-edit-modal.component';
 import { getOtherCurrencyKey } from 'src/app/utilities/constants';
 import { GlobalService } from 'src/app/services/global.service';
+
+export const PROJECT_EDIT_SECTION_MAPPER = {
+    projectCodes: `Grant Number/Code`,
+    topInformation: `Edit`,
+    projectInformation: `Project Information`,
+    activitiesAndTimeline: `Activities and Timeline`,
+    assessment: `Assessment`,
+};
+
+export type ProjectEditSectionMapperKey = keyof typeof PROJECT_EDIT_SECTION_MAPPER;
 
 type SelectItem = {
     pk: number;
@@ -34,6 +41,7 @@ export type OnHiddenData = {
 export class GrantViewComponent implements OnInit {
     loading = true;
     loadingGrantTypes = true;
+    loadingProjectCodes = true;
     bsModalRef?: BsModalRef;
     project: Project | null = null;
     pk = '';
@@ -50,8 +58,9 @@ export class GrantViewComponent implements OnInit {
     restrictions: any = _.RESTRICTIONS;
     permission = _.PERMISSIONS;
 
-    section: ProjectEditModalTitleMapperKey | null = 'topInformation';
+    section: ProjectEditSectionMapperKey | null = 'topInformation';
     grantTypes: Type[] = [];
+    projectCodes: ProjectCode[] = [];
 
     constructor(
         public documentUploaderRef: BsModalRef,
@@ -70,7 +79,7 @@ export class GrantViewComponent implements OnInit {
             this.user?.user_role?.forEach((user_role: any) => {
                 this.permission.contract_finalization =
                     this.restrictions[user_role.role.restrictions.contract_finalization] >
-                    this.restrictions[this.permission.contract_finalization]
+                        this.restrictions[this.permission.contract_finalization]
                         ? user_role.role.restrictions.contract_finalization
                         : this.permission.contract_finalization;
             });
@@ -79,9 +88,14 @@ export class GrantViewComponent implements OnInit {
 
     grantSignalEffect = effect(
         () => {
-            const section = this.grantSignalService.editSectionKey() as ProjectEditModalTitleMapperKey;
+            const section = this.grantSignalService.editSectionKey() as ProjectEditSectionMapperKey;
             if (section === 'topInformation') {
                 this.handleModal();
+            }
+
+            if (section === 'projectCodes') {
+                this.fetchProjectCodes();
+                this.grantSignalService.editSectionKey.set(null);
             }
         },
         {
@@ -95,12 +109,13 @@ export class GrantViewComponent implements OnInit {
         this.user?.user_role?.forEach((user_role: any) => {
             this.permission.contract_finalization =
                 this.restrictions[user_role.role.restrictions.contract_finalization] >
-                this.restrictions[this.permission.contract_finalization]
+                    this.restrictions[this.permission.contract_finalization]
                     ? user_role.role.restrictions.contract_finalization
                     : this.permission.contract_finalization;
         });
 
         this.fetch();
+        this.fetchProjectCodes();
     }
 
     fetch() {
@@ -128,6 +143,37 @@ export class GrantViewComponent implements OnInit {
         });
     }
 
+    fetchProjectCodes() {
+        this.loadingProjectCodes = true;
+        this.projectService
+            .fetchProjectCodes({
+                project_pk: +this.pk,
+            })
+            .subscribe({
+                next: (res: any) => {
+                    const data = res?.data as ProjectCode[];
+                    const status = res?.status;
+                    if (status) {
+                        this.projectCodes = data ?? [];
+                    } else {
+                        this.toastr.error(
+                            `An error occurred while fetching Project Codes. Please try again.`,
+                            'ERROR!'
+                        );
+                    }
+                    this.loadingProjectCodes = false;
+                },
+                error: (err) => {
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
+                    this.toastr.error(
+                        `An error occurred while fetching Project Codes. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
+                    this.loadingProjectCodes = false;
+                },
+            });
+    }
+
     handleIsOpenChange($event: boolean, section: string) {
         if ($event) {
             this.currentExpanded.add(section);
@@ -136,7 +182,7 @@ export class GrantViewComponent implements OnInit {
         }
     }
 
-    handleOnEdit($event: MouseEvent, section: string) {
+    handleOnEdit($event: MouseEvent, section: ProjectEditSectionMapperKey) {
         $event.stopPropagation();
         this.grantSignalService.editSectionKey.set(section);
     }
@@ -152,7 +198,7 @@ export class GrantViewComponent implements OnInit {
                 financial_management_training: !this.project?.financial_management_training,
             })
             .subscribe({
-                next: (data: any) => {},
+                next: (data: any) => { },
                 error: (error: any) => {
                     this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
                 },

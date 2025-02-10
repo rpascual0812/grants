@@ -1,3 +1,4 @@
+import { ProjectCode } from './../../../../../../interfaces/_project.interface';
 import { onHiddenDataFundingLiquidation } from './../../../modals/funding-release-liquidation-modal/funding-release-liquidation-modal.component';
 import { ChangeDetectorRef, Component, Input, OnInit, effect, inject } from '@angular/core';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
@@ -57,7 +58,11 @@ export class FundingReleaseComponent implements OnInit {
             this.user = this.userSignalService.user();
 
             this.user?.user_role?.forEach((user_role: any) => {
-                this.permission.fund_release = this.restrictions[user_role.role.restrictions.fund_release] > this.restrictions[this.permission.fund_release] ? user_role.role.restrictions.fund_release : this.permission.fund_release;
+                this.permission.fund_release =
+                    this.restrictions[user_role.role.restrictions.fund_release] >
+                        this.restrictions[this.permission.fund_release]
+                        ? user_role.role.restrictions.fund_release
+                        : this.permission.fund_release;
             });
         });
     }
@@ -109,6 +114,36 @@ export class FundingReleaseComponent implements OnInit {
 
     handleAddLiquidation() {
         this.openLiquidationModal();
+    }
+
+    handleSaveProjectCode(props: Pick<ProjectCode, 'donor_code' | 'project_funding_pk'>) {
+        this.projectService
+            .saveProjectCode({
+                project_pk: this.project?.pk,
+                ...props,
+            })
+            .subscribe({
+                next: (res: any) => {
+                    const status = res.status;
+                    const data = res?.data as ProjectCode
+                    if (status) {
+                        this.grantSignalService.editSectionKey.set('projectCodes');
+                        this.toastr.success(`Project Code ${data?.code ?? ''} has been successfully saved`, 'SUCCESS!');
+                    } else {
+                        this.toastr.error(`An error occurred while saving Project Code. Please try again.`, 'ERROR!');
+                    }
+                },
+                error: (error) => {
+                    const { statusCode, errorMessage } = extractErrorMessage(error);
+                    this.toastr.error(
+                        `An error occurred while saving Project Code. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
+                },
+                complete: () => {
+                    console.log('Complete');
+                },
+            });
     }
 
     handleEditLiquidation(projectFundingLiquidation?: ProjectFundingLiquidation) {
@@ -229,6 +264,10 @@ export class FundingReleaseComponent implements OnInit {
         });
         this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: onHiddenDataFundingRelease) => {
             if (data?.pk && isSaved) {
+                this.handleSaveProjectCode({
+                    project_funding_pk: data?.pk,
+                    donor_code: data.donor?.code,
+                });
                 this.modifyFundingList(data);
                 this.changeDetection.detectChanges();
             }
@@ -325,17 +364,12 @@ export class FundingReleaseComponent implements OnInit {
 
                 this.projectService
                     .deleteLiquidationAttachment({
-                        pk: funding_liquidation[liquidation_index]?.documents?.[
-                            document_index
-                        ].pk,
+                        pk: funding_liquidation[liquidation_index]?.documents?.[document_index].pk,
                     })
                     .subscribe({
                         next: (data: any) => {
                             if (data.status) {
-                                funding_liquidation[liquidation_index]?.documents?.splice(
-                                    document_index,
-                                    1
-                                );
+                                funding_liquidation[liquidation_index]?.documents?.splice(document_index, 1);
                             }
                         },
                         error: (error: any) => {
@@ -372,7 +406,7 @@ export class FundingReleaseComponent implements OnInit {
         keys.forEach((key: any) => {
             final_currency.push({
                 currency: key,
-                amount: currencies[key]
+                amount: currencies[key],
             });
         });
         return final_currency;
