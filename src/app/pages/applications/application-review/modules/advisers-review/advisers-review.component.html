@@ -37,6 +37,7 @@
                         <span *ngIf="review.needs_resolution">Needs Resolution</span>
                         <span class="mx-2" *ngIf="review.needs_resolution && review.grantee">|</span>
                         <span *ngIf="review.grantee">Grantee</span>
+
                         <span
                             class="badge text-bg-danger text-white mx-2"
                             *ngIf="review.needs_resolution && !review.resolved"
@@ -47,6 +48,7 @@
                             *ngIf="review.needs_resolution && review.resolved"
                             >Marked as Resolved</span
                         >
+
                     </p>
                     <button
                         class="btn btn-icon-only btn-danger rounded-circle"

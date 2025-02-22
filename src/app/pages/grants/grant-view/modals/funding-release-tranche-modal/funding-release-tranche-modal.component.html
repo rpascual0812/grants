@@ -70,7 +70,7 @@
                                 <div class="row mt-3 mb-3" [hidden]="attachments.bank_receipt.length == 0">
                                     <div class="md-12"
                                         *ngFor="let attachment of attachments.bank_receipt; let i = index">
-                                        <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
+                                        <a href="{{  attachment.path }}" target="_blank">{{
                                             attachment.original_name
                                             }}</a>
                                         <a (click)="delete(i, 'bank_receipt')"><i
@@ -126,7 +126,7 @@
                             <div class="row p-2 align-items-center">
                                 <div class="col-12 col-md-3">
                                     <a style="text-decoration: underline" class="">
-                                        <a href="{{ SERVER + '/' + subItem.document?.path }}" target="_blank">{{
+                                        <a href="{{  subItem.document?.path }}" target="_blank">{{
                                             subItem.document?.original_name
                                             }}</a>
                                     </a>
@@ -172,7 +172,7 @@
                                     <div class="row mt-3 mb-3" [hidden]="attachments.report_file.length == 0">
                                         <div class="md-12"
                                             *ngFor="let attachment of attachments.report_file; let i = index">
-                                            <a href="{{ SERVER + '/' + attachment.path }}" target="_blank">{{
+                                            <a href="{{  attachment.path }}" target="_blank">{{
                                                 attachment.original_name
                                                 }}</a>
                                             <a (click)="delete(i, 'report_file')"><i

@@ -122,7 +122,7 @@
                     <p>signed agreement between Grantee-Partner and Fiscal Sponsor</p>
                 </div>
                 <div class="md-12" *ngFor="let attachment of agreements; let i = index">
-                    <a href="{{SERVER + '/' + attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
+                    <a href="{{ attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
                         (click)="deleteAgreement(i)"><i class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                 </div>
                 <button class="btn btn-white mt-2" type="button" (click)="uploadAgreement()">
@@ -258,8 +258,7 @@
                             statement available</label>
                         <p>Latest Financial Statement</p>
                         <div class="md-12" *ngFor="let attachment of financial_statements; let i = index">
-                            <a href="{{SERVER + '/' + attachment.path}}"
-                                target="_blank">{{attachment.original_name}}</a> <a
+                            <a href="{{attachment.path}}" target="_blank">{{attachment.original_name}}</a> <a
                                 (click)="deleteFinancialStatement(i)"><i
                                     class="fa fa-times text-danger mx-2 cursor-pointer"></i></a>
                         </div>

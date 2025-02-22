@@ -41,7 +41,7 @@ export class OrgBankAccountComponent implements OnInit {
         this.setForm();
 
         this.agreements = this.partner?.partner_fiscal_sponsor?.documents;
-        this.financial_statements = this.partner?.organization?.partner_organization_other_information?.documents;
+        this.financial_statements = this.partner?.organization?.partner_organization_other_information?.documents ?? [];
     }
 
     setForm() {
@@ -381,7 +381,9 @@ export class OrgBankAccountComponent implements OnInit {
         this.documentUploaderRef = this.modalService.show(FileUploaderComponent, initialState);
 
         this.documentUploaderRef.content.document.subscribe((res: any) => {
+            console.log(res.file);
             this.financial_statements.push(res.file);
+            console.log(this.financial_statements);
             // this.form.get('documents')?.patchValue(this.financial_statements);
             this.cdr.detectChanges();
         });
