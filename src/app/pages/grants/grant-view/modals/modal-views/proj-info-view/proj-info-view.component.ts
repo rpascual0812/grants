@@ -59,7 +59,7 @@ export class ProjInfoViewComponent implements OnInit {
         private projectService: ProjectService,
         private toastr: ToastrService,
         public documentUploaderRef: BsModalRef
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.provinceOpts = this.provinces?.map((item: any) => ({
@@ -334,6 +334,7 @@ export class ProjInfoViewComponent implements OnInit {
         this.applicationService
             .saveApplicationPartnerOrg({
                 partner_id: this.project?.partner?.partner_id,
+                partner_pk: this.project?.partner?.pk,
                 organization_pk: this.project?.partner?.organization?.pk,
                 project_website: value?.project_website,
             })

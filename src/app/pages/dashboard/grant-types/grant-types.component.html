@@ -1,11 +1,17 @@
-<div class="my-3">
+<div class="my-1">
     <div class="card">
-        <div class="card-header bg-dark-blue">
+        <div class="card-header bg-dark-blue p-2">
             <div class="d-flex flex-wrap flex-row justify-content-between">
-                <h6 class="text-white">Grant Types</h6>
+                <h6 class="text-white px-2">Grant Category</h6>
             </div>
         </div>
         <div class="card-body">
+            <div class="container text-center" *ngIf="loading">
+                <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
             <div *ngIf="!loading" chartType="bar" class="bar-chart">
                 <canvas
                     baseChart
@@ -18,53 +24,21 @@
             </div>
         </div>
     </div>
-    <div class="card my-3">
-        <div class="card-header bg-dark-blue">
+    <div class="card my-2">
+        <div class="card-header bg-dark-blue p-2">
             <div class="d-flex flex-wrap flex-row justify-content-between">
-                <h6 class="text-white">Grant Types</h6>
+                <h6 class="text-white px-2">Grant Category</h6>
             </div>
         </div>
         <div class="card-body py-2">
             <div class="row p-2">
-                <div class="col-12 col-md-4 position-relative">
-                    <div class="img-container" style="--border-color: #1a73e8">
-                        <img
-                            height="100%"
-                            src="../../../assets/images/chart-image-coin-stacked.png"
-                            class="rounded-circle"
-                        />
+                <div *ngFor="let item of GRANT_CATEGORY_INFO" class="col-12 col-md-4">
+                    <div class="img-container" [ngStyle]="{ '--border-color': item.color }">
+                        <img height="100%" [src]="item.image" class="rounded-circle" />
                     </div>
-                    <div class="card bg-info">
+                    <div class="card d-block" [style.background-color]="item.color">
                         <div class="card-body p-2 m-0">
-                            <p class="text-white p-0 p-1 m-0 mx-1 font-weight-bold">Micro grants</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4">
-                    <div class="img-container" style="--border-color: #4caf50">
-                        <img
-                            height="100%"
-                            src="../../../assets/images/chart-image-bag-of-money.png"
-                            class="rounded-circle"
-                        />
-                    </div>
-                    <div class="card bg-success">
-                        <div class="card-body p-2 m-0">
-                            <p class="text-white p-0 p-1 m-0 mx-1 font-weight-bold w-100">Small grants</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4">
-                    <div class="img-container" style="--border-color: #1a237e">
-                        <img
-                            height="100%"
-                            src="../../../assets/images/chart-image-packages.png"
-                            class="rounded-circle"
-                        />
-                    </div>
-                    <div class="card bg-dark-blue">
-                        <div class="card-body p-2 m-0">
-                            <p class="text-white p-0 p-1 m-0 mx-1 font-weight-bold w-100">Medium grants</p>
+                            <p class="text-white p-0 p-1 m-0 mx-1 font-weight-bold">{{ item.description }}</p>
                         </div>
                     </div>
                 </div>

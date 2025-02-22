@@ -1,15 +1,18 @@
+import { GrantClosingStatus } from './../../../../../utilities/constants';
+import { GlobalService } from './../../../../../services/global.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Chart, ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { PartnerService } from 'src/app/services/partner.service';
 import { ToastrService } from 'ngx-toastr';
-import { Application, Partner } from 'src/app/interfaces/_application.interface';
+import { Application, Partner, Type } from 'src/app/interfaces/_application.interface';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
-import { Project } from 'src/app/interfaces/_project.interface';
+import { Project, ProjectFunding } from 'src/app/interfaces/_project.interface';
 import { GRANT_CLOSING_STATUS } from 'src/app/utilities/constants';
 import { SummaryService } from './summary.service';
 import { GrantPerCountry } from 'src/app/components/common-grants-per-country-chart/common-grants-per-country-chart.component';
+import { ProjectService } from 'src/app/services/project.service';
 interface PartnerList extends Partner {
     applications?: Application[];
 }
@@ -45,9 +48,9 @@ const getCountryFlagPng = (country: string) => {
     styleUrls: ['./summary.component.scss'],
 })
 export class SummaryComponent implements OnInit {
-    // Static Pie Chart
-    @ViewChild(BaseChartDirective) pieChart: BaseChartDirective | undefined;
-    public pieChartOptions: ChartConfiguration['options'] = {
+    // Closure Status Pie Chart
+    @ViewChild(BaseChartDirective) closureStatueChart: BaseChartDirective | undefined;
+    public closureStatusChartOptions: ChartConfiguration['options'] = {
         responsive: true,
         maintainAspectRatio: false,
         layout: {
@@ -70,21 +73,62 @@ export class SummaryComponent implements OnInit {
                 color: 'white',
                 font: {
                     weight: 'bold',
-                    size: 30,
+                    size: 18,
                 },
             },
         },
     };
-    public pieChartData: ChartData<'pie', number[], string | string[]> = {
-        labels: ['Preparing for Project start up', 'Ongoing implementation', 'Mail Sales'],
+    public closureStatusChartData: ChartData<'pie', number[], string | string[]> = {
+        labels: [],
         datasets: [
             {
-                data: [16, 10, 64],
+                data: [],
             },
         ],
     };
-    public pieChartPlugins = [ChartDataLabels];
-    public pieChartType: ChartType = 'pie';
+    public closureStatusChartPlugins = [ChartDataLabels];
+    public closureStatusChartType: ChartType = 'pie';
+
+    // Tranche Status Pie Chart
+    @ViewChild(BaseChartDirective) trancheStatusChart: BaseChartDirective | undefined;
+    public trancheStatusOptions: ChartConfiguration['options'] = {
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+            autoPadding: true,
+        },
+        plugins: {
+            legend: {
+                display: true,
+                position: 'right',
+                labels: {
+                    pointStyle: 'circle',
+                    usePointStyle: true,
+                },
+            },
+            datalabels: {
+                clamp: true,
+                offset: -100,
+                anchor: 'end',
+                align: 'end',
+                color: 'white',
+                font: {
+                    weight: 'bold',
+                    size: 18,
+                },
+            },
+        },
+    };
+    public trancheStatusChartData: ChartData<'pie', number[], string | string[]> = {
+        labels: [],
+        datasets: [
+            {
+                data: [],
+            },
+        ],
+    };
+    public trancheStatusChartPlugins = [ChartDataLabels];
+    public trancheStatusChartType: ChartType = 'pie';
 
     // Grants Applied Per Country Pie Chart
     @ViewChild(BaseChartDirective) grantsAppliedPerCountryChart: BaseChartDirective | undefined;
@@ -111,7 +155,7 @@ export class SummaryComponent implements OnInit {
                 color: 'white',
                 font: {
                     weight: 'bold',
-                    size: 30,
+                    size: 18,
                 },
             },
         },
@@ -152,7 +196,7 @@ export class SummaryComponent implements OnInit {
                 color: 'white',
                 font: {
                     weight: 'bold',
-                    size: 30,
+                    size: 18,
                 },
             },
         },
@@ -193,7 +237,7 @@ export class SummaryComponent implements OnInit {
                 color: 'white',
                 font: {
                     weight: 'bold',
-                    size: 30,
+                    size: 18,
                 },
             },
         },
@@ -264,79 +308,28 @@ export class SummaryComponent implements OnInit {
     ];
     public grantsPerCountryChartType: ChartType = 'bar';
 
-    // Static Bar Chart
-    @ViewChild(BaseChartDirective) barChart: BaseChartDirective<'bar'> | undefined;
-    public barChartChartOptions: ChartConfiguration['options'] = {
-        // We use these empty structures as placeholders for dynamic theming.
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-            legend: {
-                display: false,
-            },
-            datalabels: {
-                clamp: true,
-                offset: -100,
-                anchor: 'end',
-                align: 'end',
-                color: 'white',
-                font: {
-                    weight: 'bold',
-                    size: 18,
-                },
-            },
-        },
-        scales: {
-            x: {
-                ticks: {
-                    autoSkip: false,
-                    font: {
-                        size: 14,
-                    },
-                    callback: (tickValue, index, ticks) => {
-                        const label = this.barChartData.labels?.at(index) ?? '';
-                        if (/\s/.test(label as string)) {
-                            return (label as string)?.split(' ');
-                        }
-                        return label as string;
-                    },
-                },
-            },
-            y: {
-                max: 1000,
-                ticks: {
-                    font: {
-                        size: 18,
-                    },
-                },
-            },
-        },
-    };
-    public barChartData: ChartData<'bar'> = {
-        labels: [
-            'Climate related',
-            'Indigenous',
-            'Support and Recovery from Pandemic',
-            'Unrestricted',
-            'Disability Rights',
-        ],
+    // Total Amount Of Grants Per Theme Bar Chart
+    @ViewChild(BaseChartDirective) totalAmountOfGrantsPerThemeBarChart: BaseChartDirective<'bar'> | undefined;
+    public totalAmountOfGrantsPerThemeBarChartOptions: ChartConfiguration['options'] = {};
+    public totalAmountOfGrantsPerThemeBarChartData: ChartData<'bar'> = {
+        labels: [],
         datasets: [
             {
-                backgroundColor: ['rgba(255, 99, 132)', 'rgba(255, 159, 64)', 'rgba(255, 205, 86)'],
-                data: [501, 764, 623, 501, 764],
-                borderRadius: 10,
-                barThickness: 100,
+                backgroundColor: [],
+                data: [],
             },
         ],
     };
-    public barChartPlugins = [ChartDataLabels];
-    public barChartType: ChartType = 'bar';
+    public totalAmountOfGrantsPerThemeBarChartPlugins = [ChartDataLabels];
+    public totalAmountOfGrantsPerThemeBarChartType: ChartType = 'bar';
 
     constructor(
         private partnerService: PartnerService,
         private toastr: ToastrService,
-        private summaryService: SummaryService
-    ) {}
+        private summaryService: SummaryService,
+        private gloablService: GlobalService,
+        private projectService: ProjectService
+    ) { }
 
     totalFirstTimeGranteeCount = 0;
     totalGrantsApproved = 0;
@@ -347,12 +340,17 @@ export class SummaryComponent implements OnInit {
         approvedGrantsPerCountry: true,
         appliedGrantsPerCountry: true,
         grantsPerType: true,
+        totalAmountOfGrantsPerTheme: true,
+        closureStatus: true,
+        trancheStatus: true,
     };
 
     summaryTotalGrantsPerCountry: SummaryChart[] = [];
     summaryTotalApprovedGrantsPerCountry: SummaryChart[] = [];
     summaryTotalAppliedGrantsPerCountry: SummaryChart[] = [];
     summaryTotalGrantsPerType: SummaryChart[] = [];
+    summaryClosureStatus: SummaryChart[] = [];
+    summaryTrancheStatus: SummaryChart[] = [];
 
     ngOnInit() {
         this.summaryService.currentProjectList.subscribe((value) => {
@@ -362,40 +360,31 @@ export class SummaryComponent implements OnInit {
                 this.processFirstTimeGrantee([]);
                 this.processGrantsPerType([]);
                 this.processGrantsPerCountry([]);
+                this.processTotalAmountOfGrantsPerTheme([]);
+                this.processClosureStatus([]);
+                this.processTrancheStatus([]);
             } else {
                 this.processGrantsApproved(value?.projects ?? []);
                 this.processFirstTimeGrantee(value?.projects ?? []);
                 this.processGrantsPerType(value?.projects ?? []);
                 this.processGrantsPerCountry(value?.projects ?? []);
-                if (this.barChart?.data) {
-                    this.barChart.data.labels = [
-                        'Climate related',
-                        'Indigenous',
-                        'Support and Recovery from Pandemic',
-                        'Unrestricted',
-                        'Disability Rights',
-                    ];
-                    this.barChart.data.datasets = [
-                        {
-                            backgroundColor: ['rgba(255, 99, 132)', 'rgba(255, 159, 64)', 'rgba(255, 205, 86)'],
-                            data: [501, 764, 623, 501, 764],
-                            borderRadius: 10,
-                            barThickness: 100,
-                        },
-                    ];
-                    this.barChart?.update();
-                }
+                this.processTotalAmountOfGrantsPerTheme(value?.projects ?? []);
+                this.processClosureStatus(value?.projects ?? []);
+                this.processTrancheStatus(value?.projects ?? []);
             }
         });
     }
 
     processGrantsApproved(projects: Project[]) {
-        const approvedGrants = projects?.filter((proj) => proj.closing_status === GRANT_CLOSING_STATUS.completed);
-        this.totalGrantsApproved = approvedGrants?.reduce((total, acc) => {
+        this.totalGrantsApproved = projects?.reduce((total, acc) => {
             return (total += isNaN(Number(acc?.project_proposal?.budget_request_usd))
                 ? 0
                 : Number(acc?.project_proposal?.budget_request_usd));
         }, 0);
+    }
+
+    filterFirstTimeProjects(applications?: Application[]) {
+        return applications?.filter((app) => app?.project !== null && app?.project?.status !== null);
     }
 
     processFirstTimeGrantee(projects: Project[]) {
@@ -405,7 +394,7 @@ export class SummaryComponent implements OnInit {
                 const data: PartnerList[] = res?.data ?? [];
                 if (status) {
                     const firstTimeGrantee = data
-                        ?.filter((partner) => partner?.applications?.length === 1)
+                        ?.filter((partner) => this.filterFirstTimeProjects(partner?.applications)?.length === 1)
                         ?.map((partner) => partner.pk);
                     let partnerPks: number[] = [];
                     let countFirstTimeGrantee = 0;
@@ -458,22 +447,22 @@ export class SummaryComponent implements OnInit {
         const countGrantsPerCountry: Record<string, CountryMapperObj> = {};
         projects?.forEach((proj) => {
             const projectLoc = proj?.project_location ?? [];
-            projectLoc?.forEach((loc) => {
-                const countryPk = loc?.country_pk;
-                if (countryPk) {
-                    if (!countGrantsPerCountry[countryPk]) {
-                        countGrantsPerCountry[countryPk] = {
-                            pk: countryPk,
-                            code: loc?.country?.code ?? '',
-                            name: loc?.country?.name ?? '',
-                            count: 1,
-                        };
-                    } else {
-                        countGrantsPerCountry[countryPk].count += 1;
-                    }
+            const firstProjectLoc = projectLoc?.at(0);
+            const countryPk = firstProjectLoc?.country_pk;
+            if (countryPk) {
+                if (!countGrantsPerCountry[countryPk]) {
+                    countGrantsPerCountry[countryPk] = {
+                        pk: countryPk,
+                        code: firstProjectLoc?.country?.code ?? '',
+                        name: firstProjectLoc?.country?.name ?? '',
+                        count: 1,
+                    };
+                } else {
+                    countGrantsPerCountry[countryPk].count += 1;
                 }
-            });
+            }
         });
+
         return countGrantsPerCountry;
     }
 
@@ -501,25 +490,22 @@ export class SummaryComponent implements OnInit {
     getCountApprovedGrantsPerCountry(projects: Project[]) {
         const countGrantsPerCountry: Record<string, CountryMapperObj> = {};
         projects?.forEach((proj) => {
-            const status = proj?.closing_status;
             const projectLoc = proj?.project_location ?? [];
-            if (status === GRANT_CLOSING_STATUS.completed) {
-                projectLoc?.forEach((loc) => {
-                    const countryPk = loc?.country_pk;
-                    if (countryPk) {
-                        if (!countGrantsPerCountry[countryPk]) {
-                            countGrantsPerCountry[countryPk] = {
-                                pk: countryPk,
-                                code: loc?.country?.code ?? '',
-                                name: loc?.country?.name ?? '',
-                                count: 1,
-                            };
-                        } else {
-                            countGrantsPerCountry[countryPk].count += 1;
-                        }
+            projectLoc?.forEach((loc) => {
+                const countryPk = loc?.country_pk;
+                if (countryPk) {
+                    if (!countGrantsPerCountry[countryPk]) {
+                        countGrantsPerCountry[countryPk] = {
+                            pk: countryPk,
+                            code: loc?.country?.code ?? '',
+                            name: loc?.country?.name ?? '',
+                            count: 1,
+                        };
+                    } else {
+                        countGrantsPerCountry[countryPk].count += 1;
                     }
-                });
-            }
+                }
+            });
         });
         return countGrantsPerCountry;
     }
@@ -550,25 +536,22 @@ export class SummaryComponent implements OnInit {
     getCountAppliedGrantsPerCountry(projects: Project[]) {
         const countGrantsPerCountry: Record<string, any> = {};
         projects?.forEach((proj) => {
-            const status = proj?.status;
             const projectLoc = proj?.project_location ?? [];
-            if (status) {
-                projectLoc?.forEach((loc) => {
-                    const countryPk = loc?.country_pk;
-                    if (countryPk) {
-                        if (!countGrantsPerCountry[countryPk]) {
-                            countGrantsPerCountry[countryPk] = {
-                                pk: countryPk,
-                                code: loc?.country?.code,
-                                name: loc?.country?.name,
-                                count: 1,
-                            };
-                        } else {
-                            countGrantsPerCountry[countryPk].count += 1;
-                        }
+            projectLoc?.forEach((loc) => {
+                const countryPk = loc?.country_pk;
+                if (countryPk) {
+                    if (!countGrantsPerCountry[countryPk]) {
+                        countGrantsPerCountry[countryPk] = {
+                            pk: countryPk,
+                            code: loc?.country?.code,
+                            name: loc?.country?.name,
+                            count: 1,
+                        };
+                    } else {
+                        countGrantsPerCountry[countryPk].count += 1;
                     }
-                });
-            }
+                }
+            });
         });
         return countGrantsPerCountry;
     }
@@ -599,12 +582,6 @@ export class SummaryComponent implements OnInit {
     processGrantsPerType(projects: Project[]) {
         this.loading.grantsPerType = true;
         this.summaryTotalGrantsPerType = [];
-        const approvedGrants = projects?.filter((proj) => proj.closing_status === GRANT_CLOSING_STATUS.completed);
-        this.totalGrantsApproved = approvedGrants?.reduce((total, acc) => {
-            return (total += isNaN(Number(acc?.project_proposal?.budget_request_usd))
-                ? 0
-                : Number(acc?.project_proposal?.budget_request_usd));
-        }, 0);
         const combinedProjects = projects?.filter((proj) => proj.status !== null) ?? [];
         const totalProjects = combinedProjects?.length;
         const { microGrantsCount, smallGrantsCount, mediumGrantsCount } = this.getGrantTypesCount(combinedProjects);
@@ -613,15 +590,15 @@ export class SummaryComponent implements OnInit {
         const mediumGrantValue = this.getPercentageValue(mediumGrantsCount, totalProjects);
         const combinedGrantValue = [
             {
-                label: 'Micro Grants',
+                label: `Micro Grants - ${microGrantsCount}`,
                 data: microGrantValue,
             },
             {
-                label: 'Small Grants',
+                label: `Small Grants - ${smallGrantsCount}`,
                 data: smallGrantValue,
             },
             {
-                label: 'Medium Grants',
+                label: `Medium Grants - ${mediumGrantsCount}`,
                 data: mediumGrantValue,
             },
         ];
@@ -697,5 +674,210 @@ export class SummaryComponent implements OnInit {
             codes,
             data,
         };
+    }
+
+    getTotalAmountOfGrantsPerThemeData(labels: string[], projects: Project[]) {
+        const typeMapper = labels.reduce((acc, value) => {
+            acc[value] = 0;
+            return acc;
+        }, {} as Record<string, number>);
+
+        projects.forEach((prj) => {
+            const type = prj?.type?.name;
+            if (type && typeof type === 'string') {
+                typeMapper[type] = typeMapper[type] + 1;
+            }
+        });
+        const data: number[] = [];
+        const dataLabels: string[] = [];
+        let maxYValue = 5;
+        labels.forEach((label) => {
+            if (typeMapper[label] > 0) {
+                dataLabels.push(label);
+                data.push(typeMapper[label]);
+                maxYValue += typeMapper[label];
+            }
+        });
+
+        return {
+            dataLabels,
+            data,
+            maxYValue,
+        };
+    }
+
+    processTotalAmountOfGrantsPerTheme(projects: Project[]) {
+        this.loading.totalAmountOfGrantsPerTheme = true;
+        this.gloablService.selectFetch(`types`).subscribe({
+            next: (res: any) => {
+                const data: Type[] = res?.data ?? [];
+                const status = res?.status;
+                if (status) {
+                    const labels = data?.map((item) => item?.name ?? '').filter((item) => item?.trim() !== '');
+                    if (labels.length > 0 && this.totalAmountOfGrantsPerThemeBarChart?.data) {
+                        const {
+                            data: associatedData,
+                            dataLabels: associatedLabels,
+                            maxYValue,
+                        } = this.getTotalAmountOfGrantsPerThemeData(labels, projects);
+                        this.totalAmountOfGrantsPerThemeBarChartData.labels = associatedLabels;
+                        this.totalAmountOfGrantsPerThemeBarChartData.datasets = [
+                            {
+                                data: associatedData,
+                                borderRadius: 10,
+                                barThickness: 100,
+                            },
+                        ];
+
+                        this.totalAmountOfGrantsPerThemeBarChartOptions = {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                },
+                                datalabels: {
+                                    color: 'white',
+                                    font: {
+                                        weight: 'bold',
+                                    },
+                                },
+                            },
+                            scales: {
+                                x: {
+                                    ticks: {
+                                        autoSkip: false,
+                                        font: {
+                                            size: 18,
+                                        },
+                                        callback: (_tickValue, index, _ticks) => {
+                                            const label =
+                                                this.totalAmountOfGrantsPerThemeBarChartData.labels?.at(index) ?? '';
+                                            if (/\s/.test(label as string)) {
+                                                return (label as string)?.split(' ');
+                                            }
+                                            return label as string;
+                                        },
+                                    },
+                                },
+                                y: {
+                                    max: maxYValue,
+                                    ticks: {
+                                        font: {
+                                            size: 18,
+                                        },
+                                    },
+                                },
+                            },
+                        };
+                        this.totalAmountOfGrantsPerThemeBarChart?.update();
+                    }
+                } else {
+                    this.toastr.error('An error occurred while fetching Grant Types. Please try again', 'ERROR!');
+                }
+                this.loading.totalAmountOfGrantsPerTheme = false;
+            },
+            error: (err) => {
+                this.loading.totalAmountOfGrantsPerTheme = false;
+                const { errorMessage, statusCode } = extractErrorMessage(err);
+                this.toastr.error(
+                    `An error occurred while fetching Grant Types. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+            },
+        });
+    }
+
+    processClosureStatus(projects: Project[]) {
+        this.loading.closureStatus = true;
+        this.summaryClosureStatus = [];
+        let total = 0;
+
+        const closureStatusLabel = Object.entries(GRANT_CLOSING_STATUS).map(([key, value]) => value);
+        const closureStatusMapper = closureStatusLabel.reduce((acc, value) => {
+            acc[value] = 0;
+            return acc;
+        }, {} as Record<string, number>);
+
+        projects.forEach((proj) => {
+            const projClosingStatus = proj?.closing_status ?? '';
+            if (closureStatusLabel.includes(projClosingStatus as GrantClosingStatus)) {
+                closureStatusMapper[projClosingStatus] = closureStatusMapper[projClosingStatus] + 1;
+                total++;
+            }
+        });
+
+        Object.entries(closureStatusMapper).forEach(([key, value]) => {
+            if (value > 0) {
+                const label = `${key} - ${value}`;
+                this.summaryClosureStatus.push({
+                    label,
+                    data: this.getPercentageValue(value, total),
+                });
+            }
+        });
+
+        this.closureStatusChartData.labels = this.summaryClosureStatus.map((value) => value.label);
+        this.closureStatusChartData.datasets = [
+            {
+                data: this.summaryClosureStatus.map((value) => value.data),
+            },
+        ];
+        this.closureStatueChart?.update();
+        this.loading.closureStatus = false;
+    }
+
+    processTrancheStatus(projects: Project[]) {
+        this.loading.trancheStatus = true;
+        const projectPks = projects?.map((proj) => proj.pk) ?? [];
+        this.summaryTrancheStatus = [];
+        this.projectService.fetchProjectFundingAll().subscribe({
+            next: (res: any) => {
+                const status = res?.status;
+                const projectFunding: ProjectFunding[] = res?.data?.project_funding ?? [];
+                if (status) {
+                    const availableProjFunding =
+                        projectFunding.filter((projFunding) => projectPks.includes(projFunding?.project_pk)) ?? [];
+                    let total = 0;
+                    const projFundingMapper = availableProjFunding?.reduce((acc, value) => {
+                        const trancheTitle = value?.title ?? '';
+                        if (trancheTitle.trim() !== '' && acc[trancheTitle] !== undefined) {
+                            acc[trancheTitle] = acc[trancheTitle] + 1;
+                            total++;
+                        } else if (trancheTitle.trim() !== '' && acc[trancheTitle] === undefined) {
+                            acc[trancheTitle] = 1;
+                            total++;
+                        }
+                        return acc;
+                    }, {} as Record<string, number>);
+
+                    Object.entries(projFundingMapper).forEach(([key, value]) => {
+                        this.summaryTrancheStatus.push({
+                            label: `${key} - ${value}`,
+                            data: this.getPercentageValue(value, total),
+                        });
+                    });
+
+                    this.trancheStatusChartData.labels = this.summaryTrancheStatus.map((value) => value.label);
+                    this.trancheStatusChartData.datasets = [
+                        {
+                            data: this.summaryTrancheStatus.map((value) => value.data),
+                        },
+                    ];
+                    this.trancheStatusChart?.update();
+                } else {
+                    this.toastr.error('An error occurred while fetching Project Funding. Please try again', 'ERROR!');
+                }
+                this.loading.trancheStatus = false;
+            },
+            error: (err) => {
+                const { errorMessage, statusCode } = extractErrorMessage(err);
+                this.toastr.error(
+                    `An error occurred while fetching Project Funding. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+                this.loading.trancheStatus = false;
+            },
+        });
     }
 }

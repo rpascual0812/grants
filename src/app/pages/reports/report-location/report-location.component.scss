@@ -1,0 +1,12 @@
+.circle-legend {
+    width: 15px; 
+    height: 15px; 
+    display: inline-block; 
+    border-radius: 50%;
+}
+
+.google-visualization-tooltip {
+    .google-visualization-tooltip-item-list li:nth-child(2) {
+        display: none;
+    }
+}

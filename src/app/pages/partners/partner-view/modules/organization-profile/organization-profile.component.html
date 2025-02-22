@@ -1,7 +1,7 @@
 <div>
     <ng-container *ngIf="!loading">
         <h4 class="text-dark">Organization Profile</h4>
-        <div class="row my-5 g-0">
+        <div class="row my-3 g-0">
             <div class="col-12 col-md-5">
                 <div class="row">
                     <div class="col-12 col-md-6">
@@ -11,6 +11,18 @@
                         <p class="text-sm font-weight-bold text-secondary">{{ kindOfOrg }}</p>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <p class="text-sm font-weight-bold text-dark">Partner Type</p>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <p class="text-sm font-weight-bold text-secondary">
+                            {{ orgPartnerType }}
+                        </p>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-12 col-md-6">
                         <p class="text-sm font-weight-bold text-dark">Country</p>
@@ -62,7 +74,7 @@
             </div>
         </div>
 
-        <h4 class="text-dark">References</h4>
+        <h4 class="text-dark py-1 m-0">References</h4>
         <div class="row" *ngFor="let item of partner?.organization?.partner_organization_reference; let i = index">
             <div class="col-12 col-md-3">
                 <div class="form-group my-3">

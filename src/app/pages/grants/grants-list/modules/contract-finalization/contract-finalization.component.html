@@ -6,56 +6,80 @@
     </div>
     <ng-container *ngIf="!loading">
         <div class="card my-2">
-            <div class="card-header py-2" style="background-color: #245b9d">
-                <h5 class="text-white text-center">Contract Preparation</h5>
+            <div class="card-header py-1" style="background-color: #245b9d">
+                <h6 class="text-white text-center m-0 p-0">Contract Preparation</h6>
             </div>
             <div class="card-body overflow-auto p-0 m-0">
                 <table class="table">
                     <thead>
                         <tr style="background-color: #7b97e2">
-                            <th class="p-2 text-white" scope="col">Partner ID</th>
-                            <th class="p-2 text-white" scope="col" sortable="partner" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col">Partner ID</th>
+                            <th class="p-2 text-white text-sm" scope="col" sortable="partner" (sort)="onSort($event)">
                                 Partner
                             </th>
-                            <th class="p-2 text-white" scope="col" sortable="title" (sort)="onSort($event)">Title</th>
-                            <th class="p-2 text-white" scope="col" sortable="applicationDate" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="title" (sort)="onSort($event)">
+                                Title
+                            </th>
+                            <th
+                                class="p-2 text-white text-sm"
+                                scope="col"
+                                sortable="applicationDate"
+                                (sort)="onSort($event)"
+                            >
                                 Approved Date
                             </th>
-                            <th class="p-2 text-white" scope="col" sortable="proposedBudget" (sort)="onSort($event)">
+                            <th
+                                class="p-2 text-white text-sm"
+                                scope="col"
+                                sortable="proposedBudget"
+                                (sort)="onSort($event)"
+                            >
                                 Approved Budget
                             </th>
-                            <th class="p-2 text-white" scope="col" sortable="donorProject" (sort)="onSort($event)">
+                            <th
+                                class="p-2 text-white text-sm"
+                                scope="col"
+                                sortable="donorProject"
+                                (sort)="onSort($event)"
+                            >
                                 Donor/Project
                             </th>
                             <th class="p-2" scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="
+                        <tr
+                            *ngFor="
                                 let item of contractPreparation | paginate : { itemsPerPage: 10, currentPage: page };
                                 index as i
-                            ">
-                            <th class="text-dark font-weight-bold" scope="row">{{ item.partnerId }}</th>
-                            <td class="text-dark font-weight-light">
-                                <span style="font-size: 8px" class="badge rounded-pill"
-                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }">{{ i === 3 ? 'new' : i
-                                    }}</span>
+                            "
+                        >
+                            <th class="text-dark font-weight-bold text-sm" scope="row">{{ item.partnerId }}</th>
+                            <td class="text-dark font-weight-light text-sm">
+                                <span
+                                    style="font-size: 8px"
+                                    class="badge rounded-pill"
+                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }"
+                                    >{{ i === 3 ? 'new' : i }}</span
+                                >
                                 {{ item.partner }}
                             </td>
-                            <td class="text-dark font-weight-light">{{ item.title }}</td>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">{{ item.title }}</td>
+                            <td class="text-dark font-weight-light text-sm">
                                 {{ item.applicationDate | date : 'shortDate' }}
                             </td>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">
                                 {{ item.proposedBudget | number }} USD | {{ item.proposedBudgetOther | number }}
                                 {{ item.proposedBudgetOtherCurrency }}
                             </td>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">
                                 {{ item.donorProject }}
                             </td>
-                            <td class="text-dark font-weight-light">
-                                <button class="btn btn-default text-info"
-                                    [routerLink]="['/grant/' + item.pk + '/review']">
+                            <td class="text-dark font-weight-light text-sm">
+                                <button
+                                    class="btn btn-default text-info"
+                                    [routerLink]="['/grant/' + item.pk + '/review']"
+                                >
                                     Review
                                 </button>
                                 <button class="btn btn-default text-danger">Delete</button>
@@ -73,56 +97,63 @@
         </div>
 
         <div class="card my-2">
-            <div class="card-header py-2" style="background-color: #245b9d">
-                <h5 class="text-white text-center">Final Approval</h5>
+            <div class="card-header py-1" style="background-color: #245b9d">
+                <h6 class="text-white text-center p-0 m-0">Final Approval</h6>
             </div>
             <div class="card-body overflow-auto p-0 m-0">
                 <table class="table">
                     <thead>
                         <tr style="background-color: #7b97e2">
-                            <th class="p-2 text-white" scope="col">Partner ID</th>
-                            <th class="p-2 text-white" scope="col" sortable="partner" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col">Partner ID</th>
+                            <th class="p-2 text-white text-sm" scope="col" sortable="partner" (sort)="onSort($event)">
                                 Partner
                             </th>
-                            <th class="p-2 text-white" scope="col" sortable="title" (sort)="onSort($event)">Title</th>
-                            <th class="p-2 text-white" scope="col" sortable="applicationDate" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="title" (sort)="onSort($event)">Title</th>
+                            <th class="p-2 text-white text-sm" scope="col" sortable="applicationDate" (sort)="onSort($event)">
                                 Approved Date
                             </th>
-                            <th class="p-2 text-white" scope="col" sortable="proposedBudget" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="proposedBudget" (sort)="onSort($event)">
                                 Approved Budget
                             </th>
-                            <th class="p-2 text-white" scope="col" sortable="donorProject" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="donorProject" (sort)="onSort($event)">
                                 Donor/Project
                             </th>
                             <th class="p-2" scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="
+                        <tr
+                            *ngFor="
                                 let item of finalApproval | paginate : { itemsPerPage: 10, currentPage: page };
                                 index as i
-                            ">
-                            <th class="text-dark font-weight-bold" scope="row">{{ item.partnerId }}</th>
-                            <td class="text-dark font-weight-light">
-                                <span style="font-size: 8px" class="badge rounded-pill"
-                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }">{{ i === 3 ? 'new' : i
-                                    }}</span>
+                            "
+                        >
+                            <th class="text-dark font-weight-bold text-sm" scope="row">{{ item.partnerId }}</th>
+                            <td class="text-dark font-weight-light text-sm">
+                                <span
+                                    style="font-size: 8px"
+                                    class="badge rounded-pill"
+                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }"
+                                    >{{ i === 3 ? 'new' : i }}</span
+                                >
                                 {{ item.partner }}
                             </td>
-                            <td class="text-dark font-weight-light">{{ item.title }}</td>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">{{ item.title }}</td>
+                            <td class="text-dark font-weight-light text-sm">
                                 {{ item.applicationDate | date : 'shortDate' }}
                             </td>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">
                                 {{ item.proposedBudget | number }} USD | {{ item.proposedBudgetOther | number }}
                                 {{ item.proposedBudgetOtherCurrency }}
                             </td>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">
                                 {{ item.donorProject }}
                             </td>
-                            <td class="text-dark font-weight-light">
-                                <button class="btn btn-default text-info"
-                                    [routerLink]="['/grant/' + item.pk + '/review']">
+                            <td class="text-dark font-weight-light text-sm">
+                                <button
+                                    class="btn btn-default text-info"
+                                    [routerLink]="['/grant/' + item.pk + '/review']"
+                                >
                                     Review
                                 </button>
                                 <button class="btn btn-default text-danger">Delete</button>
@@ -140,57 +171,64 @@
         </div>
 
         <div class="card my-2">
-            <div class="card-header py-2" style="background-color: #245b9d">
-                <h5 class="text-white text-center">Partner Signing</h5>
+            <div class="card-header py-1" style="background-color: #245b9d">
+                <h6 class="text-white text-center p-0 m-0">Partner Signing</h6>
             </div>
             <div class="card-body overflow-auto p-0 m-0">
                 <table class="table">
                     <thead>
                         <tr style="background-color: #7b97e2">
-                            <th class="p-2 text-white" scope="col">Partner ID</th>
-                            <th class="p-2 text-white" scope="col" sortable="partner" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col">Partner ID</th>
+                            <th class="p-2 text-white text-sm" scope="col" sortable="partner" (sort)="onSort($event)">
                                 Partner
                             </th>
-                            <th class="p-2 text-white" scope="col" sortable="title" (sort)="onSort($event)">Title</th>
-                            <th class="p-2 text-white" scope="col" sortable="applicationDate" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="title" (sort)="onSort($event)">Title</th>
+                            <th class="p-2 text-white text-sm" scope="col" sortable="applicationDate" (sort)="onSort($event)">
                                 Approved Date
                             </th>
-                            <th class="p-2 text-white" scope="col" sortable="proposedBudget" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="proposedBudget" (sort)="onSort($event)">
                                 Approved Budget
                             </th>
-                            <th class="p-2 text-white" scope="col" sortable="donorProject" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="donorProject" (sort)="onSort($event)">
                                 Donor/Project
                             </th>
                             <th class="p-2" scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="
+                        <tr
+                            *ngFor="
                                 let item of partnerSigning | paginate : { itemsPerPage: 10, currentPage: page };
                                 index as i
-                            ">
-                            <th class="text-dark font-weight-bold" scope="row">{{ item.partnerId }}</th>
-                            <td class="text-dark font-weight-light">
-                                <span style="font-size: 8px" class="badge rounded-pill"
-                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }">{{ i === 3 ? 'new' : i
-                                    }}</span>
+                            "
+                        >
+                            <th class="text-dark font-weight-bold text-sm" scope="row">{{ item.partnerId }}</th>
+                            <td class="text-dark font-weight-light text-sm">
+                                <span
+                                    style="font-size: 8px"
+                                    class="badge rounded-pill"
+                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }"
+                                    >{{ i === 3 ? 'new' : i }}</span
+                                >
                                 {{ item.partner }}
                             </td>
-                            <td class="text-dark font-weight-light">{{ item.title }}</td>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">{{ item.title }}</td>
+                            <td class="text-dark font-weight-light text-sm">
                                 {{ item.applicationDate | date : 'shortDate' }}
                             </td>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">
                                 {{ item.proposedBudget | number }} USD | {{ item.proposedBudgetOther | number }}
                                 {{ item.proposedBudgetOtherCurrency }}
                             </td>
 
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">
                                 {{ item.donorProject }}
                             </td>
-                            <td class="text-dark font-weight-light">
-                                <button class="btn btn-default text-info"
-                                    [routerLink]="['/grant/' + item.pk + '/review']">
+                            <td class="text-dark font-weight-light text-sm">
+                                <button
+                                    class="btn btn-default text-info"
+                                    [routerLink]="['/grant/' + item.pk + '/review']"
+                                >
                                     Review
                                 </button>
                                 <button class="btn btn-default text-danger">Delete</button>

@@ -5,6 +5,7 @@ import {
     ProjectCapDevKnowledge as ProjectCapDevKnowledge,
     ProjectCapDevObserve,
     ProjectCapDevSkill,
+    ProjectCode,
     ProjectFunding,
     ProjectFundingLiquidation,
     ProjectLesson,
@@ -17,7 +18,7 @@ import { AvailableProjectStatus } from '../utilities/constants';
     providedIn: 'root',
 })
 export class ProjectService {
-    constructor(public http: HttpClient) {}
+    constructor(public http: HttpClient) { }
 
     fetch(filters?: any) {
         return this.http.get(`${_.BASE_URL}/projects`, { params: filters });
@@ -29,6 +30,10 @@ export class ProjectService {
 
     fetchProjectFunding(params: { project_pk?: number }) {
         return this.http.get(`${_.BASE_URL}/projects/${params?.project_pk}/project_funding`);
+    }
+
+    fetchProjectFundingAll() {
+        return this.http.get(`${_.BASE_URL}/projects/project_funding`);
     }
 
     saveSignedContractAttachment(data: any) {
@@ -114,7 +119,6 @@ export class ProjectService {
     }
 
     saveAttendee(project_pk: number, data: any) {
-        console.log(data);
         return this.http.post(`${_.BASE_URL}/projects/${project_pk}/events/${data.project_event_pk}/attendee`, data);
     }
 
@@ -277,5 +281,17 @@ export class ProjectService {
 
     fetchReportProjects(filters: any) {
         return this.http.get(`${_.BASE_URL}/projects/reports`, { params: filters });
+    }
+
+    setGrantType(data: { project_pk: number; pk: number }) {
+        return this.http.post(`${_.BASE_URL}/projects/${data.project_pk}/grant_type`, data);
+    }
+
+    fetchProjectCodes(data: { project_pk: number }) {
+        return this.http.get(`${_.BASE_URL}/projects/${data.project_pk}/project_codes`);
+    }
+
+    saveProjectCode(data: ProjectCode) {
+        return this.http.post(`${_.BASE_URL}/projects/${data.project_pk}/generate/project_code`, data);
     }
 }

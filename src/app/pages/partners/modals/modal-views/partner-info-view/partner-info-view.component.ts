@@ -34,7 +34,7 @@ export class PartnerInfoViewComponent implements OnInit {
         public documentUploaderRef: BsModalRef,
         private cdr: ChangeDetectorRef,
         private documentService: DocumentService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.setForm();
@@ -47,8 +47,10 @@ export class PartnerInfoViewComponent implements OnInit {
     setForm() {
         const contact = this.partner?.contacts?.at(0);
         const partnerId = this.partner?.partner_id;
+        const partnerPk = this.partner?.pk;
         this.attachments = [...(this.partner?.documents ?? [])];
         this.form = this.formBuilder.group({
+            pk: [partnerPk],
             partner_id: [partnerId],
             name: [this.partner?.name ?? '', Validators.required],
             address: [this.partner?.address ?? '', Validators.required],
@@ -69,6 +71,7 @@ export class PartnerInfoViewComponent implements OnInit {
     getFormValue() {
         const { value } = this.form;
         return {
+            pk: value.pk,
             partner_id: value.partner_id,
             name: value.name,
             address: value.address,

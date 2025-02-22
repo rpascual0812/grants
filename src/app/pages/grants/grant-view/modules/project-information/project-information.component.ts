@@ -8,10 +8,9 @@ import { GrantSignalService } from 'src/app/services/grant.signal.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import {
     ProjectEditModalComponent,
-    ProjectEditModalTitleMapperKey,
 } from '../../modals/project-edit-modal/project-edit-modal.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { OnHiddenData } from '../../grant-view.component';
+import { OnHiddenData, ProjectEditSectionMapperKey } from '../../grant-view.component';
 
 @Component({
     selector: 'app-project-information',
@@ -26,7 +25,7 @@ export class ProjectInformationComponent implements OnInit {
     loadingProvinceFetch = true;
     loadingProjectSite = true;
 
-    section: ProjectEditModalTitleMapperKey | null = 'projectInformation';
+    section: ProjectEditSectionMapperKey | null = 'projectInformation';
     countries: Country[] = [];
     provinces: Province[] = [];
     projectSite: ProjectSite[] = [];
@@ -38,11 +37,11 @@ export class ProjectInformationComponent implements OnInit {
         private toastr: ToastrService,
         private modalService: BsModalService,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) { }
 
     grantSignalEffect = effect(
         () => {
-            const section = this.grantSignalService.editSectionKey() as ProjectEditModalTitleMapperKey;
+            const section = this.grantSignalService.editSectionKey() as ProjectEditSectionMapperKey;
             if (section === 'projectInformation') {
                 this.handleModal();
             }

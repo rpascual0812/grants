@@ -1,8 +1,8 @@
-<div class="my-3">
-    <div class="card my-3">
-        <div class="card-header bg-dark-blue">
+<div class="my-1">
+    <div class="card">
+        <div class="card-header bg-dark-blue p-2">
             <div class="d-flex flex-wrap flex-row justify-content-between">
-                <h6 class="text-white">Samdhana Thematic Areas</h6>
+                <h6 class="text-white px-2">Samdhana Thematic Areas</h6>
             </div>
         </div>
         <div class="card-body py-2">
@@ -10,15 +10,36 @@
                 <div class="col-12 col-md-6 position-relative mb-2" *ngFor="let area of areas; let i = index">
                     <div class="row">
                         <div class="col-md-2">
-                            <div style="width: 100%; height: 100px;" [style]="'background-color:' + area.color"></div>
+                            <div
+                                class="rounded-2 thematic-image"
+                                [style.background-color]="area['color']"
+                                [style.background-image]="'url(' + area['image'] + ')'"
+                            ></div>
                         </div>
                         <div class="col-md-10">
-                            <h5 style="margin-bottom: 0px !important;">{{area.title}}</h5>
-                            <ul style="list-style-type: none; margin: 0; padding: 0;">
-                                <li *ngFor="let area of area.descriptions;" style="font-size: 13px;">
-                                    {{area}}
-                                </li>
-                            </ul>
+                            <h5 style="margin-bottom: 0px !important">{{ area['title'] }}</h5>
+                            <p
+                                class="text-sm text-justify lh-base mb-0"
+                                [ngClass]="{ 'descriptions-line-clamp': getShowMoreFlag(area.title) }"
+                            >
+                                {{ area['descriptions'] }}
+                            </p>
+                            <ng-container *ngIf="area['displayShowMore']">
+                                <button
+                                    *ngIf="getShowMoreFlag(area.title)"
+                                    class="btn btn-default text-xs text-dark-blue p-0 m-0 text-lowercase"
+                                    (click)="handleOnToggleShowMore(area['title'])"
+                                >
+                                    show more
+                                </button>
+                                <button
+                                    *ngIf="!getShowMoreFlag(area.title)"
+                                    class="btn btn-default text-xs text-dark-blue p-0 m-0 text-lowercase"
+                                    (click)="handleOnToggleShowMore(area['title'])"
+                                >
+                                    show less
+                                </button>
+                            </ng-container>
                         </div>
                     </div>
                 </div>

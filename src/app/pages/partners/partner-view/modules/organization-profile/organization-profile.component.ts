@@ -7,7 +7,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PartnerEditModalComponent } from '../../../modals/partner-edit-modal/partner-edit-modal.component';
 import { OnHiddenData } from '../../partner-view.component';
 import { KIND_OF_ORGANIZATION_MAPPER } from 'src/app/utilities/constants';
-import { Country, KindOfOrganization } from 'src/app/interfaces/_application.interface';
+import { Country, KindOfOrganization, OrganizationPartnerType } from 'src/app/interfaces/_application.interface';
 
 @Component({
     selector: 'app-organization-profile',
@@ -19,6 +19,10 @@ export class OrganizationProfileComponent implements OnInit {
     partner: PartnerForm | null = null;
     listOfOrgs: KindOfOrganization[] = [];
     kindOfOrg = '';
+
+    listOfOrgPartnerTypes: OrganizationPartnerType[] = [];
+    orgPartnerType = '';
+
     listOfCountry: Country[] = [];
     countryName = '';
     partnerSignalService = inject(PartnerSignalService);
@@ -29,7 +33,7 @@ export class OrganizationProfileComponent implements OnInit {
         private bsModalRef: BsModalRef,
         private modalService: BsModalService,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) { }
 
     partnerSignalEffect = effect(
         () => {
@@ -48,6 +52,7 @@ export class OrganizationProfileComponent implements OnInit {
         this.countryName = (this.partner?.organization as any)?.country?.name;
         this.fetchOrganization();
         this.fetchCountry();
+        this.fetchOrgPartnerType()
     }
 
     fetchOrganization() {
@@ -83,6 +88,33 @@ export class OrganizationProfileComponent implements OnInit {
         } else {
             return kindOfOrgName;
         }
+    }
+
+    fetchOrgPartnerType() {
+        this.loading = true;
+        this.globalService.selectFetch(`organization/partner_type`).subscribe({
+            next: (res: any) => {
+                const data = res?.data;
+                const status = res?.status;
+                if (status) {
+                    const organizationPk = this.partner?.organization?.organization_partner_type_pk;
+                    this.listOfOrgPartnerTypes = data;
+                    this.orgPartnerType =
+                        this.listOfOrgPartnerTypes?.find((item: any) => item.pk === organizationPk)?.name ?? '';
+                } else {
+                    this.toastr.error(`An error occurred while fetching organization partner type. Please try again.`, 'ERROR!');
+                }
+                this.loading = false;
+            },
+            error: (err) => {
+                const { statusCode, errorMessage } = extractErrorMessage(err);
+                this.toastr.error(
+                    `An error occurred while fetching organization partner type. ${statusCode} ${errorMessage} Please try again.`,
+                    'ERROR!'
+                );
+                this.loading = false;
+            },
+        });
     }
 
     fetchCountry() {
@@ -128,6 +160,10 @@ export class OrganizationProfileComponent implements OnInit {
                 this.kindOfOrg = this.getKindOfOrgName(organizationPk ?? null, this.listOfOrgs);
                 this.countryName =
                     this.listOfCountry?.find((item: any) => item.pk === data?.organization?.country_pk)?.name ?? '';
+                this.orgPartnerType =
+                    this.listOfOrgPartnerTypes?.find(
+                        (item: any) => item.pk === data?.organization?.organization_partner_type_pk
+                    )?.name ?? '';
                 this.changeDetection.detectChanges();
             }
         });

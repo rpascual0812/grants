@@ -53,17 +53,26 @@
     <div class="row row-cols-1 row-cols-md-2 g-4">
         <div class="col">
             <div class="card">
-                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Status Breakdown</h4>
+                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Tranche Status</h4>
                 <div class="card-body">
-                    <div>
+                    <div class="container text-center" *ngIf="loading.trancheStatus">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!loading.trancheStatus">
                         <canvas
+                            *ngIf="summaryTrancheStatus.length > 0"
                             baseChart
-                            [plugins]="pieChartPlugins"
-                            [data]="pieChartData"
-                            [type]="pieChartType"
-                            [options]="pieChartOptions"
+                            [plugins]="trancheStatusChartPlugins"
+                            [data]="trancheStatusChartData"
+                            [type]="trancheStatusChartType"
+                            [options]="trancheStatusOptions"
                         >
                         </canvas>
+                        <div class="min-height-300" *ngIf="summaryTrancheStatus.length === 0">
+                            <h5 class="text-center text-warning text-bold">No Data Available</h5>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,17 +80,26 @@
 
         <div class="col">
             <div class="card">
-                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Force Breakdown</h4>
+                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Closure Status</h4>
                 <div class="card-body">
-                    <div>
+                    <div class="container text-center" *ngIf="loading.closureStatus">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!loading.closureStatus">
                         <canvas
+                            *ngIf="summaryClosureStatus.length > 0"
                             baseChart
-                            [plugins]="pieChartPlugins"
-                            [data]="pieChartData"
-                            [type]="pieChartType"
-                            [options]="pieChartOptions"
+                            [plugins]="closureStatusChartPlugins"
+                            [data]="closureStatusChartData"
+                            [type]="closureStatusChartType"
+                            [options]="closureStatusChartOptions"
                         >
                         </canvas>
+                        <div class="min-height-300" *ngIf="summaryClosureStatus.length === 0">
+                            <h5 class="text-center text-warning text-bold">No Data Available</h5>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -199,21 +217,21 @@
     <div class="row row-cols-1 my-3">
         <div class="col">
             <div class="card">
-                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Amount of Grants going per Theme/Focus</h4>
+                <h4 class="text-dark pt-4 ps-4 font-weight-bold">Total Amount of Grants per Theme</h4>
                 <div class="card-body">
-                    <div class="container text-center" *ngIf="loading.section">
+                    <div class="container text-center" *ngIf="loading.totalAmountOfGrantsPerTheme">
                         <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
 
-                    <div *ngIf="!loading.section">
+                    <div *ngIf="!loading.totalAmountOfGrantsPerTheme">
                         <canvas
                             baseChart
-                            [data]="barChartData"
-                            [options]="barChartChartOptions"
-                            [type]="barChartType"
-                            [plugins]="barChartPlugins"
+                            [data]="totalAmountOfGrantsPerThemeBarChartData"
+                            [options]="totalAmountOfGrantsPerThemeBarChartOptions"
+                            [type]="totalAmountOfGrantsPerThemeBarChartType"
+                            [plugins]="totalAmountOfGrantsPerThemeBarChartPlugins"
                         >
                         </canvas>
                     </div>

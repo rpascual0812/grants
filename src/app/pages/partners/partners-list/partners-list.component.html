@@ -6,8 +6,12 @@
         </div>
         <div class="col-12 col-md-2">
             <div class="form-control">
-                <app-select [url]="'types'" (onSelectEvent)="onChangeSelectedItem($event, 'type_pk')"
-                    (onDeSelectEvent)="onChangeSelectedItem($event, 'type_pk')" placeholder="Grant Type"></app-select>
+                <app-select
+                    [url]="'types'"
+                    (onSelectEvent)="onChangeSelectedItem($event, 'type_pk')"
+                    (onDeSelectEvent)="onChangeSelectedItem($event, 'type_pk')"
+                    placeholder="Grant Type"
+                ></app-select>
             </div>
         </div>
         <div class="col-12 col-md-3">
@@ -22,34 +26,64 @@
         </div>
         <div class="col-12 col-md-3">
             <div class="form-control">
-                <app-select [url]="'organization'" placeholder="Type Of Organization"
+                <app-select
+                    [url]="'organization'"
+                    placeholder="Type Of Organization"
                     (onSelectEvent)="onChangeSelectedItem($event, 'organization_pk')"
-                    (onDeSelectEvent)="onChangeSelectedItem($event, 'organization_pk')"></app-select>
+                    (onDeSelectEvent)="onChangeSelectedItem($event, 'organization_pk')"
+                ></app-select>
             </div>
         </div>
     </div>
     <div class="row g-1 align-items-center">
-        <div class="col-12 col-md-1"></div>
-        <div class="col-12 col-md-5">
-            <div class="form-control d-flex flex-wrap flex-row gap-1">
-                <div class="d-flex border rounded-2 p-1">
-                    <input type="text" style="width: 280px" class="form-control text-dark p-1"
-                        placeholder="Type here..." [(ngModel)]="filter['keyword']" #ctrl="ngModel" />
-                    <button [disabled]="(filter.keyword?.length ?? 0) === 0" class="btn btn-icon-only"
-                        (click)="handleClearKeyword()">
+        <div class="col-12 col-md-1">
+            <label class="text-dark text-sm font-weight-bold">Filter by</label>
+        </div>
+        <div class="col-12 col-md-2">
+            <input
+                class="form-control border rounded-1 p-1"
+                type="number"
+                min="1900"
+                max="2099"
+                step="1"
+                #datepickerFull="bsDatepicker"
+                bsDatepicker
+                placeholder="Year"
+                (bsValueChange)="handleFilterDateCreatedByYear($event)"
+                [bsConfig]="{ dateInputFormat: 'YYYY', minMode: 'year' }"
+            />
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="form-control d-flex flex-wrap flex-row gap-3 align-items-end">
+                <label class="text-dark text-sm font-weight-bold">Search</label>
+                <div class="d-flex border rounded-2 p-1" style="height: 36px">
+                    <input
+                        type="text"
+                        style="min-width: 260px"
+                        class="form-control text-dark p-1"
+                        placeholder="Partner name"
+                        [(ngModel)]="filter['keyword']"
+                        #ctrl="ngModel"
+                    />
+                    <button
+                        [disabled]="(filter.keyword?.length ?? 0) === 0"
+                        class="btn btn-icon-only"
+                        style="bottom: 25%"
+                        (click)="handleClearKeyword()"
+                    >
                         <i class="material-icons mb-1" [hidden]="(filter.keyword?.length ?? 0) === 0">cancel</i>
                     </button>
                 </div>
 
-                <button class="btn btn-dark-blue text-xs p-0 m-0 px-2 py-1" (click)="handleSearchKeyword()">
+                <button class="btn btn-dark-blue text-xs" (click)="handleSearchKeyword()">
                     <i class="material-icons mb-0">search</i> Search
                 </button>
             </div>
         </div>
     </div>
-    <div class="d-flex flex-wrap justify-content-between align-items-center">
-        <h6 class="mt-4">List of Partners</h6>
-        <button type="button" class="btn btn-dark-blue" style="height: 40px" (click)="handleAddPartner()">
+    <div class="d-flex flex-wrap justify-content-between align-items-end pt-2">
+        <h6 class="p-0 m-0">List of Partners</h6>
+        <button type="button" class="btn btn-dark-blue text-xs" style="height: 36px" (click)="handleAddPartner()">
             Add Partners
         </button>
     </div>
@@ -63,19 +97,27 @@
     <ng-container *ngIf="partnersList.length > 0 && !loading">
         <div class="container overflow-auto max-height-800">
             <accordion *ngIf="!loading" [isAnimated]="true" [closeOthers]="oneAtATime">
-                <accordion-group *ngFor="
+                <accordion-group
+                    *ngFor="
                         let item of partnersList
                             | paginate : { itemsPerPage: tableSize, currentPage: page, id: 'partnerList' }
-                    " style="min-width: 1000px !important"
+                    "
+                    style="min-width: 1000px !important"
                     [panelClass]="item?.['expanded'] ? 'custom-accordion-expanded' : 'custom-accordion-collapsed'"
-                    (isOpenChange)="handleIsOpenChange($event, item?.pk)">
+                    (isOpenChange)="handleIsOpenChange($event, item?.pk)"
+                >
                     <button
-                        class="btn btn-link btn-block justify-content-between d-flex w-100 shadow-none align-items-center"
-                        accordion-heading type="button">
+                        class="btn btn-link btn-block justify-content-between d-flex w-100 shadow-none align-items-center px-1 py-1"
+                        accordion-heading
+                        type="button"
+                    >
                         <div class="pull-left float-left">
                             <div class="flex d-flex flex-row gap-1 align-items-center">
-                                <a class="text-xs text-dark font-weight-bold m-0 p-0"
-                                    [routerLink]="['/partner', item?.partner_id, 'information']">{{ item?.name }}</a>
+                                <a
+                                    class="text-xs text-dark font-weight-bold m-0 p-0"
+                                    [routerLink]="['/partner', item?.pk, 'information']"
+                                    >{{ item?.name }}</a
+                                >
                                 <div class="d-flex" style="height: 30px">
                                     <div class="vr"></div>
                                 </div>
@@ -94,7 +136,7 @@
                                 </p>
                                 <i class="material-icons text-dark">{{ item?.['expanded'] ? 'expand_less' :
                                     'expand_more'
-                                    }}</i>
+                                }}</i>
                             </div>
                         </div>
                     </button>
@@ -117,15 +159,18 @@
                             <div class="w-100 border border-top-1 border-dark my-1"></div>
                             <div class="row my-1" *ngFor="let application of item?.applications ?? []">
                                 <div class="col-4">
-                                    <a class="text-dark text-sm m-0 p-0" [routerLink]="['/grant', application?.project?.pk, 'review']">
+                                    <a
+                                        class="text-dark text-sm m-0 p-0"
+                                        [routerLink]="['/grant', application?.project?.pk, 'review']"
+                                    >
                                         {{ application?.project?.title }}
                                     </a>
                                 </div>
                                 <div class="col-2">
                                     <p class="text-dark text-sm m-0 p-0">
                                         {{
-                                        application?.project?.project_proposal?.budget_request_usd
-                                        | currency : 'USD'
+                                            application?.project?.project_proposal?.budget_request_usd
+                                                | currency : 'USD'
                                         }}
                                     </p>
                                 </div>

@@ -8,6 +8,7 @@ import { OnHiddenData } from '../../partner-view.component';
 import { PartnerEditModalComponent } from '../../../modals/partner-edit-modal/partner-edit-modal.component';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { UserService } from 'src/app/services/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-evaluations',
@@ -23,6 +24,7 @@ export class EvaluationsComponent implements OnInit {
         message: '',
     };
     user: User | null = null;
+    partnerId: string = '';
 
     partnerSignalService = inject(PartnerSignalService);
     constructor(
@@ -30,8 +32,11 @@ export class EvaluationsComponent implements OnInit {
         private changeDetection: ChangeDetectorRef,
         private partnerService: PartnerService,
         private userService: UserService,
-        private toastr: ToastrService
-    ) {}
+        private toastr: ToastrService,
+        private route: ActivatedRoute,
+    ) {
+        this.partnerId = this.route.snapshot.paramMap.get('partnerId') ?? '';
+    }
 
     ngOnInit() {
         this.partner = this.partnerSignalService.partnerForm();
@@ -59,7 +64,7 @@ export class EvaluationsComponent implements OnInit {
 
     fetch() {
         this.loading = true;
-        this.partnerService.fetchPartnerAssessments(this.partner?.pk).subscribe({
+        this.partnerService.fetchPartnerAssessments(+this.partnerId).subscribe({
             next: (res: any) => {
                 const status = res?.status;
                 const data = res?.data;

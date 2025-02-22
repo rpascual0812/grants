@@ -72,30 +72,35 @@ export const TOTAL_GRANT_PER_FUNCTION = {
         total: 0,
         imagePath: '../../../assets/images/travel-icon.png',
         color: '#23327FFF',
+        description: `Support for travels of members of CSOs and IPLCs to attend meetings, conferences, and other capacity development, research, or knowledge sharing activities/events.`,
     },
     'CapDev / Institutional Development Support': {
         associatedKey: ['Capacity Development', 'Institutional Development'],
         total: 0,
         imagePath: '../../../assets/images/group-icon.png',
         color: '#3B5E61FF',
+        description: `Empower and equip strategically local CSOs and IPLCs to cater to the requirement of organization good governance.`,
     },
     'Urgent Grant Action': {
         associatedKey: ['Urgent Grant'],
         total: 0,
         imagePath: '../../../assets/images/police-light-icon.png',
         color: '#84A6EFFF',
+        description: `Support activists, communities, CSOs who are in emergency situations that sometimes mean life and death for a community or an individual, i.e. for urgent evacuation, or for local responders in natural disasters, other support for legal action and others.`,
     },
     'Education Grant and Indigenous Knowledge Building': {
         associatedKey: ['Education Grant', 'Indigenous Knowledge Building'],
         total: 0,
         imagePath: '../../../assets/images/education-icon.png',
         color: '#fcc203',
+        description: `Assist the member of IPLCs in enrolling in various formal and/or informal/or vocational training/education programmes to equip them with the necessary knowledge for better management capacity; good governance and/or livelihoods improvement.`,
     },
     'Resiliency Building and Social Justice Grant': {
         associatedKey: ['Resiliency Building', 'Social Justice Grant'],
         total: 0,
         imagePath: '../../../assets/images/justice-hammer-icon.png',
         color: '#7591EDFF',
+        description: `Provide support for indigenous peoples, local communities, individual leaders and activists, CSOs and networks of social and environmental movements in SEA to improve their ability to respond to the ever changing conditions in the region.`,
     },
 };
 

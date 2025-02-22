@@ -1,16 +1,32 @@
 import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation, effect, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Project } from 'src/app/interfaces/_project.interface';
+import { Project, ProjectCode } from 'src/app/interfaces/_project.interface';
 import { GrantSignalService, ProjectForm } from 'src/app/services/grant.signal.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import * as _ from '../../../utilities/globals';
-import { Document, User } from 'src/app/interfaces/_application.interface';
+import { Document, Type, User } from 'src/app/interfaces/_application.interface';
 import { UserSignalService } from 'src/app/services/user.signal.service';
-import { ProjectEditModalComponent, ProjectEditModalTitleMapperKey } from './modals/project-edit-modal/project-edit-modal.component';
+import { ProjectEditModalComponent } from './modals/project-edit-modal/project-edit-modal.component';
 import { getOtherCurrencyKey } from 'src/app/utilities/constants';
+import { GlobalService } from 'src/app/services/global.service';
+
+export const PROJECT_EDIT_SECTION_MAPPER = {
+    projectCodes: `Grant Number/Code`,
+    topInformation: `Edit`,
+    projectInformation: `Project Information`,
+    activitiesAndTimeline: `Activities and Timeline`,
+    assessment: `Assessment`,
+};
+
+export type ProjectEditSectionMapperKey = keyof typeof PROJECT_EDIT_SECTION_MAPPER;
+
+type SelectItem = {
+    pk: number;
+    name: string;
+};
 
 export type OnHiddenData = {
     isSaved: boolean;
@@ -24,6 +40,8 @@ export type OnHiddenData = {
 })
 export class GrantViewComponent implements OnInit {
     loading = true;
+    loadingGrantTypes = true;
+    loadingProjectCodes = true;
     bsModalRef?: BsModalRef;
     project: Project | null = null;
     pk = '';
@@ -40,13 +58,16 @@ export class GrantViewComponent implements OnInit {
     restrictions: any = _.RESTRICTIONS;
     permission = _.PERMISSIONS;
 
-    section: ProjectEditModalTitleMapperKey | null = 'topInformation';
+    section: ProjectEditSectionMapperKey | null = 'topInformation';
+    grantTypes: Type[] = [];
+    projectCodes: ProjectCode[] = [];
 
     constructor(
         public documentUploaderRef: BsModalRef,
         private cdr: ChangeDetectorRef,
         private modalService: BsModalService,
         private projectService: ProjectService,
+        private globalService: GlobalService,
         private route: ActivatedRoute,
         private toastr: ToastrService
     ) {
@@ -56,17 +77,25 @@ export class GrantViewComponent implements OnInit {
             this.user = this.userSignalService.user();
 
             this.user?.user_role?.forEach((user_role: any) => {
-                this.permission.contract_finalization = this.restrictions[user_role.role.restrictions.contract_finalization] > this.restrictions[this.permission.contract_finalization] ? user_role.role.restrictions.contract_finalization : this.permission.contract_finalization;
+                this.permission.contract_finalization =
+                    this.restrictions[user_role.role.restrictions.contract_finalization] >
+                        this.restrictions[this.permission.contract_finalization]
+                        ? user_role.role.restrictions.contract_finalization
+                        : this.permission.contract_finalization;
             });
         });
     }
 
-
     grantSignalEffect = effect(
         () => {
-            const section = this.grantSignalService.editSectionKey() as ProjectEditModalTitleMapperKey;
+            const section = this.grantSignalService.editSectionKey() as ProjectEditSectionMapperKey;
             if (section === 'topInformation') {
                 this.handleModal();
+            }
+
+            if (section === 'projectCodes') {
+                this.fetchProjectCodes();
+                this.grantSignalService.editSectionKey.set(null);
             }
         },
         {
@@ -86,6 +115,7 @@ export class GrantViewComponent implements OnInit {
         });
 
         this.fetch();
+        this.fetchProjectCodes();
     }
 
     fetch() {
@@ -113,6 +143,37 @@ export class GrantViewComponent implements OnInit {
         });
     }
 
+    fetchProjectCodes() {
+        this.loadingProjectCodes = true;
+        this.projectService
+            .fetchProjectCodes({
+                project_pk: +this.pk,
+            })
+            .subscribe({
+                next: (res: any) => {
+                    const data = res?.data as ProjectCode[];
+                    const status = res?.status;
+                    if (status) {
+                        this.projectCodes = data ?? [];
+                    } else {
+                        this.toastr.error(
+                            `An error occurred while fetching Project Codes. Please try again.`,
+                            'ERROR!'
+                        );
+                    }
+                    this.loadingProjectCodes = false;
+                },
+                error: (err) => {
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
+                    this.toastr.error(
+                        `An error occurred while fetching Project Codes. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
+                    this.loadingProjectCodes = false;
+                },
+            });
+    }
+
     handleIsOpenChange($event: boolean, section: string) {
         if ($event) {
             this.currentExpanded.add(section);
@@ -121,7 +182,7 @@ export class GrantViewComponent implements OnInit {
         }
     }
 
-    handleOnEdit($event: MouseEvent, section: string) {
+    handleOnEdit($event: MouseEvent, section: ProjectEditSectionMapperKey) {
         $event.stopPropagation();
         this.grantSignalService.editSectionKey.set(section);
     }
@@ -139,7 +200,6 @@ export class GrantViewComponent implements OnInit {
             .subscribe({
                 next: (data: any) => { },
                 error: (error: any) => {
-                    console.log(error);
                     this.toastr.error('An error occurred while updating the user. Please try again', 'ERROR!');
                 },
                 complete: () => {
@@ -159,7 +219,7 @@ export class GrantViewComponent implements OnInit {
 
         this.bsModalRef.onHidden?.subscribe(({ data, isSaved }: OnHiddenData) => {
             if (data && isSaved) {
-                this.project = data?.project as Project
+                this.project = data?.project as Project;
                 this.cdr.detectChanges();
             }
         });
@@ -171,22 +231,49 @@ export class GrantViewComponent implements OnInit {
         ev.stopPropagation();
         const data = {
             pk: grant.pk,
-            overall_grant_status: ev.target.value
-        }
+            overall_grant_status: ev.target.value,
+        };
         this.projectService.setGrantOverallStatus(data).subscribe({
             next: (res: any) => {
-                this.toastr.success(
-                    `Overall Grant Status successfully saved`,
-                    'SUCCESS!'
-                );
+                this.toastr.success(`Overall Grant Status successfully saved`, 'SUCCESS!');
             },
             error: (err) => {
-                const { statusCode, errorMessage } = extractErrorMessage(err)
+                const { statusCode, errorMessage } = extractErrorMessage(err);
                 this.toastr.error(
                     `An error occurred while fetching Application. ${statusCode} ${errorMessage} Please try again.`,
                     'ERROR!'
                 );
             },
         });
+    }
+
+    onSelectItem($event: SelectItem[]) {
+        const pk = $event?.at(0)?.pk;
+        this.setGrantType(pk as number);
+    }
+
+    setGrantType(grantTypePk: number) {
+        this.projectService
+            .setGrantType({
+                project_pk: this.project?.pk as number,
+                pk: grantTypePk,
+            })
+            .subscribe({
+                next: (res: any) => {
+                    const status = res?.status;
+                    if (status) {
+                        this.toastr.success(`Grant Function successfully saved`, 'SUCCESS!');
+                    } else {
+                        this.toastr.error(`An error occurred while saving Grant Function. Please try again.`, 'ERROR!');
+                    }
+                },
+                error: (err) => {
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
+                    this.toastr.error(
+                        `An error occurred while saving Grant Function. ${statusCode} ${errorMessage} Please try again.`,
+                        'ERROR!'
+                    );
+                },
+            });
     }
 }

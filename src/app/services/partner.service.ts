@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from '../utilities/globals';
-import { PartnerAssessment } from '../interfaces/_application.interface';
+import { Partner, PartnerAssessment } from '../interfaces/_application.interface';
 @Injectable({
     providedIn: 'root',
 })
@@ -38,5 +38,9 @@ export class PartnerService {
 
     deleteAttachment(pk: number) {
         return this.http.delete(`${_.BASE_URL}/documents/${pk}`);
+    }
+
+    generatePartnerId(data: Partner) {
+        return this.http.post(`${_.BASE_URL}/partner/partner_id/generate`, data);
     }
 }

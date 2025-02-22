@@ -7,16 +7,16 @@
 
     <ng-container *ngIf="!loading">
         <div class="card my-2">
-            <div class="card-header py-2" style="background-color: #0b2cb5">
-                <h5 class="text-white text-center">Fund Release</h5>
+            <div class="card-header py-1" style="background-color: #0b2cb5">
+                <h6 class="text-white text-center p-0 m-0">Fund Release</h6>
             </div>
             <div class="card-body overflow-auto p-0 m-0">
                 <table class="table" style="table-layout: fixed">
                     <thead>
                         <tr style="background-color: #474ca5">
-                            <th class="p-2 text-white" style="width: 180px" scope="col">Partner ID</th>
+                            <th class="p-2 text-white text-sm" style="width: 180px" scope="col">Partner ID</th>
                             <th
-                                class="p-2 text-white"
+                                class="p-2 text-white text-sm"
                                 style="width: 175px"
                                 scope="col"
                                 sortable="partner"
@@ -25,7 +25,7 @@
                                 Partner
                             </th>
                             <th
-                                class="p-2 text-white"
+                                class="p-2 text-white text-sm"
                                 style="width: 135px"
                                 scope="col"
                                 sortable="title"
@@ -34,7 +34,7 @@
                                 Title
                             </th>
                             <th
-                                class="p-2 text-white"
+                                class="p-2 text-white text-sm"
                                 style="width: 115px"
                                 scope="col"
                                 sortable="applicationDate"
@@ -43,7 +43,7 @@
                                 Approved Date
                             </th>
                             <th
-                                class="p-2 text-white"
+                                class="p-2 text-white text-sm"
                                 style="width: 130px"
                                 scope="col"
                                 sortable="proposedBudget"
@@ -52,7 +52,7 @@
                                 Approved Budget
                             </th>
                             <th
-                                class="p-2 text-white"
+                                class="p-2 text-white text-sm"
                                 style="width: 150px"
                                 scope="col"
                                 sortable="donorProject"
@@ -68,31 +68,31 @@
                             *ngFor="let item of fundRelease | paginate : { itemsPerPage: 10, currentPage: page }"
                         >
                             <th
-                                class="text-dark font-weight-bold text-start text-wrap"
+                                class="text-dark font-weight-bold text-start text-wrap text-sm"
                                 style="width: 215px"
                                 scope="row"
                             >
                                 {{ item.partnerId }}
                             </th>
 
-                            <td class="text-dark font-weight-light text-wrap text-start" style="width: 215px">
+                            <td class="text-dark font-weight-light text-wrap text-start text-sm" style="width: 215px">
                                 {{ item.partner }}
                             </td>
 
                             <td class="text-dark font-weight-light text-wrap text-start" style="width: 215px">
                                 {{ item.title }}
                             </td>
-                            <td class="text-dark font-weight-light text-wrap text-start" style="width: 100px">
+                            <td class="text-dark font-weight-light text-wrap text-start text-sm" style="width: 100px">
                                 {{ item.applicationDate | date : 'shortDate' }}
                             </td>
-                            <td class="text-dark font-weight-light text-wrap text-start" style="width: 150px">
+                            <td class="text-dark font-weight-light text-wrap text-start text-sm" style="width: 150px">
                                 {{ item.proposedBudget | number }} USD | {{ item.proposedBudgetOther | number }}
                                 {{ item.proposedBudgetOtherCurrency }}
                             </td>
-                            <td class="text-dark font-weight-light text-wrap text-start" style="width: 150px">
+                            <td class="text-dark font-weight-light text-wrap text-start text-sm" style="width: 150px">
                                 {{ item.donorProject }}
                             </td>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">
                                 <div class="d-flex flex-wrap gap-2 align-items-center">
                                     <button
                                         class="btn btn-default text-info p-1 m-0 text-xs"
@@ -122,22 +122,22 @@
         </div>
 
         <div class="card my-2">
-            <div class="card-header py-2" style="background-color: #0b2cb5">
-                <h5 class="text-white text-center">Completed Grants</h5>
+            <div class="card-header py-1" style="background-color: #0b2cb5">
+                <h6 class="text-white text-center p-0 m-0">Completed Grants</h6>
             </div>
             <div class="card-body overflow-auto p-0 m-0">
                 <table class="table">
                     <thead>
                         <tr style="background-color: #474ca5">
-                            <th class="p-2 text-white" scope="col">Partner ID</th>
-                            <th class="p-2 text-white" scope="col" sortable="partner" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col">Partner ID</th>
+                            <th class="p-2 text-white text-sm" scope="col" sortable="partner" (sort)="onSort($event)">
                                 Partner
                             </th>
-                            <th class="p-2 text-white" scope="col" sortable="title" (sort)="onSort($event)">Title</th>
-                            <th class="p-2 text-white" scope="col" sortable="applicationDate" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="title" (sort)="onSort($event)">Title</th>
+                            <th class="p-2 text-white text-sm" scope="col" sortable="applicationDate" (sort)="onSort($event)">
                                 Approved Date
                             </th>
-                            <th class="p-2 text-white" scope="col" sortable="proposedBudget" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="proposedBudget" (sort)="onSort($event)">
                                 Approved Budget
                             </th>
                             <th class="p-2" scope="col"></th>
@@ -145,23 +145,23 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of closingGrant | paginate : { itemsPerPage: 10, currentPage: page }">
-                            <th class="text-dark font-weight-bold" scope="row">
+                            <th class="text-dark font-weight-bold text-sm" scope="row">
                                 {{ item.partnerId }}
                             </th>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">
                                 {{ item.partner }}
                             </td>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">
                                 {{ item.title }}
                             </td>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">
                                 {{ item.applicationDate | date : 'shortDate' }}
                             </td>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">
                                 {{ item.proposedBudget | number }} USD | {{ item.proposedBudgetOther | number }}
                                 {{ item.proposedBudgetOtherCurrency }}
                             </td>
-                            <td class="text-dark font-weight-light">
+                            <td class="text-dark font-weight-light text-sm">
                                 <button
                                     class="btn btn-default text-info"
                                     [routerLink]="['/grant/' + item.pk + '/review']"

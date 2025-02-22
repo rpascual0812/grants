@@ -11,7 +11,7 @@
         </div>
 
         <ng-container *ngIf="!loading">
-            <div class="my-5">
+            <div class="my-1">
                 <div class="d-flex justify-content-between flex-wrap">
                     <div>
                         <h5 class="text-secondary">Project</h5>
@@ -19,7 +19,18 @@
                     </div>
                     <div>
                         <h5 class="text-secondary">Grant Number/Code</h5>
-                        <h3 class="text-dark">{{ project?.application?.number }}</h3>
+                        <div *ngIf="projectCodes.length > 0">
+                            <select
+                                class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
+                            >
+                                <option
+                                    *ngFor="let projectCode of projectCodes; let i = index"
+                                    [value]="projectCode.pk"
+                                >
+                                    {{ projectCode.code }}
+                                </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -27,8 +38,11 @@
             <div class="card">
                 <div class="card-body bg-gray-300">
                     <div class="d-flex flex-wrap justify-content-end">
-                        <button class="btn btn-icon-only" (click)="handleOnEdit($event, 'topInformation')"
-                            *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)">
+                        <button
+                            class="btn btn-icon-only"
+                            (click)="handleOnEdit($event, 'topInformation')"
+                            *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)"
+                        >
                             <i class="material-icons">edit</i>
                         </button>
                     </div>
@@ -65,9 +79,9 @@
                                         <br />
                                         {{ project?.project_proposal?.budget_request_other | number }}
                                         {{
-                                        getOtherCurrency(
-                                        project?.project_proposal?.budget_request_other_currency ?? ''
-                                        )
+                                            getOtherCurrency(
+                                                project?.project_proposal?.budget_request_other_currency ?? ''
+                                            )
                                         }}
                                     </p>
                                 </div>
@@ -75,15 +89,24 @@
                             <div class="row my-3">
                                 <div class="col-12">
                                     <div class="form-check m-0 p-1">
-                                        <input id="financial_management_training" class="form-check-input"
-                                            type="checkbox" name="financial_management_training"
+                                        <input
+                                            id="financial_management_training"
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            name="financial_management_training"
                                             value="Financial Management Training/Coaching"
                                             [checked]="project?.financial_management_training"
                                             (change)="toggleFinancialManagementTraining()"
-                                            [disabled]="permission.contract_finalization == 'restricted' || permission.contract_finalization == 'read-only'" />
-                                        <label class="form-check-label text-dark font-weight-bold"
-                                            for="financial_management_training">Financial Management
-                                            Training/Coaching</label>
+                                            [disabled]="
+                                                permission.contract_finalization == 'restricted' ||
+                                                permission.contract_finalization == 'read-only'
+                                            "
+                                        />
+                                        <label
+                                            class="form-check-label text-dark font-weight-bold"
+                                            for="financial_management_training"
+                                            >Financial Management Training/Coaching</label
+                                        >
                                     </div>
                                 </div>
                             </div>
@@ -95,15 +118,24 @@
                                 </div>
                                 <div class="col-md-6">
                                     <span
-                                        *ngIf="['restricted', 'read-only'].includes(permission.contract_finalization)">
-                                        {{project?.overall_grant_status ?? ''}}
+                                        *ngIf="['restricted', 'read-only'].includes(permission.contract_finalization)"
+                                    >
+                                        {{ project?.overall_grant_status ?? '' }}
                                     </span>
                                     <select
-                                        *ngIf="['comments', 'recommendation'].includes(permission.contract_finalization)"
+                                        *ngIf="
+                                            ['comments', 'recommendation'].includes(permission.contract_finalization)
+                                        "
                                         class="form-select px-3 border border-1 ronded-1 text-secondary text-md font-weight-bold"
-                                        style="border: solid 1px grey !important; height: 35px; font-size: 13px !important; padding-top: 6px;"
+                                        style="
+                                            border: solid 1px grey !important;
+                                            height: 35px;
+                                            font-size: 13px !important;
+                                            padding-top: 6px;
+                                        "
                                         [value]="project?.overall_grant_status ?? ''"
-                                        (change)="setOverallStatus($event, project); $event.stopPropagation()">
+                                        (change)="setOverallStatus($event, project); $event.stopPropagation()"
+                                    >
                                         <option value="">--</option>
                                         <option value="Under Review">Under Review</option>
                                         <option value="Approved">Approved</option>
@@ -111,12 +143,19 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row my-3">
                                 <div class="col-md-6">
-                                    <p class="text-sm font-weight-bold text-dark">Grant Type and Function</p>
+                                    <p class="text-sm font-weight-bold text-dark">Grant Function</p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p class="text-sm font-weight-bold text-secondary">{{ project?.type?.name }}</p>
+                                    <div class="border-1 border-black rounded-2" [style.border-style]="'solid'">
+                                        <app-select
+                                            [url]="'types'"
+                                            [defaultSelectedItemKey]="project?.type?.pk"
+                                            (onSelectEvent)="onSelectItem($event)"
+                                            (onDeSelectEvent)="onSelectItem($event)"
+                                        ></app-select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -142,7 +181,7 @@
                                     <div class="md-12" *ngFor="let attachment of attachments; let i = index">
                                         <a href="{{ attachment.path }}" target="_blank">{{
                                             attachment.original_name
-                                            }}</a>
+                                        }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -162,13 +201,17 @@
                 </div>
             </div>
 
-            <div class="my-5">
+            <div class="my-1">
                 <accordion [isAnimated]="true">
-                    <accordion-group (isOpenChange)="handleIsOpenChange($event, 'assessment')" [panelClass]="
+                    <accordion-group
+                        (isOpenChange)="handleIsOpenChange($event, 'assessment')"
+                        [panelClass]="
                             currentExpanded.has('assessment')
                                 ? 'custom-accordion-expanded w-100'
                                 : 'custom-accordion-collapsed w-100'
-                        " class="my-3">
+                        "
+                        class="my-3"
+                    >
                         <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                             <div class="pull-left float-left">
                                 <p class="text-dark text-sm font-weight-bold m-0 p-0">Assessment</p>
@@ -179,7 +222,7 @@
                                     <button class="btn btn-icon-only">
                                         <i class="material-icons">{{
                                             currentExpanded.has('assessment') ? 'expand_less' : 'expand_more'
-                                            }}</i>
+                                        }}</i>
                                     </button>
                                 </div>
                             </div>
@@ -187,11 +230,15 @@
                         <app-assessment [project]="project"></app-assessment>
                     </accordion-group>
 
-                    <accordion-group (isOpenChange)="handleIsOpenChange($event, 'projectInformation')" [panelClass]="
+                    <accordion-group
+                        (isOpenChange)="handleIsOpenChange($event, 'projectInformation')"
+                        [panelClass]="
                             currentExpanded.has('projectInformation')
                                 ? 'custom-accordion-expanded w-100'
                                 : 'custom-accordion-collapsed w-100'
-                        " class="my-3">
+                        "
+                        class="my-3"
+                    >
                         <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                             <div class="pull-left float-left">
                                 <p class="text-dark text-sm font-weight-bold m-0 p-0">Project Information</p>
@@ -199,16 +246,19 @@
 
                             <div class="pull-right float-right">
                                 <div class="d-flex flex flex-row">
-                                    <button class="btn btn-icon-only"
-                                        (click)="handleOnEdit($event, 'projectInformation')" *ngIf="
+                                    <button
+                                        class="btn btn-icon-only"
+                                        (click)="handleOnEdit($event, 'projectInformation')"
+                                        *ngIf="
                                             ['comments', 'recommendation'].includes(permission.contract_finalization)
-                                        ">
+                                        "
+                                    >
                                         <i class="material-icons">edit</i>
                                     </button>
                                     <button class="btn btn-icon-only">
                                         <i class="material-icons">{{
                                             currentExpanded.has('projectInformation') ? 'expand_less' : 'expand_more'
-                                            }}</i>
+                                        }}</i>
                                     </button>
                                 </div>
                             </div>
@@ -216,11 +266,15 @@
                         <app-project-information [project]="project"></app-project-information>
                     </accordion-group>
 
-                    <accordion-group (isOpenChange)="handleIsOpenChange($event, 'activitiesAndTimeline')" [panelClass]="
+                    <accordion-group
+                        (isOpenChange)="handleIsOpenChange($event, 'activitiesAndTimeline')"
+                        [panelClass]="
                             currentExpanded.has('activitiesAndTimeline')
                                 ? 'custom-accordion-expanded w-100'
                                 : 'custom-accordion-collapsed w-100'
-                        " class="my-3">
+                        "
+                        class="my-3"
+                    >
                         <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                             <div class="pull-left float-left">
                                 <p class="text-dark text-sm font-weight-bold m-0 p-0">Activities and Timeline</p>
@@ -228,16 +282,19 @@
 
                             <div class="pull-right float-right">
                                 <div class="d-flex flex flex-row">
-                                    <button class="btn btn-icon-only"
-                                        (click)="handleOnEdit($event, 'activitiesAndTimeline')" *ngIf="
+                                    <button
+                                        class="btn btn-icon-only"
+                                        (click)="handleOnEdit($event, 'activitiesAndTimeline')"
+                                        *ngIf="
                                             ['comments', 'recommendation'].includes(permission.contract_finalization)
-                                        ">
+                                        "
+                                    >
                                         <i class="material-icons">edit</i>
                                     </button>
                                     <button class="btn btn-icon-only">
                                         <i class="material-icons">{{
                                             currentExpanded.has('activitiesAndTimeline') ? 'expand_less' : 'expand_more'
-                                            }}</i>
+                                        }}</i>
                                     </button>
                                 </div>
                             </div>
@@ -245,11 +302,15 @@
                         <app-activities-timeline [project]="project"></app-activities-timeline>
                     </accordion-group>
 
-                    <accordion-group (isOpenChange)="handleIsOpenChange($event, 'reviews')" [panelClass]="
+                    <accordion-group
+                        (isOpenChange)="handleIsOpenChange($event, 'reviews')"
+                        [panelClass]="
                             currentExpanded.has('reviews')
                                 ? 'custom-accordion-expanded w-100'
                                 : 'custom-accordion-collapsed w-100'
-                        " class="my-3">
+                        "
+                        class="my-3"
+                    >
                         <div class="flex d-flex justify-content-between align-items-center" accordion-heading>
                             <div class="pull-left float-left">
                                 <p class="text-dark text-sm font-weight-bold m-0 p-0">Reviews</p>
@@ -260,7 +321,7 @@
                                     <button class="btn btn-icon-only">
                                         <i class="material-icons">{{
                                             currentExpanded.has('reviews') ? 'expand_less' : 'expand_more'
-                                            }}</i>
+                                        }}</i>
                                     </button>
                                 </div>
                             </div>
