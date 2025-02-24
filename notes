@@ -1,4 +1,4 @@
-scp -r dist/grants ubuntu@54.255.183.131:/usr/share/nginx/html
+scp -r dist/grants ubuntu@47.129.204.197:/usr/share/nginx/html
 scp -r dist/market-admin ubuntu@52.221.197.23:/usr/share/nginx/html
 
 server{
