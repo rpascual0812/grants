@@ -1,5 +1,4 @@
 scp -r dist/grants ubuntu@47.129.204.197:/usr/share/nginx/html
-scp -r dist/market-admin ubuntu@52.221.197.23:/usr/share/nginx/html
 
 server{
     listen 80 default_server;
