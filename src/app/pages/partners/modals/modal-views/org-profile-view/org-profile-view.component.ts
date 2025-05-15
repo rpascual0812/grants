@@ -334,7 +334,7 @@ export class OrgProfileViewComponent implements OnInit {
         const { value } = this.form;
         this.applicationService
             .saveAppReference({
-                partner_organization_pk: this.partner?.organization?.pk,
+                partner_organization_pk: this.partner?.organization?.pk ? this.partner?.organization?.pk : currentSavedData?.organization?.pk,
                 partner_organization_reference: value?.application_reference,
             })
             .subscribe({
