@@ -135,24 +135,26 @@ export class ContactInfoReferencesComponent {
     saveDateSubmitted() {
         const currentApplication = this.applicationSignalService.appForm();
         const applicationPk = currentApplication?.pk;
-        this.applicationService.saveDateSubmitted(applicationPk).subscribe({
-            next: (res: any) => {
-                const status = res?.status;
-                if (!status) {
+        if (applicationPk) {
+                this.applicationService.saveDateSubmitted(applicationPk).subscribe({
+                next: (res: any) => {
+                    const status = res?.status;
+                    if (!status) {
+                        this.toastr.error(
+                            `An error occurred while saving Application Date Submitted. Please try again.`,
+                            'ERROR!'
+                        );
+                    }
+                },
+                error: (err) => {
+                    const { statusCode, errorMessage } = extractErrorMessage(err);
                     this.toastr.error(
-                        `An error occurred while saving Application Date Submitted. Please try again.`,
+                        `An error occurred while saving Application Date Submitted. ${statusCode} ${errorMessage} Please try again.`,
                         'ERROR!'
                     );
-                }
-            },
-            error: (err) => {
-                const { statusCode, errorMessage } = extractErrorMessage(err);
-                this.toastr.error(
-                    `An error occurred while saving Application Date Submitted. ${statusCode} ${errorMessage} Please try again.`,
-                    'ERROR!'
-                );
-            },
-        });
+                },
+            });
+        }
     }
 
     handleSave() {
