@@ -112,7 +112,7 @@ export class ContactInfoReferencesComponent {
                         this.saveCurrentAppForm(data);
                         this.saveDateSubmitted()
                         this.toastr.success('Contact Reference has been successfully saved', 'SUCCESS!');
-                        this.applicationSignalService.submitSave.set(true);
+                        // this.applicationSignalService.submitSave.set(true);
                     } else {
                         this.toastr.error(
                             `An error occurred while saving Contact Reference. Please try again.`,

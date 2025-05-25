@@ -298,6 +298,7 @@ export class OrganizationProfileComponent implements OnInit {
                     if (status) {
                         this.saveCurrentAppForm(data);
                         this.toastr.success('Organization Profile has been successfully saved', 'SUCCESS!');
+                        this.applicationSignalService.submitSave.set(true);
                         this.applicationSignalService.navigateNext();
                     } else {
                         this.toastr.error(
