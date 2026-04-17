@@ -6,6 +6,8 @@ import { AVAILABLE_PROJECT_STATUS_OBJ, getOtherCurrencyKey } from 'src/app/utili
 import { Project } from 'src/app/interfaces/_project.interface';
 import { ProjectService } from 'src/app/services/project.service';
 import { SummaryService } from '../summary/summary.service';
+import * as _ from '../../../../../utilities/globals';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface Grant {
     pk: number;
@@ -66,7 +68,7 @@ export class FundReleaseComponent implements OnInit {
         private projectService: ProjectService,
         private toastr: ToastrService,
         private summaryService: SummaryService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.fetch();
@@ -160,8 +162,33 @@ export class FundReleaseComponent implements OnInit {
         $event.stopPropagation();
     }
 
-    handleDelete($event: MouseEvent) {
-        $event.stopPropagation();
+    handleDelete(project: any) {
+        _.confirmMessage(
+            {
+                title: '<strong>Are you sure you want to delete this grant?</strong>',
+                icon: 'question',
+                buttons: {
+                    showClose: true,
+                    showCancel: true,
+                    focusConfirm: false,
+                },
+                confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
+            },
+            () => {
+                this.projectService.delete(project?.pk).subscribe({
+                    next: (data: any) => {
+                        this.toastr.success('Grant deleted successfully.');
+                        this.fetch();
+                    },
+                    error: (err: HttpErrorResponse) => {
+                        const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                        const statusCode = err?.status ? `status: ${err?.status}` : '';
+                        this.toastr.error(`Error trying to delete grant. ${statusCode} ${errorMessage} `);
+                    },
+                });
+            }
+        );
     }
 
     handleIsOpenChange($event: boolean, partnerId: string) {
@@ -182,7 +209,7 @@ export class FundReleaseComponent implements OnInit {
     setSummaryProjectList(data: Project[]) {
         const fundRelease = data.filter((proj) => proj.status === AVAILABLE_PROJECT_STATUS_OBJ.fundRelease);
         const closingGrant = data.filter((proj) => proj.status === AVAILABLE_PROJECT_STATUS_OBJ.completed);
-        const projList = [...fundRelease, ...closingGrant] ?? [];
+        const projList = [...fundRelease, ...closingGrant];
         this.summaryService.currentProjectList.next({
             projects: projList,
             loading: false,

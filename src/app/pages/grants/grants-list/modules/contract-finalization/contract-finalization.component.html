@@ -20,48 +20,31 @@
                             <th class="p-2 text-white text-sm" scope="col" sortable="title" (sort)="onSort($event)">
                                 Title
                             </th>
-                            <th
-                                class="p-2 text-white text-sm"
-                                scope="col"
-                                sortable="applicationDate"
-                                (sort)="onSort($event)"
-                            >
+                            <th class="p-2 text-white text-sm" scope="col" sortable="applicationDate"
+                                (sort)="onSort($event)">
                                 Approved Date
                             </th>
-                            <th
-                                class="p-2 text-white text-sm"
-                                scope="col"
-                                sortable="proposedBudget"
-                                (sort)="onSort($event)"
-                            >
+                            <th class="p-2 text-white text-sm" scope="col" sortable="proposedBudget"
+                                (sort)="onSort($event)">
                                 Approved Budget
                             </th>
-                            <th
-                                class="p-2 text-white text-sm"
-                                scope="col"
-                                sortable="donorProject"
-                                (sort)="onSort($event)"
-                            >
+                            <th class="p-2 text-white text-sm" scope="col" sortable="donorProject"
+                                (sort)="onSort($event)">
                                 Donor/Project
                             </th>
                             <th class="p-2" scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr
-                            *ngFor="
+                        <tr *ngFor="
                                 let item of contractPreparation | paginate : { itemsPerPage: 10, currentPage: page };
                                 index as i
-                            "
-                        >
+                            ">
                             <th class="text-dark font-weight-bold text-sm" scope="row">{{ item.partnerId }}</th>
                             <td class="text-dark font-weight-light text-sm">
-                                <span
-                                    style="font-size: 8px"
-                                    class="badge rounded-pill"
-                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }"
-                                    >{{ i === 3 ? 'new' : i }}</span
-                                >
+                                <span style="font-size: 8px" class="badge rounded-pill"
+                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }">{{ i === 3 ? 'new' : i
+                                    }}</span>
                                 {{ item.partner }}
                             </td>
                             <td class="text-dark font-weight-light text-sm">{{ item.title }}</td>
@@ -76,13 +59,11 @@
                                 {{ item.donorProject }}
                             </td>
                             <td class="text-dark font-weight-light text-sm">
-                                <button
-                                    class="btn btn-default text-info"
-                                    [routerLink]="['/grant/' + item.pk + '/review']"
-                                >
+                                <button class="btn btn-default text-info"
+                                    [routerLink]="['/grant/' + item.pk + '/review']">
                                     Review
                                 </button>
-                                <button class="btn btn-default text-danger">Delete</button>
+                                <button class="btn btn-default text-danger" (click)="delete(item)">Delete</button>
                             </td>
                         </tr>
                     </tbody>
@@ -108,34 +89,33 @@
                             <th class="p-2 text-white text-sm" scope="col" sortable="partner" (sort)="onSort($event)">
                                 Partner
                             </th>
-                            <th class="p-2 text-white text-sm" scope="col" sortable="title" (sort)="onSort($event)">Title</th>
-                            <th class="p-2 text-white text-sm" scope="col" sortable="applicationDate" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="title" (sort)="onSort($event)">
+                                Title</th>
+                            <th class="p-2 text-white text-sm" scope="col" sortable="applicationDate"
+                                (sort)="onSort($event)">
                                 Approved Date
                             </th>
-                            <th class="p-2 text-white text-sm" scope="col" sortable="proposedBudget" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="proposedBudget"
+                                (sort)="onSort($event)">
                                 Approved Budget
                             </th>
-                            <th class="p-2 text-white text-sm" scope="col" sortable="donorProject" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="donorProject"
+                                (sort)="onSort($event)">
                                 Donor/Project
                             </th>
                             <th class="p-2" scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr
-                            *ngFor="
+                        <tr *ngFor="
                                 let item of finalApproval | paginate : { itemsPerPage: 10, currentPage: page };
                                 index as i
-                            "
-                        >
+                            ">
                             <th class="text-dark font-weight-bold text-sm" scope="row">{{ item.partnerId }}</th>
                             <td class="text-dark font-weight-light text-sm">
-                                <span
-                                    style="font-size: 8px"
-                                    class="badge rounded-pill"
-                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }"
-                                    >{{ i === 3 ? 'new' : i }}</span
-                                >
+                                <span style="font-size: 8px" class="badge rounded-pill"
+                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }">{{ i === 3 ? 'new' : i
+                                    }}</span>
                                 {{ item.partner }}
                             </td>
                             <td class="text-dark font-weight-light text-sm">{{ item.title }}</td>
@@ -150,13 +130,13 @@
                                 {{ item.donorProject }}
                             </td>
                             <td class="text-dark font-weight-light text-sm">
-                                <button
-                                    class="btn btn-default text-info"
-                                    [routerLink]="['/grant/' + item.pk + '/review']"
-                                >
+                                <button class="btn btn-default text-info"
+                                    [routerLink]="['/grant/' + item.pk + '/review']">
                                     Review
                                 </button>
-                                <button class="btn btn-default text-danger">Delete</button>
+                                <button class="btn btn-default text-danger" (click)="delete(item)">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -182,34 +162,33 @@
                             <th class="p-2 text-white text-sm" scope="col" sortable="partner" (sort)="onSort($event)">
                                 Partner
                             </th>
-                            <th class="p-2 text-white text-sm" scope="col" sortable="title" (sort)="onSort($event)">Title</th>
-                            <th class="p-2 text-white text-sm" scope="col" sortable="applicationDate" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="title" (sort)="onSort($event)">
+                                Title</th>
+                            <th class="p-2 text-white text-sm" scope="col" sortable="applicationDate"
+                                (sort)="onSort($event)">
                                 Approved Date
                             </th>
-                            <th class="p-2 text-white text-sm" scope="col" sortable="proposedBudget" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="proposedBudget"
+                                (sort)="onSort($event)">
                                 Approved Budget
                             </th>
-                            <th class="p-2 text-white text-sm" scope="col" sortable="donorProject" (sort)="onSort($event)">
+                            <th class="p-2 text-white text-sm" scope="col" sortable="donorProject"
+                                (sort)="onSort($event)">
                                 Donor/Project
                             </th>
                             <th class="p-2" scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr
-                            *ngFor="
+                        <tr *ngFor="
                                 let item of partnerSigning | paginate : { itemsPerPage: 10, currentPage: page };
                                 index as i
-                            "
-                        >
+                            ">
                             <th class="text-dark font-weight-bold text-sm" scope="row">{{ item.partnerId }}</th>
                             <td class="text-dark font-weight-light text-sm">
-                                <span
-                                    style="font-size: 8px"
-                                    class="badge rounded-pill"
-                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }"
-                                    >{{ i === 3 ? 'new' : i }}</span
-                                >
+                                <span style="font-size: 8px" class="badge rounded-pill"
+                                    [ngClass]="{ 'bg-info': i !== 3, 'bg-warning': i === 3 }">{{ i === 3 ? 'new' : i
+                                    }}</span>
                                 {{ item.partner }}
                             </td>
                             <td class="text-dark font-weight-light text-sm">{{ item.title }}</td>
@@ -225,13 +204,13 @@
                                 {{ item.donorProject }}
                             </td>
                             <td class="text-dark font-weight-light text-sm">
-                                <button
-                                    class="btn btn-default text-info"
-                                    [routerLink]="['/grant/' + item.pk + '/review']"
-                                >
+                                <button class="btn btn-default text-info"
+                                    [routerLink]="['/grant/' + item.pk + '/review']">
                                     Review
                                 </button>
-                                <button class="btn btn-default text-danger">Delete</button>
+                                <button class="btn btn-default text-danger" (click)="delete(item)">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     </tbody>

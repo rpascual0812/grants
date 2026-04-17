@@ -28,6 +28,10 @@ export class ProjectService {
         return this.http.get(`${_.BASE_URL}/projects/${pk}/review`);
     }
 
+    delete(pk: number) {
+        return this.http.delete(`${_.BASE_URL}/projects/${pk}`);
+    }
+
     fetchProjectFunding(params: { project_pk?: number }) {
         return this.http.get(`${_.BASE_URL}/projects/${params?.project_pk}/project_funding`);
     }

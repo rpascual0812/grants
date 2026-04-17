@@ -6,6 +6,8 @@ import { ProjectService } from 'src/app/services/project.service';
 import { extractErrorMessage } from 'src/app/utilities/application.utils';
 import { AVAILABLE_PROJECT_STATUS_OBJ, getOtherCurrencyKey } from 'src/app/utilities/constants';
 import { SummaryService } from '../summary/summary.service';
+import * as _ from '../../../../../utilities/globals';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface Grant {
     pk: number;
@@ -47,7 +49,7 @@ export class ContractFinalizationComponent implements OnInit {
         private projectService: ProjectService,
         private toastr: ToastrService,
         private summaryService: SummaryService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.fetch();
@@ -138,7 +140,7 @@ export class ContractFinalizationComponent implements OnInit {
         const partnerSigning = [...data]?.filter(
             (proj) => proj?.status === AVAILABLE_PROJECT_STATUS_OBJ.partnerSigning
         );
-        const contractFinalizationProjList = [...contractPreparation, ...finalApproval, ...partnerSigning] ?? [];
+        const contractFinalizationProjList = [...contractPreparation, ...finalApproval, ...partnerSigning];
         this.summaryService.currentProjectList.next({
             projects: contractFinalizationProjList,
             loading: false,
@@ -154,5 +156,34 @@ export class ContractFinalizationComponent implements OnInit {
     setDonors(donors: number[]) {
         this.donors = donors;
         this.fetch();
+    }
+
+    delete(project: any) {
+        _.confirmMessage(
+            {
+                title: '<strong>Are you sure you want to delete this grant?</strong>',
+                icon: 'question',
+                buttons: {
+                    showClose: true,
+                    showCancel: true,
+                    focusConfirm: false,
+                },
+                confirmButtonText: '<i class="fa fa-trash"></i> Delete',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No, cancel',
+            },
+            () => {
+                this.projectService.delete(project?.pk).subscribe({
+                    next: (data: any) => {
+                        this.toastr.success('Grant deleted successfully.');
+                        this.fetch();
+                    },
+                    error: (err: HttpErrorResponse) => {
+                        const errorMessage = err?.error?.message ? `message: ${err?.error?.message}` : '';
+                        const statusCode = err?.status ? `status: ${err?.status}` : '';
+                        this.toastr.error(`Error trying to delete grant. ${statusCode} ${errorMessage} `);
+                    },
+                });
+            }
+        );
     }
 }
