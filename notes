@@ -1,4 +1,4 @@
-scp -r dist/grants ubuntu@47.129.204.197:/usr/share/nginx/html
+scp -r dist/grants ubuntu@54.251.86.203:/var/www/html/admin
 
 server{
     listen 80 default_server;

@@ -9,6 +9,7 @@ import { ProjectsModule } from './modules/projects/projects.module';
 import { EvaluationsModule } from './modules/evaluations/evaluations.module';
 import { NonProfitEquivalencyDeterminationModule } from './modules/non-profit-equivalency-determination/non-profit-equivalency-determination.module';
 import { OtherInfoModule } from './modules/other-info/other-info.module';
+import { PartnerDangerModule } from './modules/partner-danger/partner-danger.module';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { OtherInfoModule } from './modules/other-info/other-info.module';
         EvaluationsModule,
         NonProfitEquivalencyDeterminationModule,
         OtherInfoModule,
+        PartnerDangerModule,
         AccordionModule.forRoot(),
     ],
 })
-export class PartnerViewModule {}
+export class PartnerViewModule { }
